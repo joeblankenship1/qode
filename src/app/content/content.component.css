@@ -1,0 +1,11 @@
+.btn-primary {
+    background-color: #083967;
+    border: none;
+}
+
+.document {
+    border: 2px solid #174A44;
+    padding: 20px;
+    overflow: scroll;
+    height: 750px;
+}
