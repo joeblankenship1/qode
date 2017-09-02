@@ -1,29 +1,30 @@
 <div class="col-sm-2 sidenav" id="mysidenav">
 
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-        <app-code-list></app-code-list>
-        <app-document-list></app-document-list>
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingThree">
-                <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+    <app-code-list></app-code-list>
+    <app-document-list></app-document-list>
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingThree">
+        <h4 class="panel-title">
+          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false"
+            aria-controls="collapseThree">
                                         Collapsible Group Item #3
                                       </a>
-                </h4>
-            </div>
-            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                <div class="panel-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accu.
-                </div>
-            </div>
+        </h4>
+      </div>
+      <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+        <div class="panel-body">
+          Anim pariatur cliche reprehenderit, enim eiusmod high life accu.
         </div>
+      </div>
     </div>
+  </div>
 
 
 </div>
 <div class="col-sm-1 sidenav" id='miniside'>
-    <button id='sidenavCollapseBtn' class="opened" (click)="sidenavCollapse()">
+  <button id='sidenavCollapseBtn' class="opened" (click)="sidenavCollapse()">
                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                     </button>
 </div>

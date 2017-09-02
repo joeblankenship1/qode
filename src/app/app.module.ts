@@ -10,6 +10,14 @@ import { CodeListComponent } from './side-bar/code-list/code-list.component';
 import { ContentComponent } from './content/content.component';
 import { FooterComponent } from './footer/footer.component';
 import { DocumentComponent } from './content/document/document.component';
+import { CodeItemComponent } from './side-bar/code-list/code-item/code-item.component';
+import { DocumentItemComponent } from './side-bar/document-list/document-item/document-item.component';
+import { SignupComponent } from './header/auth/signup/signup.component';
+import { SigninComponent } from './header/auth/signin/signin.component';
+import { DocumentModalComponent } from './header/document-modal/document-modal.component';
+import { QuoteModalComponent } from './header/quote-modal/quote-modal.component';
+import { MemoModalComponent } from './header/memo-modal/memo-modal.component';
+import { CodeModalComponent } from './header/code-modal/code-modal.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +28,15 @@ import { DocumentComponent } from './content/document/document.component';
     CodeListComponent,
     ContentComponent,
     FooterComponent,
-    DocumentComponent
+    DocumentComponent,
+    CodeItemComponent,
+    DocumentItemComponent,
+    SignupComponent,
+    SigninComponent,
+    DocumentModalComponent,
+    QuoteModalComponent,
+    MemoModalComponent,
+    CodeModalComponent
   ],
   imports: [
     BrowserModule,
