@@ -9,7 +9,7 @@ import { DocumentListComponent } from './side-bar/document-list/document-list.co
 import { CodeListComponent } from './side-bar/code-list/code-list.component';
 import { ContentComponent } from './content/content.component';
 import { FooterComponent } from './footer/footer.component';
-import { DocumentComponent } from './content/document/document.component';
+import { DocumentsComponent } from './content/documents/documents.component';
 import { CodeItemComponent } from './side-bar/code-list/code-item/code-item.component';
 import { DocumentItemComponent } from './side-bar/document-list/document-item/document-item.component';
 import { SignupComponent } from './header/auth/signup/signup.component';
@@ -28,7 +28,7 @@ import { CodeModalComponent } from './header/code-modal/code-modal.component';
     CodeListComponent,
     ContentComponent,
     FooterComponent,
-    DocumentComponent,
+    DocumentsComponent,
     CodeItemComponent,
     DocumentItemComponent,
     SignupComponent,
