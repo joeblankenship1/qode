@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Document } from '../shared/models/document.model';
+import { DocumentsTabsComponent } from './documents/documents-tabs/documents-tabs.component';
+
 
 @Component({
   selector: 'app-content',
@@ -7,17 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContentComponent implements OnInit {
 
+  @Input() openedDocuments: Document[] = [];
+
+  public selectedDocument: Document;
   constructor() { }
 
   ngOnInit() {
   }
 
-  openCity(cityName) {
-    let i;
-    const x = document.getElementsByClassName('city');
-    for (i = 0; i < x.length; i++) {
-        x[i].setAttribute('style', 'display:none;');
-    }
-    document.getElementById(cityName).style.display = 'block';
-}
+  onDocumentSelected(document: Document) {
+    this.selectedDocument = document;
+  }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Document } from '../../../shared/document.model'
+import { Document } from '../../../shared/models/document.model';
 
 @Component({
   selector: 'app-document-item',
@@ -12,6 +12,10 @@ export class DocumentItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onOpenDocument() {
+    
   }
 
 }

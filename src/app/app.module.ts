@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -18,6 +19,9 @@ import { DocumentModalComponent } from './header/document-modal/document-modal.c
 import { QuoteModalComponent } from './header/quote-modal/quote-modal.component';
 import { MemoModalComponent } from './header/memo-modal/memo-modal.component';
 import { CodeModalComponent } from './header/code-modal/code-modal.component';
+import { DocumentService } from './shared/services/document.service';
+import { DocumentsTabsComponent } from './content/documents/documents-tabs/documents-tabs.component';
+import { DocumentContentComponent } from './content/documents/document-content/document-content.component';
 
 @NgModule({
   declarations: [
@@ -36,13 +40,16 @@ import { CodeModalComponent } from './header/code-modal/code-modal.component';
     DocumentModalComponent,
     QuoteModalComponent,
     MemoModalComponent,
-    CodeModalComponent
+    CodeModalComponent,
+    DocumentsTabsComponent,
+    DocumentContentComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    HttpModule
   ],
-  providers: [],
+  providers: [DocumentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
