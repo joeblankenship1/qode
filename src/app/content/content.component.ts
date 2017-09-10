@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Document } from '../shared/models/document.model';
 import { DocumentsTabsComponent } from './documents/documents-tabs/documents-tabs.component';
+import { DocumentService } from '../shared/services/document.service';
 
 
 @Component({
@@ -10,15 +11,10 @@ import { DocumentsTabsComponent } from './documents/documents-tabs/documents-tab
 })
 export class ContentComponent implements OnInit {
 
-  @Input() openedDocuments: Document[] = [];
+ constructor(){}
 
-  public selectedDocument: Document;
-  constructor() { }
+ ngOnInit(){
 
-  ngOnInit() {
-  }
-
-  onDocumentSelected(document: Document) {
-    this.selectedDocument = document;
-  }
+ }
+ 
 }

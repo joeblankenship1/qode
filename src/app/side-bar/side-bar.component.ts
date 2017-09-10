@@ -7,7 +7,6 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SideBarComponent implements OnInit {
 
-  @Input() documents;
   constructor() { }
 
   ngOnInit() {

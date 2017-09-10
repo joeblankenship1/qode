@@ -9,14 +9,9 @@ import { DocumentService } from './shared/services/document.service';
 })
 export class AppComponent {
   title = 'app';
- public documents: Document[];
-  constructor(private documentService: DocumentService) { }
 
-  ngOnInit(){
-    this.documentService.getDocuments()
-    .subscribe(
-      documents => this.documents = documents,
-      error => console.error(error)
-    );
+  constructor() { }
+
+  ngOnInit() {
   }
 }
