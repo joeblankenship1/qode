@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { Document } from '../../shared/models/document.model';
-import { DocumentService } from '../../shared/services/document.service';
+import { Document } from '../../../shared/models/document.model';
+import { DocumentService } from '../../../shared/services/document.service';
 
 @Component({
   selector: 'app-document-list',

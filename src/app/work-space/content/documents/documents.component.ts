@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DocumentService } from '../../shared/services/document.service';
-import { Document } from '../../shared/models/document.model';
+import { DocumentService } from '../../../shared/services/document.service';
+import { Document } from '../../../shared/models/document.model';
 
 
 @Component({

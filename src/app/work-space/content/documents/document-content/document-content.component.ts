@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Document } from '../../../shared/models/document.model';
+import { Document } from '../../../../shared/models/document.model';
 
 @Component({
   selector: 'app-document-content',
