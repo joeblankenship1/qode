@@ -16,8 +16,8 @@ export class DocumentListComponent implements OnInit {
     this.documentService.getDocuments()
     .subscribe(
       documents => {
-        this.documentService.setOpenedDocuments(documents);
-        this.documents = documents
+        this.documentService.setOpenedDocuments([documents[0]]);
+        this.documents = documents;
       },
       error => console.error(error)
     );
