@@ -34,6 +34,13 @@ DOMAIN = {
                 'maxlength': 300
             },
         },
+        'owner': {
+            'type': 'objectid',
+            'data_relation': {
+                'resource': 'user'
+            },
+            'required': True
+        },
         'additional_lookup': {
             'url': 'regex("[\w]+")',
             'field': 'name',
@@ -52,7 +59,9 @@ DOMAIN = {
                 'required': True
             },
             'atributes':{
-                'type': 'string'
+                'type': 'dict',
+                'allow_unknown': True,
+                'default':{}
             },
             'text':{
                 'type': 'string',

@@ -1,5 +1,6 @@
 from eve import Eve
 from eve.auth import BasicAuth
+from flask.ext.cors import CORS
 
 class Authenticate(BasicAuth):
     def check_auth(self, username, password, allowed_roles, resource,
@@ -17,5 +18,7 @@ class Authenticate(BasicAuth):
 app = Eve()
 
 if __name__ == '__main__':
-    app = Eve(auth=Authenticate)
+    #app = Eve(auth=Authenticate)
+    app = Eve()
+    CORS(app)
     app.run()
