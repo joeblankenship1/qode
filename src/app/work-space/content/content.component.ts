@@ -11,10 +11,10 @@ import { DocumentService } from '../../shared/services/document.service';
 })
 export class ContentComponent implements OnInit {
 
- constructor(){}
+  constructor() { }
 
- ngOnInit(){
+  ngOnInit() {
 
- }
- 
+  }
+
 }

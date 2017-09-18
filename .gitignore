@@ -44,4 +44,8 @@ Thumbs.db
 
 .editorconfig
 
+#db
 /API/data/db/*
+
+#vscode
+.vscode

@@ -11,21 +11,25 @@ import { Document } from '../../../shared/models/document.model';
 export class DocumentsComponent implements OnInit {
 
   public openedDocuments: Document[] = [];
-  
   public selectedDocument: Document;
   constructor(private documentService: DocumentService) { }
 
   ngOnInit() {
     this.documentService.getOpenedDocuments()
-   .subscribe(
-    openedDocuments => {
-      this.openedDocuments = openedDocuments;
-      this.selectedDocument = openedDocuments[0];
-    }
-    );
-  }
+      .subscribe(
+      openedDocuments => {
+        this.openedDocuments = openedDocuments;
+        this.selectedDocument = openedDocuments[0];
+      }
+      );
 
-  
+      this.documentService.getSelectedDocument()
+      .subscribe(
+      selectedDocument => {
+        this.selectedDocument = selectedDocument;
+      }
+      );
+  }
 
   onDocumentSelected(document: Document) {
     this.selectedDocument = document;
