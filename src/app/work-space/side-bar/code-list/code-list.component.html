@@ -13,6 +13,13 @@
                 *ngFor="let cod of codes"
                 [code]="cod"></app-code-item>
             </ul>
+            <div class="input-group">
+                <input class="col-xs-12 form-control" placeholder="Nuevo código" (keyup.enter)="onAddCode()"
+                type="text" [(ngModel)]="newCodeName" name="Nuevo código" id="newCode">
+                <span class="input-group-btn">
+                    <button (click)="onAddCode()" class="btn btn-success" type="submit">Agregar</button>
+                </span>
+            </div>
         </div>
     </div>
 </div>

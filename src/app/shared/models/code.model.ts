@@ -1,9 +1,11 @@
 export class Code {
   public name: string;
-  public description: string;
+  public project: string
+  //public description: string;
 
-  constructor(name:string, desc:string) {
-    this.name = name;
-    this.description = desc;
+  constructor(data: any) {
+    this.name = data.name;
+    this.project = data.project;
+   // this.description = "";
   }
 }

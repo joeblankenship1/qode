@@ -8,7 +8,7 @@ import 'rxjs/Rx';
 @Injectable()
 export class DocumentService {
 
-
+  public url : string = 'http://localhost:5000/document'
   // openedDocuments: Observable<Document[]>;
   private openedDocuments: Document[] = [];
   private openedDocuments$ = new BehaviorSubject<Document[]>([]);
@@ -20,7 +20,7 @@ export class DocumentService {
   }
 
   getDocuments(): Observable<any> {
-    return this.http.get('http://localhost:5000/document')
+    return this.http.get(this.url)
       .map((data: Response) => {
         const extracted = data.json();
         const documentArray: Document[] = [];

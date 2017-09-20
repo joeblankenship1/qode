@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Code } from '../../../../shared/models/code.model';
+import { ModalService } from '../../../../shared/services/modal.service';
 
 @Component({
   selector: 'app-code-item',
@@ -8,14 +9,14 @@ import { Code } from '../../../../shared/models/code.model';
 })
 export class CodeItemComponent implements OnInit {
   @Input() code: Code;
-
-  constructor() { }
+  
+  constructor(private modalService: ModalService) { }
 
   ngOnInit() {
   }
 
   onOpenCode() {
-    alert("Code open");
+    this.modalService.open('code-modal');
   }
 
 }

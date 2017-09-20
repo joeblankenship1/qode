@@ -20,6 +20,7 @@ import { QuoteModalComponent } from './header/quote-modal/quote-modal.component'
 import { MemoModalComponent } from './header/memo-modal/memo-modal.component';
 import { CodeModalComponent } from './header/code-modal/code-modal.component';
 import { DocumentService } from './shared/services/document.service';
+import { ModalService } from './shared/services/modal.service';
 import { DocumentsTabsComponent } from './work-space/content/documents/documents-tabs/documents-tabs.component';
 import { DocumentContentComponent } from './work-space/content/documents/document-content/document-content.component';
 import { WorkSpaceComponent } from './work-space/work-space.component';
@@ -51,7 +52,7 @@ import { WorkSpaceComponent } from './work-space/work-space.component';
     FormsModule,
     HttpModule
   ],
-  providers: [DocumentService],
+  providers: [DocumentService,ModalService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
