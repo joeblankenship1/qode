@@ -1,5 +1,5 @@
 import { Memo } from './memo.model';
-import { Quote } from './quote.mode';
+import { Quote } from './quote.model';
 import { Project } from './project.model';
 
 export class Document {

@@ -1,5 +1,6 @@
 from eve import Eve
 from eve.auth import BasicAuth
+from eve_auth_jwt import JWTAuth
 from flask.ext.cors import CORS
 
 class Authenticate(BasicAuth):
@@ -15,7 +16,7 @@ class Authenticate(BasicAuth):
             else:
                 return False
 
-app = Eve()
+#app = Eve(auth=JWTAuth, settings=SETTINGS)
 
 if __name__ == '__main__':
     #app = Eve(auth=Authenticate)
