@@ -11,8 +11,8 @@ export class AuthService {
     clientID: 'UhMrdGno87iwJacMYSZYOq53ImO7IHa6',
     domain: 'nurruty.auth0.com',
     responseType: 'token id_token',
-    audience: 'https://nurruty.auth0.com/userinfo',
-    redirectUri: 'http://localhost:4200/callback',
+    audience: 'http://localhost:5000/',
+    redirectUri: 'http://localhost:4200/',
     scope: 'openid'
   });
 
@@ -24,14 +24,6 @@ export class AuthService {
 
   public loginUserPassword(data) {
    this.auth0.client.login(data, (err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        window.location.hash = '';
-        this.setSession(authResult);
-        this.router.navigate(['workspace']);
-      } else if (err) {
-        this.router.navigate(['/']);
-        console.log(err);
-      }
     });
   }
 
@@ -54,7 +46,7 @@ export class AuthService {
       if (authResult && authResult.accessToken && authResult.idToken) {
         window.location.hash = '';
         this.setSession(authResult);
-        this.router.navigate(['/workspace']);
+        this.router.navigate(['workspace']);
       } else if (err) {
         this.router.navigate(['/']);
         console.log(err);
@@ -63,9 +55,9 @@ export class AuthService {
   }
 
   private setSession(authResult): void {
-    // Set the time that the access token will expire at
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
     localStorage.setItem('access_token', authResult.accessToken);
+    localStorage.setItem('token', authResult.idToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
     this.auth0.client.userInfo(authResult.accessToken, (err, profile) => {
@@ -89,8 +81,16 @@ export class AuthService {
   public isAuthenticated(): boolean {
     // Check whether the current time is past the
     // access token's expiry time
-    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    const expiresAt = parseInt(localStorage.getItem('expires_at'), 0);
     return new Date().getTime() < expiresAt;
+  }
+
+  public getAccessToken() {
+    return localStorage.getItem('access_token');
+  }
+
+  public getToken() {
+    return localStorage.getItem('token');
   }
 
 

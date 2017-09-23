@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http, RequestOptions } from '@angular/http';
-import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { routes } from './app.routes';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -31,13 +30,8 @@ import { Router } from '@angular/router';
 import { LoginComponent } from './home/login/login.component';
 import { SignupComponent } from './home/signup/signup.component';
 import { UserService } from './shared/services/user.service';
+import { AuthHttp } from './shared/helpers/authHttp.helper';
 
-
-
-
-export function authHttpServiceFactory(http: Http, options: RequestOptions) {
-  return new AuthHttp(new AuthConfig(), http, options);
-}
 
 @NgModule({
   declarations: [
@@ -69,12 +63,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpModule,
     RouterModule.forRoot(routes, {useHash: true})
   ],
-  providers: [DocumentService, AuthGuard, AuthService,
-    {
-      provide: AuthHttp,
-      useFactory: authHttpServiceFactory,
-      deps: [Http, RequestOptions]
-    },
+  providers: [DocumentService,
+    AuthGuard,
+    AuthService,
+    AuthHttp,
     UserService
   ],
   bootstrap: [AppComponent]
