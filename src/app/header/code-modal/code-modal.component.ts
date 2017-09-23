@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./code-modal.component.css']
 })
 export class CodeModalComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit() {

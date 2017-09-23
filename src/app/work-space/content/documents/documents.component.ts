@@ -23,12 +23,12 @@ export class DocumentsComponent implements OnInit {
       }
       );
 
-      this.documentService.getSelectedDocument()
-      .subscribe(
-      selectedDocument => {
-        this.selectedDocument = selectedDocument;
-      }
-      );
+    this.documentService.getSelectedDocument()
+    .subscribe(
+    selectedDocument => {
+      this.selectedDocument = selectedDocument;
+    }
+    );
   }
 
   onDocumentSelected(document: Document) {

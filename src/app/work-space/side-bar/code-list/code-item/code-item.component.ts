@@ -16,7 +16,7 @@ export class CodeItemComponent implements OnInit {
   }
 
   onOpenCode() {
-    this.modalService.open('code-modal');
+   //this.modalService.open('code-modal');
   }
 
 }
