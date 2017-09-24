@@ -123,3 +123,8 @@
   color: #333333;
   text-decoration: none;
 }
+
+.signup-error {
+  color: #E02626;
+  margin-bottom: 10px;
+}

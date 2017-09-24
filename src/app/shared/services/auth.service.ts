@@ -52,14 +52,16 @@ export class AuthService {
     });
   }
 
-  public signup(data): void {
-    this.auth0.signup(data, function (err) {
+  public signup(data): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+    this.auth0.signup(data, function(err, rslt)  {
       if (err) {
-        console.error('Error' + err.errorDescription);
-      } else { console.log('Success');
-    }
+        reject(err);
+      } else {
+        resolve(data);
+      }
     });
-    this.router.navigate(['/workspace']);
+    });
   }
 
   public handleAuthentication() {
