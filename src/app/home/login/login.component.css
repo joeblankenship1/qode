@@ -192,3 +192,8 @@ body { padding: 2em; }
 .loginBtn--google:focus {
   background: #E74B37;
 }
+
+.login-error {
+  color: #DB7878;
+  margin-bottom: 10px;
+}

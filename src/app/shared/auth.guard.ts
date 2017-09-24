@@ -9,13 +9,12 @@ export class AuthGuard implements CanActivate {
 
     constructor(private router: Router, private authsvc: AuthService) { }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (localStorage.getItem('access_token') !== undefined) {
-            // logged in so return true
-            return true;
+    canActivate() {
+        // If the user is not logged in we'll send them back to the home page
+        if (!this.authsvc.isAuthenticated()) {
+          this.router.navigate(['']);
+          return false;
         }
-    // not logged in so redirect to login page with the return url
-        this.router.navigate([''], { queryParams: { returnUrl: state.url }});
         return true;
     }
 

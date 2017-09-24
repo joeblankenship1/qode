@@ -11,8 +11,8 @@ export class AuthHttp {
   get(url: string, options?: RequestOptionsArgs): Observable<Response> {
     const token = this.authsvc.getToken();
     const headers = new Headers({
-      'content-type': 'application/json',
-      'authorization': 'Bearer' + token
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
      });
     const reqOptions = new RequestOptions({headers: headers});
     return this.http.get(url, reqOptions);

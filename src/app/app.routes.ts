@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './home/login/login.component';
 import { SignupComponent } from './home/signup/signup.component';
 
+
 export const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'workspace', component: WorkSpaceComponent, canActivate: [AuthGuard] },

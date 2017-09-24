@@ -10,20 +10,20 @@ import { Routes, Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 appname = '';
+show: boolean;
 
   constructor(private authsvc: AuthService, private router: Router) {
     this.appname = 'libreQDA';
   }
 
   ngOnInit() {
-  }
-
-  login() {
-    this.authsvc.login();
+   this.authsvc.loggedIn$.subscribe( s => {
+     this.show = s;
+   });
   }
 
   logout() {
-    this.authsvc.logout();
+    this.authsvc.logOut();
   }
 
 }

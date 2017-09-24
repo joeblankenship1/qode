@@ -5,6 +5,7 @@
   <div class="">
   </div>
   <div class="form">
+    <div *ngIf="loginError" class="login-error">Usuario o contraseña incorrectos</div>
     <h2>Acceder a su cuenta</h2>
     <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
       <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">

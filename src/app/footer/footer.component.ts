@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../shared/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
@@ -8,7 +9,7 @@ import { AuthService } from '../shared/services/auth.service';
 })
 export class FooterComponent implements OnInit {
 
-  constructor(private authsvc: AuthService) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }

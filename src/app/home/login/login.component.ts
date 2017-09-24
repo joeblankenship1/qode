@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +12,7 @@ import { NgForm } from '@angular/forms';
 export class LoginComponent implements OnInit {
   model: any = {};
   loading = false;
+  loginError = false;
   returnUrl: string;
 
   constructor(
@@ -19,13 +21,14 @@ export class LoginComponent implements OnInit {
       private authenticationService: AuthService) { }
 
   ngOnInit() {
-      // reset login status
-      this.authenticationService.logout();
-
-      // get return url from route parameters or default to '/'
-     // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-     this.returnUrl = 'workspace';
-  }
+      this.authenticationService.clearSession();
+      this.authenticationService.loggedIn$.subscribe(r => {
+        if (!r && this.loading) {
+          this.loginError = true;
+        }
+        this.loading = r;
+      });
+    }
 
   login() {
     this.loading = true;

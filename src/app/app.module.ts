@@ -33,6 +33,7 @@ import { UserService } from './shared/services/user.service';
 import { AuthHttp } from './shared/helpers/authHttp.helper';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +55,8 @@ import { AuthHttp } from './shared/helpers/authHttp.helper';
     WorkSpaceComponent,
     HomeComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+
   ],
   imports: [
     BrowserModule,
