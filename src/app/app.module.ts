@@ -24,13 +24,22 @@ import { DocumentsTabsComponent } from './work-space/content/documents/documents
 import { DocumentContentComponent } from './work-space/content/documents/document-content/document-content.component';
 import { WorkSpaceComponent } from './work-space/work-space.component';
 import { HomeComponent } from './home/home.component';
-import { AuthGuard } from './shared/auth.guard';
+import { AuthGuard } from './shared/guards/auth.guard';
 import { AuthService } from './shared/services/auth.service';
 import { Router } from '@angular/router';
 import { LoginComponent } from './home/login/login.component';
 import { SignupComponent } from './home/signup/signup.component';
 import { UserService } from './shared/services/user.service';
-import { AuthHttp } from './shared/helpers/authHttp.helper';
+
+import { AuthHttp, AuthConfig } from 'angular2-jwt';
+
+export function authHttpServiceFactory(http: Http, options: RequestOptions) {
+  return new AuthHttp(new AuthConfig({
+    tokenName: 'access_token',
+    tokenGetter: (() => localStorage.getItem('access_token')),
+    globalHeaders: [{ 'Content-Type': 'application/json' }],
+  }), http, options);
+}
 
 
 
@@ -63,12 +72,16 @@ import { AuthHttp } from './shared/helpers/authHttp.helper';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    RouterModule.forRoot(routes, {useHash: true})
+    RouterModule.forRoot(routes, { useHash: true })
   ],
   providers: [DocumentService,
     AuthGuard,
     AuthService,
-    AuthHttp,
+    {
+      provide: AuthHttp,
+      useFactory: authHttpServiceFactory,
+      deps: [Http, RequestOptions]
+    },
     UserService
   ],
   bootstrap: [AppComponent]

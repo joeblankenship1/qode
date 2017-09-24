@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './shared/auth.guard';
+import { AuthGuard } from './shared/guards/auth.guard';
 import { WorkSpaceComponent } from './work-space/work-space.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './home/login/login.component';

@@ -4,7 +4,7 @@ import { Document } from '../models/document.model';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/Rx';
-import { AuthHttp } from '../helpers/authHttp.helper';
+import { AuthHttp } from 'angular2-jwt';
 
 
 @Injectable()
