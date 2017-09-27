@@ -23,3 +23,11 @@
 .btn {
     border-radius: 0px;
 }
+
+.opened {
+    display: none;
+}
+
+.closed {
+    display: block;
+}

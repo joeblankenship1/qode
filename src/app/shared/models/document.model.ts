@@ -10,7 +10,6 @@ export class Document {
   public project: Project;
   public memos: Memo[];
   public quotes: Quote[];
- 
 
   constructor(data: any) {
     this.name = data.name;

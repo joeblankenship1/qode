@@ -1,0 +1,38 @@
+.border-red {
+    border: rgba(196, 74, 74, 0.78) solid 1px;
+}
+
+.col-md-1,
+.col-md-10,
+.col-md-11,
+.col-md-12,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9 {
+    padding-left: 10px;
+    padding-right: 5px;
+}
+
+#crearProyecto {
+    border: none;
+    background-color: rgba(42, 197, 154, 0.82);
+    color: white;
+    font-weight: 300;
+    font-size: 20px;
+    border-radius: 2px;
+}
+
+input {
+    height: 40px;
+    font-size: 14px;
+}
+
+.scrollableList {
+    overflow: scroll;
+    height: 500px;
+}

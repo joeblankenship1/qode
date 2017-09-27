@@ -20,9 +20,12 @@ import { QuoteModalComponent } from './header/quote-modal/quote-modal.component'
 import { MemoModalComponent } from './header/memo-modal/memo-modal.component';
 import { CodeModalComponent } from './header/code-modal/code-modal.component';
 import { DocumentService } from './shared/services/document.service';
+import { ProjectService } from './shared/services/project.service';
 import { DocumentsTabsComponent } from './work-space/content/documents/documents-tabs/documents-tabs.component';
 import { DocumentContentComponent } from './work-space/content/documents/document-content/document-content.component';
 import { WorkSpaceComponent } from './work-space/work-space.component';
+import { ProjectsComponent } from './my-projects/projects/projects.component';
+import { ProjectItemComponent } from './my-projects/projects/project-item/project-item.component';
 
 @NgModule({
   declarations: [
@@ -44,14 +47,16 @@ import { WorkSpaceComponent } from './work-space/work-space.component';
     CodeModalComponent,
     DocumentsTabsComponent,
     DocumentContentComponent,
-    WorkSpaceComponent
+    WorkSpaceComponent,
+    ProjectsComponent,
+    ProjectItemComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule
   ],
-  providers: [DocumentService],
+  providers: [DocumentService, ProjectService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

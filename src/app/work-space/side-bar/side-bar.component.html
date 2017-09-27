@@ -1,14 +1,12 @@
-<div class="col-sm-2 sidenav" id="mysidenav">
-
-  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-    <app-document-list></app-document-list>
-    <app-code-list></app-code-list>   
-  </div>
-
-
+<div class="col-sm-2 sidenav" id="mysidenav" [ngClass]="isOpened ? 'opened' : 'closed'">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <app-document-list></app-document-list>
+        <app-code-list></app-code-list>
+    </div>
 </div>
+
 <div class="col-sm-1 sidenav" id='miniside'>
-  <button id='sidenavCollapseBtn' class="opened" (click)="sidenavCollapse()">
-                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                    </button>
+    <button id="sidenavCollapseBtn" (click)="isOpened = !isOpened">
+      <span [ngClass]="isOpened ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-left'" aria-hidden="true"></span>
+    </button>
 </div>
