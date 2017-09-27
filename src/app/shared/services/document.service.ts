@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Document } from '../models/document.model';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/Rx';
+import { AuthHttp } from 'angular2-jwt';
+
 
 @Injectable()
 export class DocumentService {
+
+  headers: Headers;
+  options: RequestOptions;
 
 
   // openedDocuments: Observable<Document[]>;
@@ -15,8 +20,7 @@ export class DocumentService {
   private selectedDocument: Document = null;
   private selectedDocument$ = new BehaviorSubject<Document>(null);
 
-  constructor(private http: Http) {
-
+  constructor(private http: AuthHttp) {
   }
 
   getDocuments(): Observable<any> {
