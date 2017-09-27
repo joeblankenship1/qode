@@ -20,23 +20,18 @@ export class ProjectItemComponent implements OnInit {
   }
 
   deleteProject() {
-    // const id = this.project._id;
-    // const projToDelete = this.projectService.getProject(id);
-    // this.projectService.deleteProject( projToDelete )
-    // .subscribe(
-    // proj => {
-    //   console.log('vamo los pibes');
-    //   console.log(proj);
-    //   this.projectService.quitProject(proj);
-    // },
-    // error => {
-    //   console.log(error._issues.name);
-    // });
-
     const id = this.project._id;
     const projToDelete = this.projectService.getProject(id);
-    this.projectService.quitProject(projToDelete);
-
+    this.projectService.deleteProject( projToDelete )
+    .subscribe(
+    proj => {
+      console.log('vamo los pibes');
+      console.log(proj);
+      this.projectService.quitProject(proj);
+    },
+    error => {
+      console.log(error._issues.name);
+    });
   }
 
 }
