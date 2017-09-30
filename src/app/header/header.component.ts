@@ -3,6 +3,8 @@ import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { CodeModalComponent } from './code-modal/code-modal.component';
 import { overlayConfigFactory } from 'angular2-modal';
 import { Code } from '../shared/models/code.model';
+import { AuthService } from '../shared/services/auth.service';
+import { Routes, Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -12,16 +14,20 @@ import { Code } from '../shared/models/code.model';
 })
 export class HeaderComponent implements OnInit {
 appname = '';
+show: boolean;
 
-  constructor(private modal: Modal) {
+  constructor(private authsvc: AuthService, private router: Router,private modal: Modal) {
     this.appname = 'libreQDA';
   }
 
   ngOnInit() {
+   this.authsvc.loggedIn$.subscribe( s => {
+     this.show = s;
+   });
   }
 
-  login() {
-    console.log('login');
+  logout() {
+    this.authsvc.logOut();
   }
 
   onNewCode(){
