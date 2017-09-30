@@ -1,3 +1,4 @@
+import logging
 from eve import Eve
 from eve.auth import BasicAuth
 from flask_cors import CORS
@@ -15,10 +16,7 @@ class Authenticate(BasicAuth):
             else:
                 return False
 
-app = Eve()
-
 if __name__ == '__main__':
-    #app = Eve(auth=Authenticate)
     app = Eve()
     CORS(app)
     app.run()

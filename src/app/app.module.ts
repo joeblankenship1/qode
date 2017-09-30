@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { ModalModule } from 'angular2-modal';
+import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -24,6 +26,7 @@ import { ModalService } from './shared/services/modal.service';
 import { DocumentsTabsComponent } from './work-space/content/documents/documents-tabs/documents-tabs.component';
 import { DocumentContentComponent } from './work-space/content/documents/document-content/document-content.component';
 import { WorkSpaceComponent } from './work-space/work-space.component';
+import { CodeService } from './shared/services/code.service';
 
 @NgModule({
   declarations: [
@@ -42,17 +45,20 @@ import { WorkSpaceComponent } from './work-space/work-space.component';
     DocumentModalComponent,
     QuoteModalComponent,
     MemoModalComponent,
-    CodeModalComponent,
     DocumentsTabsComponent,
     DocumentContentComponent,
-    WorkSpaceComponent
+    WorkSpaceComponent,
+    CodeModalComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    ModalModule.forRoot(),
+    BootstrapModalModule
   ],
-  providers: [DocumentService,ModalService],
-  bootstrap: [AppComponent]
+  providers: [DocumentService,ModalService,CodeService],
+  bootstrap: [AppComponent],
+  entryComponents: [CodeModalComponent]
 })
 export class AppModule { }

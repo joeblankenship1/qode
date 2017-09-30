@@ -32,7 +32,7 @@ export class DocumentService {
           }
         }
         return documentArray;
-      });
+      },e => console.error(e));
   }
 
   getSelectedDocument() {
