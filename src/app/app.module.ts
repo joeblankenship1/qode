@@ -33,8 +33,10 @@ import { Router } from '@angular/router';
 import { LoginComponent } from './home/login/login.component';
 import { SignupComponent } from './home/signup/signup.component';
 import { UserService } from './shared/services/user.service';
-
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
+
+import {DataTableModule} from 'angular2-datatable';
+import {InlineEditorModule} from 'ng2-inline-editor';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -77,7 +79,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    RouterModule.forRoot(routes, { useHash: true })
+    RouterModule.forRoot(routes, { useHash: true }),
+    DataTableModule,
+    InlineEditorModule,
+
   ],
   providers: [DocumentService,
     AuthGuard,

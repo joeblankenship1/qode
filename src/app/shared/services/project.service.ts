@@ -8,6 +8,8 @@ import {
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Project } from '../models/project.model';
 import { Observable } from 'rxjs/Observable';
+import { AuthHttp } from 'angular2-jwt';
+
 // import 'rxjs/Rx';
 
 @Injectable()
@@ -16,13 +18,9 @@ export class ProjectService {
   private myProjects: Project[] = [];
   private myProjects$ = new BehaviorSubject<Project[]>([]);
 
-  // Para cambiar proyecto activo,
-  // private selectedProject: Project = null;
-  // private selectedProject$ = new BehaviorSubject<Project>(null);
-
   private url = 'http://localhost:5000/project';
 
-  constructor(private http: Http) {
+  constructor(private http: AuthHttp) {
   }
 
   getProjects(): Observable<any> {
@@ -42,23 +40,24 @@ export class ProjectService {
       });
   }
 
-  // Serian para cambiar de proyecto
-  // getSelectedProject() {
-  //   return this.selectedProject$.asObservable();
-  // }
+  getArrayProyects() {
+    return this.myProjects$.asObservable();
+  }
 
-  // setSelectedProject(selectedProject: Project) {
-  //   this.selectedProject = selectedProject;
-  //   this.selectedProject$.next(selectedProject);
-  // }
+  setArrayProyects(newproject: Project[]) {
+    this.myProjects = newproject;
+    this.myProjects$.next(this.myProjects);
+  }
 
   addProject(proj: Project) {
     this.myProjects.push(proj);
+    this.setArrayProyects(this.myProjects);
   }
 
-  quitProject(proj: Project) {
+  removeProject(proj: Project) {
     const indxOf = this.myProjects.findIndex(x => x._id === proj._id);
     this.myProjects.splice(indxOf, 1);
+    this.setArrayProyects(this.myProjects);
   }
 
   getProject(id: string) {
@@ -70,7 +69,8 @@ export class ProjectService {
     const options = new RequestOptions({ headers: headers });
     return this.http.post(this.url, proj.getMessageBody())
       .map((data: Response) => {
-        console.log(data);
+        const aux = data.json();
+        return new Project({ _id: aux._id, name: proj.name, description: proj.description, _etag: aux._etag });
       }).catch((err: Response) => {
         const details = err.json();
         return Observable.throw(details);
@@ -87,7 +87,7 @@ export class ProjectService {
   deleteProject(proj: Project): Observable<any> {
     const headers = new Headers({ 'Content-Type': 'application/json', 'If-Match': proj._etag });
     const options = new RequestOptions({ headers: headers });
-    return this.http.delete(this.url + '/' + proj._id)
+    return this.http.delete(this.url + '/' + proj._id, options)
       .map((data: Response) => {
         console.log(data);
       });

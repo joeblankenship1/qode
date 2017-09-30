@@ -25,12 +25,10 @@ export class ProjectItemComponent implements OnInit {
     this.projectService.deleteProject( projToDelete )
     .subscribe(
     proj => {
-      console.log('vamo los pibes');
-      console.log(proj);
-      this.projectService.quitProject(proj);
+      this.projectService.removeProject(projToDelete);
     },
     error => {
-      console.log(error._issues.name);
+      console.log(error);
     });
   }
 

@@ -18,7 +18,6 @@ export class Project {
   }
 
   getMessageBody() {
-    console.log(this);
     return { _id: this._id, name: this.name, description: this.description };
   }
 }

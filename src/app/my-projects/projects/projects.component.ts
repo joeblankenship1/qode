@@ -22,6 +22,7 @@ export class ProjectsComponent implements OnInit {
   constructor(private projectService: ProjectService) { }
 
   ngOnInit() {
+
     this.projectService.getProjects()
       .subscribe(
       projects => {
@@ -29,6 +30,15 @@ export class ProjectsComponent implements OnInit {
       },
       error => console.error(error)
       );
+
+    this.projectService.getArrayProyects()
+      .subscribe(
+      projects => {
+        this.projects = projects;
+      },
+      error => console.error(error)
+      );
+
   }
 
   onProjectSelected(project: Project) {
@@ -47,10 +57,9 @@ export class ProjectsComponent implements OnInit {
         this.projectService.createProject(new Project(newProj))
           .subscribe(
           proj => {
-            this.projectService.addProject(newProj);
+            this.projectService.addProject(proj);
           },
           error => {
-            console.log(error._issues.name);
             if (error._issues.name.includes('is not unique')) {
               this.errorMessage = 'El nombre del proyecto ya existe.';
             } else { this.errorMessage = 'Error'; }

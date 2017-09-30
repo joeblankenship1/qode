@@ -31,9 +31,9 @@ export class AuthService {
   public loginUserPassword(data) {
     this.auth0.client.login(data, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-        window.location.hash = 'workspace';
+        window.location.hash = 'myprojects';
         this.setSession(authResult);
-        this.router.navigate(['workspace']);
+        this.router.navigate(['myprojects']);
       } else if (err) {
         this.setLoggedIn(false);
         this.router.navigate(['/']);
@@ -67,9 +67,9 @@ export class AuthService {
   public handleAuthentication() {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-        window.location.hash = 'workspace';
+        window.location.hash = 'myprojects';
         this.setSession(authResult);
-        this.router.navigate(['workspace']);
+        this.router.navigate(['myprojects']);
       } else if (err) {
         this.router.navigate(['/']);
         console.log(err);
