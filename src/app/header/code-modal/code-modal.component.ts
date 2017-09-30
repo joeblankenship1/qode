@@ -31,7 +31,7 @@ export class CodeModalComponent implements OnInit,CloseGuard,ModalComponent<Code
 
   public onSaveCode() {
     if (this.code.name === "" ){
-      alert("Empty code name");
+      this.dialog.close("Nombre vacío, debe ingresar un nombre de código");
       return;
     }
     let oper: Observable<any>;
@@ -45,7 +45,7 @@ export class CodeModalComponent implements OnInit,CloseGuard,ModalComponent<Code
         this.dialog.close();
       },
       error => {
-        alert(error);
+        this.dialog.close(error);
         console.error(error)}
     )
   }
@@ -56,7 +56,7 @@ export class CodeModalComponent implements OnInit,CloseGuard,ModalComponent<Code
         this.dialog.close();
       },
       error => {
-        alert(error);
+        this.dialog.close(error);
         console.error(error)});
   }
 

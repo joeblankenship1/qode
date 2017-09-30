@@ -22,7 +22,10 @@ export class CodeItemComponent implements OnInit{
   public onOpenCode() {
     this.modal.open(CodeModalComponent, overlayConfigFactory({ code: this.code, mode: 'new' }, BSModalContext ))
     .then((resultPromise) => {
-      resultPromise.result.then((result) => {});
+      resultPromise.result.then((result) => {
+        if (result != null){
+          this.modal.alert().headerClass("btn-danger").title("Error al guardar").body(result).open();
+        }});
     });
   }
 

@@ -34,7 +34,10 @@ show: boolean;
     let newCode = new Code({name:"",project:"59c2e0f33f52c231b0161694"});
     this.modal.open(CodeModalComponent, overlayConfigFactory({ code: newCode, mode: 'new' }, BSModalContext ))
     .then((resultPromise) => {
-      resultPromise.result.then((result) => {});
+      resultPromise.result.then((result) => {
+        if (result != null){
+          this.modal.alert().headerClass("btn-danger").title("Error al guardar").body(result).open();
+        }});
     });
   }
 
