@@ -3,6 +3,7 @@ import {
   OnInit,
   Input
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { Project } from '../../../shared/models/project.model';
 import { ProjectService } from '../../../shared/services/project.service';
 
@@ -15,12 +16,12 @@ export class ProjectItemComponent implements OnInit {
   @Input() project: Project;
   editableText = 'myText';
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private projectService: ProjectService, private router: Router) { }
 
   ngOnInit() {
   }
 
-  updateDescription(desc) {
+  onUpdateDescription(desc) {
     this.project.description = desc;
     this.projectService.updateProject(this.project)
       .subscribe(
@@ -32,7 +33,7 @@ export class ProjectItemComponent implements OnInit {
       });
   }
 
-  deleteProject() {
+  onDeleteProject() {
     const id = this.project._id;
     const projToDelete = this.projectService.getProject(id);
     this.projectService.deleteProject(projToDelete)
@@ -44,6 +45,10 @@ export class ProjectItemComponent implements OnInit {
       error => {
         console.error(error);
       });
+  }
+
+  onAccessProject() {
+    this.router.navigate(['workspace']);
   }
 
 }

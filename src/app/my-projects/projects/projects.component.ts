@@ -45,14 +45,15 @@ export class ProjectsComponent implements OnInit {
     this.selectedProject = project;
   }
 
-  createProject() {
+  onCreateProject() {
     this.errorMessage = '';
 
     const projName = this.nameProjectRef.nativeElement.value;
     if (projName !== '') {
       const descName = this.descProjectRef.nativeElement.value;
       if (descName.length < 300) {
-        const newProj = new Project({ name: projName, description: descName });
+        const projectName = JSON.parse(localStorage.getItem('profile')).nickname +  '/' + projName;
+        const newProj = new Project({ name: projectName, description: descName });
 
         this.projectService.createProject(new Project(newProj))
           .subscribe(

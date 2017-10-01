@@ -36,3 +36,10 @@ input {
     overflow: scroll;
     height: 500px;
 }
+
+h2 {
+    text-align: center;
+    font-weight: 300;
+    font-size: 40px;
+    color: dimgray;
+}
