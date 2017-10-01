@@ -1,7 +1,7 @@
 <li class="list-group-item">
     <div class="col-md-11">
         <h4>{{project.name}}</h4>
-        {{project.description}}
+        <inline-editor type="text" [(ngModel)]="project.description" (onSave)="updateDescription($event)" size=100></inline-editor>
     </div>
     <div class="col-md-1">
         <button class="btn btn-primary btn-access" type="button" (click)="accessProject()">Acceder</button>

@@ -81,7 +81,12 @@ export class ProjectService {
     const headers = new Headers({ 'Content-Type': 'application/json', 'If-Match': proj._etag });
     const options = new RequestOptions({ headers: headers });
     return this.http.patch(this.url + '/' + proj._id, proj.getMessageBody(), options)
-      .map((data: Response) => { });
+      .map((data: Response) => {
+        return 'OK';
+      }).catch((err: Response) => {
+        const details = err.json();
+        return Observable.throw(details);
+      });
   }
 
   deleteProject(proj: Project): Observable<any> {
@@ -89,7 +94,10 @@ export class ProjectService {
     const options = new RequestOptions({ headers: headers });
     return this.http.delete(this.url + '/' + proj._id, options)
       .map((data: Response) => {
-        console.log(data);
+        return 'OK';
+      }).catch((err: Response) => {
+        const details = err.json();
+        return Observable.throw(details);
       });
   }
 }

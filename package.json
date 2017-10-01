@@ -27,6 +27,7 @@
     "auth0-js": "^8.10.0",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
+    "font-awesome": "^4.7.0",
     "jwt-decode": "^2.2.0",
     "ng2-inline-editor": "^0.1.1-alpha.20",
     "ng4-http": "^1.1.0",
