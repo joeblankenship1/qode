@@ -45,7 +45,7 @@ DOMAIN = {
             'url': 'regex("[\w]+")',
             'field': 'name',
         },
-        'id_field': 'name',
+        # 'id_field': 'name',
     },
     'document': {
         'schema': {

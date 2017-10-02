@@ -5,6 +5,7 @@ import * as auth0 from 'auth0-js';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { tokenNotExpired } from 'angular2-jwt';
+import { User } from '../../shared/models/user.model';
 
 @Injectable()
 export class AuthService {
@@ -31,9 +32,9 @@ export class AuthService {
   public loginUserPassword(data) {
     this.auth0.client.login(data, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-        window.location.hash = 'workspace';
+        window.location.hash = 'myprojects';
         this.setSession(authResult);
-        this.router.navigate(['workspace']);
+        this.router.navigate(['myprojects']);
       } else if (err) {
         this.setLoggedIn(false);
         this.router.navigate(['/']);
@@ -67,9 +68,9 @@ export class AuthService {
   public handleAuthentication() {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-        window.location.hash = 'workspace';
+        window.location.hash = 'myprojects';
         this.setSession(authResult);
-        this.router.navigate(['workspace']);
+        this.router.navigate(['myprojects']);
       } else if (err) {
         this.router.navigate(['/']);
         console.log(err);
@@ -120,7 +121,8 @@ export class AuthService {
       if (err) {
         console.error(err);
       } else {
-        localStorage.setItem('profile', JSON.stringify(profile));
+        const user = new User(profile);
+        localStorage.setItem('profile', JSON.stringify(user));
       }
     });
   }

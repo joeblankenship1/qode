@@ -21,11 +21,14 @@ import { QuoteModalComponent } from './header/quote-modal/quote-modal.component'
 import { MemoModalComponent } from './header/memo-modal/memo-modal.component';
 import { CodeModalComponent } from './header/code-modal/code-modal.component';
 import { DocumentService } from './shared/services/document.service';
-import { ModalService } from './shared/services/modal.service';
+import { CodeService } from './shared/services/code.service';
+import { ProjectService } from './shared/services/project.service';
 import { DocumentsTabsComponent } from './work-space/content/documents/documents-tabs/documents-tabs.component';
 import { DocumentContentComponent } from './work-space/content/documents/document-content/document-content.component';
 import { WorkSpaceComponent } from './work-space/work-space.component';
-import { CodeService } from './shared/services/code.service';
+import { ProjectsComponent } from './my-projects/projects/projects.component';
+import { ProjectItemComponent } from './my-projects/projects/project-item/project-item.component';
+import { ProjectItemColComponent } from './my-projects/projects/project-item-col/project-item-col.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { AuthService } from './shared/services/auth.service';
@@ -34,6 +37,10 @@ import { LoginComponent } from './home/login/login.component';
 import { SignupComponent } from './home/signup/signup.component';
 import { UserService } from './shared/services/user.service';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
+
+import {DataTableModule} from 'angular2-datatable';
+import {InlineEditorModule} from 'ng2-inline-editor';
+
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -62,9 +69,13 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DocumentContentComponent,
     WorkSpaceComponent,
     CodeModalComponent,
+    ProjectsComponent,
+    ProjectItemComponent,
+    ProjectItemColComponent,
     HomeComponent,
     LoginComponent,
     SignupComponent,
+    ProjectItemColComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,7 +85,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BootstrapModalModule,
 	ReactiveFormsModule,
     HttpModule,
-    RouterModule.forRoot(routes, { useHash: true })
+    RouterModule.forRoot(routes, { useHash: true }),
+    DataTableModule,
+    InlineEditorModule,
+
   ],
   providers: [DocumentService,ModalService,CodeService,
     AuthGuard,
@@ -84,7 +98,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
       useFactory: authHttpServiceFactory,
       deps: [Http, RequestOptions]
     },
-    UserService
+    UserService,
+    ProjectService
   ],
   bootstrap: [AppComponent],
   entryComponents: [CodeModalComponent]

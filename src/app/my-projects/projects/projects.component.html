@@ -1,0 +1,31 @@
+<div class="col-md-9">
+    <h2> Mis proyectos </h2>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <input #nameProject type="text" class="form-control" [ngClass]="{ 'border-red': error }" placeholder="Ingresa el nombre del nuevo proyecto">
+        </div>
+        <div class="col-md-6">
+            <input #descProject type="text" class="form-control" [ngClass]="{ 'border-red': error }" placeholder="Ingresa la descripcion">
+        </div>
+        <div class="col-md-2">
+            <span class="input-group-btn">
+                <button class="btn btn-success" id="crearProyecto" type="button" (click)="onCreateProject()">Crear Proyecto</button>
+            </span>
+        </div>
+    </div>
+
+    <div class="row" style="padding: 20px; text-align:center" *ngIf="errorMessage !== ''">
+        <span> {{errorMessage }} </span>
+    </div>
+    <hr>
+    <h4> Mis proyectos </h4>
+    <ul class="list-group scrollableList">
+        <app-project-item *ngFor="let proj of projects" [project]="proj"></app-project-item>
+    </ul>
+
+    <h4> Proyectos en los que colaboro </h4>
+    <ul class="list-group scrollableList">
+        <app-project-item-col *ngFor="let proj of projects" [project]="proj"></app-project-item-col>
+    </ul>
+</div>
