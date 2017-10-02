@@ -86,7 +86,40 @@ DOMAIN = {
                         'embeddable': True
                     }
                 }
+            },
+            'lines': {
+                'type': 'list',
+                'schema': {
+                    'type': 'dict',
+                    'schema': {
+                        'text': { 
+                            'type': 'string',
+                            'required': True
+                        },
+                        'relatedQuotes': {
+                            'type': 'list',
+                            'schema': {
+                                'type': 'objectid',
+                                'data_relation': {
+                                     'resource': 'quote',
+                                     'embeddable': True
+                                }    
+                            }
+                        },
+                        'predecessorQuotes': {
+                            'type': 'list',
+                            'schema': {
+                                'type': 'objectid',
+                                'data_relation': {
+                                     'resource': 'quote',
+                                     'embeddable': True
+                                }    
+                            }
+                        }
+                    }
+                }
             }
+            
         }
     },
     'code': {

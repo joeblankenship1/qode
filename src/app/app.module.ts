@@ -32,6 +32,13 @@ import { SignupComponent } from './home/signup/signup.component';
 import { UserService } from './shared/services/user.service';
 
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
+import { ContextMenuModule, ContextMenuService } from 'ngx-contextmenu';
+import { OptionsComponent } from './shared/helpers/options/options.component';
+import { HtmlPipe } from './shared/pipes/html.pipe';
+import { LineComponent } from './work-space/content/documents/document-content/line/line.component';
+import { LineService } from './shared/services/line.service';
+import { WindowSelection } from './shared/helpers/window-selection';
+
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -65,6 +72,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HomeComponent,
     LoginComponent,
     SignupComponent,
+    OptionsComponent,
+    HtmlPipe,
+    LineComponent,
 
   ],
   imports: [
@@ -72,16 +82,20 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    RouterModule.forRoot(routes, { useHash: true })
+    RouterModule.forRoot(routes, { useHash: true }),
+    ContextMenuModule
   ],
   providers: [DocumentService,
     AuthGuard,
     AuthService,
+    ContextMenuService,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,
       deps: [Http, RequestOptions]
     },
+    LineService,
+    WindowSelection,
     UserService
   ],
   bootstrap: [AppComponent]

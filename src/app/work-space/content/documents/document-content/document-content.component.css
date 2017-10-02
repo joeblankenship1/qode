@@ -1,0 +1,21 @@
+.content-container {
+  border: 0;
+  margin: 3.75pt;
+  margin-bottom: 7.5pt;
+  box-shadow: 0 0 0 0.75pt #d1d1d1, 0 0 3pt 0.75pt #ccc;
+  cursor: text;
+  background-color: rgb(255, 255, 255);
+  width: 780px;
+  height: 830px;
+  overflow: hidden;
+}
+
+
+.text-area {
+  
+ 
+  position: relative;
+  white-space: normal;
+  -webkit-tap-highlight-color: initial;
+  padding: 20px;
+}

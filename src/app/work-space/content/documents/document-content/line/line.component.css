@@ -1,0 +1,10 @@
+.quote {
+  color: red;
+  height: 19.5px;
+  width: 5px;
+  float: right;
+  font-weight: bold;
+  padding: none;
+  margin: none;
+  border-right: 2px solid red;
+}
