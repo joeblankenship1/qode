@@ -18,9 +18,21 @@ export class ProjectService {
   private myProjects: Project[] = [];
   private myProjects$ = new BehaviorSubject<Project[]>([]);
 
+  private openedProject: Project = new Project({_id:"59c2e0f33f52c231b0161694"});
+  private openedProject$ = new BehaviorSubject<Project>(null);
+
   private url = 'http://localhost:5000/project';
 
   constructor(private http: AuthHttp) {
+  }
+
+  getOpenedProject() {
+    return this.openedProject$.asObservable();
+  }
+
+  setOpenedProject(proj: Project){
+    this.openedProject = proj;
+    this.openedProject$.next(proj);
   }
 
   getProjects(): Observable<any> {

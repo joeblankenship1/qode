@@ -5,6 +5,8 @@ import { overlayConfigFactory } from 'angular2-modal';
 import { Code } from '../shared/models/code.model';
 import { AuthService } from '../shared/services/auth.service';
 import { Routes, Router } from '@angular/router';
+import { Project } from '../shared/models/project.model';
+import { ProjectService } from '../shared/services/project.service';
 
 @Component({
   selector: 'app-header',
@@ -15,8 +17,10 @@ import { Routes, Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
 appname = '';
 show: boolean;
+  private project:Project;
 
-  constructor(private authsvc: AuthService, private router: Router,private modal: Modal) {
+  constructor(private authsvc: AuthService, private router: Router,private modal: Modal
+              ,private projectService:ProjectService) {
     this.appname = 'libreQDA';
   }
 
@@ -24,6 +28,13 @@ show: boolean;
    this.authsvc.loggedIn$.subscribe( s => {
      this.show = s;
    });
+   this.projectService.getOpenedProject()
+   .subscribe(
+    project => {
+       this.project = project;
+    },
+    error => console.error(error)
+    );
   }
 
   logout() {
@@ -31,7 +42,7 @@ show: boolean;
   }
 
   onNewCode(){
-    let newCode = new Code({name:"",project:"59c2e0f33f52c231b0161694"});
+    let newCode = new Code({name:"",project:this.project._id});
     this.modal.open(CodeModalComponent, overlayConfigFactory({ code: newCode, mode: 'new' }, BSModalContext ))
     .then((resultPromise) => {
       resultPromise.result.then((result) => {

@@ -3,6 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { Code } from '../models/code.model';
 import { Http,  Headers, Response, RequestOptions } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Project } from '../models/project.model';
+import { ProjectService } from './project.service';
 
 
 @Injectable()
@@ -10,12 +12,28 @@ export class CodeService {
   public codes: Code[] = [];
   private codes$ = new BehaviorSubject<Code[]>([]);
   public url: string = 'http://localhost:5000/code';
-  private project: string = "59c2e0f33f52c231b0161694";
+  private project: Project;
 
-  constructor(private http: Http) { }
+  constructor(private http: Http,private projectService:ProjectService) {
+    this.projectService.getOpenedProject()
+    .subscribe(
+    project => {
+      this.project = project;
+      if (project != null){
+        this.loadCodes().subscribe(
+          resp => {
+          },
+          error => {
+            alert(error);
+            console.error(error)});
+      }
+    },
+    error => console.error(error)
+    );
+   }
 
   loadCodes(): Observable<Code[]> {
-    return this.http.get(this.url)
+    return this.http.get(this.url + '?where={"project":"' + this.project._id + '"}')
       .map((data: Response) => {
         const extracted = data.json();
         const codeArray: Code[] = [];

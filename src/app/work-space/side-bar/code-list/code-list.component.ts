@@ -3,6 +3,8 @@ import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Code } from '../../../shared/models/code.model';
 import { CodeService } from '../../../shared/services/code.service';
+import { Project } from '../../../shared/models/project.model';
+import { ProjectService } from '../../../shared/services/project.service';
 
 @Component({
   selector: 'app-code-list',
@@ -12,9 +14,9 @@ import { CodeService } from '../../../shared/services/code.service';
 export class CodeListComponent implements OnInit {
   public codes: Code[] = [];
   public newCodeName : string = "";
-  private project: string = "59c2e0f33f52c231b0161694";
+  private project: Project;
 
-  constructor(private http: Http,private codeService: CodeService) { }
+  constructor(private http: Http,private codeService: CodeService,private projectService:ProjectService) { }
 
   ngOnInit() {
     this.codeService.getCodes()
@@ -23,18 +25,20 @@ export class CodeListComponent implements OnInit {
         this.codes = codes;
       }
     );
-    this.codeService.loadCodes().subscribe(resp => {},
-      error => {
-        alert(error);
-        console.error(error)
-      });
+    this.projectService.getOpenedProject()
+      .subscribe(
+      project => {
+        this.project = project;
+      },
+      error => console.error(error)
+      );
   }
 
   onAddCode(){
     if (this.newCodeName == null || this.newCodeName===""){
       return;
     }
-    this.codeService.addCode(new Code({"name":this.newCodeName,"description":"","project":this.project}))
+    this.codeService.addCode(new Code({"name":this.newCodeName,"description":"","project":this.project._id}))
     .subscribe(
       resp => {
       },

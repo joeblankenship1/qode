@@ -90,7 +90,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     InlineEditorModule,
 
   ],
-  providers: [DocumentService,ModalService,CodeService,
+  providers: [DocumentService,CodeService,
     AuthGuard,
     AuthService,
     {
