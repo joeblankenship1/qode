@@ -7,6 +7,9 @@
     *ngFor="let line of lines; let i = index"
     [text]="line.text"
     [quotes]="line.relatedQuotes"
+    [predecessorQuotes]="line.predecessorQuotes"
+    [borderTopQuotes]="line.borderTopQuotes"
+    [borderBottomQuotes]="line.borderBottomQuotes"
     [id]="i"
     ></app-line>
     <app-options [optionGroups]="menuOptions"></app-options>

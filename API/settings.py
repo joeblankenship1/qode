@@ -116,6 +116,26 @@ DOMAIN = {
                                 }    
                             }
                         }
+                        'borderTopQuotes': {
+                            'type': 'list',
+                            'schema': {
+                                'type': 'objectid',
+                                'data_relation': {
+                                     'resource': 'quote',
+                                     'embeddable': True
+                                }    
+                            }
+                        },
+                        'borderBottomQuotes': {
+                            'type': 'list',
+                            'schema': {
+                                'type': 'objectid',
+                                'data_relation': {
+                                     'resource': 'quote',
+                                     'embeddable': True
+                                }    
+                            }
+                        }
                     }
                 }
             }
@@ -160,15 +180,19 @@ DOMAIN = {
                 },
                 'required': True
             },
+            'lineRange': {
+                'type': 'number',
+                'required': True
+            },
             'codes': {
                 'type': 'list',
                 'schema': {
                     'type': 'objectid',
                     'data_relation': {
-                        'resource': 'code'
+                        'resource': 'code',
+                        'embeddable': True
                     }
-                },
-                'embeddable': True
+                }
             }
         }
     }

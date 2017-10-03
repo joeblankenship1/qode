@@ -3,9 +3,9 @@ export class MenuOption {
   public icon: string;
   public enabled: boolean;
   public visible: boolean;
-  public onClick: () => void;
+  public onClick: (param?) => void;
 
-  constructor(name: string, onClick: () => void, icon?: string, enabled?: boolean, visible?: boolean) {
+  constructor(name: string, onClick: (param?) => void, icon?: string, enabled?: boolean, visible?: boolean) {
     this.name = name;
     this.onClick = onClick;
     this.icon = icon ? icon : '';

@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/Rx';
 import { AuthHttp } from 'angular2-jwt';
 import { Line } from '../models/line.model';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable()
@@ -24,8 +25,40 @@ export class DocumentService {
     this.options = new RequestOptions({ headers: this.headers });
   }
 
+  // Return the actual shown document
+  getSelectedDocument() {
+    return this.selectedDocument$.asObservable();
+  }
+
+  // Set document to be shown
+  setSelectedDocument(selectedDocument: Document) {
+    this.selectedDocument = selectedDocument;
+    this.selectedDocument$.next(selectedDocument);
+  }
+
+  // Add new document two list of openedDocuments
+  openDocument(doc: Document) {
+    if (!this.openedDocuments.includes(doc)) {
+      this.openedDocuments.push(doc);
+      this.setOpenedDocuments(this.openedDocuments);
+    }
+    this.setSelectedDocument(doc);
+  }
+
+  // Refresh list of opened documents
+  setOpenedDocuments(docArray: Document[]) {
+    this.openedDocuments = docArray;
+    this.openedDocuments$.next(docArray);
+  }
+
+
+  getOpenedDocuments() {
+    return this.openedDocuments$.asObservable();
+  }
+
+  // Get all documents from server
   getDocuments(): Observable<any> {
-    return this.http.get('http://localhost:5000/document')
+    return this.http.get( environment.apiUrl + 'document')
       .map((data: Response) => {
         const extracted = data.json();
         const documentArray: Document[] = [];
@@ -46,43 +79,18 @@ export class DocumentService {
       });
   }
 
-  getSelectedDocument() {
-    return this.selectedDocument$.asObservable();
-  }
-
-  setSelectedDocument(selectedDocument: Document) {
-    this.selectedDocument = selectedDocument;
-    this.selectedDocument$.next(selectedDocument);
-  }
-
-  openDocument(doc: Document) {
-    if (!this.openedDocuments.includes(doc)) {
-      this.openedDocuments.push(doc);
-      this.setOpenedDocuments(this.openedDocuments);
-    }
-    this.setSelectedDocument(doc);
-  }
-
-  setOpenedDocuments(docArray: Document[]) {
-    this.openedDocuments = docArray;
-    this.openedDocuments$.next(docArray);
-  }
-
-  getOpenedDocuments() {
-    return this.openedDocuments$.asObservable();
-  }
-
+  // Send document to server
   saveDocument(document): Observable<any> {
     const body = JSON.stringify(document);
-    return this.http.post('http://localhost:5000/document', body, this.options)
+    return this.http.post( environment.apiUrl + 'document', body, this.options)
       .map(this.extractData)
       .catch(this.handleErrorObservable);
   }
 
+  // Extract document _id form response
   private extractData(res: Response) {
     const body = res.json();
-    console.log(body);
-    return body.data || {};
+    return body._id || {};
   }
   private handleErrorObservable(error: Response | any) {
     console.error(error.message || error);

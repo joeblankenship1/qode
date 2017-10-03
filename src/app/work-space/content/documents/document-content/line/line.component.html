@@ -1,5 +1,6 @@
 <div>
-{{text}}<div class="quote"
+{{text}}<div 
 *ngFor="let quote of quotes"
+[ngClass]="getQuoteType(quote)"
 ></div><br>
 </div>

@@ -8,3 +8,11 @@
   margin: none;
   border-right: 2px solid red;
 }
+
+.borderTop-quote {
+  border-top: 2px solid red;
+}
+
+.borderBottom-quote {
+  border-bottom: 2px solid red;
+}
