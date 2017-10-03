@@ -5,6 +5,7 @@ import { Http,  Headers, Response, RequestOptions } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Project } from '../models/project.model';
 import { ProjectService } from './project.service';
+import { AuthHttp } from 'angular2-jwt';
 
 
 @Injectable()
@@ -14,7 +15,7 @@ export class CodeService {
   public url: string = 'http://localhost:5000/code';
   private project: Project;
 
-  constructor(private http: Http,private projectService:ProjectService) {
+  constructor(private http: AuthHttp,private projectService:ProjectService) {
     this.projectService.getOpenedProject()
     .subscribe(
     project => {

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Code } from '../../../shared/models/code.model';
 import { CodeService } from '../../../shared/services/code.service';
@@ -16,7 +15,7 @@ export class CodeListComponent implements OnInit {
   public newCodeName : string = "";
   private project: Project;
 
-  constructor(private http: Http,private codeService: CodeService,private projectService:ProjectService) { }
+  constructor(private codeService: CodeService,private projectService:ProjectService) { }
 
   ngOnInit() {
     this.codeService.getCodes()
