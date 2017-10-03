@@ -1,9 +1,10 @@
 import { Document } from './document.model';
 import { Page } from './page.model';
+import { Quote } from './quote.model';
 
 export class DocumentContent {
-  document: Document;
-  pages: Page[];
+  private document: Document;
+  private pages: Page[];
 
   constructor(document: Document) {
     this.document = document;
@@ -14,8 +15,15 @@ export class DocumentContent {
     return [];
   }
 
+  public updatePages(newQuote: Quote) {
+  }
+
   public getDocumentId() {
     return this.document.getId();
+  }
+
+  public getPages() {
+    return this.pages;
   }
 
 }

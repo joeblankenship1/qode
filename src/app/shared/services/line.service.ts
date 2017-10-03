@@ -22,7 +22,7 @@ export class LineService {
     const newArray: Line[] = [];
     lines.forEach(list => {
       list.forEach( item => {
-        newArray.push(new Line(item));
+        newArray.push(new Line(item.id, item.text));
       } );
     });
   return newArray;
@@ -34,7 +34,7 @@ export class LineService {
     const borderIndex = this.getBorderIndex(indexList);
     lines.map((l, i) => {
       if (indexList[i]) {
-        l.setQuote(quote);
+        l.setQuoteId(quote.getId());
         if ( borderIndex.max === i) {
           this.setBorderQuotes(l, 'bottom', quote);
         }
@@ -44,22 +44,22 @@ export class LineService {
       }
       updatedLines.push(l);
     });
-    this.updateSucessorQuotes(updatedLines, indexList, quote);
+    //this.updateSucessorQuotes(updatedLines, indexList, quote);
     return updatedLines;
   }
 
   // Update the predecessor list from a line
-  private updateSucessorQuotes(lines: Line[], indexList: boolean[], quote: Quote) {
-    lines.map((l, i) => {
-      if (i > 0 && indexList[i - 1]) {
-        l.setPredecessorQuote(quote);
-      }
-    });
-  }
+  // private updateSucessorQuotes(lines: Line[], indexList: boolean[], quote: Quote) {
+  //   lines.map((l, i) => {
+  //     if (i > 0 && indexList[i - 1]) {
+  //       l.setPredecessorQuote(quote);
+  //     }
+  //   });
+  // }
 
   // Define if a line is the starting and/or ending of a quote.
   private setBorderQuotes(line: Line, type,  quote: Quote) {
-    type === 'top' ? line.setBorderTopQuote(quote) : line.setBorderBottomQuote(quote);
+    type === 'top' ? line.setBorderTopQuoteId(quote.getId()) : line.setBorderBottomQuoteId(quote.getId());
   }
 
   // Get the starting and ending index of a quote

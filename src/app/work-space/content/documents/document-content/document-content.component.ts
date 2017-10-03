@@ -10,6 +10,9 @@ import { LineService } from '../../../../shared/services/line.service';
 import { Line } from '../../../../shared/models/line.model';
 import { WindowSelection } from '../../../../shared/helpers/window-selection';
 import { QuoteService } from '../../../../shared/services/quote.service';
+import { DocumentContent } from '../../../../shared/models/document-content.model';
+import { WorkSpaceService } from '../../../../shared/services/work-space.service';
+import { Project } from '../../../../shared/models/project.model';
 
 
 @Component({
@@ -20,7 +23,9 @@ import { QuoteService } from '../../../../shared/services/quote.service';
 export class DocumentContentComponent implements OnInit, OnChanges {
 
   @Input() actualDocument: Document;
-  lines: Line[] = [];
+
+  actualDocumentContent: DocumentContent;
+  pages = [];
   options = new OptionsComponent();
   menuOptions: MenuOption[][] = [];
   selecting = false;
@@ -28,16 +33,20 @@ export class DocumentContentComponent implements OnInit, OnChanges {
 
   constructor(private contextMenuService: ContextMenuService,
   private lineService: LineService, private windowSelection: WindowSelection,
-  private quoteService: QuoteService) {
+  private workSpaceService: WorkSpaceService) {
   }
 
   ngOnInit() {
+    this.workSpaceService.getSelectedDocumentContent().subscribe(
+      content => this.actualDocumentContent = content,
+      error => console.log(error)
+    );
     this.createMenuOptions();
   }
 
   ngOnChanges() {
     if (this.actualDocument) {
-      this.lines = this.actualDocument.getLines();
+      this.pages = this.actualDocumentContent.getPages();
     }
   }
 
@@ -82,16 +91,13 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     const selection = window.getSelection();
     this.windowSelection.getSelectedNodes(selection, 'app-line')
     .map(n => this.selectedLines[n.id] = true);
-    return new Quote(selection.toString(), selection.baseOffset, selection.extentOffset - 1,
-     this.selectedLines.length - 1 );
+    return new Quote(selection.toString(), selection.baseOffset, selection.extentOffset - 1, [{}], '' );
   }
 
-  // Update the quotes related two each line afected from selection.
+  // Update the quotes related two each page and lines afected from selection.
   // This function must be called after a new quote is saved.
-  private updateLines(newQuote: Quote) {
-    this.lines = this.lineService.updateLines(this.lines, this.selectedLines, newQuote);
-    this.actualDocument.setLines(this.lines);
-    this.selectedLines.splice(0);
+  private updatePages(newQuote: Quote) {
+    this.actualDocumentContent.updatePages(newQuote);
   }
 
 }

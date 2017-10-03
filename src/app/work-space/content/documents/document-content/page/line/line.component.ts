@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
-import { Quote } from '../../../../../shared/models/quote.model';
+import { Quote } from '../../../../../../shared/models/quote.model';
 
 @Component({
   selector: 'app-line',
