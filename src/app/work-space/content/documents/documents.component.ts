@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DocumentService } from '../../../shared/services/document.service';
 import { Document } from '../../../shared/models/document.model';
+import { LineService } from '../../../shared/services/line.service';
+import { WorkSpaceService } from '../../../shared/services/work-space.service';
 
 
 @Component({
@@ -12,10 +14,10 @@ export class DocumentsComponent implements OnInit {
 
   public openedDocuments: Document[] = [];
   public selectedDocument: Document;
-  constructor(private documentService: DocumentService) { }
+  constructor(private workspaceService: WorkSpaceService, private lineService: LineService) { }
 
   ngOnInit() {
-    this.documentService.getOpenedDocuments()
+    this.workspaceService.getOpenedDocuments()
       .subscribe(
       openedDocuments => {
         this.openedDocuments = openedDocuments;
@@ -23,12 +25,12 @@ export class DocumentsComponent implements OnInit {
       }
       );
 
-    this.documentService.getSelectedDocument()
-    .subscribe(
-    selectedDocument => {
-      this.selectedDocument = selectedDocument;
-    }
-    );
+      this.workspaceService.getSelectedDocument()
+      .subscribe(
+      selectedDocument => {
+        this.selectedDocument = selectedDocument;
+      }
+      );
   }
 
   onDocumentSelected(document: Document) {

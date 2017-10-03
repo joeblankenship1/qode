@@ -1,1 +1,6 @@
-<p> {{actualDocument?actualDocument.text:""}}</p>
+<div class="container content-container">
+  <app-page *ngFor="let page of pages; let i = index"
+    [id]="page.getId()"
+  >
+  </app-page>
+</div>

@@ -29,6 +29,7 @@ export class AuthService {
     }
   }
 
+  // Login to Auth0 using user and password.
   public loginUserPassword(data) {
     this.auth0.client.login(data, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
@@ -42,6 +43,7 @@ export class AuthService {
     });
   }
 
+  // Login to Auth0 using a social connection.
   public loginUserSocial(connection) {
     this.auth0.authorize(connection);
   }
@@ -65,6 +67,7 @@ export class AuthService {
     });
   }
 
+  // Handle callback from social login
   public handleAuthentication() {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
@@ -78,6 +81,7 @@ export class AuthService {
     });
   }
 
+  // Returns true if the authenticatio token hasn't expired
   public isAuthenticated(): boolean {
     if (localStorage.getItem('access_token')) {
       const expiresAt = parseInt(localStorage.getItem('expires_at'), 0);
@@ -103,13 +107,13 @@ export class AuthService {
     this.setLoggedIn(false);
   }
 
-
+  // Update login status subject
   private setLoggedIn(value: boolean) {
-    // Update login status subject
     this.loggedIn$.next(value);
     this.loggedIn = value;
   }
 
+  // Store parameters returned from Auth0 after login
   private setSession(authResult): void {
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
     localStorage.setItem('access_token', authResult.accessToken);

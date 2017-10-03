@@ -14,7 +14,7 @@ export class DocumentsTabsComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSelectDocument(){
+  onSelectDocument() {
     this.selected.emit();
   }
 

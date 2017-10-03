@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col text-area"
+    (contextmenu)="onContextMenu($event, actualDocument?.text)"
+  >
+  <app-line
+  *ngFor="let line of lines; let i = index"
+  [text]="line.text"
+  [quotes]="line.relatedQuotes"
+  [predecessorQuotes]="line.predecessorQuotes"
+  [borderTopQuotes]="line.borderTopQuotes"
+  [borderBottomQuotes]="line.borderBottomQuotes"
+  [id]="i"
+  ></app-line>
+  <app-options [optionGroups]="menuOptions"></app-options>
+</div>
+</div>

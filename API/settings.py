@@ -86,7 +86,60 @@ DOMAIN = {
                         'embeddable': True
                     }
                 }
+            },
+            'lines': {
+                'type': 'list',
+                'schema': {
+                    'type': 'dict',
+                    'schema': {
+                        'text': { 
+                            'type': 'string',
+                            'required': True
+                        },
+                        'relatedQuotes': {
+                            'type': 'list',
+                            'schema': {
+                                'type': 'objectid',
+                                'data_relation': {
+                                     'resource': 'quote',
+                                     'embeddable': True
+                                }    
+                            }
+                        },
+                        'predecessorQuotes': {
+                            'type': 'list',
+                            'schema': {
+                                'type': 'objectid',
+                                'data_relation': {
+                                     'resource': 'quote',
+                                     'embeddable': True
+                                }    
+                            }
+                        }
+                        'borderTopQuotes': {
+                            'type': 'list',
+                            'schema': {
+                                'type': 'objectid',
+                                'data_relation': {
+                                     'resource': 'quote',
+                                     'embeddable': True
+                                }    
+                            }
+                        },
+                        'borderBottomQuotes': {
+                            'type': 'list',
+                            'schema': {
+                                'type': 'objectid',
+                                'data_relation': {
+                                     'resource': 'quote',
+                                     'embeddable': True
+                                }    
+                            }
+                        }
+                    }
+                }
             }
+            
         }
     },
     'code': {
@@ -127,15 +180,26 @@ DOMAIN = {
                 },
                 'required': True
             },
+            'lineRange': {
+                'type': 'number',
+                'required': True
+            },
             'codes': {
                 'type': 'list',
                 'schema': {
                     'type': 'objectid',
                     'data_relation': {
-                        'resource': 'code'
+                        'resource': 'code',
+                        'embeddable': True
                     }
+                }
+            },
+            'project': {
+                'type': 'objectid',
+                'data_relation': {
+                    'resource': 'project'
                 },
-                'embeddable': True
+                'required': True
             }
         }
     }

@@ -37,6 +37,15 @@ import { LoginComponent } from './home/login/login.component';
 import { SignupComponent } from './home/signup/signup.component';
 import { UserService } from './shared/services/user.service';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
+import { ContextMenuModule, ContextMenuService } from 'ngx-contextmenu';
+import { OptionsComponent } from './shared/helpers/options/options.component';
+import { LineComponent } from './work-space/content/documents/document-content/page/line/line.component';
+import { LineService } from './shared/services/line.service';
+import { WindowSelection } from './shared/helpers/window-selection';
+import { QuoteService } from './shared/services/quote.service';
+import { PageComponent } from './work-space/content/documents/document-content/page/page.component';
+import { WorkSpaceService } from './shared/services/work-space.service';
+
 
 import {DataTableModule} from 'angular2-datatable';
 import {InlineEditorModule} from 'ng2-inline-editor';
@@ -76,6 +85,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     LoginComponent,
     SignupComponent,
     ProjectItemColComponent,
+    OptionsComponent,
+    LineComponent,
+    PageComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -88,18 +101,24 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     RouterModule.forRoot(routes, { useHash: true }),
     DataTableModule,
     InlineEditorModule,
-
+    RouterModule.forRoot(routes, { useHash: true }),
+    ContextMenuModule
   ],
   providers: [DocumentService,CodeService,
     AuthGuard,
     AuthService,
+    ContextMenuService,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,
       deps: [Http, RequestOptions]
     },
     UserService,
-    ProjectService
+    ProjectService,
+    LineService,
+    QuoteService,
+    WindowSelection,
+    WorkSpaceService
   ],
   bootstrap: [AppComponent],
   entryComponents: [CodeModalComponent]
