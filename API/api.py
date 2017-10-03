@@ -5,8 +5,7 @@ from flask_cors import CORS
 from flask import jsonify
 from authentication import MyTokenAuth, AuthError
 
-# APP = Eve(auth=MyTokenAuth)
-APP = Eve()
+APP = Eve(auth=MyTokenAuth)
 CORS(APP)
 
 @APP.errorhandler(AuthError)
