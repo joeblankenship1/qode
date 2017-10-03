@@ -1,12 +1,11 @@
 <div class="col-sm-8" id="main">
   <div class="col">
     <app-documents-tabs 
-      *ngFor ="let doc of openedDocuments"
-      [document]="doc"
-      (selected)="onDocumentSelected(doc)"></app-documents-tabs>
+    *ngFor="let doc of this.openedDocuments"
+    [doc]="doc"
+    (selected)="onDocumentSelected(doc)"></app-documents-tabs>
   </div>
   <div>
     <app-document-content [actualDocument]="this.selectedDocument"></app-document-content>
   </div>
-
 </div>

@@ -1,11 +1,12 @@
+import logging
 from eve import Eve
 from eve.auth import BasicAuth
 from flask_cors import CORS
 from flask import jsonify
 from authentication import MyTokenAuth, AuthError
 
-
 APP = Eve(auth=MyTokenAuth)
+CORS(APP)
 
 @APP.errorhandler(AuthError)
 def handle_auth_error(ex):

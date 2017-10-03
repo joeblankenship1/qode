@@ -1,0 +1,10 @@
+<li class="list-group-item">
+    <div class="col-md-11">
+        <h4>{{project.name.split('/')[1]}}</h4>
+        <inline-editor type="text" [(ngModel)]="project.description" (onSave)="onUpdateDescription($event)" size=100></inline-editor>
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-primary btn-access" type="button" (click)="onAccessProject()">Acceder</button>
+        <button class="btn btn-danger btn-delete" type="button" (click)="onDeleteProject()">Eliminar</button>
+    </div>
+</li>
