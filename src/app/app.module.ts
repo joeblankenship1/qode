@@ -34,10 +34,12 @@ import { UserService } from './shared/services/user.service';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { ContextMenuModule, ContextMenuService } from 'ngx-contextmenu';
 import { OptionsComponent } from './shared/helpers/options/options.component';
-import { LineComponent } from './work-space/content/documents/document-content/line/line.component';
+import { LineComponent } from './work-space/content/documents/document-content/page/line/line.component';
 import { LineService } from './shared/services/line.service';
 import { WindowSelection } from './shared/helpers/window-selection';
 import { QuoteService } from './shared/services/quote.service';
+import { PageComponent } from './work-space/content/documents/document-content/page/page.component';
+import { WorkSpaceService } from './shared/services/work-space.service';
 
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -74,6 +76,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SignupComponent,
     OptionsComponent,
     LineComponent,
+    PageComponent,
 
   ],
   imports: [
@@ -96,7 +99,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     LineService,
     QuoteService,
     WindowSelection,
-    UserService
+    UserService,
+    WorkSpaceService
   ],
   bootstrap: [AppComponent]
 })

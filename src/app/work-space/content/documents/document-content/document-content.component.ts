@@ -5,7 +5,7 @@ import { ContentComponent } from '../../content.component';
 import { OptionsComponent } from '../../../../shared/helpers/options/options.component';
 import { MenuOption } from '../../../../shared/models/menu-option.model';
 import { Quote } from '../../../../shared/models/quote.model';
-import { LineComponent } from './line/line.component';
+import { LineComponent } from './page/line/line.component';
 import { LineService } from '../../../../shared/services/line.service';
 import { Line } from '../../../../shared/models/line.model';
 import { WindowSelection } from '../../../../shared/helpers/window-selection';

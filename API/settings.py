@@ -193,6 +193,13 @@ DOMAIN = {
                         'embeddable': True
                     }
                 }
+            },
+            'project': {
+                'type': 'objectid',
+                'data_relation': {
+                    'resource': 'project'
+                },
+                'required': True
             }
         }
     }

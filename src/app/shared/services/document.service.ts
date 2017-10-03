@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Document } from '../models/document.model';
 import { Observable } from 'rxjs/Observable';
@@ -7,70 +7,53 @@ import 'rxjs/Rx';
 import { AuthHttp } from 'angular2-jwt';
 import { Line } from '../models/line.model';
 import { environment } from '../../../environments/environment';
+import { Quote } from '../models/quote.model';
+import { Memo } from '../models/memo.model';
+import { Project } from '../models/project.model';
+import { QuoteService } from './quote.service';
 
 
 @Injectable()
-export class DocumentService {
+export class DocumentService implements OnInit {
 
   headers: Headers;
   options: RequestOptions;
+  project: Project;
 
-  private openedDocuments: Document[] = [];
-  private openedDocuments$ = new BehaviorSubject<Document[]>([]);
-  private selectedDocument: Document = null;
-  private selectedDocument$ = new BehaviorSubject<Document>(null);
+  private documentList: Document[];
+  private documentList$ = new BehaviorSubject<Document[]>(null);
 
-  constructor(private http: AuthHttp) {
+  constructor(private http: AuthHttp, private quoteService: QuoteService) {
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
   }
 
-  // Return the actual shown document
-  getSelectedDocument() {
-    return this.selectedDocument$.asObservable();
+  ngOnInit() {
   }
 
-  // Set document to be shown
-  setSelectedDocument(selectedDocument: Document) {
-    this.selectedDocument = selectedDocument;
-    this.selectedDocument$.next(selectedDocument);
-  }
-
-  // Add new document two list of openedDocuments
-  openDocument(doc: Document) {
-    if (!this.openedDocuments.includes(doc)) {
-      this.openedDocuments.push(doc);
-      this.setOpenedDocuments(this.openedDocuments);
-    }
-    this.setSelectedDocument(doc);
-  }
-
-  // Refresh list of opened documents
-  setOpenedDocuments(docArray: Document[]) {
-    this.openedDocuments = docArray;
-    this.openedDocuments$.next(docArray);
-  }
-
-
-  getOpenedDocuments() {
-    return this.openedDocuments$.asObservable();
+  loadData() {
+    this.getDocuments().subscribe(
+      docs => this.documentList = docs,
+      error => console.error(error)
+    );
   }
 
   // Get all documents from server
   getDocuments(): Observable<any> {
-    return this.http.get( environment.apiUrl + 'document')
+    return this.http.get( environment.apiUrl + `document?where={"project": ${this.project._id}"}`)
       .map((data: Response) => {
         const extracted = data.json();
         const documentArray: Document[] = [];
         let document: Document;
         if (extracted._items) {
           for (const element of extracted._items) {
-            document = new Document(element);
-            if (element.lines) {
-              const lines = element.lines.map(line =>
-                new Line(line.text, line.relatedQuotes, line.predecessorQuotes)
-              );
-              document.setLines(lines);
+            document = new Document(element, this.project._id);
+            if (element.quotes) {
+              this.createQuotes(element.quotes, document);
+            }
+            if (element.memos) {
+              const memos = this.createMemos(element.memos);
+              document.setMemos(memos);
             }
             documentArray.push(document);
           }
@@ -87,6 +70,15 @@ export class DocumentService {
       .catch(this.handleErrorObservable);
   }
 
+  setDocumentList(documents: Document[]) {
+    this.documentList = documents;
+    this.documentList$.next(this.documentList);
+  }
+
+  getDocumentsList() {
+    return this.documentList$.asObservable();
+  }
+
   // Extract document _id form response
   private extractData(res: Response) {
     const body = res.json();
@@ -99,6 +91,19 @@ export class DocumentService {
   private handleErrorPromise(error: Response | any) {
     console.error(error.message || error);
     return Promise.reject(error.message || error);
+  }
+
+  private createMemos(memos) {
+    return memos.map( memo => new Memo());
+  }
+
+  private createQuotes(quotes, document: Document) {
+      this.quoteService.getQuoteList().subscribe(
+      quoteList => {
+          document.setQuotes(quoteList.filter( q => quotes.find( e => e._id === q.getId()) !== undefined ));
+      },
+      error => console.log(error)
+    );
   }
 
 }
