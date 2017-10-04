@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
+    "angular2-modal": "^3.0.3",
     "angular2-datatable": "^0.6.0",
     "angular2-jwt": "^0.2.3",
     "atob": "^2.0.3",

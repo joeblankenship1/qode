@@ -10,9 +10,10 @@ import { AuthHttp } from 'angular2-jwt';
 @Injectable()
 export class DocumentService {
 
+
+  public url : string = 'http://localhost:5000/document'
   headers: Headers;
   options: RequestOptions;
-
 
   // openedDocuments: Observable<Document[]>;
   private openedDocuments: Document[] = [];
@@ -24,7 +25,7 @@ export class DocumentService {
   }
 
   getDocuments(): Observable<any> {
-    return this.http.get('http://localhost:5000/document')
+    return this.http.get(this.url)
       .map((data: Response) => {
         const extracted = data.json();
         const documentArray: Document[] = [];
@@ -36,7 +37,7 @@ export class DocumentService {
           }
         }
         return documentArray;
-      });
+      },e => console.error(e));
   }
 
   getSelectedDocument() {

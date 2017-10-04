@@ -7,7 +7,7 @@ import { Document } from '../../../../shared/models/document.model';
   styleUrls: ['./documents-tabs.component.css']
 })
 export class DocumentsTabsComponent implements OnInit {
-  @Input() document: Document;
+  @Input() doc: Document = null;
   @Output() selected = new EventEmitter<void>();
   constructor() { }
 

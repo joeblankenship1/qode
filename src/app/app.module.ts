@@ -1,10 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ModalModule } from 'angular2-modal';
+import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http, RequestOptions } from '@angular/http';
 import { routes } from './app.routes';
 import { Routes, RouterModule } from '@angular/router';
-
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { SideBarComponent } from './work-space/side-bar/side-bar.component';
@@ -20,6 +21,7 @@ import { QuoteModalComponent } from './header/quote-modal/quote-modal.component'
 import { MemoModalComponent } from './header/memo-modal/memo-modal.component';
 import { CodeModalComponent } from './header/code-modal/code-modal.component';
 import { DocumentService } from './shared/services/document.service';
+import { CodeService } from './shared/services/code.service';
 import { ProjectService } from './shared/services/project.service';
 import { DocumentsTabsComponent } from './work-space/content/documents/documents-tabs/documents-tabs.component';
 import { DocumentContentComponent } from './work-space/content/documents/document-content/document-content.component';
@@ -36,8 +38,8 @@ import { SignupComponent } from './home/signup/signup.component';
 import { UserService } from './shared/services/user.service';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 
-import {DataTableModule} from 'angular2-datatable';
-import {InlineEditorModule} from 'ng2-inline-editor';
+import { DataTableModule } from 'angular2-datatable';
+import { InlineEditorModule } from 'ng2-inline-editor';
 import { DataFilterPipe } from './my-projects/projects/data-filter.pipe';
 
 
@@ -48,8 +50,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     globalHeaders: [{ 'Content-Type': 'application/json' }],
   }), http, options);
 }
-
-
 
 @NgModule({
   declarations: [
@@ -66,10 +66,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DocumentModalComponent,
     QuoteModalComponent,
     MemoModalComponent,
-    CodeModalComponent,
     DocumentsTabsComponent,
     DocumentContentComponent,
     WorkSpaceComponent,
+    CodeModalComponent,
     ProjectsComponent,
     ProjectItemComponent,
     ProjectItemColComponent,
@@ -82,13 +82,16 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   imports: [
     BrowserModule,
     FormsModule,
+    HttpModule,
+    ModalModule.forRoot(),
+    BootstrapModalModule,
     ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(routes, { useHash: true }),
     DataTableModule,
     InlineEditorModule,
   ],
-  providers: [DocumentService,
+  providers: [DocumentService, CodeService,
     AuthGuard,
     AuthService,
     {
@@ -99,6 +102,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     UserService,
     ProjectService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [CodeModalComponent]
 })
 export class AppModule { }
