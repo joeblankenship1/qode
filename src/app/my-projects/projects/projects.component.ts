@@ -4,8 +4,16 @@ import {
   ViewChild,
   ElementRef
 } from '@angular/core';
+import {
+  Http,
+  Response,
+  RequestOptions,
+  Headers
+} from '@angular/http';
+import { AuthHttp } from 'angular2-jwt';
 import { ProjectService } from '../../shared/services/project.service';
 import { Project } from '../../shared/models/project.model';
+
 
 @Component({
   selector: 'app-projects',
@@ -19,7 +27,12 @@ export class ProjectsComponent implements OnInit {
   @ViewChild('nameProject') nameProjectRef: ElementRef;
   @ViewChild('descProject') descProjectRef: ElementRef;
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private http: AuthHttp, private projectService: ProjectService) { }
+
+  public filterQuery = '';
+  public rowsOnPage = 10;
+  public sortBy = 'name';
+  public sortOrder = 'asc';
 
   ngOnInit() {
 
@@ -38,7 +51,6 @@ export class ProjectsComponent implements OnInit {
       },
       error => console.error(error)
       );
-
   }
 
   onProjectSelected(project: Project) {
@@ -52,8 +64,10 @@ export class ProjectsComponent implements OnInit {
     if (projName !== '') {
       const descName = this.descProjectRef.nativeElement.value;
       if (descName.length < 300) {
-        const projectName = JSON.parse(localStorage.getItem('profile')).nickname +  '/' + projName;
-        const newProj = new Project({ name: projectName, description: descName });
+        const profile = JSON.parse(localStorage.getItem('profile'));
+        const projectName = profile.nickname + '/' + projName;
+        const owner = profile.name;
+        const newProj = new Project({ name: projectName, description: descName, owner: '59bda5c5659f1704a49cd159' });
 
         this.projectService.createProject(new Project(newProj))
           .subscribe(
@@ -68,4 +82,13 @@ export class ProjectsComponent implements OnInit {
       } else { this.errorMessage = 'La descripcion puede tener hasta 300 caracteres.'; }
     } else { this.errorMessage = 'Debes ingresar un nombre para el nuevo proyecto'; }
   }
+
+  public toInt(num: string) {
+    return +num;
+  }
+
+  public sortByWordLength = (a: any) => {
+    return a.city.length;
+  }
+
 }

@@ -18,6 +18,6 @@ export class Project {
   }
 
   getMessageBody() {
-    return { _id: this._id, name: this.name, description: this.description };
+    return { _id: this._id, name: this.name, description: this.description, owner: this.owner };
   }
 }

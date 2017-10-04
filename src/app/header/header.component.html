@@ -23,18 +23,14 @@
             <ul class="nav navbar-nav" *ngIf="router.url === '/workspace'">
                 <li><a href="#">Documentos</a></li>
                 <li><a href="#">Códigos</a></li>
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="Citas">Citas</a>
-                </li>
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="Memos">Memos</a>
-                </li>
+                <li> <a href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="Citas">Citas</a> </li>
+                <li> <a href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="Memos">Memos</a> </li>
                 <li><a href="#">Búsqueda</a></li>
                 <li><a href="#">Análisis</a></li>
                 <li><a href="#">Visualización</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a routerLink='/myProjects' *ngIf="this.authsvc.isAuthenticated()"> Mis Proyectos </a></li>
+                <li><a routerLink='/myprojects' *ngIf="this.authsvc.isAuthenticated()"> Mis Proyectos </a></li>
                 <li><a href="#" (click)="logout()" *ngIf="show"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
         </div>
