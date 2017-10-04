@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Document } from '../../../../shared/models/document.model';
 import { DocumentService } from '../../../../shared/services/document.service';
+import { WorkSpaceService } from '../../../../shared/services/work-space.service';
 
 @Component({
   selector: 'app-document-item',
@@ -10,14 +11,14 @@ import { DocumentService } from '../../../../shared/services/document.service';
 export class DocumentItemComponent implements OnInit {
   @Input() document: Document;
 
-  constructor(private documentService: DocumentService) { }
+  constructor(private  workspaceService: WorkSpaceService) { }
 
 
   ngOnInit() {
   }
 
   onOpenDocument() {
-    this.documentService.openDocument(this.document);
+    this.workspaceService.openDocument(this.document);
   }
 
 }

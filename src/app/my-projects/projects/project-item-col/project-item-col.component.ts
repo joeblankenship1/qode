@@ -20,6 +20,6 @@ export class ProjectItemColComponent implements OnInit {
   }
 
   onAccessProject() {
-    this.router.navigate(['workspace']);
+    this.router.navigate(['workspace', this.project._id]);
   }
 }

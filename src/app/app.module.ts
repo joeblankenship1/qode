@@ -49,6 +49,7 @@ import { WorkSpaceService } from './shared/services/work-space.service';
 
 import {DataTableModule} from 'angular2-datatable';
 import {InlineEditorModule} from 'ng2-inline-editor';
+import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
 
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -96,15 +97,13 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpModule,
     ModalModule.forRoot(),
     BootstrapModalModule,
-	ReactiveFormsModule,
-    HttpModule,
+  	ReactiveFormsModule,
     RouterModule.forRoot(routes, { useHash: true }),
     DataTableModule,
     InlineEditorModule,
-    RouterModule.forRoot(routes, { useHash: true }),
     ContextMenuModule
   ],
-  providers: [DocumentService,CodeService,
+  providers: [DocumentService, CodeService,
     AuthGuard,
     AuthService,
     ContextMenuService,
@@ -118,7 +117,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     LineService,
     QuoteService,
     WindowSelection,
-    WorkSpaceService
+    WorkSpaceService,
+    WorkSpaceResolver
   ],
   bootstrap: [AppComponent],
   entryComponents: [CodeModalComponent]

@@ -49,7 +49,8 @@ export class ProjectItemComponent implements OnInit {
 
   onAccessProject() {
     this.projectService.setOpenedProject(this.project);
-    this.router.navigate(['workspace']);
+    console.log(this.project._id);
+    this.router.navigate(['workspace', this.project._id]);
   }
 
 }

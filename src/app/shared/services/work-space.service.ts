@@ -34,22 +34,23 @@ export class WorkSpaceService {
 
   constructor(private documentService: DocumentService, private quoteService: QuoteService) { }
 
-  loadWorkSpace() {
-    this.quoteService.getQuotes().subscribe(
-      quotes => {
-        this.quoteService.setQuoteList(quotes.map( q => new Quote(q.text, q.position.start, q.position.end, q.documentDisplay,
-        this.project._id, q._id, q.memo)));
-        this.documentService.getDocuments().subscribe(
-          docs => {
-            this.documentService.setDocumentList(docs);
-            this.initWorkSpace();
-          },
-          error => console.error(error)
-        );
+  public initWorkSpace() {
+    this.documentService.getDocuments().subscribe(
+      documents => {
+        documents.map( d => {
+          if (d.isOpened()) {
+            this.openedDocuments.push(d);
+          }
+          this.documentContents.push(new DocumentContent(d));
+        });
+        this.setOpenedDocuments(this.openedDocuments);
+        this.setDocumentContents(this.documentContents);
+        this.selectDocument(this.openDocument[0]);
       },
       error => console.error(error)
     );
   }
+
 
   // Add new document two list of openedDocuments
   openDocument(doc: Document) {
@@ -123,22 +124,4 @@ export class WorkSpaceService {
     getSelectedDocumentQuotes() {
       return this.quotesSelectedDocument$.asObservable();
     }
-
-    private initWorkSpace() {
-      this.documentService.getDocumentsList().subscribe(
-        documents => {
-          documents.map( d => {
-            if (d.isOpened()) {
-              this.openedDocuments.push(d);
-            }
-            this.documentContents.push(new DocumentContent(d));
-          });
-          this.setOpenedDocuments(this.openedDocuments);
-          this.setDocumentContents(this.documentContents);
-          this.selectDocument(this.openDocument[0]);
-        },
-        error => console.error(error)
-      );
-    }
-
 }

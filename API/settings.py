@@ -67,6 +67,17 @@ DOMAIN = {
                 'type': 'string',
                 'required': True
             },
+            'documentDisplay': {
+                'type': 'list',
+                'schema': {
+                    'type': 'dict',
+                    'schema': {
+                        'page': {'type': 'integer'},
+                        'startLine': {'type': 'integer'},
+                        'endLine': {'type': 'integer'}
+                    }
+                }
+            },
             'project': {
                 'type': 'objectid',
                 'data_relation': {
@@ -86,60 +97,7 @@ DOMAIN = {
                         'embeddable': True
                     }
                 }
-            },
-            'lines': {
-                'type': 'list',
-                'schema': {
-                    'type': 'dict',
-                    'schema': {
-                        'text': { 
-                            'type': 'string',
-                            'required': True
-                        },
-                        'relatedQuotes': {
-                            'type': 'list',
-                            'schema': {
-                                'type': 'objectid',
-                                'data_relation': {
-                                     'resource': 'quote',
-                                     'embeddable': True
-                                }    
-                            }
-                        },
-                        'predecessorQuotes': {
-                            'type': 'list',
-                            'schema': {
-                                'type': 'objectid',
-                                'data_relation': {
-                                     'resource': 'quote',
-                                     'embeddable': True
-                                }    
-                            }
-                        }
-                        'borderTopQuotes': {
-                            'type': 'list',
-                            'schema': {
-                                'type': 'objectid',
-                                'data_relation': {
-                                     'resource': 'quote',
-                                     'embeddable': True
-                                }    
-                            }
-                        },
-                        'borderBottomQuotes': {
-                            'type': 'list',
-                            'schema': {
-                                'type': 'objectid',
-                                'data_relation': {
-                                     'resource': 'quote',
-                                     'embeddable': True
-                                }    
-                            }
-                        }
-                    }
-                }
-            }
-            
+            }            
         }
     },
     'code': {
