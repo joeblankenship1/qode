@@ -20,16 +20,16 @@ export class WorkSpaceService {
   private selectedDocument: Document = null;
   private selectedDocument$ = new BehaviorSubject<Document>(null);
 
-  private documentContents: DocumentContent[];
+  private documentContents: DocumentContent[] = [];
   private documentContents$= new BehaviorSubject<DocumentContent[]>([]);
 
   private selectedDocumentContent: DocumentContent;
   private selectedDocumentContent$ = new BehaviorSubject<DocumentContent>(null);
 
-  private quotesSelectedDocument: Quote[];
+  private quotesSelectedDocument: Quote[] = [];
   private quotesSelectedDocument$= new BehaviorSubject<Quote[]>([]);
 
-  private codesSelectedDocument: Code[];
+  private codesSelectedDocument: Code[] = [];
   private codesSelectedDocument$ =  new BehaviorSubject<Code[]>([]);
 
   constructor(private documentService: DocumentService, private quoteService: QuoteService) { }
@@ -38,14 +38,15 @@ export class WorkSpaceService {
     this.documentService.getDocuments().subscribe(
       documents => {
         documents.map( d => {
-          if (d.isOpened()) {
+          //if (d.isOpened()) {
             this.openedDocuments.push(d);
-          }
+          //}
           this.documentContents.push(new DocumentContent(d));
         });
         this.setOpenedDocuments(this.openedDocuments);
         this.setDocumentContents(this.documentContents);
         this.selectDocument(this.openDocument[0]);
+        console.log('aca');
       },
       error => console.error(error)
     );

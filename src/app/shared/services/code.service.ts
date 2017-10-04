@@ -25,7 +25,7 @@ export class CodeService {
    }
 
   loadCodes(projectId): Observable<Code[]> {
-    return this.http.get(environment.apiUrl + 'code?where={project:' + projectId + '}')
+    return this.http.get(environment.apiUrl + `code?where={"project":"${projectId}"}`)
       .map((data: Response) => {
         const extracted = data.json();
         const codeArray: Code[] = [];
