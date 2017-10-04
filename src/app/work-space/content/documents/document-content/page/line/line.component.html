@@ -1,6 +1,6 @@
 <div>
-{{text}}<div 
-*ngFor="let quote of quotes"
-[ngClass]="getQuoteType(quote)"
-></div><br>
+  <div *ngFor="let quote of quotes" [ngClass]="getQuoteType(quote)"></div>
+  <div>
+    {{line.text}}<br>
+  </div>
 </div>

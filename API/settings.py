@@ -63,20 +63,13 @@ DOMAIN = {
                 'allow_unknown': True,
                 'default':{}
             },
+            'opened': {
+              'type': 'boolean',
+              'default': True
+            },
             'text':{
                 'type': 'string',
                 'required': True
-            },
-            'documentDisplay': {
-                'type': 'list',
-                'schema': {
-                    'type': 'dict',
-                    'schema': {
-                        'page': {'type': 'integer'},
-                        'startLine': {'type': 'integer'},
-                        'endLine': {'type': 'integer'}
-                    }
-                }
             },
             'project': {
                 'type': 'objectid',
@@ -97,7 +90,7 @@ DOMAIN = {
                         'embeddable': True
                     }
                 }
-            }            
+            }
         }
     },
     'code': {
@@ -138,9 +131,16 @@ DOMAIN = {
                 },
                 'required': True
             },
-            'lineRange': {
-                'type': 'number',
-                'required': True
+            'documentDisplay': {
+                'type': 'list',
+                'schema': {
+                    'type': 'dict',
+                    'schema': {
+                        'page': {'type': 'integer'},
+                        'startLine': {'type': 'integer'},
+                        'endLine': {'type': 'integer'}
+                    }
+                }
             },
             'codes': {
                 'type': 'list',

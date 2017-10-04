@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Quote } from '../../../../../../shared/models/quote.model';
+import { Line } from '../../../../../../shared/models/line.model';
 
 @Component({
   selector: 'app-line',
@@ -8,16 +9,18 @@ import { Quote } from '../../../../../../shared/models/quote.model';
 })
 export class LineComponent implements OnInit, OnChanges {
 
-  @Input() text: string;
-  @Input() selected = false;
-  @Input() quotes: Quote[] = [];
-  @Input() predecessorQuotes: Quote[] = [];
-  @Input() borderTopQuotes: Quote[] = [];
-  @Input() borderBottomQuotes: Quote[] = [];
+  @Input() line: Line;
+  text: string;
+  selected = false;
+  quotes: string[] = [];
+  borderTopQuotesIds: string[] = [];
+  borderBottomQuotesIds: string[] = [];
 
   constructor() { }
 
   ngOnInit() {
+    this.borderBottomQuotesIds = this.line.borderBottomQuotesIds;
+    this.borderTopQuotesIds = this.line.borderTopQuotesIds;
   }
 
   ngOnChanges() {
@@ -25,12 +28,12 @@ export class LineComponent implements OnInit, OnChanges {
 
   // Define the css class of the line. If quote starts or ends at the
   // related line, this will show a closing border.
-  public getQuoteType(quote: Quote) {
+  public getQuoteType(quoteId: string) {
     let styleClass = 'quote ';
-    if (this.borderTopQuotes.find(q => q.isEqual(quote))) {
+    if (this.borderTopQuotesIds.find(q => quoteId === q )) {
       styleClass = styleClass + 'borderTop-quote ';
     }
-    if (this.borderBottomQuotes.find(q => q.isEqual(quote))) {
+    if (this.borderBottomQuotesIds.find(q => quoteId === q)) {
       styleClass = styleClass + 'borderBottom-quote ';
     }
     return styleClass;

@@ -45,8 +45,7 @@ export class WorkSpaceService {
         });
         this.setOpenedDocuments(this.openedDocuments);
         this.setDocumentContents(this.documentContents);
-        this.selectDocument(this.openDocument[0]);
-        console.log('aca');
+        this.selectDocument(this.openedDocuments[0]);
       },
       error => console.error(error)
     );

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DocumentService } from '../../../shared/services/document.service';
 import { Document } from '../../../shared/models/document.model';
-import { LineService } from '../../../shared/services/line.service';
 import { WorkSpaceService } from '../../../shared/services/work-space.service';
 
 
@@ -14,7 +13,7 @@ export class DocumentsComponent implements OnInit {
 
   public openedDocuments: Document[] = [];
   public selectedDocument: Document;
-  constructor(private workspaceService: WorkSpaceService, private lineService: LineService) { }
+  constructor(private workspaceService: WorkSpaceService,) { }
 
   ngOnInit() {
     this.workspaceService.getOpenedDocuments()

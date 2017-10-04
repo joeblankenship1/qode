@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { Line } from '../models/line.model';
 import { Quote } from '../models/quote.model';
 import { element } from 'protractor';
+import { AppSettings } from '../../app.settings';
 
-@Injectable()
-export class LineService {
+
+export class LineDefinition {
 
   constructor() { }
 
   // Create document lines from a raw string.
-  public createLines(text) {
+  public static createLines(text) {
     const lines = [];
     const li = text.split(/\n|\r/)
       .map(l => [l]);
@@ -20,16 +21,18 @@ export class LineService {
     });
 
     const newArray: Line[] = [];
+    let lineId = 0;
     lines.forEach(list => {
-      list.forEach( item => {
-        newArray.push(new Line(item.id, item.text));
+      list.forEach( (item) => {
+        newArray.push(new Line(lineId, item));
+        lineId ++;
       } );
     });
   return newArray;
 }
 
   // Insert a new quote at the lines defined in the indexList.
-  public updateLines(lines: Line[], indexList: boolean[], quote: Quote): Line[] {
+  public static updateLines(lines: Line[], indexList: boolean[], quote: Quote): Line[] {
     const updatedLines: Line[] = [];
     const borderIndex = this.getBorderIndex(indexList);
     lines.map((l, i) => {
@@ -58,12 +61,12 @@ export class LineService {
   // }
 
   // Define if a line is the starting and/or ending of a quote.
-  private setBorderQuotes(line: Line, type,  quote: Quote) {
+  private static setBorderQuotes(line: Line, type,  quote: Quote) {
     type === 'top' ? line.setBorderTopQuoteId(quote.getId()) : line.setBorderBottomQuoteId(quote.getId());
   }
 
   // Get the starting and ending index of a quote
-  private getBorderIndex(indexList) {
+  private static getBorderIndex(indexList) {
     let min = 0;
     let minReady = false;
     let max = 0;
@@ -82,13 +85,19 @@ export class LineService {
   }
 
   // Shorten lines to fit in page
-  private shortenLine(listLine) {
+  private static shortenLine(listLine) {
     let text = listLine[0];
     listLine.splice(0);
-    while (text.length > 102) {
-      const indexBlank = text.indexOf(' ', 102);
-      listLine.push(text.substring(0, indexBlank));
-      text = text.substring(indexBlank + 1);
+    let end = false;
+    while (text.length > AppSettings.LINE_SIZE && end) {
+      end = false;
+      const indexBlank = text.indexOf(' ',  AppSettings.LINE_SIZE);
+      if (indexBlank > -1 ) {
+        listLine.push(text.substring(0, indexBlank));
+        text = text.substring(indexBlank + 1);
+      } else {
+        end = true;
+      }
     }
     listLine.push(text.substring(0));
     return listLine;
