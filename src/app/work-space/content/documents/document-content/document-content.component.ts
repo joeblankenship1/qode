@@ -6,7 +6,6 @@ import { OptionsComponent } from '../../../../shared/helpers/options/options.com
 import { MenuOption } from '../../../../shared/models/menu-option.model';
 import { Quote } from '../../../../shared/models/quote.model';
 import { LineComponent } from './page/line/line.component';
-import { LineService } from '../../../../shared/services/line.service';
 import { Line } from '../../../../shared/models/line.model';
 import { WindowSelection } from '../../../../shared/helpers/window-selection';
 import { QuoteService } from '../../../../shared/services/quote.service';
@@ -31,8 +30,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   selecting = false;
   selectedLines = [];
 
-  constructor(private contextMenuService: ContextMenuService,
-  private lineService: LineService, private windowSelection: WindowSelection,
+  constructor(private contextMenuService: ContextMenuService,private windowSelection: WindowSelection,
   private workSpaceService: WorkSpaceService) {
   }
 
@@ -45,7 +43,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.actualDocument) {
+    if (this.actualDocumentContent) {
       this.pages = this.actualDocumentContent.getPages();
     }
   }

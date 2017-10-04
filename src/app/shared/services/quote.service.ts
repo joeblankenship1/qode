@@ -37,7 +37,7 @@ export class QuoteService {
   // Load quotes from project
   loadQuotes(projectId: string): Observable<Quote[]> {
     this.projectId = projectId;
-    return this.http.get(environment.apiUrl + `quote?where={"project": ${projectId}"}`).map(
+    return this.http.get(environment.apiUrl + `quote?where={"project": "${projectId}"}`).map(
       (data: Response) => {
         const extracted = data.json();
         const quotes = extracted._items.map( q => new Quote(q.text, q.position.start, q.position.end, q.documentDisplay,

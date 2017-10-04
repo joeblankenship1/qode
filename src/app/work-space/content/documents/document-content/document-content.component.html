@@ -1,6 +1,6 @@
-<div class="container content-container">
-  <app-page *ngFor="let page of pages; let i = index"
-    [id]="page.getId()"
-  >
+<div class="container content-container" (contextmenu)="onContextMenu($event, actualDocument?.text)">
+  <app-page *ngFor="let page of pages"
+    [page] ="page"  >
   </app-page>
+  <app-options [optionGroups]="menuOptions"></app-options>
 </div>

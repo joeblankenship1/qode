@@ -1,8 +1,8 @@
 import { Line } from './line.model';
 
 export class Page {
-  id: number;
-  lines: Line[];
+  private id: number;
+  private lines: Line[];
 
   constructor(id: number, lines?: Line[]) {
     this.id = id;
@@ -11,6 +11,10 @@ export class Page {
 
   getId() {
     return this.id;
+  }
+
+  public setLine( line: Line) {
+    this.lines.push(line);
   }
 
   setLines(lines: Line[]) {

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Page } from '../../../../../shared/models/page.model';
+import { Line } from '../../../../../shared/models/line.model';
 
 @Component({
   selector: 'app-page',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageComponent implements OnInit {
 
+  @Input() page: Page;
+  lines: Line[] = [];
+
+
   constructor() { }
 
   ngOnInit() {
+    this.lines = this.page.getLines();
   }
 
 }

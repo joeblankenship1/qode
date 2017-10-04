@@ -40,7 +40,6 @@ import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { ContextMenuModule, ContextMenuService } from 'ngx-contextmenu';
 import { OptionsComponent } from './shared/helpers/options/options.component';
 import { LineComponent } from './work-space/content/documents/document-content/page/line/line.component';
-import { LineService } from './shared/services/line.service';
 import { WindowSelection } from './shared/helpers/window-selection';
 import { QuoteService } from './shared/services/quote.service';
 import { PageComponent } from './work-space/content/documents/document-content/page/page.component';
@@ -114,7 +113,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     },
     UserService,
     ProjectService,
-    LineService,
     QuoteService,
     WindowSelection,
     WorkSpaceService,

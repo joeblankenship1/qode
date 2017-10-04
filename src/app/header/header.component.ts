@@ -17,10 +17,10 @@ import { ProjectService } from '../shared/services/project.service';
 export class HeaderComponent implements OnInit {
 appname = '';
 show: boolean;
-  private project:Project;
+  private project: Project;
 
-  constructor(private authsvc: AuthService, private router: Router,private modal: Modal
-              ,private projectService:ProjectService) {
+  constructor(private authsvc: AuthService, private router: Router, private modal: Modal
+              , private projectService: ProjectService) {
     this.appname = 'libreQDA';
   }
 
@@ -42,7 +42,7 @@ show: boolean;
   }
 
   onNewCode(){
-    let newCode = new Code({name:"",project:this.project._id});
+    let newCode = new Code({name: "", project:this.project._id});
     this.modal.open(CodeModalComponent, overlayConfigFactory({ code: newCode, mode: 'new' }, BSModalContext ))
     .then((resultPromise) => {
       resultPromise.result.then((result) => {
