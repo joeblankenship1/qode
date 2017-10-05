@@ -9,21 +9,21 @@ export class Document {
   public path: string;
   public atributes = {};
   public text: string;
-  public project: string;
   public memos: Memo[];
   public quotes: Quote[];
-  public lines: Line[];
   private opened: boolean;
   private projectId: string;
 
 
   constructor(data: any, projectId: string) {
+    this._id = data._id;
     this.name = data.name;
     this.text = data.text;
     this.path = data.path;
-    this.project = data.project;
     this.opened = data.opened ? data.opened : false;
     this.projectId = projectId;
+    this.quotes = [];
+    this.memos = [];
   }
 
 
@@ -31,16 +31,8 @@ export class Document {
     return this._id;
   }
 
-  public getLines() {
-    return this.lines;
-  }
-
   public getQuotes() {
     return this.quotes;
-  }
-
-  public setLines(lines: Line[]) {
-    this.lines = lines;
   }
 
   public setQuotes(quotes: Quote[]) {

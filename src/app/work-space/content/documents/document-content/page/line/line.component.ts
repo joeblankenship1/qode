@@ -12,28 +12,29 @@ export class LineComponent implements OnInit, OnChanges {
   @Input() line: Line;
   text: string;
   selected = false;
-  quotes: string[] = [];
-  borderTopQuotesIds: string[] = [];
-  borderBottomQuotesIds: string[] = [];
+  quotes: [{
+    quoteId: string,
+    borderTop: boolean,
+    borderBottom: boolean,
+    column: number;
+  }];
 
   constructor() { }
 
   ngOnInit() {
-    this.borderBottomQuotesIds = this.line.borderBottomQuotesIds;
-    this.borderTopQuotesIds = this.line.borderTopQuotesIds;
+    this.quotes = this.line.getRelatedQuotes();
+
   }
 
   ngOnChanges() {
   }
 
-  // Define the css class of the line. If quote starts or ends at the
-  // related line, this will show a closing border.
-  public getQuoteType(quoteId: string) {
+  public getQuoteType(quote) {
     let styleClass = 'quote ';
-    if (this.borderTopQuotesIds.find(q => quoteId === q )) {
+    if (quote[0].borderTop) {
       styleClass = styleClass + 'borderTop-quote ';
     }
-    if (this.borderBottomQuotesIds.find(q => quoteId === q)) {
+    if (quote[0].borderBottom) {
       styleClass = styleClass + 'borderBottom-quote ';
     }
     return styleClass;

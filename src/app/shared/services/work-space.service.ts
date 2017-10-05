@@ -12,7 +12,7 @@ import { Project } from '../models/project.model';
 @Injectable()
 export class WorkSpaceService {
 
-  private project: Project;
+  private projectId: string;
 
   private openedDocuments: Document[] = [];
   private openedDocuments$ = new BehaviorSubject<Document[]>([]);
@@ -34,13 +34,14 @@ export class WorkSpaceService {
 
   constructor(private documentService: DocumentService, private quoteService: QuoteService) { }
 
-  public initWorkSpace() {
+  public initWorkSpace(projectId) {
+    this.projectId = projectId;
     this.documentService.getDocuments().subscribe(
       documents => {
-        documents.map( d => {
-          //if (d.isOpened()) {
+        documents.forEach( d => {
+          if (d.isOpened()) {
             this.openedDocuments.push(d);
-          //}
+          }
           this.documentContents.push(new DocumentContent(d));
         });
         this.setOpenedDocuments(this.openedDocuments);
@@ -123,5 +124,9 @@ export class WorkSpaceService {
     // Return quotes of selected doc
     getSelectedDocumentQuotes() {
       return this.quotesSelectedDocument$.asObservable();
+    }
+
+    getProjectId() {
+      return this.projectId;
     }
 }

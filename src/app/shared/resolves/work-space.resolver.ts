@@ -25,7 +25,7 @@ export class WorkSpaceResolver implements Resolve<any> {
           quotes => {
             this.documentService.loadDocuments(projectId).subscribe(
               docs => {
-                this.workspaceService.initWorkSpace();
+                this.workspaceService.initWorkSpace(projectId);
               },
               error => console.error(error)
             );

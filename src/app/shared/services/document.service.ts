@@ -11,6 +11,7 @@ import { Quote } from '../models/quote.model';
 import { Memo } from '../models/memo.model';
 import { Project } from '../models/project.model';
 import { QuoteService } from './quote.service';
+import { element } from 'protractor';
 
 
 @Injectable()
@@ -33,7 +34,7 @@ export class DocumentService {
   // Get all documents from server
   loadDocuments(projectId): Observable<Document[]> {
     this.projectId = projectId;
-    return this.http.get( environment.apiUrl + `document?where={"project": "${projectId}"}`)
+    return this.http.get( environment.apiUrl + `document?where{"project"="${projectId}"}`)
       .map((data: Response) => {
         const extracted = data.json();
         const documentArray: Document[] = [];
@@ -81,7 +82,7 @@ export class DocumentService {
   private createQuotes(quotes, document: Document) {
       this.quoteService.getQuoteList().subscribe(
       quoteList => {
-          document.setQuotes(quoteList.filter( q => quotes.find( e => e._id === q.getId()) !== undefined ));
+          document.setQuotes(quoteList.filter( q => quotes.find( e => e === q.getId()) !== undefined ));
       },
       error => console.log(error)
     );

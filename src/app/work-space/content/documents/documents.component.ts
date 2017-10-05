@@ -34,6 +34,7 @@ export class DocumentsComponent implements OnInit {
 
   onDocumentSelected(document: Document) {
     this.selectedDocument = document;
+    this.workspaceService.selectDocument(document);
   }
 
 }

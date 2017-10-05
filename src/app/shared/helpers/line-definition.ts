@@ -38,12 +38,12 @@ export class LineDefinition {
     lines.map((l, i) => {
       if (indexList[i]) {
         l.setQuoteId(quote.getId());
-        if ( borderIndex.max === i) {
-          this.setBorderQuotes(l, 'bottom', quote);
-        }
-        if ( borderIndex.min === i ) {
-          this.setBorderQuotes(l, 'top', quote);
-        }
+        // if ( borderIndex.max === i) {
+        //   this.setBorderQuotes(l, 'bottom', quote);
+        // }
+        // if ( borderIndex.min === i ) {
+        //   this.setBorderQuotes(l, 'top', quote);
+        // }
       }
       updatedLines.push(l);
     });
@@ -61,9 +61,9 @@ export class LineDefinition {
   // }
 
   // Define if a line is the starting and/or ending of a quote.
-  private static setBorderQuotes(line: Line, type,  quote: Quote) {
-    type === 'top' ? line.setBorderTopQuoteId(quote.getId()) : line.setBorderBottomQuoteId(quote.getId());
-  }
+  // private static setBorderQuotes(line: Line, type,  quote: Quote) {
+  //   type === 'top' ? line.setBorderTopQuoteId(quote.getId()) : line.setBorderBottomQuoteId(quote.getId());
+  // }
 
   // Get the starting and ending index of a quote
   private static getBorderIndex(indexList) {
@@ -101,6 +101,7 @@ export class LineDefinition {
     }
     listLine.push(text.substring(0));
     return listLine;
-}
+  }
+
 
 }

@@ -1,12 +1,13 @@
 .quote {
   color: red;
-  height: 19.5px;
+  
   width: 5px;
-  float: right;
+  display: table-cell;
+  height: auto;
   font-weight: bold;
   padding: none;
   margin: none;
-  border-right: 2px solid red;
+  border-left: 2px solid red;
 }
 
 .borderTop-quote {
@@ -15,4 +16,10 @@
 
 .borderBottom-quote {
   border-bottom: 2px solid red;
+}
+
+.text-div {
+  padding-left: 10px;
+  display: table-cell;
+  height: auto;
 }

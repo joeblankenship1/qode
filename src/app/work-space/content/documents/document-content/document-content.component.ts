@@ -12,6 +12,7 @@ import { QuoteService } from '../../../../shared/services/quote.service';
 import { DocumentContent } from '../../../../shared/models/document-content.model';
 import { WorkSpaceService } from '../../../../shared/services/work-space.service';
 import { Project } from '../../../../shared/models/project.model';
+import { QuoteDisplay } from '../../../../shared/models/quote-display';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   selecting = false;
   selectedLines = [];
 
-  constructor(private contextMenuService: ContextMenuService,private windowSelection: WindowSelection,
+  constructor(private contextMenuService: ContextMenuService, private windowSelection: WindowSelection,
   private workSpaceService: WorkSpaceService) {
   }
 
