@@ -44,7 +44,7 @@ export class Page {
         const lineDisplay = quotes.map(p => {
           return this.getColumn(p, l.id);
         });
-        l.setQuoteId(lineDisplay);
+        l.setRelatedQuotes(lineDisplay);
       }
     });
   }

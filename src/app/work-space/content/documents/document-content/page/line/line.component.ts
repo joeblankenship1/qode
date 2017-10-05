@@ -31,10 +31,10 @@ export class LineComponent implements OnInit, OnChanges {
 
   public getQuoteType(quote) {
     let styleClass = 'quote ';
-    if (quote[0].borderTop) {
+    if (quote.borderTop) {
       styleClass = styleClass + 'borderTop-quote ';
     }
-    if (quote[0].borderBottom) {
+    if (quote.borderBottom) {
       styleClass = styleClass + 'borderBottom-quote ';
     }
     return styleClass;

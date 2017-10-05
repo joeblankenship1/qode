@@ -22,6 +22,10 @@ export class Line {
     this.relatedQuotesIds.push(quote);
   }
 
+  public setRelatedQuotes(quotes) {
+    this.relatedQuotesIds = quotes;
+  }
+
   public getRelatedQuotes() {
     return this.relatedQuotesIds;
   }

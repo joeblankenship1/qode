@@ -98,9 +98,8 @@ export class DocumentContent {
     list.map(item => {
       const p1 = item[0];
       const p2 = item[1];
-
       if (p2.column === column) {
-        taken = this.intersect(p1.startLine, p1.endLine, p2.startLine, p2.endLine);
+        taken = this.intersect(p1.startLine, p2.page.startLine, p1.endLine, p2.page.endLine);
       }
 
     });
@@ -110,8 +109,8 @@ export class DocumentContent {
   private zip(a, b) {
     const c = [];
     a.map((e, i) => {
-      if (e.page === b.page) {
-        c.push([e, b[i]]);
+      if (e.page === b.pages[i].page) {
+        c.push([e, {page: b.pages[i], column: b.column}]);
       }
     });
     return c;

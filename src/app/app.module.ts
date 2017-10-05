@@ -49,6 +49,7 @@ import { WorkSpaceService } from './shared/services/work-space.service';
 import {DataTableModule} from 'angular2-datatable';
 import {InlineEditorModule} from 'ng2-inline-editor';
 import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
+import { BracketComponent } from './work-space/content/documents/document-content/bracket/bracket.component';
 
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -88,6 +89,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     OptionsComponent,
     LineComponent,
     PageComponent,
+    BracketComponent,
 
   ],
   imports: [

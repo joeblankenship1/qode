@@ -1,9 +1,11 @@
 <div class="container content-container" (contextmenu)="onContextMenu($event, actualDocument?.text)">
-    <div *ngFor="let page of pages" style="display: table-cell">
-        <div *ngFor="let line of page.getLines()">
-        </div>
-      </div>
-  <app-page *ngFor="let page of pages" [page]="page">
-  </app-page>
+  <!-- <div *ngFor="let page of pages" style="display: table-cell">
+    <div *ngFor="let line of page.getLines()" class="bracket-cont">
+      <app-bracket
+        [quotes]="line.getRelatedQuotes()"
+      ></app-bracket>
+    </div>
+  </div> -->
+  <app-page *ngFor="let page of pages" [page]="page"></app-page>
   <app-options [optionGroups]="menuOptions"></app-options>
 </div>

@@ -1,9 +1,11 @@
-<!-- <div>
-    <div *ngFor="let quote of quotes" [ngClass]="getQuoteType(quote)"></div>
+<div class="page-container">
+    <app-bracket
+    [quotes]="line.getRelatedQuotes()"
+  ></app-bracket>
   <div class="text-div">
     {{line.text}}<br>
   </div>
+</div>
+<!-- <div class="text-div">
+  {{line.text}}<br>
 </div> -->
-<div class="text-div">
-    {{line.text}}<br>
-  </div>
