@@ -34,6 +34,10 @@ export class QuoteService {
     return this.quoteList$.asObservable();
   }
 
+  getQuoteRange() {
+    return this.quoteList.length;
+  }
+
   // Load quotes from project
   loadQuotes(projectId: string): Observable<Quote[]> {
     this.projectId = projectId;

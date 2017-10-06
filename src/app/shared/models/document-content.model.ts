@@ -80,7 +80,7 @@ export class DocumentContent {
   private setQuoteDisplayOfPage() {
     this.pages.map(p => {
       const quotes = this.quotesDisplay.filter(q => {
-        return q.pageHasQuote(p);
+        return q.pageHasQuote(p.getId());
       });
       if (quotes.length > 0) {
         const pageDisplay = quotes.map(q => {

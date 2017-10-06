@@ -1,4 +1,4 @@
-<div class="container content-container" (contextmenu)="onContextMenu($event, actualDocument?.text)">
+<!-- <div class="container content-container" (contextmenu)="onContextMenu($event, actualDocument?.text)">
   <!-- <div *ngFor="let page of pages" style="display: table-cell">
     <div *ngFor="let line of page.getLines()" class="bracket-cont">
       <app-bracket
@@ -6,6 +6,22 @@
       ></app-bracket>
     </div>
   </div> -->
-  <app-page *ngFor="let page of pages" [page]="page"></app-page>
+  <!-- <app-page *ngFor="let page of pages" [page]="page"></app-page>
   <app-options [optionGroups]="menuOptions"></app-options>
+</div> -->
+
+<div class="content-container">
+<table style="width:100%" >
+  <tr  *ngFor="let page of pages">
+    <td class="page-container">
+      <table class="page" >
+        <tr *ngFor="let line of page.getLines()">
+          <td *ngFor="let quote of allQuotes" [ngClass]="line?.getBracketType(quote)"></td>
+          <td [ngClass]="line? line.getLineType(): 'white-line'">{{line?.text}}<br></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
 </div>
+

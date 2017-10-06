@@ -18,7 +18,7 @@ export class QuoteDisplay {
   public pageHasQuote(pageId) {
     return this.pages.filter( p => {
       return p.page === pageId;
-    }) !== [];
+    }).length > 0;
   }
 
   public getLines(pageId) {

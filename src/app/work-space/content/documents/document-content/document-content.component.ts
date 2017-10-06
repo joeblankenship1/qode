@@ -15,6 +15,7 @@ import { Project } from '../../../../shared/models/project.model';
 import { QuoteDisplay } from '../../../../shared/models/quote-display';
 
 
+
 @Component({
   selector: 'app-document-content',
   templateUrl: './document-content.component.html',
@@ -30,22 +31,31 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   menuOptions: MenuOption[][] = [];
   selecting = false;
   selectedLines = [];
+  allQuotes: Quote[] = [];
+  colRange: number;
 
   constructor(private contextMenuService: ContextMenuService, private windowSelection: WindowSelection,
-  private workSpaceService: WorkSpaceService) {
+  private workSpaceService: WorkSpaceService, private quoteService: QuoteService) {
   }
 
   ngOnInit() {
     this.workSpaceService.getSelectedDocumentContent().subscribe(
-      content => this.actualDocumentContent = content,
+      content => {
+        this.actualDocumentContent = content;
+        this.quoteService.getQuoteList().subscribe(
+          quotes => this.allQuotes = quotes
+        );
+      },
       error => console.log(error)
     );
     this.createMenuOptions();
+
   }
 
   ngOnChanges() {
     if (this.actualDocumentContent) {
       this.pages = this.actualDocumentContent.getPages();
+      this.colRange = this.allQuotes.length;
     }
   }
 

@@ -28,6 +28,11 @@ export class LineDefinition {
         lineId ++;
       } );
     });
+    if (newArray.length < AppSettings.PAGE_SIZE) {
+      for (let index = newArray.length; index < AppSettings.PAGE_SIZE; index++) {
+        newArray.push(new Line(index, ''));
+      }
+    }
   return newArray;
 }
 
@@ -89,7 +94,7 @@ export class LineDefinition {
     let text = listLine[0];
     listLine.splice(0);
     let end = false;
-    while (text.length > AppSettings.LINE_SIZE && end) {
+    while (text.length > AppSettings.LINE_SIZE && !end) {
       end = false;
       const indexBlank = text.indexOf(' ',  AppSettings.LINE_SIZE);
       if (indexBlank > -1 ) {
