@@ -4,51 +4,51 @@ import { AppSettings } from '../../app.settings';
 export class Line {
   public text: string;
   public id: number;
-  public relatedQuotesIds: [{
-    quoteId: string,
+  public relatedQuotes: [{
+    quote: Quote,
     borderTop: boolean,
     borderBottom: boolean,
     column: number;
   }];
-  private brackets = [];
 
 
-  constructor(id: number, text: string, relatedQuotesIds?, borderTopQuotesIds?: string[],
-    borderBottomQuotesIds?: string[]) {
+  constructor(id: number, text: string, relatedQuotes?) {
     this.id = id;
     this.text = text;
-    this.relatedQuotesIds = relatedQuotesIds ? relatedQuotesIds : [];
+    this.relatedQuotes = relatedQuotes ? relatedQuotes : [];
   }
 
   public setQuoteId(quote) {
-    this.relatedQuotesIds.push(quote);
+    this.relatedQuotes.push(quote);
   }
 
   public setRelatedQuotes(quotes) {
-    this.relatedQuotesIds = quotes;
+    this.relatedQuotes = quotes;
   }
 
   public getRelatedQuotes() {
-    return this.relatedQuotesIds;
+    return this.relatedQuotes;
   }
 
-  public getBrackets() {
-    return this.brackets;
+  public getRelatedQuote(column: number) {
+    return this.relatedQuotes.find( q => {
+      return q.column === column;
+    });
   }
 
   public getLineType() {
     let styleClass = 'text-area white-line';
-    if (this.id % AppSettings.PAGE_SIZE === 0) {
+    if (this.id === 0) {
      styleClass += 'text-area top-line';
-    } else if (this.id % AppSettings.PAGE_SIZE === AppSettings.PAGE_SIZE - 1) {
+    } else if (this.id === AppSettings.PAGE_SIZE - 1) {
       styleClass +=  'text-area bottom-line';
     }
     return styleClass;
   }
 
-  public getBracketType(quote: Quote) {
+  public getBracketType(column: number) {
     let styleClass = 'quote-empty';
-    const relatedQuote = this.getRelatedQuote(quote);
+    const relatedQuote = this.getRelatedQuote(column);
     if (relatedQuote) {
       styleClass = 'quote';
       if (relatedQuote.borderTop) {
@@ -61,10 +61,9 @@ export class Line {
     return styleClass;
   }
 
-  private getRelatedQuote(quote: Quote) {
-    return this.relatedQuotesIds.find(q => {
-      return q.quoteId === quote.getId();
-    });
+  public getBracketColor(column: number) {
+    const relatedQuote = this.getRelatedQuote(column);
+    return relatedQuote ? relatedQuote.quote.getColor() : 'transparent';
   }
 
 }

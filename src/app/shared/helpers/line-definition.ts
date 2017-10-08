@@ -25,7 +25,7 @@ export class LineDefinition {
     lines.forEach(list => {
       list.forEach( (item) => {
         newArray.push(new Line(lineId, item));
-        lineId ++;
+        lineId = (lineId + 1) % AppSettings.PAGE_SIZE;
       } );
     });
     if (newArray.length < AppSettings.PAGE_SIZE) {
@@ -52,23 +52,8 @@ export class LineDefinition {
       }
       updatedLines.push(l);
     });
-    //this.updateSucessorQuotes(updatedLines, indexList, quote);
     return updatedLines;
   }
-
-  // Update the predecessor list from a line
-  // private updateSucessorQuotes(lines: Line[], indexList: boolean[], quote: Quote) {
-  //   lines.map((l, i) => {
-  //     if (i > 0 && indexList[i - 1]) {
-  //       l.setPredecessorQuote(quote);
-  //     }
-  //   });
-  // }
-
-  // Define if a line is the starting and/or ending of a quote.
-  // private static setBorderQuotes(line: Line, type,  quote: Quote) {
-  //   type === 'top' ? line.setBorderTopQuoteId(quote.getId()) : line.setBorderBottomQuoteId(quote.getId());
-  // }
 
   // Get the starting and ending index of a quote
   private static getBorderIndex(indexList) {

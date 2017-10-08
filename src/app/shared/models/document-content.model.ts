@@ -21,9 +21,6 @@ export class DocumentContent {
     }
   }
 
-  public updatePages(newQuote: Quote) {
-  }
-
   public getDocumentId() {
     return this.document.getId();
   }
@@ -36,11 +33,21 @@ export class DocumentContent {
     return this.quotesDisplay;
   }
 
+  public addQuote(quote: Quote) {
+    const column = this.findColumnOfQuote(quote);
+    this.quotesDisplay.push(new QuoteDisplay(quote, column));
+    this.setQuoteDisplayOfPage();
+  }
+
+  public updatePages(newQuote: Quote) {
+    this.setQuoteDisplayOfPage();
+  }
+
   private createPages(document: Document) {
     const quotes = document.getQuotes();
     const pages: Page[] = [];
     let lines: Line[];
-    let pageId = 1;
+    let pageId = 0;
     let page: Page = new Page(pageId);
 
     lines = LineDefinition.createLines(document.text);
@@ -52,27 +59,16 @@ export class DocumentContent {
       }
       page.setLine(line);
     });
-    if (pageId % AppSettings.PAGE_SIZE !== 0) {
-      pages.push(page);
-    }
+    pages.push(page);
     return pages;
   }
+
 
   private createQuotesDisplay(quotes: Quote[]) {
     if (quotes) {
       quotes.forEach(quote => {
-        let column = -1;
-        let success = false;
-        while (!success && column <= AppSettings.MAX_COLMNS) {
-          column++;
-          const pages = quote.getDocumentDisplay();
-          success = this.quotesDisplay.find(display => {
-            return this.columnIsTaken(pages, column, display);
-          }) === undefined;
-        }
-        if (success) {
-          this.quotesDisplay.push(new QuoteDisplay(quote, column));
-        }
+        const column = this.findColumnOfQuote(quote);
+        this.quotesDisplay.push(new QuoteDisplay(quote, column));
       });
     }
   }
@@ -95,21 +91,23 @@ export class DocumentContent {
   private columnIsTaken(pages, column, display) {
     let taken = false;
     const list = this.zip(pages, display);
-    list.map(item => {
+    let iter = 0;
+    while (!taken && iter < list.length) {
+      const item = list[iter];
       const p1 = item[0];
       const p2 = item[1];
       if (p2.column === column) {
         taken = this.intersect(p1.startLine, p2.page.startLine, p1.endLine, p2.page.endLine);
       }
-
-    });
+      iter ++;
+    }
     return taken;
   }
 
   private zip(a, b) {
     const c = [];
     a.map((e, i) => {
-      if (e.page === b.pages[i].page) {
+      if (b.pages[i] && e.page === b.pages[i].page) {
         c.push([e, {page: b.pages[i], column: b.column}]);
       }
     });
@@ -117,7 +115,20 @@ export class DocumentContent {
   }
 
   private intersect(i1, i2, f1, f2) {
-    return i2 < f1 && i1 < f2;
+    return i2 <= f1 && i1 <= f2;
+  }
+
+  private findColumnOfQuote(quote: Quote) {
+    let column = -1;
+    let success = false;
+    while (!success && column <= AppSettings.MAX_COLMNS) {
+      column++;
+      const pages = quote.getDocumentDisplay();
+      success = this.quotesDisplay.find(display => {
+        return this.columnIsTaken(pages, column, display);
+      }) === undefined;
+    }
+    return column;
   }
 
 }

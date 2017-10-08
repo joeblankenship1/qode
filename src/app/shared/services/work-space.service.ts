@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DocumentContent } from '../models/document-content.model';
 import { Code } from '../models/code.model';
 import { Project } from '../models/project.model';
+import { QuoteDisplay } from '../models/quote-display';
 
 @Injectable()
 export class WorkSpaceService {
@@ -31,6 +32,8 @@ export class WorkSpaceService {
 
   private codesSelectedDocument: Code[] = [];
   private codesSelectedDocument$ =  new BehaviorSubject<Code[]>([]);
+
+  private newSelection: Quote;
 
   constructor(private documentService: DocumentService, private quoteService: QuoteService) { }
 
@@ -126,7 +129,17 @@ export class WorkSpaceService {
       return this.quotesSelectedDocument$.asObservable();
     }
 
+    // Return id of actual project
     getProjectId() {
       return this.projectId;
+    }
+
+    setNewSelection(quote: Quote) {
+      this.newSelection = quote;
+    }
+
+    updateDocumentContent(quote: Quote) {
+      this.selectedDocumentContent.addQuote(quote);
+      this.selectedDocumentContent$.next(this.selectedDocumentContent);
     }
 }

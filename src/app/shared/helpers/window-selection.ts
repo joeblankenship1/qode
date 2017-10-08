@@ -34,6 +34,7 @@ export class WindowSelection {
       rangeNodes.push(node = this.nextNode(node));
     }
 
+
     // Add partially selected nodes at the start of the range
     node = range.startContainer;
     while (node && node !== range.commonAncestorContainer) {
@@ -44,11 +45,15 @@ export class WindowSelection {
     return rangeNodes;
   }
 
-  getSelectedNodes(selection, filterTag ) {
+  getSelectedNodes(selection, lineTag) {
     if (selection) {
       if (!selection.isCollapsed) {
-        return this.getRangeSelectedNodes(selection.getRangeAt(0), filterTag)
-        .filter(n => n.localName === filterTag);
+        let rawList = this.getRangeSelectedNodes(selection.getRangeAt(0), lineTag)
+          .filter(n => n.localName === lineTag && n.id !== '');
+        rawList = rawList.filter((v, i) => {
+          return rawList.indexOf(v) === i;
+        });
+        return this.createDocumentDisplay(rawList);
       }
     }
     return [];
@@ -57,9 +62,34 @@ export class WindowSelection {
   getAppLineFromText(element, filterTag) {
     if (element.localName === filterTag) {
       return element;
-    }else {
+    } else {
       return this.getAppLineFromText(element.parentElement, filterTag);
     }
+  }
+
+  createDocumentDisplay(list: any[]) {
+    const result = [];
+    let page = -1;
+    let startLine = 0;
+    let endLine = 0;
+    list.forEach( (line, i) => {
+      if ( parseInt(line.parentElement.id, 0) !== page) {
+        page++;
+        startLine = parseInt(line.id, 0);
+        endLine =  parseInt(line.id, 0);
+      } else {
+        endLine++;
+      }
+      if ( !list[i + 1] || parseInt(list[ i + 1].parentElement.id, 0) !== page) {
+        result.push({
+          page: page,
+          startLine: startLine,
+          endLine: line.outerText === '\n' ? endLine - 1 : endLine
+        });
+      }
+    });
+   return result;
+
   }
 
 }

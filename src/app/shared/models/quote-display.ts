@@ -1,7 +1,7 @@
 import { Quote } from './quote.model';
 
 export class QuoteDisplay {
-  private quoteId: string;
+  private quote: Quote;
   private pages: [{
     page: number;
     startLine: number;
@@ -9,8 +9,8 @@ export class QuoteDisplay {
   }];
   private column: number;
 
-  constructor(quote: Quote, column: number) {
-    this.quoteId = quote.getId();
+  constructor(quote: Quote, column?: number) {
+    this.quote = quote;
     this.pages = quote.getDocumentDisplay();
     this.column = column;
   }
@@ -27,7 +27,7 @@ export class QuoteDisplay {
     });
     if (page) {
       return {
-        quoteId: this.quoteId,
+        quote: this.quote,
         lines: {
           startLine: page.startLine,
           endLine: page.endLine

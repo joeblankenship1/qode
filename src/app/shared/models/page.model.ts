@@ -1,12 +1,13 @@
 import { Line } from './line.model';
 import { QuoteDisplay } from './quote-display';
 import { AppSettings } from '../../app.settings';
+import { Quote } from './quote.model';
 
 export class Page {
   private id: number;
   private lines: Line[];
   private pageDisplay: [{
-    quoteId: number,
+    quote: Quote,
     lines: {
       startLine: number;
       endLine: number
@@ -53,9 +54,9 @@ export class Page {
   }
 
   public lineHasQuote(lines, lineId) {
-    const line = lineId % AppSettings.PAGE_SIZE;
+    const line = lineId;
     if (lines.startLine === lines.endLine && lines.startLine === line) {
-       return true
+       return true;
     } else {
        return lines.startLine <= line && line <= lines.endLine;
     }
@@ -63,10 +64,10 @@ export class Page {
 
   public getColumn(pageDisplay, l) {
     return {
-      quoteId: pageDisplay.quoteId,
+      quote: pageDisplay.quote,
       column: pageDisplay.column,
-      borderTop: pageDisplay.lines.startLine === l % AppSettings.PAGE_SIZE,
-      borderBottom: pageDisplay.lines.endLine === l % AppSettings.PAGE_SIZE
+      borderTop: pageDisplay.lines.startLine === l,
+      borderBottom: pageDisplay.lines.endLine === l
     };
   }
 
