@@ -6,11 +6,13 @@ import {
 import { Router } from '@angular/router';
 import { Project } from '../../../shared/models/project.model';
 import { ProjectService } from '../../../shared/services/project.service';
+import {ViewEncapsulation} from '@angular/core';
 
 @Component({
-  selector: 'app-project-item',
+  selector: '[app-project-item]',
   templateUrl: './project-item.component.html',
-  styleUrls: ['./project-item.component.css']
+  styleUrls: ['./project-item.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ProjectItemComponent implements OnInit {
   @Input() project: Project;
@@ -48,8 +50,7 @@ export class ProjectItemComponent implements OnInit {
   }
 
   onAccessProject() {
-    this.projectService.setOpenedProject(this.project);
-    this.router.navigate(['workspace']);
+    this.router.navigate(['workspace', this.project._id]);
   }
 
 }

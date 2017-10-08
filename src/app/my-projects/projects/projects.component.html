@@ -61,8 +61,10 @@
                 <table class="table table-striped" [mfData]="projects | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
                     <thead>
                         <tr>
-                            <th colspan="2">
+                            <th colspan="1">
                                 Filtro por nombre:
+                            </th>
+                            <th colspan="1">
                                 <input class="form-control smallinput" [(ngModel)]="filterQuery" />
                             </th>
                         </tr>
@@ -77,8 +79,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let proj of mf.data">
-                            <app-project-item [project]="proj"></app-project-item>
+                        <tr app-project-item *ngFor="let proj of mf.data" [project]="proj">
                         </tr>
                     </tbody>
                     <tfoot>
