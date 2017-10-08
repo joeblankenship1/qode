@@ -13,8 +13,8 @@
     color: white;
     font-weight: 300;
     border-radius: 1px;
-    margin: 5px;
-    float: right;
+    margin: 2px;
+    /* float: right; */
     align-self: center;
 }
 
