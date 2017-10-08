@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { DocumentService } from '../../../shared/services/document.service';
 import { Document } from '../../../shared/models/document.model';
 import { WorkSpaceService } from '../../../shared/services/work-space.service';
+import { OptionsComponent } from '../../../shared/helpers/options/options.component';
+import { MenuOption } from '../../../shared/models/menu-option.model';
+import { ContextMenuService, ContextMenuComponent } from 'ngx-contextmenu';
+import { WindowSelection } from '../../../shared/helpers/window-selection';
+import { Quote } from '../../../shared/models/quote.model';
+import { QuoteDisplay } from '../../../shared/models/quote-display';
 
 
 @Component({
@@ -13,7 +19,14 @@ export class DocumentsComponent implements OnInit {
 
   public openedDocuments: Document[] = [];
   public selectedDocument: Document;
-  constructor(private workspaceService: WorkSpaceService,) { }
+  
+  projectId: string;
+  options = new OptionsComponent();
+  menuOptions: MenuOption[][] = [];
+  selectedLines = [];
+
+  constructor(private workspaceService: WorkSpaceService,
+    private contextMenuService: ContextMenuService, private windowSelection: WindowSelection) { }
 
   ngOnInit() {
     this.workspaceService.getOpenedDocuments()
@@ -30,11 +43,70 @@ export class DocumentsComponent implements OnInit {
         this.selectedDocument = selectedDocument;
       }
       );
+
+      this.projectId = this.workspaceService.getProjectId();
+
+      this.createMenuOptions();
   }
 
   onDocumentSelected(document: Document) {
     this.selectedDocument = document;
     this.workspaceService.selectDocument(document);
   }
+
+  // Open context menu, the selected text will be passed as a parameter.
+  // If there's no slected text, several options won't be enabled.
+  public onContextMenu($event: MouseEvent, item: any): void {
+    const newSelection = this.getSelectedText();
+    this.workspaceService.setNewSelection(newSelection);
+    this.defineMenuOptions(newSelection);
+    const selectedText = '';
+    this.contextMenuService.show.next({
+      contextMenu: this.options.optionsMenu,
+      event: $event,
+      item: newSelection
+    });
+    $event.preventDefault();
+    $event.stopPropagation();
+  }
+
+  private createMenuOptions() {
+    this.menuOptions = [[
+      new MenuOption('Asociar codigo', (item) => {
+        if (item) {
+          console.log(item);
+        } else {
+          console.log('sin item');
+        }
+      }),
+      new MenuOption('Codificar con nuevo codigo', () => { console.log('fuuun'); })
+    ]];
+  }
+
+  private defineMenuOptions(newSelection) {
+    if (newSelection) {
+      this.menuOptions.map(group => {
+        group.map(op => newSelection ? op.enabled = true : op.enabled = false);
+      });
+    }
+  }
+
+   // Extract from windows.selection the ids of the LineComponents which contain
+  // the text that has been selected. Also create temporary quote with the selected text.
+  private getSelectedText() {
+    const selection = window.getSelection();
+    const docDisplay = [];
+    this.windowSelection.getSelectedNodes(selection, 'tr')
+    .map(n => this.selectedLines[n.id] = true);
+    const quote = new Quote(selection.toString(), selection.baseOffset,
+    selection.extentOffset - 1, docDisplay, this.projectId);
+    return new QuoteDisplay(quote);
+  }
+
+  // Update the quotes related two each page and lines afected from selection.
+  // This function must be called after a new quote is saved.
+  // private updatePages(newQuote: Quote) {
+  //   this.actualDocumentContent.updatePages(newQuote);
+  // }
 
 }

@@ -3,43 +3,10 @@
     background-color: aliceblue;
     overflow-y: scroll;
     height: 30cm;
-    width: 31cm;
+    /* width: 31cm; */
   }
 
-  .bracket-cont {
-    padding-left: 5px;
-  }
-
-
-  .quote-empty {
-    color: transparent;
-  }
-
-  .quote {
-    color: red;
-    width: 5px;
-    font-weight: bold;
-    padding: none;
-    margin: none;
-    border-left: 2px solid red;
-    padding-left: 10px;
-  }
-
-  .borderTop-quote {
-    border-top: 2px solid red;
-    
-  }
-
-  .borderBottom-quote {
-    border-bottom: 2px solid red;
-  }
-
-  .text-area {
-    padding-left: 15px;
-    padding-right:15px;
-    background-color: white;
-  }
-
+  /* Pages */
   .page {
     margin-top: 2%;
     border-spacing: 0 10px;
@@ -53,6 +20,7 @@
 
   }
 
+  /* Lines */
   .top-line {
     box-shadow:  0 9px 0px 0px white, -9px 0px 0px white, 1px 0 10px -2px #d1d1d1, 1px 0 10px -2px #d1d1d1;
     padding-top: 15px;
@@ -67,6 +35,38 @@
     box-shadow:  0 9px 0px 0px white, 0 -9px 0px 0px white, 1px 0 10px -2px #d1d1d1, 1px 0 10px -2px #d1d1d1;
   }
 
+
+  /* Text */
+  .text-area {
+    padding-left: 15px;
+    padding-right:15px;
+    background-color: white;
+  }
+
+  
+  /* Quotes */
+  .quote-empty {
+    color: transparent;
+    width: 8px;
+  }
+
+  .quote {
+    /* font-weight: bold; */
+    
+    cursor: pointer;
+    padding: none;
+    margin: none;
+    border-left: 2.5px solid;
+  }
+
+  .borderTop-quote {
+    border-top: 2px solid;
+    
+  }
+
+  .borderBottom-quote {
+    border-bottom: 2px solid;
+  }
 
 
 

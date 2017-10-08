@@ -32,7 +32,11 @@ export class WindowSelection {
     const rangeNodes = [];
     while (node && node !== endNode) {
       rangeNodes.push(node = this.nextNode(node));
+      if (node.nodeName === 'TR') {
+        //rangeNodes.push(node.parentNode);
+      }
     }
+
 
     // Add partially selected nodes at the start of the range
     node = range.startContainer;
@@ -44,11 +48,15 @@ export class WindowSelection {
     return rangeNodes;
   }
 
-  getSelectedNodes(selection, filterTag ) {
+  getSelectedNodes(selection, lineTag ) {
     if (selection) {
       if (!selection.isCollapsed) {
-        return this.getRangeSelectedNodes(selection.getRangeAt(0), filterTag)
-        .filter(n => n.localName === filterTag);
+        let rawList = this.getRangeSelectedNodes(selection.getRangeAt(0), lineTag)
+        .filter(n =>  n.localName === lineTag && n.id !== '' );
+        rawList = rawList.filter( (v, i) => {
+          return rawList.indexOf(v) === i;
+        });
+        return this.createDocumentDisplay(rawList);
       }
     }
     return [];
@@ -60,6 +68,11 @@ export class WindowSelection {
     }else {
       return this.getAppLineFromText(element.parentElement, filterTag);
     }
+  }
+
+  createDocumentDisplay(list) {
+    console.log(list);
+    return [];
   }
 
 }

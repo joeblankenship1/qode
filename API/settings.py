@@ -142,6 +142,9 @@ DOMAIN = {
                     }
                 }
             },
+            'color': {
+                'type': 'string'
+            },
             'codes': {
                 'type': 'list',
                 'schema': {
