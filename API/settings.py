@@ -33,13 +33,13 @@ DOMAIN = {
                 'type': 'string',
                 'maxlength': 300
             },
-        },
-        'owner': {
-            'type': 'objectid',
-            'data_relation': {
-                'resource': 'user'
-            },
-            'required': True
+            'owner': {
+                'type': 'objectid',
+                'data_relation': {
+                    'resource': 'user'
+                },
+                'required': True
+            }
         },
         'additional_lookup': {
             'url': 'regex("[\w]+")',
