@@ -5,11 +5,16 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './home/login/login.component';
 import { SignupComponent } from './home/signup/signup.component';
 import { ProjectsComponent } from './my-projects/projects/projects.component';
+import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
+
 
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
-  { path: 'workspace/:id', component: WorkSpaceComponent, canActivate: [AuthGuard] },
+  { path: 'workspace/:id', component: WorkSpaceComponent,
+    canActivate: [AuthGuard],
+    resolve: { workspace: WorkSpaceResolver}
+  },
   { path: '', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   {path: 'myprojects', component: ProjectsComponent, canActivate: [AuthGuard]},

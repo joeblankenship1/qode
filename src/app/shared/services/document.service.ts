@@ -5,67 +5,87 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/Rx';
 import { AuthHttp } from 'angular2-jwt';
+import { Line } from '../models/line.model';
+import { environment } from '../../../environments/environment';
+import { Quote } from '../models/quote.model';
+import { Memo } from '../models/memo.model';
+import { Project } from '../models/project.model';
+import { QuoteService } from './quote.service';
+import { element } from 'protractor';
 
 
 @Injectable()
 export class DocumentService {
 
 
-  public url : string = 'http://localhost:5000/document'
   headers: Headers;
   options: RequestOptions;
+  projectId: string;
 
-  // openedDocuments: Observable<Document[]>;
-  private openedDocuments: Document[] = [];
-  private openedDocuments$ = new BehaviorSubject<Document[]>([]);
-  private selectedDocument: Document = null;
-  private selectedDocument$ = new BehaviorSubject<Document>(null);
+  private documentList: Document[];
+  private documentList$ = new BehaviorSubject<Document[]>(null);
 
-  constructor(private http: AuthHttp) {
+  constructor(private http: AuthHttp, private quoteService: QuoteService) {
+    this.headers = new Headers({ 'Content-Type': 'application/json' });
+    this.options = new RequestOptions({ headers: this.headers });
   }
 
-  getDocuments(): Observable<any> {
-    return this.http.get(this.url)
+
+  // Get all documents from server
+  loadDocuments(projectId): Observable<Document[]> {
+    this.projectId = projectId;
+    return this.http.get( environment.apiUrl + `document?where{"project"="${projectId}"}`)
       .map((data: Response) => {
         const extracted = data.json();
         const documentArray: Document[] = [];
-        let document;
+        let document: Document;
         if (extracted._items) {
           for (const element of extracted._items) {
-            document = new Document(element);
+            document = new Document(element, projectId);
+            if (element.quotes) {
+              this.createQuotes(element.quotes, document);
+            }
+            if (element.memos) {
+              const memos = element.map( memo => new Memo());
+              document.setMemos(memos);
+            }
             documentArray.push(document);
           }
         }
+        this.setDocuments(documentArray);
         return documentArray;
-      },e => console.error(e));
+      }, e => console.error(e));
   }
 
-  getSelectedDocument() {
-    return this.selectedDocument$.asObservable();
+  setDocuments(documents: Document[]) {
+    this.documentList = documents;
+    this.documentList$.next(this.documentList);
   }
 
-  setSelectedDocument(selectedDocument: Document) {
-    this.selectedDocument = selectedDocument;
-    this.selectedDocument$.next(selectedDocument);
+  getDocuments() {
+    return this.documentList$.asObservable();
   }
 
-  openDocument(doc: Document) {
-    if (!this.openedDocuments.includes(doc)) {
-      this.openedDocuments.push(doc);
-      this.setOpenedDocuments(this.openedDocuments);
-    }
-    this.setSelectedDocument(doc);
+  // Send document to server
+  addDocument(document): Observable<any> {
+    const body = JSON.stringify(document);
+    return this.http.post( environment.apiUrl + 'document', body, this.options)
+      .map(res => res.json()._id || {})
+      .catch(this.handleErrorObservable);
   }
 
-  setOpenedDocuments(docArray: Document[]) {
-    this.openedDocuments = docArray;
-    this.openedDocuments$.next(docArray);
+  private handleErrorObservable(error: Response | any) {
+    console.error(error.message || error);
+    return Observable.throw(error.message || error);
   }
 
-  getOpenedDocuments() {
-    return this.openedDocuments$.asObservable();
+  private createQuotes(quotes, document: Document) {
+      this.quoteService.getQuoteList().subscribe(
+      quoteList => {
+          document.setQuotes(quoteList.filter( q => quotes.find( e => e === q.getId()) !== undefined ));
+      },
+      error => console.log(error)
+    );
   }
-
-
 
 }

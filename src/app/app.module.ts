@@ -37,9 +37,16 @@ import { LoginComponent } from './home/login/login.component';
 import { SignupComponent } from './home/signup/signup.component';
 import { UserService } from './shared/services/user.service';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
+import { ContextMenuModule, ContextMenuService } from 'ngx-contextmenu';
+import { OptionsComponent } from './shared/helpers/options/options.component';
+import { WindowSelection } from './shared/helpers/window-selection';
+import { QuoteService } from './shared/services/quote.service';
+import { WorkSpaceService } from './shared/services/work-space.service';
 
-import { DataTableModule } from 'angular2-datatable';
-import { InlineEditorModule } from 'ng2-inline-editor';
+
+import {DataTableModule} from 'angular2-datatable';
+import {InlineEditorModule} from 'ng2-inline-editor';
+import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
 import { DataFilterPipe } from './my-projects/projects/data-filter.pipe';
 
 
@@ -77,6 +84,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     LoginComponent,
     SignupComponent,
     ProjectItemColComponent,
+    OptionsComponent,
     DataFilterPipe
   ],
   imports: [
@@ -85,22 +93,27 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpModule,
     ModalModule.forRoot(),
     BootstrapModalModule,
-    ReactiveFormsModule,
-    HttpModule,
+  	ReactiveFormsModule,
     RouterModule.forRoot(routes, { useHash: true }),
     DataTableModule,
     InlineEditorModule,
+    ContextMenuModule
   ],
   providers: [DocumentService, CodeService,
     AuthGuard,
     AuthService,
+    ContextMenuService,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,
       deps: [Http, RequestOptions]
     },
     UserService,
-    ProjectService
+    ProjectService,
+    QuoteService,
+    WindowSelection,
+    WorkSpaceService,
+    WorkSpaceResolver
   ],
   bootstrap: [AppComponent],
   entryComponents: [CodeModalComponent]
