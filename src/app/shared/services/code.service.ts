@@ -52,7 +52,7 @@ export class CodeService {
   }
 
   addCode(code: Code): Observable<any> {
-    return this.http.post(environment.apiUrl, code.getMessageBody(), this.options)
+    return this.http.post(environment.apiUrl + 'code', code.getMessageBody(), this.options)
       .map((data: Response) => {
         const extracted = data.json();
         if (extracted._id) {

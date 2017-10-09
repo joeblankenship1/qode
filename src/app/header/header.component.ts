@@ -7,6 +7,7 @@ import { AuthService } from '../shared/services/auth.service';
 import { Routes, Router } from '@angular/router';
 import { Project } from '../shared/models/project.model';
 import { ProjectService } from '../shared/services/project.service';
+import { WorkSpaceService } from '../shared/services/work-space.service';
 
 @Component({
   selector: 'app-header',
@@ -17,10 +18,10 @@ import { ProjectService } from '../shared/services/project.service';
 export class HeaderComponent implements OnInit {
   appname = '';
   show: boolean;
-  private project: Project;
+  private projectId: string;
 
   constructor(private authsvc: AuthService, private router: Router, private modal: Modal
-    , private projectService: ProjectService) {
+    , private workspaceService: WorkSpaceService) {
     this.appname = 'libreQDA';
   }
 
@@ -28,13 +29,6 @@ export class HeaderComponent implements OnInit {
     this.authsvc.loggedIn$.subscribe(s => {
       this.show = s;
     });
-    this.projectService.getOpenedProject()
-      .subscribe(
-      project => {
-        this.project = project;
-      },
-      error => console.error(error)
-      );
   }
 
   logout() {
@@ -42,7 +36,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onNewCode() {
-    const newCode = new Code({ name: '', project: this.project._id });
+    const newCode = new Code({ name: '', project: this.workspaceService.getProjectId() });
     this.modal.open(CodeModalComponent, overlayConfigFactory({ code: newCode, mode: 'new' }, BSModalContext))
       .then((resultPromise) => {
         resultPromise.result.then((result) => {
