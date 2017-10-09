@@ -9,7 +9,7 @@ import { ProjectsComponent } from './my-projects/projects/projects.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
-  { path: 'workspace', component: WorkSpaceComponent, canActivate: [AuthGuard] },
+  { path: 'workspace/:id', component: WorkSpaceComponent, canActivate: [AuthGuard] },
   { path: '', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   {path: 'myprojects', component: ProjectsComponent, canActivate: [AuthGuard]},

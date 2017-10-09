@@ -10,8 +10,6 @@ import { Project } from '../models/project.model';
 import { Observable } from 'rxjs/Observable';
 import { AuthHttp } from 'angular2-jwt';
 
-// import 'rxjs/Rx';
-
 @Injectable()
 export class ProjectService {
 
@@ -82,7 +80,7 @@ export class ProjectService {
     return this.http.post(this.url, proj.getMessageBody())
       .map((data: Response) => {
         const aux = data.json();
-        return new Project({ _id: aux._id, name: proj.name, description: proj.description, _etag: aux._etag });
+        return new Project({ _id: aux._id, name: proj.name, description: proj.description, _etag: aux._etag, owner: proj.owner });
       }).catch((err: Response) => {
         const details = err.json();
         return Observable.throw(details);
@@ -94,7 +92,9 @@ export class ProjectService {
     const options = new RequestOptions({ headers: headers });
     return this.http.patch(this.url + '/' + proj._id, proj.getMessageBody(), options)
       .map((data: Response) => {
-        return 'OK';
+        console.log(data.ok);
+        const aux = data.json();
+        return new Project({ _id: aux._id, name: proj.name, description: proj.description, _etag: aux._etag, owner: proj.owner });
       }).catch((err: Response) => {
         const details = err.json();
         return Observable.throw(details);

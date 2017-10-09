@@ -38,8 +38,9 @@ import { SignupComponent } from './home/signup/signup.component';
 import { UserService } from './shared/services/user.service';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 
-import {DataTableModule} from 'angular2-datatable';
-import {InlineEditorModule} from 'ng2-inline-editor';
+import { DataTableModule } from 'angular2-datatable';
+import { InlineEditorModule } from 'ng2-inline-editor';
+import { DataFilterPipe } from './my-projects/projects/data-filter.pipe';
 
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -76,6 +77,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     LoginComponent,
     SignupComponent,
     ProjectItemColComponent,
+    DataFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -83,14 +85,13 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpModule,
     ModalModule.forRoot(),
     BootstrapModalModule,
-	ReactiveFormsModule,
+    ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(routes, { useHash: true }),
     DataTableModule,
     InlineEditorModule,
-
   ],
-  providers: [DocumentService,CodeService,
+  providers: [DocumentService, CodeService,
     AuthGuard,
     AuthService,
     {
