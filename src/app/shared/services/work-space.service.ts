@@ -142,6 +142,7 @@ export class WorkSpaceService {
     updateDocumentContent(quote: Quote) {
       this.selectedDocumentContent.addQuote(quote);
       this.selectedDocumentContent$.next(this.selectedDocumentContent);
+<<<<<<< HEAD
     }
 
     cleanWorkSpace() {
@@ -157,5 +158,7 @@ export class WorkSpaceService {
       this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
       this.codesSelectedDocument.splice(0);
       this.codesSelectedDocument$.next(this.codesSelectedDocument);
+=======
+>>>>>>> 60881a1f81c68737d1be38080e0ce9a2a8e9a771
     }
 }
