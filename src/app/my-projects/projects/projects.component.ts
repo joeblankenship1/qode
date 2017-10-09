@@ -73,6 +73,8 @@ export class ProjectsComponent implements OnInit {
           .subscribe(
           proj => {
             this.projectService.addProject(proj);
+            this.nameProjectRef.nativeElement.value = '';
+            this.descProjectRef.nativeElement.value = '';
           },
           error => {
             if (error._issues.name.includes('is not unique')) {
