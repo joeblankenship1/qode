@@ -32,6 +32,7 @@ export class WindowSelection {
     const rangeNodes = [];
     while (node && node !== endNode) {
       rangeNodes.push(node = this.nextNode(node));
+
     }
 
 

@@ -33,7 +33,11 @@ export class WorkSpaceService {
   private codesSelectedDocument: Code[] = [];
   private codesSelectedDocument$ =  new BehaviorSubject<Code[]>([]);
 
+<<<<<<< HEAD
   private newSelection: Quote;
+=======
+  private newSelection: QuoteDisplay;
+>>>>>>> 6db65d361e6564134b4911cd57f1a80f01626d57
 
   constructor(private documentService: DocumentService, private quoteService: QuoteService) { }
 
@@ -134,6 +138,7 @@ export class WorkSpaceService {
       return this.projectId;
     }
 
+<<<<<<< HEAD
     setNewSelection(quote: Quote) {
       this.newSelection = quote;
     }
@@ -141,5 +146,9 @@ export class WorkSpaceService {
     updateDocumentContent(quote: Quote) {
       this.selectedDocumentContent.addQuote(quote);
       this.selectedDocumentContent$.next(this.selectedDocumentContent);
+=======
+    setNewSelection(quoteDisplay: QuoteDisplay) {
+      this.newSelection = quoteDisplay;
+>>>>>>> 6db65d361e6564134b4911cd57f1a80f01626d57
     }
 }

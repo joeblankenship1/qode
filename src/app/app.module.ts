@@ -47,7 +47,10 @@ import { WorkSpaceService } from './shared/services/work-space.service';
 import {DataTableModule} from 'angular2-datatable';
 import {InlineEditorModule} from 'ng2-inline-editor';
 import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
+<<<<<<< HEAD
 import { DataFilterPipe } from './my-projects/projects/data-filter.pipe';
+=======
+>>>>>>> 6db65d361e6564134b4911cd57f1a80f01626d57
 
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -84,8 +87,13 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     LoginComponent,
     SignupComponent,
     ProjectItemColComponent,
+<<<<<<< HEAD
     OptionsComponent,
     DataFilterPipe
+=======
+    OptionsComponent
+
+>>>>>>> 6db65d361e6564134b4911cd57f1a80f01626d57
   ],
   imports: [
     BrowserModule,
