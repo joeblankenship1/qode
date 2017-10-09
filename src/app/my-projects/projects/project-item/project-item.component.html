@@ -4,5 +4,8 @@
 </td>
 <td> {{project.name.split('/')[1]}}</td>
 <td>
-    <inline-editor type="text" [(ngModel)]="project.description" (onSave)="onUpdateDescription($event)" size=50></inline-editor>
+    <inline-editor type="text" [(ngModel)]="project.description" (onSave)="onUpdateDescription($event)" size=80 min=0 max=300></inline-editor>
+    <button class="btn btn-edit" *ngIf="project.description == ''" (click)="this.project.description = 'Ingresa aquí la nueva descripcion'">
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+    </button>
 </td>
