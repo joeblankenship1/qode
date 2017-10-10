@@ -44,8 +44,7 @@ DOMAIN = {
         'additional_lookup': {
             'url': 'regex("[\w]+")',
             'field': 'name',
-        },
-        # 'id_field': 'name',
+        }
     },
     'document': {
         'schema': {
@@ -55,8 +54,7 @@ DOMAIN = {
                 'required': True
             },
             'path':{
-                'type': 'string',
-                'required': True
+                'type': 'string'
             },
             'atributes':{
                 'type': 'dict',

@@ -68,11 +68,13 @@ export class CodeService {
   }
 
   updateCode(code: Code): Observable<any> {
+	const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match':code._etag});
+    const updoptions = new RequestOptions({ headers: updheaders }); 
     const index = this.codes.indexOf(code, 0);
     if (index === -1) {
       return this.addCode(code);
     }
-    return this.http.patch(environment.apiUrl + 'code/' + code._id, code.getMessageBody(), this.options)
+    return this.http.patch(environment.apiUrl + 'code/' + code._id, code.getMessageBody(), updoptions)
       .map((data: Response) => {
         const extracted = data.json();
         if (extracted._id) {
@@ -85,12 +87,14 @@ export class CodeService {
   }
 
   deleteCode(code: Code): Observable<any> {
+	const delheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match':code._etag});
+    const deloptions = new RequestOptions({ headers: delheaders }); 
     const index = this.codes.indexOf(code, 0);
     if (index === -1) {
       this.codes$.next(this.codes);
       return;
     }
-    return this.http.delete(environment.apiUrl + 'code/' + code._id, this.options)
+    return this.http.delete(environment.apiUrl + 'code/' + code._id, deloptions)
       .map((data: Response) => {
         this.codes.splice(index, 1);
         this.codes$.next(this.codes);
