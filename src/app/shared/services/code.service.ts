@@ -20,12 +20,12 @@ export class CodeService {
   private project: Project;
 
   constructor(private http: AuthHttp, private projectService: ProjectService) {
-    this.headers = new Headers({ 'Content-Type': 'application/json' });
+    this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache'});
     this.options = new RequestOptions({ headers: this.headers });
    }
 
   loadCodes(projectId): Observable<Code[]> {
-    return this.http.get(environment.apiUrl + `code?where={"project": "${projectId}" }`)
+    return this.http.get(environment.apiUrl + `code?where={"project":"${projectId}"}`, this.options)
       .map((data: Response) => {
         const extracted = data.json();
         const codeArray: Code[] = [];
@@ -36,15 +36,14 @@ export class CodeService {
             codeArray.push(code);
           }
         }
-        this.codes = codeArray;
-        this.codes$.next(codeArray);
+        this.setCodes(codeArray);
         return codeArray;
       });
   }
 
   setCodes(codeArray: Code[]) {
     this.codes = codeArray;
-    this.codes$.next(codeArray);
+    this.codes$.next(this.codes);
   }
 
   getCodes() {
@@ -68,8 +67,8 @@ export class CodeService {
   }
 
   updateCode(code: Code): Observable<any> {
-	const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match':code._etag});
-    const updoptions = new RequestOptions({ headers: updheaders }); 
+    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': code._etag});
+    const updoptions = new RequestOptions({ headers: updheaders });
     const index = this.codes.indexOf(code, 0);
     if (index === -1) {
       return this.addCode(code);
@@ -87,8 +86,8 @@ export class CodeService {
   }
 
   deleteCode(code: Code): Observable<any> {
-	const delheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match':code._etag});
-    const deloptions = new RequestOptions({ headers: delheaders }); 
+    const delheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': code._etag});
+    const deloptions = new RequestOptions({ headers: delheaders });
     const index = this.codes.indexOf(code, 0);
     if (index === -1) {
       this.codes$.next(this.codes);

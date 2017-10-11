@@ -26,7 +26,7 @@ export class DocumentService {
   private documentList$ = new BehaviorSubject<Document[]>(null);
 
   constructor(private http: AuthHttp, private quoteService: QuoteService) {
-    this.headers = new Headers({ 'Content-Type': 'application/json' });
+    this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache'});
     this.options = new RequestOptions({ headers: this.headers });
   }
 
