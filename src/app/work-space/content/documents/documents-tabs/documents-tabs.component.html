@@ -1,5 +1,4 @@
-<div *ngIf="doc!=null">
-    <button class="btn btn-primary" >{{doc.name}}
+
+    <button class="btn btn-primary" *ngIf="doc!=null" (click)="onSelectDocument()">{{doc.name}}
       <span (click)="this.parentElement.style.display='none'">&times;</span>
     </button>
-</div>

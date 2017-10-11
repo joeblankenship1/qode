@@ -75,7 +75,7 @@ export class ProjectService {
   }
 
   createProject(proj: Project): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache' });
     const options = new RequestOptions({ headers: headers });
     return this.http.post(this.url, proj.getMessageBody())
       .map((data: Response) => {

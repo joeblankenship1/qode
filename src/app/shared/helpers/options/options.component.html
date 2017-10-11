@@ -1,0 +1,12 @@
+<context-menu>
+  <div *ngFor="let group of optionGroups">
+    <ng-template *ngFor="let option of group" 
+      contextMenuItem let-item 
+      [visible]="option.visible" 
+      [enabled]="option.enabled"
+      (execute)="option.onClick(optionsMenu.item)">
+      {{option.name}}
+    </ng-template>
+    <ng-template contextMenuItem divider="true"></ng-template>
+  </div>
+</context-menu>
