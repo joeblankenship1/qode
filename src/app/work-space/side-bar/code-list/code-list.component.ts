@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Code } from '../../../shared/models/code.model';
 import { CodeService } from '../../../shared/services/code.service';
@@ -16,8 +16,7 @@ export class CodeListComponent implements OnInit {
   public newCodeName = '';
   public projectId: string;
 
-  constructor(private codeService: CodeService, private projectService: ProjectService,
-    private workspaceService: WorkSpaceService) { }
+  constructor(private codeService: CodeService, private workspaceService: WorkSpaceService) { }
 
   ngOnInit() {
     this.codeService.getCodes()
@@ -27,6 +26,7 @@ export class CodeListComponent implements OnInit {
         this.projectId = this.workspaceService.getProjectId();
       }
       );
+      this.projectId = this.workspaceService.getProjectId();
   }
 
   onAddCode() {
@@ -35,7 +35,7 @@ export class CodeListComponent implements OnInit {
     }
     this.codeService.addCode(new Code({
       'name': this.newCodeName, 'description': '',
-      'project': this.projectId
+      'project': this.workspaceService.getProjectId()
     }))
       .subscribe(
       resp => {

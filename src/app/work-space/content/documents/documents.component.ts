@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DocumentService } from '../../../shared/services/document.service';
 import { Document } from '../../../shared/models/document.model';
 import { WorkSpaceService } from '../../../shared/services/work-space.service';
@@ -16,7 +16,7 @@ import { QuoteService } from '../../../shared/services/quote.service';
   templateUrl: './documents.component.html',
   styleUrls: ['./documents.component.css']
 })
-export class DocumentsComponent implements OnInit {
+export class DocumentsComponent implements OnInit, OnDestroy {
 
   public openedDocuments: Document[] = [];
   public selectedDocument: Document;
@@ -68,6 +68,9 @@ export class DocumentsComponent implements OnInit {
     });
     $event.preventDefault();
     $event.stopPropagation();
+  }
+
+  ngOnDestroy() {
   }
 
   private createMenuOptions() {
