@@ -1,9 +1,21 @@
+@media screen and (max-height: 1148px) {
+  .sidenav {
+    padding: 2px;
+    padding-top: 20px;
+    background-color: #333534;
+    height: 879px;
+    width: 20%;
+  }
+}
+
+@media screen and (max-height: 840px) {
 .sidenav {
     padding: 2px;
     padding-top: 20px;
     background-color: #333534;
-    height: 800px;
+    height: 830px;
     width: 20%;
+  }
 }
 
 #miniside {

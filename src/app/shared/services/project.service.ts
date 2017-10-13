@@ -75,7 +75,7 @@ export class ProjectService {
   }
 
   createProject(proj: Project): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache' });
     const options = new RequestOptions({ headers: headers });
     return this.http.post(this.url, proj.getMessageBody())
       .map((data: Response) => {
@@ -92,7 +92,9 @@ export class ProjectService {
     const options = new RequestOptions({ headers: headers });
     return this.http.patch(this.url + '/' + proj._id, proj.getMessageBody(), options)
       .map((data: Response) => {
-        return 'OK';
+        console.log(data.ok);
+        const aux = data.json();
+        return new Project({ _id: aux._id, name: proj.name, description: proj.description, _etag: aux._etag, owner: proj.owner });
       }).catch((err: Response) => {
         const details = err.json();
         return Observable.throw(details);

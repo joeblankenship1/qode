@@ -44,8 +44,7 @@ DOMAIN = {
         'additional_lookup': {
             'url': 'regex("[\w]+")',
             'field': 'name',
-        },
-        # 'id_field': 'name',
+        }
     },
     'document': {
         'schema': {
@@ -55,13 +54,16 @@ DOMAIN = {
                 'required': True
             },
             'path':{
-                'type': 'string',
-                'required': True
+                'type': 'string'
             },
             'atributes':{
                 'type': 'dict',
                 'allow_unknown': True,
                 'default':{}
+            },
+            'opened': {
+              'type': 'boolean',
+              'default': True
             },
             'text':{
                 'type': 'string',
@@ -127,15 +129,36 @@ DOMAIN = {
                 },
                 'required': True
             },
+            'documentDisplay': {
+                'type': 'list',
+                'schema': {
+                    'type': 'dict',
+                    'schema': {
+                        'page': {'type': 'integer'},
+                        'startLine': {'type': 'integer'},
+                        'endLine': {'type': 'integer'}
+                    }
+                }
+            },
+            'color': {
+                'type': 'string'
+            },
             'codes': {
                 'type': 'list',
                 'schema': {
                     'type': 'objectid',
                     'data_relation': {
-                        'resource': 'code'
+                        'resource': 'code',
+                        'embeddable': True
                     }
+                }
+            },
+            'project': {
+                'type': 'objectid',
+                'data_relation': {
+                    'resource': 'project'
                 },
-                'embeddable': True
+                'required': True
             }
         }
     }

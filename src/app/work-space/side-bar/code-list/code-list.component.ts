@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Code } from '../../../shared/models/code.model';
 import { CodeService } from '../../../shared/services/code.service';
 import { Project } from '../../../shared/models/project.model';
 import { ProjectService } from '../../../shared/services/project.service';
+import { WorkSpaceService } from '../../../shared/services/work-space.service';
 
 @Component({
   selector: 'app-code-list',
@@ -12,38 +13,36 @@ import { ProjectService } from '../../../shared/services/project.service';
 })
 export class CodeListComponent implements OnInit {
   public codes: Code[] = [];
-  public newCodeName: string = '';
-  private project: Project;
+  public newCodeName = '';
+  public projectId: string;
 
-  constructor(private codeService: CodeService, private projectService: ProjectService) { }
+  constructor(private codeService: CodeService, private workspaceService: WorkSpaceService) { }
 
   ngOnInit() {
     this.codeService.getCodes()
-    .subscribe(
-      codes => {
-        this.codes = codes;
-      }
-    );
-    this.projectService.getOpenedProject()
       .subscribe(
-      project => {
-        this.project = project;
-      },
-      error => console.error(error)
+        codes => {
+          this.codes = codes;
+        }
       );
+      this.projectId = this.workspaceService.getProjectId();
   }
 
   onAddCode() {
     if (this.newCodeName == null || this.newCodeName === '') {
       return;
     }
-    this.codeService.addCode(new Code({'name': this.newCodeName, 'description': '', 'project': this.project._id}))
-    .subscribe(
+    this.codeService.addCode(new Code({
+      'name': this.newCodeName, 'description': '',
+      'project': this.workspaceService.getProjectId()
+    }))
+      .subscribe(
       resp => {
       },
       error => {
         alert(error);
-        console.error(error); });
+        console.error(error);
+      });
     this.newCodeName = '';
   }
 }

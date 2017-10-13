@@ -1,1 +1,22 @@
-<p> {{actualDocument?actualDocument.text:""}}</p>
+<div class="content-container">
+  <table style="width:100%">
+    <tr *ngFor="let page of pages; let p=index">
+      <td class="page-container">
+        <table class="page" [id]="p">
+          <tbody [id]="p">
+          <tr *ngFor="let line of page.getLines(); let l = index" [id]="l">
+            <td *ngFor="let quote of allQuotes; let i = index" 
+            [ngClass]="line?.getBracketType(colRange-i-1)" 
+            [ngStyle]="{ 'color': line?.getBracketColor(colRange-i-1) }"
+            >
+            </td>
+            <td 
+            [ngClass]="line? line.getLineType(): 'white-line'">{{line?.text}}<br>
+            </td>
+          </tr>
+        </tbody>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
