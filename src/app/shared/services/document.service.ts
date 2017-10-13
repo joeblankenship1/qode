@@ -25,7 +25,7 @@ export class DocumentService {
   }
 
   getDocuments(): Observable<any> {
-    return this.http.get(this.url)
+    return this.http.get(this.url + `document?where{"project": "${projectId}"}`)
       .map((data: Response) => {
         const extracted = data.json();
         const documentArray: Document[] = [];

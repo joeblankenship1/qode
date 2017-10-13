@@ -12,10 +12,10 @@ import { ProjectService } from '../../../shared/services/project.service';
 })
 export class CodeListComponent implements OnInit {
   public codes: Code[] = [];
-  public newCodeName : string = "";
+  public newCodeName: string = '';
   private project: Project;
 
-  constructor(private codeService: CodeService,private projectService:ProjectService) { }
+  constructor(private codeService: CodeService, private projectService: ProjectService) { }
 
   ngOnInit() {
     this.codeService.getCodes()
@@ -33,17 +33,17 @@ export class CodeListComponent implements OnInit {
       );
   }
 
-  onAddCode(){
-    if (this.newCodeName == null || this.newCodeName===""){
+  onAddCode() {
+    if (this.newCodeName == null || this.newCodeName === '') {
       return;
     }
-    this.codeService.addCode(new Code({"name":this.newCodeName,"description":"","project":this.project._id}))
+    this.codeService.addCode(new Code({'name': this.newCodeName, 'description': '', 'project': this.project._id}))
     .subscribe(
       resp => {
       },
       error => {
         alert(error);
-        console.error(error)});
-    this.newCodeName = "";
+        console.error(error); });
+    this.newCodeName = '';
   }
 }
