@@ -10,6 +10,7 @@
   .page {
     margin-top: 2%;
     border-spacing: 0 10px;
+    width: 20cm;
   }
 
   .page-container {
@@ -41,6 +42,7 @@
     padding-left: 15px;
     padding-right:15px;
     background-color: white;
+    font-size: 15.5px;
   }
 
   

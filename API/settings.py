@@ -76,8 +76,11 @@ DOMAIN = {
                 },
                 'required': True
             },
-            'memo':{
-                'type': 'string'
+            'memos':{
+                'type': 'list',
+                'schema': {
+                    'type': 'string'
+                }
             },
             'quotes': {
                 'type': 'list',

@@ -42,10 +42,11 @@ export class DocumentService {
         if (extracted._items) {
           for (const element of extracted._items) {
             document = new Document(element, projectId);
-            if (element.quotes) {
+
+            if (element.quotes && element.quotes.length > 0) {
               this.createQuotes(element.quotes, document);
             }
-            if (element.memos) {
+            if (element.memos && element.memos.length > 0) {
               const memos = element.map( memo => new Memo());
               document.setMemos(memos);
             }
@@ -67,12 +68,24 @@ export class DocumentService {
   }
 
   // Send document to server
-  addDocument(document): Observable<any> {
+  addDocument(document: Document): Observable<any> {
     const body = JSON.stringify(document);
     return this.http.post( environment.apiUrl + 'document', body, this.options)
-      .map(res => res.json()._id || {})
+      .map((data: Response) => {
+          const extracted = data.json();
+          if (extracted._id) {
+            document.setId(extracted._id);
+          }
+          if (extracted._etag) {
+            document.setEtag(extracted._etag);
+          }
+          this.documentList.push(document);
+          this.documentList$.next(this.documentList);
+          return document;
+      })
       .catch(this.handleErrorObservable);
   }
+
 
   private handleErrorObservable(error: Response | any) {
     console.error(error.message || error);

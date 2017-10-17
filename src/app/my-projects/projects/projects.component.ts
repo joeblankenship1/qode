@@ -67,7 +67,7 @@ export class ProjectsComponent implements OnInit {
         const profile = JSON.parse(localStorage.getItem('profile'));
         const projectName = profile.nickname + '/' + projName;
         const owner = profile.name;
-        const newProj = new Project({ name: projectName, description: descName, owner: '59dd2ddf3f52c226083a32fe' });
+        const newProj = new Project({ name: projectName, description: descName, owner: '59e574b2d9fd9327c6751de2' });
 
         this.projectService.createProject(new Project(newProj))
           .subscribe(

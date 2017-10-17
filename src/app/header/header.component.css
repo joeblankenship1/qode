@@ -13,3 +13,7 @@
 .navbar-inverse .navbar-nav>.active>a:hover {
     background-color: #4C5453;
 }
+
+.header-btn {
+    cursor: pointer;
+}

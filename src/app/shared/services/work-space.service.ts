@@ -42,6 +42,7 @@ export class WorkSpaceService {
     this.cleanWorkSpace();
     this.documentService.getDocuments().subscribe(
       documents => {
+        this.openedDocuments.splice(0);
         documents.forEach( d => {
           if (d.isOpened()) {
             this.openedDocuments.push(d);
