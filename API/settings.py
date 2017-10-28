@@ -48,10 +48,19 @@ DOMAIN = {
     },
     'document': {
         'schema': {
-            'name':{
-                'type': 'string',
-                'unique': True,
-                'required': True
+            'key': {
+                'type': 'dict',
+                'schema': {
+                    'name': {'type':'string'},
+                    'project': {
+                        'type': 'objectid',
+                        'data_relation': {
+                        'resource': 'project'
+                        }   
+                    }
+                },
+                'required': True,
+                'unique': True
             },
             'path':{
                 'type': 'string'
@@ -67,13 +76,6 @@ DOMAIN = {
             },
             'text':{
                 'type': 'string',
-                'required': True
-            },
-            'project': {
-                'type': 'objectid',
-                'data_relation': {
-                    'resource': 'project'
-                },
                 'required': True
             },
             'memos':{

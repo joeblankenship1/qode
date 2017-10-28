@@ -34,7 +34,7 @@ export class DocumentService {
   // Get all documents from server
   loadDocuments(projectId): Observable<Document[]> {
     this.projectId = projectId;
-    return this.http.get( environment.apiUrl + `document?where={"project": "${projectId}"}`)
+    return this.http.get( environment.apiUrl + `document?where={"key.project": "${projectId}"}`)
       .map((data: Response) => {
         const extracted = data.json();
         const documentArray: Document[] = [];
@@ -69,7 +69,7 @@ export class DocumentService {
 
   // Send document to server
   addDocument(document: Document): Observable<any> {
-    const body = JSON.stringify(document);
+    const body = document.getMessageBody();
     return this.http.post( environment.apiUrl + 'document', body, this.options)
       .map((data: Response) => {
           const extracted = data.json();
@@ -84,6 +84,23 @@ export class DocumentService {
           return document;
       })
       .catch(this.handleErrorObservable);
+  }
+
+  public updateDocument(document: Document, fields: any): Observable<any> {
+    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag()});
+    const updoptions = new RequestOptions({ headers: updheaders });
+    const index = this.documentList.indexOf(document, 0);
+    this.documentList[index] = document;
+    this.documentList$.next(this.documentList);
+    return this.http.patch(environment.apiUrl + 'document/' + document.getId(), fields, updoptions)
+      .map((data: Response) => {
+        const extracted = data.json();
+        if (extracted._id) {
+          document.setEtag(extracted._etag);
+        }
+        this.documentList[index] = document;
+        return document;
+      });
   }
 
 

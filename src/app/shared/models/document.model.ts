@@ -19,7 +19,7 @@ export class Document {
   constructor(data: any, projectId: string) {
     this._id = data._id || undefined;
     this._etag = data._etag || undefined;
-    this.name = data.name;
+    this.name = data.name ? data.name : data.key.name;
     this.text = data.text;
     this.path = data.path || '';
     this.opened = data.opened || false;
@@ -35,6 +35,10 @@ export class Document {
 
   public getQuotes() {
     return this.quotes;
+  }
+
+  public getEtag() {
+    return this._etag;
   }
 
   public setId(id: string) {
@@ -59,5 +63,17 @@ export class Document {
 
   public isOpened() {
     return this.opened;
+  }
+
+  public getMessageBody() {
+    return {
+      key: { name: this.name,
+        project: this.project
+      },
+      text: this.text,
+      opened: this.opened,
+      quotes: this.quotes,
+      memos: this.memos
+    };
   }
 }

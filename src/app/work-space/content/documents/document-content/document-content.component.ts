@@ -46,6 +46,8 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     if (this.actualDocumentContent) {
       this.pages = this.actualDocumentContent.getPages();
       this.colRange = this.allQuotes.length;
+    } else {
+      this.pages = [];
     }
   }
 
