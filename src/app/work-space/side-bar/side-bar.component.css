@@ -1,19 +1,23 @@
-@media screen and (max-height: 1148px) {
+@media screen and (min-width: 1200px) {
   .sidenav {
     padding: 2px;
     padding-top: 20px;
     background-color: #333534;
-    height: 879px;
+    height: -moz-calc(100vh - 52px);
+    height: -webkit-calc(100vh - 52px);
+    height: calc(100vh - 52px);
     width: 20%;
   }
 }
 
-@media screen and (max-height: 840px) {
+@media screen and (min-width: 992px) {
 .sidenav {
     padding: 2px;
     padding-top: 20px;
     background-color: #333534;
-    height: 830px;
+    height: -moz-calc(100vh - 52px);
+    height: -webkit-calc(100vh - 52px);
+    height: calc(100vh - 52px);
     width: 20%;
   }
 }

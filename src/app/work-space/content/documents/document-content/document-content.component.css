@@ -1,12 +1,32 @@
+  /* Small Devices, Tablets */
 
-  .content-container {
-    background-color: aliceblue;
-    overflow-y: scroll;
-    height: 30cm;
-    /* width: 31cm; */
+  @media only screen and (min-width: 768px) {}
+  /* Medium Devices, Desktops */
+
+  @media only screen and (min-width: 992px) {
+    .content-container {
+      background-color: aliceblue;
+      overflow-y: scroll;
+      height: -moz-calc(94.8vh - 52px);
+      height: -webkit-calc(94.8vh - 52px);
+      height: calc(94.8vh - 52px);
+    }
+  }
+  /* Large Devices, Wide Screens */
+
+  @media only screen and (min-width: 1480px) {
+    .content-container {
+      background-color: aliceblue;
+      overflow-y: scroll;
+      height: -moz-calc(94.8vh - 52px);
+      height: -webkit-calc(94.8vh - 52px);
+      height: calc(94.8vh - 52px);
+    }
   }
 
+  
   /* Pages */
+
   .page {
     margin-top: 2%;
     border-spacing: 0 10px;
@@ -18,35 +38,32 @@
     padding-top: 5px;
     padding-left: 5%;
     padding-right: 5%;
-
   }
-
   /* Lines */
+
   .top-line {
-    box-shadow:  0 9px 0px 0px white, -9px 0px 0px white, 1px 0 10px -2px #d1d1d1, 1px 0 10px -2px #d1d1d1;
+    box-shadow: 0 9px 0px 0px white, -9px 0px 0px white, 1px 0 10px -2px #d1d1d1, 1px 0 10px -2px #d1d1d1;
     padding-top: 15px;
   }
 
   .bottom-line {
-    box-shadow:  9px 0px 0px white, 0 -9px 0px 0px white, 1px 0 10px -2px #d1d1d1, 1px 0 10px -2px #d1d1d1;
+    box-shadow: 9px 0px 0px white, 0 -9px 0px 0px white, 1px 0 10px -2px #d1d1d1, 1px 0 10px -2px #d1d1d1;
     padding-bottom: 15px;
   }
 
   .white-line {
-    box-shadow:  0 9px 0px 0px white, 0 -9px 0px 0px white, 1px 0 10px -2px #d1d1d1, 1px 0 10px -2px #d1d1d1;
+    box-shadow: 0 9px 0px 0px white, 0 -9px 0px 0px white, 1px 0 10px -2px #d1d1d1, 1px 0 10px -2px #d1d1d1;
   }
-
-
   /* Text */
+
   .text-area {
     padding-left: 15px;
-    padding-right:15px;
+    padding-right: 15px;
     background-color: white;
     font-size: 15.5px;
   }
-
-  
   /* Quotes */
+
   .quote-empty {
     color: transparent;
     width: 8px;
@@ -54,7 +71,6 @@
 
   .quote {
     /* font-weight: bold; */
-    
     cursor: pointer;
     padding: none;
     margin: none;
@@ -63,12 +79,8 @@
 
   .borderTop-quote {
     border-top: 2px solid;
-    
   }
 
   .borderBottom-quote {
     border-bottom: 2px solid;
   }
-
-
-
