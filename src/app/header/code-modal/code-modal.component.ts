@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { BSModalContext, Modal } from 'angular2-modal/plugins/bootstrap';
 import { Code } from '../../shared/models/code.model';
 import { CodeService } from '../../shared/services/code.service';
 import { Observable } from 'rxjs/Observable';
@@ -16,28 +16,34 @@ export class CodeModalData extends BSModalContext {
   styleUrls: ['./code-modal.component.css']
 })
 
-export class CodeModalComponent implements OnInit,CloseGuard,ModalComponent<CodeModalData> {
+export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<CodeModalData> {
   context: CodeModalData;
   code: Code;
+  name: string;
+  memo: string;
 
-  constructor(public dialog: DialogRef<CodeModalData>, private codeService:CodeService) {
+  constructor(public dialog: DialogRef<CodeModalData>, private codeService: CodeService, private modal: Modal) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.code = dialog.context.code;
+    this.memo = this.code.memo;
+    this.name = this.code.name;
   }
 
   ngOnInit() {
   }
 
   public onSaveCode() {
-    if (this.code.name === "" ){
-      this.dialog.close("Nombre vacío, debe ingresar un nombre de código");
+    if (this.name === '' ) {
+      this.modal.alert().headerClass('btn-danger').title('Error').body('Nombre vacío, debe ingresar un nombre de código').open();
       return;
     }
     let oper: Observable<any>;
-    if (this.code._id === "0"){
+    this.code.name = this.name;
+    this.code.memo = this.memo;
+    if (this.code._id === '0') {
       oper = this.codeService.addCode(this.code);
-    }else{
+    }else {
       oper  = this.codeService.updateCode(this.code);
     }
     oper.subscribe(
@@ -45,9 +51,9 @@ export class CodeModalComponent implements OnInit,CloseGuard,ModalComponent<Code
         this.dialog.close();
       },
       error => {
-        this.dialog.close(error);
-        console.error(error)}
-    )
+        this.modal.alert().headerClass('btn-danger').title('Error').body(error).open();
+        console.error(error); }
+    );
   }
 
   public onDeleteCode() {
@@ -56,8 +62,8 @@ export class CodeModalComponent implements OnInit,CloseGuard,ModalComponent<Code
         this.dialog.close();
       },
       error => {
-        this.dialog.close(error);
-        console.error(error)});
+        this.modal.alert().headerClass('btn-danger').title('Error').body(error).open();
+        console.error(error); });
   }
 
   public onClose() {

@@ -12,20 +12,17 @@ import { CodeModalComponent, CodeModalData } from '../../../../header/code-modal
 })
 export class CodeItemComponent implements OnInit{
   @Input() code: Code;
-  
+
   constructor(private modal: Modal) {
   }
-  
+
   ngOnInit() {
   }
 
   public onOpenCode() {
     this.modal.open(CodeModalComponent, overlayConfigFactory({ code: this.code, mode: 'new' }, BSModalContext ))
     .then((resultPromise) => {
-      resultPromise.result.then((result) => {
-        if (result != null){
-          this.modal.alert().headerClass("btn-danger").title("Error al guardar").body(result).open();
-        }});
+      resultPromise.result.then((result) => {});
     });
   }
 

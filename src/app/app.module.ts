@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http, RequestOptions } from '@angular/http';
 import { routes } from './app.routes';
 import { Routes, RouterModule } from '@angular/router';
+import { Ng2CompleterModule } from 'ng2-completer';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { SideBarComponent } from './work-space/side-bar/side-bar.component';
@@ -77,6 +78,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DocumentContentComponent,
     WorkSpaceComponent,
     CodeModalComponent,
+    QuoteModalComponent,
     ProjectsComponent,
     ProjectItemComponent,
     ProjectItemColComponent,
@@ -93,11 +95,12 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpModule,
     ModalModule.forRoot(),
     BootstrapModalModule,
-  	ReactiveFormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(routes, { useHash: true }),
     DataTableModule,
     InlineEditorModule,
-    ContextMenuModule
+    ContextMenuModule,
+    Ng2CompleterModule
   ],
   providers: [DocumentService, CodeService,
     AuthGuard,
@@ -116,6 +119,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     WorkSpaceResolver
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CodeModalComponent]
+  entryComponents: [CodeModalComponent, QuoteModalComponent]
 })
 export class AppModule { }

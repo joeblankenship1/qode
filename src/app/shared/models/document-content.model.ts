@@ -34,8 +34,25 @@ export class DocumentContent {
   }
 
   public addQuote(quote: Quote) {
-    const column = this.findColumnOfQuote(quote);
-    this.quotesDisplay.push(new QuoteDisplay(quote, column));
+    const indxOf = this.quotesDisplay.findIndex( qd => {
+      return qd.getQuote().getId() === quote.getId();
+    });
+    if (indxOf !== -1) {
+      this.quotesDisplay[indxOf].setQuote(quote);
+    }else {
+      const column = this.findColumnOfQuote(quote);
+      this.quotesDisplay.push(new QuoteDisplay(quote, column));
+      this.setQuoteDisplayOfPage();
+    }
+  }
+
+  public removeQuote(quote: Quote) {
+    const indxOf = this.quotesDisplay.findIndex( qd => {
+      return qd.getQuote().getId() === quote.getId();
+    });
+    if (indxOf !== -1) {
+      this.quotesDisplay.splice(indxOf, 1);
+    }
     this.setQuoteDisplayOfPage();
   }
 

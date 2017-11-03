@@ -81,6 +81,7 @@ DOMAIN = {
             },
             'quotes': {
                 'type': 'list',
+                'default': [],
                 'schema': {
                     'type': 'objectid',
                     'data_relation': {

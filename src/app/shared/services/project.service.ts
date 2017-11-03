@@ -21,20 +21,25 @@ export class ProjectService {
 
   private url = 'http://localhost:5000/project';
 
+  private headers: Headers;
+  private options: RequestOptions;
+
   constructor(private http: AuthHttp) {
+    this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache'});
+    this.options = new RequestOptions({ headers: this.headers });
   }
 
   getOpenedProject() {
     return this.openedProject$.asObservable();
   }
 
-  setOpenedProject(proj: Project){
+  setOpenedProject(proj: Project) {
     this.openedProject = proj;
     this.openedProject$.next(proj);
   }
 
   getProjects(): Observable<any> {
-    return this.http.get(this.url)
+    return this.http.get(this.url, this.options)
       .map((data: Response) => {
         const extracted = data.json();
         const projectArray: Project[] = [];
@@ -75,8 +80,6 @@ export class ProjectService {
   }
 
   createProject(proj: Project): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache' });
-    const options = new RequestOptions({ headers: headers });
     return this.http.post(this.url, proj.getMessageBody())
       .map((data: Response) => {
         const aux = data.json();

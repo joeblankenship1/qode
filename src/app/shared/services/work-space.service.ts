@@ -119,43 +119,48 @@ export class WorkSpaceService {
     return this.documentContents$.asObservable();
   }
 
-    // Refresh quotes of selected doc
-    setSelectedDocumentQuotes(quotes: Quote[]) {
-      this.quotesSelectedDocument = quotes;
-      this.quotesSelectedDocument$.next(quotes);
-    }
+  // Refresh quotes of selected doc
+  setSelectedDocumentQuotes(quotes: Quote[]) {
+    this.quotesSelectedDocument = quotes;
+    this.quotesSelectedDocument$.next(quotes);
+  }
 
-    // Return quotes of selected doc
-    getSelectedDocumentQuotes() {
-      return this.quotesSelectedDocument$.asObservable();
-    }
+  // Return quotes of selected doc
+  getSelectedDocumentQuotes() {
+    return this.quotesSelectedDocument$.asObservable();
+  }
 
-    // Return id of actual project
-    getProjectId() {
-      return this.projectId;
-    }
+  // Return id of actual project
+  getProjectId() {
+    return this.projectId;
+  }
 
-    setNewSelection(quote: Quote) {
-      this.newSelection = quote;
-    }
+  setNewSelection(quote: Quote) {
+    this.newSelection = quote;
+  }
 
-    updateDocumentContent(quote: Quote) {
-      this.selectedDocumentContent.addQuote(quote);
-      this.selectedDocumentContent$.next(this.selectedDocumentContent);
-    }
+  updateDocumentContent(quote: Quote) {
+    this.selectedDocumentContent.addQuote(quote);
+    this.selectedDocumentContent$.next(this.selectedDocumentContent);
+  }
 
-    cleanWorkSpace() {
-      this.openedDocuments.splice(0);
-      this.openedDocuments$.next(this.openedDocuments);
-      this.selectedDocument = undefined;
-      this.selectedDocument$.next(this.selectedDocument);
-      this.selectedDocumentContent = undefined;
-      this.selectedDocumentContent$.next(this.selectedDocumentContent);
-      this.documentContents.splice(0);
-      this.documentContents$.next(this.documentContents);
-      this.quotesSelectedDocument.splice(0);
-      this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
-      this.codesSelectedDocument.splice(0);
-      this.codesSelectedDocument$.next(this.codesSelectedDocument);
-    }
+  removeQuoteDocumentContent(quote: Quote) {
+    this.selectedDocumentContent.removeQuote(quote);
+    this.selectedDocumentContent$.next(this.selectedDocumentContent);
+  }
+
+  cleanWorkSpace() {
+    this.openedDocuments.splice(0);
+    this.openedDocuments$.next(this.openedDocuments);
+    this.selectedDocument = undefined;
+    this.selectedDocument$.next(this.selectedDocument);
+    this.selectedDocumentContent = undefined;
+    this.selectedDocumentContent$.next(this.selectedDocumentContent);
+    this.documentContents.splice(0);
+    this.documentContents$.next(this.documentContents);
+    this.quotesSelectedDocument.splice(0);
+    this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
+    this.codesSelectedDocument.splice(0);
+    this.codesSelectedDocument$.next(this.codesSelectedDocument);
+  }
 }

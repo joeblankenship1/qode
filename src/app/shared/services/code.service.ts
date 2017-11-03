@@ -50,6 +50,17 @@ export class CodeService {
     return this.codes$.asObservable();
   }
 
+  getCodesById(codes): Code[] {
+    const ret = [];
+    for (const c of codes){
+      const foundCode = this.codes.find( code => code._id === c);
+      if (foundCode) {
+        ret.push(foundCode);
+      }
+    }
+    return ret;
+  }
+
   addCode(code: Code): Observable<any> {
     return this.http.post(environment.apiUrl + 'code', code.getMessageBody(), this.options)
       .map((data: Response) => {

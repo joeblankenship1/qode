@@ -34,7 +34,7 @@ export class DocumentService {
   // Get all documents from server
   loadDocuments(projectId): Observable<Document[]> {
     this.projectId = projectId;
-    return this.http.get( environment.apiUrl + `document?where={"project": "${projectId}"}`)
+    return this.http.get( environment.apiUrl + `document?where={"project": "${projectId}"}`, this.options)
       .map((data: Response) => {
         const extracted = data.json();
         const documentArray: Document[] = [];
@@ -71,6 +71,19 @@ export class DocumentService {
     const body = JSON.stringify(document);
     return this.http.post( environment.apiUrl + 'document', body, this.options)
       .map(res => res.json()._id || {})
+      .catch(this.handleErrorObservable);
+  }
+
+  updateDocumentQuotes(document: Document): Observable<any> {
+    const body = {'quotes': document.getQuotes().map(q => q.getId())};
+    this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache', 'If-Match': document.getEtag()});
+    this.options = new RequestOptions({ headers: this.headers });
+    return this.http.patch( environment.apiUrl + 'document/' + document.getId(), body, this.options)
+      .map(res => {
+        const extracted = res.json();
+        if (extracted._etag) {
+          document.setEtag(extracted._etag);
+        }})
       .catch(this.handleErrorObservable);
   }
 

@@ -39,11 +39,7 @@ export class HeaderComponent implements OnInit {
     const newCode = new Code({ name: '', project: this.workspaceService.getProjectId() });
     this.modal.open(CodeModalComponent, overlayConfigFactory({ code: newCode, mode: 'new' }, BSModalContext))
       .then((resultPromise) => {
-        resultPromise.result.then((result) => {
-          if (result != null) {
-            this.modal.alert().headerClass('btn-danger').title('Error al guardar').body(result).open();
-          }
-        });
+        resultPromise.result.then((result) => {});
       });
   }
 
