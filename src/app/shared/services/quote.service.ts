@@ -21,7 +21,7 @@ export class QuoteService {
   quoteList$ = new BehaviorSubject<Quote[]>([]);
 
   constructor(private http: AuthHttp) {
-    this.headers = new Headers({ 'Content-Type': 'application/json' });
+    this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache'});
     this.options = new RequestOptions({ headers: this.headers });
   }
 

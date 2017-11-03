@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { DocumentService } from '../../../shared/services/document.service';
 import { Document } from '../../../shared/models/document.model';
 import { WorkSpaceService } from '../../../shared/services/work-space.service';
@@ -34,7 +34,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       .subscribe(
       openedDocuments => {
         this.openedDocuments = openedDocuments;
-        this.selectedDocument = openedDocuments[0];
       }
       );
 

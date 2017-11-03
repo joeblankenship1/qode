@@ -11,10 +11,10 @@ import { WorkSpaceService } from '../../../shared/services/work-space.service';
 export class DocumentListComponent implements OnInit {
   public documents: Document[] = [];
 
-  constructor(private workspaceService: WorkSpaceService) { }
+  constructor(private documentService: DocumentService) { }
 
   ngOnInit() {
-    this.workspaceService.getOpenedDocuments()
+    this.documentService.getDocuments()
     .subscribe(
       documents => {
         this.documents = documents;

@@ -1,3 +1,5 @@
 .container-fluid {
-    height: 100%;
+    height: -moz-calc(100% - 52px);
+    height: -webkit-calc(100% - 52px);
+    height: calc(100% - 52px);
 }
