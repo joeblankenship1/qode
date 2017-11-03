@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Document } from '../../../../shared/models/document.model';
 import { DocumentService } from '../../../../shared/services/document.service';
 import { WorkSpaceService } from '../../../../shared/services/work-space.service';
@@ -8,17 +8,24 @@ import { WorkSpaceService } from '../../../../shared/services/work-space.service
   templateUrl: './document-item.component.html',
   styleUrls: ['./document-item.component.css']
 })
-export class DocumentItemComponent implements OnInit {
+export class DocumentItemComponent implements OnInit, OnDestroy {
   @Input() document: Document;
 
-  constructor(private  workspaceService: WorkSpaceService) { }
+  constructor(private  workspaceService: WorkSpaceService,
+  private documentService: DocumentService) { }
 
 
   ngOnInit() {
   }
 
   onOpenDocument() {
-    this.workspaceService.openDocument(this.document);
+    this.document.setOpened(true);
+    this.documentService.updateDocument(this.document, {'opened': true})
+    .subscribe();
+  }
+
+  ngOnDestroy() {
+
   }
 
 }

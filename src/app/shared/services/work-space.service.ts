@@ -39,14 +39,18 @@ export class WorkSpaceService {
 
   public initWorkSpace(projectId) {
     this.projectId = projectId;
-    this.cleanWorkSpace();
     this.documentService.getDocuments().subscribe(
       documents => {
         documents.forEach( d => {
-          if (d.isOpened()) {
+          if (d.isOpened() && !this.openedDocuments.includes(d)) {
             this.openedDocuments.push(d);
+          } else if (!d.isOpened() && this.openedDocuments.includes(d)) {
+            const i = this.openedDocuments.indexOf(d);
+            this.openedDocuments.splice(i, 1);
           }
-          this.documentContents.push(new DocumentContent(d));
+          if (this.documentContents.find( dc => d.getId() === dc.getDocumentId()) === undefined) {
+            this.documentContents.push(new DocumentContent(d));
+          }
         });
         this.setOpenedDocuments(this.openedDocuments);
         this.setDocumentContents(this.documentContents);
@@ -61,18 +65,22 @@ export class WorkSpaceService {
   openDocument(doc: Document) {
     if (!this.openedDocuments.includes(doc)) {
       this.openedDocuments.push(doc);
-      this.setOpenedDocuments(this.openedDocuments);
+      this.openedDocuments$.next(this.openedDocuments);
     }
-    this.setSelectedDocument(doc);
+    this.selectDocument(doc);
   }
 
   // Select a document to show on content
   selectDocument(doc: Document) {
-    if (this.openedDocuments.includes(doc)) {
+    if (doc) {
       const docContent = this.documentContents.find( dc => doc.getId() === dc.getDocumentId());
       this.setSelectedDocument(doc);
       this.setSelectedDocumentContent(docContent);
       this.setSelectedDocumentQuotes(doc.getQuotes());
+    } else {
+      this.setSelectedDocument(doc);
+      this.setSelectedDocumentContent(undefined);
+      this.setSelectedDocumentQuotes(undefined);
     }
   }
 
@@ -158,4 +166,5 @@ export class WorkSpaceService {
       this.codesSelectedDocument.splice(0);
       this.codesSelectedDocument$.next(this.codesSelectedDocument);
     }
+
 }

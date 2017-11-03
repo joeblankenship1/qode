@@ -57,7 +57,7 @@ export class CodeService {
         if (extracted._id) {
           code._id = extracted._id;
         }
-        if (extracted._id) {
+        if (extracted._etag) {
           code._etag = extracted._etag;
         }
         this.codes.push(code);
