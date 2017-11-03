@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { CodeModalComponent } from './code-modal/code-modal.component';
+import { ProjectShareModalComponent } from './project-share-modal/project-share-modal.component';
+
 import { overlayConfigFactory } from 'angular2-modal';
 import { Code } from '../shared/models/code.model';
 import { AuthService } from '../shared/services/auth.service';
@@ -45,6 +47,18 @@ export class HeaderComponent implements OnInit {
           }
         });
       });
+  }
+
+  onShareProject() {
+    const project = this.workspaceService.getProjectId();
+    this.modal.open(ProjectShareModalComponent, overlayConfigFactory({}, BSModalContext));
+      // .then((resultPromise) => {
+      //   resultPromise.result.then((result) => {
+      //     if (result != null) {
+      //       this.modal.alert().headerClass('btn-danger').title('Error al guardar').body(result).open();
+      //     }
+      //   });
+      // });
   }
 
 }

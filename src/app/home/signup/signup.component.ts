@@ -18,7 +18,7 @@ export class SignupComponent implements OnInit {
 
   constructor(
       private router: Router,
-      private authService: AuthService) { 
+      private authService: AuthService) {
         this.showError = false;
       }
 
@@ -37,7 +37,7 @@ export class SignupComponent implements OnInit {
         realm: val.connection,
         username: val.email,
         password: val.password,
-        scope: 'openid profile',
+        scope: 'openid email',
         audience: ''
       };
       this.authService.loginUserPassword(info);

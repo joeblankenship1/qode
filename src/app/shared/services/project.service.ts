@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Project } from '../models/project.model';
 import { Observable } from 'rxjs/Observable';
 import { AuthHttp } from 'angular2-jwt';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ProjectService {
@@ -19,7 +20,7 @@ export class ProjectService {
   private openedProject: Project;
   private openedProject$ = new BehaviorSubject<Project>(null);
 
-  private url = 'http://localhost:5000/project';
+  private url = environment.apiUrl;
 
   constructor(private http: AuthHttp) {
   }
@@ -28,13 +29,13 @@ export class ProjectService {
     return this.openedProject$.asObservable();
   }
 
-  setOpenedProject(proj: Project){
+  setOpenedProject(proj: Project) {
     this.openedProject = proj;
     this.openedProject$.next(proj);
   }
 
   getProjects(): Observable<any> {
-    return this.http.get(this.url)
+    return this.http.get(this.url + 'project')
       .map((data: Response) => {
         const extracted = data.json();
         const projectArray: Project[] = [];
@@ -43,7 +44,7 @@ export class ProjectService {
           for (const element of extracted._items) {
             project = new Project(element);
             projectArray.push(project);
-            this.addProject(element);
+            this.addProject(project);
           }
         }
         return projectArray;
@@ -54,8 +55,8 @@ export class ProjectService {
     return this.myProjects$.asObservable();
   }
 
-  setArrayProyects(newproject: Project[]) {
-    this.myProjects = newproject;
+  setArrayProyects(projectArray: Project[]) {
+    this.myProjects = projectArray;
     this.myProjects$.next(this.myProjects);
   }
 
@@ -75,12 +76,15 @@ export class ProjectService {
   }
 
   createProject(proj: Project): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache' });
     const options = new RequestOptions({ headers: headers });
-    return this.http.post(this.url, proj.getMessageBody())
+    return this.http.post(this.url + 'project', proj.getMessageBody())
       .map((data: Response) => {
         const aux = data.json();
-        return new Project({ _id: aux._id, name: proj.name, description: proj.description, _etag: aux._etag, owner: proj.owner });
+        proj.setId(aux._id);
+        proj.setEtag(aux._etag);
+        proj.setOwner(aux.key.owner);
+        return proj;
       }).catch((err: Response) => {
         const details = err.json();
         return Observable.throw(details);
@@ -90,11 +94,11 @@ export class ProjectService {
   updateProject(proj: Project): Observable<any> {
     const headers = new Headers({ 'Content-Type': 'application/json', 'If-Match': proj._etag });
     const options = new RequestOptions({ headers: headers });
-    return this.http.patch(this.url + '/' + proj._id, proj.getMessageBody(), options)
+    return this.http.patch(this.url + 'project/' + proj._id, proj.getMessageBody(), options)
       .map((data: Response) => {
-        console.log(data.ok);
         const aux = data.json();
-        return new Project({ _id: aux._id, name: proj.name, description: proj.description, _etag: aux._etag, owner: proj.owner });
+        proj.setEtag(aux._etag);
+        return proj;
       }).catch((err: Response) => {
         const details = err.json();
         return Observable.throw(details);
@@ -104,7 +108,7 @@ export class ProjectService {
   deleteProject(proj: Project): Observable<any> {
     const headers = new Headers({ 'Content-Type': 'application/json', 'If-Match': proj._etag });
     const options = new RequestOptions({ headers: headers });
-    return this.http.delete(this.url + '/' + proj._id, options)
+    return this.http.delete(this.url + 'project/' + proj._id, options)
       .map((data: Response) => {
         return 'OK';
       }).catch((err: Response) => {

@@ -19,7 +19,7 @@ export class AuthService {
     responseType: 'token id_token',
     audience: 'http://localhost:5000/',
     redirectUri: 'http://localhost:4200/',
-    scope: 'openid'
+    scope: 'openid email'
   });
 
   constructor(public router: Router) {

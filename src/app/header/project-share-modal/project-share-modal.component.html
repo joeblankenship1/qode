@@ -1,0 +1,26 @@
+<div class="container-fluid code-modal-container">
+    <div class="row code-modal-header">
+        <button type="button" (click)="onClose()" class="close col-xs-1">&times;</button>
+        <div class="col-xs-6 col-md-4">
+            <h4>Compartir proyecto</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon">Código     </span>
+                <!-- <input class="col-xs-12 form-control" type="text" [(ngModel)]="code.name"> -->
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Descripción</span>
+                <!-- <input class="col-xs-12 form-control" type="text" [(ngModel)]="code.memo"> -->
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <button type="button" class="btn btn-success" (click)="onSaveCollaborators()"> Guardar </button>
+        </div>
+    </div>
+</div>

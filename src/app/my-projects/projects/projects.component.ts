@@ -64,12 +64,9 @@ export class ProjectsComponent implements OnInit {
     if (projName !== '') {
       const descName = this.descProjectRef.nativeElement.value;
       if (descName.length < 300) {
-        const profile = JSON.parse(localStorage.getItem('profile'));
-        const projectName = profile.nickname + '/' + projName;
-        const owner = profile.name;
-        const newProj = new Project({ name: projectName, description: descName, owner: '59dd2ddf3f52c226083a32fe' });
+        const newProj = new Project({ name: projName, description: descName, owner: 'default' });
 
-        this.projectService.createProject(new Project(newProj))
+        this.projectService.createProject(newProj)
           .subscribe(
           proj => {
             this.projectService.addProject(proj);
@@ -77,9 +74,12 @@ export class ProjectsComponent implements OnInit {
             this.descProjectRef.nativeElement.value = '';
           },
           error => {
-            if (error._issues.name.includes('is not unique')) {
-              this.errorMessage = 'El nombre del proyecto ya existe.';
-            } else { this.errorMessage = 'Error'; }
+            if (error._issues) {
+              if (error._issues.name.includes('is not unique')) {
+                this.errorMessage = 'El nombre del proyecto ya existe.';
+              } else { this.errorMessage = 'Error';  }
+            } else { this.errorMessage = 'Error';   }
+
           });
       } else { this.errorMessage = 'La descripcion puede tener hasta 300 caracteres.'; }
     } else { this.errorMessage = 'Debes ingresar un nombre para el nuevo proyecto'; }

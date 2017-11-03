@@ -48,6 +48,7 @@ import {DataTableModule} from 'angular2-datatable';
 import {InlineEditorModule} from 'ng2-inline-editor';
 import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
 import { DataFilterPipe } from './my-projects/projects/data-filter.pipe';
+import { ProjectShareModalComponent } from './header/project-share-modal/project-share-modal.component';
 
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -85,7 +86,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SignupComponent,
     ProjectItemColComponent,
     OptionsComponent,
-    DataFilterPipe
+    DataFilterPipe,
+    ProjectShareModalComponent
   ],
   imports: [
     BrowserModule,
@@ -116,6 +118,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     WorkSpaceResolver
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CodeModalComponent]
+  entryComponents: [CodeModalComponent, ProjectShareModalComponent]
 })
 export class AppModule { }

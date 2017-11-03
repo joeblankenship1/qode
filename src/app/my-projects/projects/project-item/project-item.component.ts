@@ -28,8 +28,8 @@ export class ProjectItemComponent implements OnInit {
     this.projectService.updateProject(this.project)
       .subscribe(
       resp => {
-        this.project._etag = resp._etag;
         console.log('UPDATE:' + resp);
+        this.project._etag = resp._etag;
       },
       error => {
         console.error(error);

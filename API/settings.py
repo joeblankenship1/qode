@@ -1,57 +1,52 @@
 DOMAIN = {
-    'user': {
-        'schema': {
-            'username': {
-                'type': 'string',
-                 'unique': True,
-                 'required': True
-            },
-            'password': {
-                'type': 'string',
-                'required': True
-            },
-            'role': {
-                'type': 'string',
-                'allowed': ["reader", "coder"],
-                'required': True
-            }
-        },
-        'id_field': 'username',
-        'additional_lookup': {
-            'url': 'regex("[\w]+")',
-            'field': 'username',
-        }
-    },
     'project': {
+        'cache_control': '',
+        'cache_expires': 0,
+        'extra_response_fields': ['key'],
         'schema': {
-            'name':{
-                'type': 'string',
-                'unique': True,
-                'required': True
+            'key': {
+                'type': 'dict',
+                'schema': {
+                    'name': {'type': 'string'},
+                    'owner': {'type': 'string'}
+                },
+                'required': True,
+                'unique': True
             },
             'description':{
                 'type': 'string',
                 'maxlength': 300
-            },
-            'owner': {
-                'type': 'objectid',
-                'data_relation': {
-                    'resource': 'user'
-                },
-                'required': True
-            },
-        },
-        'additional_lookup': {
-            'url': 'regex("[\w]+")',
-            'field': 'name',
+            }
+            # ,
+            # 'colaborators': {
+            #     'type': 'list',
+            #     'schema': {
+            #         'user': {
+            #             'type':'dict',
+            #             'schema': {
+            #                 'email': {'type':'string'},
+            #                 'role': {'type':'string'},
+            #             }
+            #         }
+            #     }
+            # }
         }
     },
     'document': {
         'schema': {
-            'name':{
-                'type': 'string',
-                'unique': True,
-                'required': True
+            'key': {
+                'type': 'dict',
+                'schema': {
+                    'name': {'type':'string'},
+                    'project': {
+                        'type': 'objectid',
+                        'data_relation': {
+                        'resource': 'project'
+                        }
+                    }
+                },
+                'required': True,
+                'unique': True
             },
             'path':{
                 'type': 'string'
@@ -69,15 +64,11 @@ DOMAIN = {
                 'type': 'string',
                 'required': True
             },
-            'project': {
-                'type': 'objectid',
-                'data_relation': {
-                    'resource': 'project'
-                },
-                'required': True
-            },
-            'memo':{
-                'type': 'string'
+            'memos':{
+                'type': 'list',
+                'schema': {
+                    'type': 'string'
+                }
             },
             'quotes': {
                 'type': 'list',
@@ -93,19 +84,22 @@ DOMAIN = {
     },
     'code': {
         'schema': {
-            'name':{
-                'type': 'string',
-                'required': True
+            'key': {
+                'type': 'dict',
+                'schema': {
+                    'name': {'type':'string'},
+                    'project': {
+                        'type': 'objectid',
+                        'data_relation': {
+                        'resource': 'project'
+                        }
+                    }
+                },
+                'required': True,
+                'unique': True
             },
             'color':{
                 'type': 'string'
-            },
-            'project': {
-                'type': 'objectid',
-                'data_relation': {
-                    'resource': 'project'
-                },
-                'required': True
             },
             'memo':{
                 'type': 'string'
@@ -164,5 +158,5 @@ DOMAIN = {
     }
 }
 
-RESOURCE_METHODS = ['GET','POST']
+RESOURCE_METHODS = ['GET','POST','DELETE']
 ITEM_METHODS = ['GET','PATCH','DELETE']
