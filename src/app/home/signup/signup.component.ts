@@ -37,7 +37,7 @@ export class SignupComponent implements OnInit {
         realm: val.connection,
         username: val.email,
         password: val.password,
-        scope: 'openid email',
+        scope: 'openid profile',
         audience: ''
       };
       this.authService.loginUserPassword(info);

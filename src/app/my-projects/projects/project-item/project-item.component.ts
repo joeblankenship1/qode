@@ -6,7 +6,8 @@ import {
 import { Router } from '@angular/router';
 import { Project } from '../../../shared/models/project.model';
 import { ProjectService } from '../../../shared/services/project.service';
-import {ViewEncapsulation} from '@angular/core';
+import { ViewEncapsulation } from '@angular/core';
+import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: '[app-project-item]',
@@ -16,9 +17,8 @@ import {ViewEncapsulation} from '@angular/core';
 })
 export class ProjectItemComponent implements OnInit {
   @Input() project: Project;
-  editableText = 'myText';
 
-  constructor(private projectService: ProjectService, private router: Router) { }
+  constructor(private projectService: ProjectService, private router: Router, private notificationsService: NotificationsService) { }
 
   ngOnInit() {
   }
@@ -28,11 +28,11 @@ export class ProjectItemComponent implements OnInit {
     this.projectService.updateProject(this.project)
       .subscribe(
       resp => {
-        console.log('UPDATE:' + resp);
+        this.notificationsService.success('Exito', 'Se actualizo la descripcion del proyecto ' + this.project.name);
         this.project._etag = resp._etag;
       },
       error => {
-        console.error(error);
+        this.notificationsService.error('Error', 'Error en la actualizacion del proyecto');
       });
   }
 
@@ -42,11 +42,11 @@ export class ProjectItemComponent implements OnInit {
     this.projectService.deleteProject(projToDelete)
       .subscribe(
       resp => {
-        console.log('DELETE:' + resp);
+        this.notificationsService.success('Exito', 'El proyecto se elimino correctamente');
         this.projectService.removeProject(projToDelete);
       },
       error => {
-        console.error(error);
+        this.notificationsService.error('Error', 'Error en la actualizacion del proyecto');
       });
   }
 

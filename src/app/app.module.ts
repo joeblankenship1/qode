@@ -49,7 +49,8 @@ import {InlineEditorModule} from 'ng2-inline-editor';
 import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
 import { DataFilterPipe } from './my-projects/projects/data-filter.pipe';
 import { ProjectShareModalComponent } from './header/project-share-modal/project-share-modal.component';
-
+import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -95,11 +96,13 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpModule,
     ModalModule.forRoot(),
     BootstrapModalModule,
-  	ReactiveFormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(routes, { useHash: true }),
     DataTableModule,
     InlineEditorModule,
-    ContextMenuModule
+    ContextMenuModule,
+    BrowserAnimationsModule,
+    SimpleNotificationsModule.forRoot()
   ],
   providers: [DocumentService, CodeService,
     AuthGuard,

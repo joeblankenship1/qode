@@ -1,8 +1,8 @@
 <td>
-    <button type="button" class="btn btn-success btn-access" (click)="onAccessProject()">
+    <button type="button" class="btn btn-success" (click)="onAccessProject()">
         <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i> 
     </button>
-    <button class="btn btn-danger btn-delete" (click)="onDeleteProject()">
+    <button class="btn btn-danger" (click)="onDeleteProject()">
         <i class="fa fa-trash-o" aria-hidden="true"></i>
     </button>
     <button class="btn btn-info" (click)="onShareProject()">
@@ -15,4 +15,5 @@
     <button class="btn btn-edit" *ngIf="project.description == ''" (click)="this.project.description = 'Ingresa aquí la nueva descripcion'">
         <i class="fa fa-pencil" aria-hidden="true"></i>
     </button>
+
 </td>

@@ -24,13 +24,18 @@ AUTH0_DOMAIN = 'nurruty.auth0.com' #env.get("AUTH0_DOMAIN")
 API_AUDIENCE = 'http://localhost:5000/' #env.get("API_ID")
 ALGORITHMS = ["RS256"]
 
+# def get_email(tok):
+#     conn = http.client.HTTPSConnection('nurruty.auth0.com')
+#     headers = { 'Authorization': "Bearer " + tok}
+#     conn.request("GET", "/userinfo", headers=headers)
+#     res = conn.getresponse()
+#     data = res.read()
+#     return json.loads(data.decode("utf-8"))['name']
+
 def get_email(tok):
-    conn = http.client.HTTPSConnection('nurruty.auth0.com')
-    headers = { 'Authorization': "Bearer " + tok}
-    conn.request("GET", "/userinfo", headers=headers)
-    res = conn.getresponse()
-    data = res.read()
-    return json.loads(data.decode("utf-8"))['email']
+    unverified_claims = jwt.get_unverified_claims(tok)
+    mail = unverified_claims["https://myapp.example.com/email"].split()
+    return mail[0] 
 
 def get_token_auth_header():
     """Obtains the access token from the Authorization Header
@@ -113,18 +118,16 @@ def requires_auth(f):
                     audience=API_AUDIENCE,
                     issuer="https://"+AUTH0_DOMAIN+"/"
                 )
-            except jwt.ExpiredSignatureError:
-                sesion[token] = ''
+                # print payload
+            except jwt.ExpiredSignatureError: 
                 raise AuthError({"code": "token_expired",
                                 "description": "token is expired"}, 401)
-            except jwt.JWTClaimsError:
-                sesion[token] = ''
+            except jwt.JWTClaimsError: 
                 raise AuthError({"code": "invalid_claims",
                                 "description":
                                     "incorrect claims,"
                                     " please check the audience and issuer"}, 401)
-            except Exception:
-                sesion[token] = ''
+            except Exception: 
                 raise AuthError({"code": "invalid_header",
                                 "description":
                                     "Unable to parse authentication"
@@ -140,9 +143,6 @@ class MyTokenAuth(TokenAuth):
     @cross_origin(headers=['Content-Type', 'Authorization'])
     @requires_auth
     def check_auth(self, token, allowed_roles, resource, method):
-        sesion[token] = get_email(token)
-        print sesion
-        print sesion[token]
         return "All good. You only get this message if you're authenticated"
 
 # Format error response and append status code.

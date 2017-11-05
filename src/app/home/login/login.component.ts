@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
       realm: 'Username-Password-Authentication',
       username: this.model.email,
       password: this.model.password,
-      scope: 'openid email',
+      scope: 'openid profile',
       audience: ''
     });
   }

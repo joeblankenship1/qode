@@ -13,7 +13,7 @@ import {
 import { AuthHttp } from 'angular2-jwt';
 import { ProjectService } from '../../shared/services/project.service';
 import { Project } from '../../shared/models/project.model';
-
+import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-projects',
@@ -21,13 +21,12 @@ import { Project } from '../../shared/models/project.model';
   styleUrls: ['./projects.component.css']
 })
 export class ProjectsComponent implements OnInit {
-  errorMessage = '';
   public projects: Project[];
   public selectedProject: Project;
   @ViewChild('nameProject') nameProjectRef: ElementRef;
   @ViewChild('descProject') descProjectRef: ElementRef;
 
-  constructor(private http: AuthHttp, private projectService: ProjectService) { }
+  constructor(private http: AuthHttp, private projectService: ProjectService, private notificationsService: NotificationsService) { }
 
   public filterQuery = '';
   public rowsOnPage = 10;
@@ -58,8 +57,6 @@ export class ProjectsComponent implements OnInit {
   }
 
   onCreateProject() {
-    this.errorMessage = '';
-
     const projName = this.nameProjectRef.nativeElement.value;
     if (projName !== '') {
       const descName = this.descProjectRef.nativeElement.value;
@@ -70,19 +67,19 @@ export class ProjectsComponent implements OnInit {
           .subscribe(
           proj => {
             this.projectService.addProject(proj);
+            this.notificationsService.success('Exito', 'El proyecto ' + proj.name + ' fue creado.');
             this.nameProjectRef.nativeElement.value = '';
             this.descProjectRef.nativeElement.value = '';
           },
           error => {
             if (error._issues) {
               if (error._issues.name.includes('is not unique')) {
-                this.errorMessage = 'El nombre del proyecto ya existe.';
-              } else { this.errorMessage = 'Error';  }
-            } else { this.errorMessage = 'Error';   }
-
+                this.notificationsService.error('Error', 'El nombre del proyecto ya existe.');
+              } else { this.notificationsService.error('Error', 'Error'); }
+            } { this.notificationsService.error('Error', 'Error'); }
           });
-      } else { this.errorMessage = 'La descripcion puede tener hasta 300 caracteres.'; }
-    } else { this.errorMessage = 'Debes ingresar un nombre para el nuevo proyecto'; }
+      } else { this.notificationsService.error('Error', 'La descripcion puede tener hasta 300 caracteres.'); }
+    } else { this.notificationsService.error('Error', 'Debes ingresar un nombre para el nuevo proyecto'); }
   }
 
   public toInt(num: string) {

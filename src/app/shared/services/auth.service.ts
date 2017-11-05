@@ -19,7 +19,7 @@ export class AuthService {
     responseType: 'token id_token',
     audience: 'http://localhost:5000/',
     redirectUri: 'http://localhost:4200/',
-    scope: 'openid email'
+    scope: 'openid profile'
   });
 
   constructor(public router: Router) {
@@ -28,7 +28,6 @@ export class AuthService {
     } else {this.setLoggedIn(false);
     }
   }
-
   // Login to Auth0 using user and password.
   public loginUserPassword(data) {
     this.auth0.client.login(data, (err, authResult) => {

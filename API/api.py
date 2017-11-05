@@ -21,21 +21,17 @@ def pre_GET_project(request, lookup):
     mail = get_email(token)
     lookup["key.owner"] = {"$in": [mail]}
     # lookup["colaborators.user.email"] = {"$in": [mail]}
-    print('Retorno projectos de ' + mail)
-    print sesion
 
 # Assign the mail of the owner to the project
 def before_insert_project(projects):
-    token = get_token_auth_header() # pedir de la sesion
+    token = get_token_auth_header()
     mail = get_email(token)
     for proj in projects:
         proj['key']['owner'] = mail
-    print sesion
 
 if __name__ == '__main__':
     CORS(APP)
     APP.on_pre_GET_project += pre_GET_project
     APP.on_insert_project += before_insert_project
-    sesion = []
     APP.run(debug=True)
 
