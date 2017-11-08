@@ -9,7 +9,7 @@ import { ProjectService } from '../../../shared/services/project.service';
 import { ViewEncapsulation } from '@angular/core';
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { ProjectShareModalComponent } from '../../../header/project-share-modal/project-share-modal.component';
+import { ProjectShareModalComponent } from '../../project-share-modal/project-share-modal.component';
 import { overlayConfigFactory } from 'angular2-modal';
 import { WorkSpaceService } from '../../../shared/services/work-space.service';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -46,17 +46,29 @@ export class ProjectItemComponent implements OnInit {
   }
 
   onDeleteProject() {
-    const id = this.project._id;
-    const projToDelete = this.projectService.getProject(id);
-    this.projectService.deleteProject(projToDelete)
-      .subscribe(
-      resp => {
-        this.notificationsService.success('Exito', 'El proyecto se elimino correctamente');
-        this.projectService.removeProject(projToDelete);
-      },
-      error => {
-        this.notificationsService.error('Error', 'Error en la actualizacion del proyecto');
-      });
+    const dialogRef = this.modal.confirm().size('lg').isBlocking(true).showClose(true).keyboard(27)
+    .okBtn('Confirmar').okBtnClass('btn btn-info').cancelBtnClass('btn btn-danger')
+    .title('Eliminar proyecto').body(' Seguro que desea eliminar el proyecto y todos los documentos asociados? ').open();
+    dialogRef
+    .then( r => {
+        r.result
+        .then( result => {
+          const id = this.project._id;
+          const projToDelete = this.projectService.getProject(id);
+          this.projectService.deleteProject(projToDelete)
+            .subscribe(
+            resp => {
+              this.notificationsService.success('Exito', 'El proyecto se elimino correctamente');
+              this.projectService.removeProject(projToDelete);
+            },
+            error => {
+              this.notificationsService.error('Error', 'Error en el borrado del proyecto');
+            });
+        })
+        .catch( error =>
+          console.log(error)
+        );
+    });
   }
 
   onAccessProject() {

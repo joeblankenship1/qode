@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { CodeModalComponent } from './code-modal/code-modal.component';
-import { ProjectShareModalComponent } from './project-share-modal/project-share-modal.component';
+import { ProjectShareModalComponent } from '../my-projects/project-share-modal/project-share-modal.component';
 
 import { overlayConfigFactory } from 'angular2-modal';
 import { Code } from '../shared/models/code.model';
