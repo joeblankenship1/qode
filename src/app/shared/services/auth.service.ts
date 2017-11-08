@@ -94,6 +94,12 @@ export class AuthService {
     return localStorage.getItem('access_token');
   }
 
+  public getEmail() {
+    if (JSON.parse(localStorage.getItem('profile'))) {
+      return JSON.parse(localStorage.getItem('profile')).name;
+    }else {return ''; }
+  }
+
   public isLoggedIn() {
     return this.loggedIn$.asObservable();
   }
@@ -103,6 +109,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
+    localStorage.removeItem('profile');
     this.setLoggedIn(false);
   }
 

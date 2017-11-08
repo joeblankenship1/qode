@@ -28,7 +28,6 @@ import { DocumentContentComponent } from './work-space/content/documents/documen
 import { WorkSpaceComponent } from './work-space/work-space.component';
 import { ProjectsComponent } from './my-projects/projects/projects.component';
 import { ProjectItemComponent } from './my-projects/projects/project-item/project-item.component';
-import { ProjectItemColComponent } from './my-projects/projects/project-item-col/project-item-col.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { AuthService } from './shared/services/auth.service';
@@ -81,11 +80,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     CodeModalComponent,
     ProjectsComponent,
     ProjectItemComponent,
-    ProjectItemColComponent,
     HomeComponent,
     LoginComponent,
     SignupComponent,
-    ProjectItemColComponent,
     OptionsComponent,
     DataFilterPipe,
     ProjectShareModalComponent

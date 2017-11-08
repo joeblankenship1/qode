@@ -8,7 +8,7 @@
             </button>
             <a class="navbar-brand" href="#">FingQDA</a>
         </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
+        <div class="collapse navbar-collapse" id="myNavbar" *ngIf="router.url.includes('workspace')">
             <ul class="nav navbar-nav">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Proyecto <span class="caret"></span></a>
@@ -24,11 +24,11 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentos<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><input type="file" #files name="files[]" multiple style="display:none;" (change)="onChange($event)"/><a class="header-btn" (click)="files.click()">Importar</a></li>
+                        <li><input type="file" #files name="files[]" multiple style="display:none;" (change)="onChange($event)" /><a class="header-btn" (click)="files.click()">Importar</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Códigos<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Códigos<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a class="header-btn" (click)="onNewCode()">Nuevo código</a></li>
                     </ul>

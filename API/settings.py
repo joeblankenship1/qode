@@ -16,20 +16,17 @@ DOMAIN = {
             'description':{
                 'type': 'string',
                 'maxlength': 300
+            },
+            'colaborators': {
+                'type': 'list',
+                'schema': {
+                    'type':'dict',
+                    'schema': {
+                        'email': {'type':'string'},
+                        'role': {'type':'string'},
+                    }
+                }
             }
-            # ,
-            # 'colaborators': {
-            #     'type': 'list',
-            #     'schema': {
-            #         'user': {
-            #             'type':'dict',
-            #             'schema': {
-            #                 'email': {'type':'string'},
-            #                 'role': {'type':'string'},
-            #             }
-            #         }
-            #     }
-            # }
         }
     },
     'document': {

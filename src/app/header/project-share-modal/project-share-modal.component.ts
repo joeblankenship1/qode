@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 // import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -20,30 +20,43 @@ export class ProjectModalData extends BSModalContext {
 export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComponent<ProjectModalData> {
   context: ProjectModalData;
   project: Project;
+  listCols: Array<{ email: string, role: string }>;
+  @ViewChild('email') emailRef: ElementRef;
+  @ViewChild('role') roleRef: ElementRef;
 
   constructor(public dialog: DialogRef<ProjectModalData>, private projectService: ProjectService) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.project = dialog.context.project;
+    this.listCols = dialog.context.project.colaborators.map(x => Object.assign({}, x));
   }
 
   ngOnInit() {
+
   }
 
+  public onAddEmail() {
+    const newEmail = this.emailRef.nativeElement.value;
+    const newRole = this.roleRef.nativeElement.value;
+    if ( newEmail !== '') {
+        this.listCols.push({ email: newEmail, role: newRole });
+    }
+  }
+
+  public onRemoveEmail( i ) {
+    this.listCols.splice(i, 1);
+  }
 
   public onSaveCollaborators() {
-    // console.log();
-  }
-
-  public onDeleteCode() {
-    // this.projectService.deleteCode(this.code).subscribe(
-    //   resp => {
-    //     this.dialog.close();
-    //   },
-    //   error => {
-    //     this.dialog.close(error);
-    //     console.error(error)
-    //   });
+    this.projectService.saveCollaborators(this.project, this.listCols).subscribe(
+      resp => {
+        this.project.colaborators = this.listCols;
+        this.dialog.close();
+      },
+      error => {
+        this.dialog.close(error);
+        console.error(error);
+      });
   }
 
   public onClose() {

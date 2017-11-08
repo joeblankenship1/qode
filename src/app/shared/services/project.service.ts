@@ -16,26 +16,15 @@ export class ProjectService {
 
   private myProjects: Project[] = [];
   private myProjects$ = new BehaviorSubject<Project[]>([]);
-
-  private openedProject: Project;
-  private openedProject$ = new BehaviorSubject<Project>(null);
-
   private url = environment.apiUrl;
 
   constructor(private http: AuthHttp) {
   }
 
-  getOpenedProject() {
-    return this.openedProject$.asObservable();
-  }
-
-  setOpenedProject(proj: Project) {
-    this.openedProject = proj;
-    this.openedProject$.next(proj);
-  }
-
   getProjects(): Observable<any> {
-    return this.http.get(this.url + 'project')
+    const headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache' });
+    const options = new RequestOptions({ headers: headers });
+    return this.http.get(this.url + 'project', options)
       .map((data: Response) => {
         const extracted = data.json();
         const projectArray: Project[] = [];
@@ -44,20 +33,20 @@ export class ProjectService {
           for (const element of extracted._items) {
             project = new Project(element);
             projectArray.push(project);
-            this.addProject(project);
           }
         }
+        this.setArrayProyects(projectArray);
         return projectArray;
       });
-  }
-
-  getArrayProyects() {
-    return this.myProjects$.asObservable();
   }
 
   setArrayProyects(projectArray: Project[]) {
     this.myProjects = projectArray;
     this.myProjects$.next(this.myProjects);
+  }
+
+  getArrayProyects() {
+    return this.myProjects$.asObservable();
   }
 
   addProject(proj: Project) {
@@ -76,7 +65,7 @@ export class ProjectService {
   }
 
   createProject(proj: Project): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache' });
+    const headers = new Headers({ 'Content-Type': 'application/json'});
     const options = new RequestOptions({ headers: headers });
     return this.http.post(this.url + 'project', proj.getMessageBody())
       .map((data: Response) => {
@@ -111,6 +100,22 @@ export class ProjectService {
     return this.http.delete(this.url + 'project/' + proj._id, options)
       .map((data: Response) => {
         return 'OK';
+      }).catch((err: Response) => {
+        const details = err.json();
+        return Observable.throw(details);
+      });
+  }
+
+  saveCollaborators(proj: Project, listCols: Array<{ email: string, role: string }>) {
+    const headers = new Headers({ 'Content-Type': 'application/json', 'If-Match': proj._etag });
+    const options = new RequestOptions({ headers: headers });
+    const projGuardar = proj.getMessageBody();
+    projGuardar.colaborators = listCols;
+    return this.http.patch(this.url + 'project/' + proj._id, projGuardar, options)
+      .map((data: Response) => {
+        const aux = data.json();
+        proj.setEtag(aux._etag);
+        return proj;
       }).catch((err: Response) => {
         const details = err.json();
         return Observable.throw(details);

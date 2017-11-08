@@ -5,7 +5,7 @@ export class Project {
   public _etag: string;
   public name: string;
   public description: string;
-  public colaborators: string[];
+  public colaborators: Array<{email: string, role: string}>;
   public owner: string;
 
   constructor(data: any) {
@@ -13,7 +13,7 @@ export class Project {
     this._etag = data._etag;
     this.name = data.name ? data.name : data.key.name;
     this.description = data.description;
-    // this.colaborators = data.colaborators ? data.colaborators : [];
+    this.colaborators = data.colaborators ? data.colaborators : [];
     this.owner = data.owner ? data.owner : data.key.owner ;
   }
 
@@ -36,9 +36,8 @@ export class Project {
         name: this.name,
         owner: this.owner
       },
-      description: this.description
-      // ,
-      // colaborators: this.colaborators
+      description: this.description,
+      colaborators: this.colaborators
     };
   }
 }

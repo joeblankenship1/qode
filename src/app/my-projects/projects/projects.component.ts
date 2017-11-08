@@ -73,8 +73,10 @@ export class ProjectsComponent implements OnInit {
           },
           error => {
             if (error._issues) {
-              if (error._issues.name.includes('is not unique')) {
-                this.notificationsService.error('Error', 'El nombre del proyecto ya existe.');
+              if (error._issues.name) {
+                if (error._issues.name.includes('is not unique')) {
+                  this.notificationsService.error('Error', 'El nombre del proyecto ya existe.');
+                } else { this.notificationsService.error('Error', 'Error'); }
               } else { this.notificationsService.error('Error', 'Error'); }
             } { this.notificationsService.error('Error', 'Error'); }
           });

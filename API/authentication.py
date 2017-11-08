@@ -23,6 +23,7 @@ import http.client
 AUTH0_DOMAIN = 'nurruty.auth0.com' #env.get("AUTH0_DOMAIN")
 API_AUDIENCE = 'http://localhost:5000/' #env.get("API_ID")
 ALGORITHMS = ["RS256"]
+RULE_CLAIM = 'https://myapp.example.com/email'
 
 # def get_email(tok):
 #     conn = http.client.HTTPSConnection('nurruty.auth0.com')
@@ -34,7 +35,7 @@ ALGORITHMS = ["RS256"]
 
 def get_email(tok):
     unverified_claims = jwt.get_unverified_claims(tok)
-    mail = unverified_claims["https://myapp.example.com/email"].split()
+    mail = unverified_claims[RULE_CLAIM].split()
     return mail[0] 
 
 def get_token_auth_header():
