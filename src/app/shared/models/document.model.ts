@@ -17,7 +17,7 @@ export class Document {
   private projectId: string;
 
 
-  constructor(data: any, projectId: string) {
+  constructor(data: any, projectId: string, quotes: Quote[]) {
     this._id = data._id;
     this._etag = data._etag;
     this.name = data.name;
@@ -25,7 +25,7 @@ export class Document {
     this.path = data.path;
     this.opened = data.opened ? data.opened : false;
     this.projectId = projectId;
-    this.quotes = [];
+    this.quotes = quotes;
     this.memos = [];
   }
 

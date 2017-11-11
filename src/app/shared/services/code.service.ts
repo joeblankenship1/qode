@@ -7,6 +7,7 @@ import { Project } from '../models/project.model';
 import { ProjectService } from './project.service';
 import { AuthHttp } from 'angular2-jwt';
 import { environment } from '../../../environments/environment';
+import { WorkSpaceService } from './work-space.service';
 
 
 @Injectable()
@@ -53,7 +54,7 @@ export class CodeService {
   getCodesById(codes): Code[] {
     const ret = [];
     for (const c of codes){
-      const foundCode = this.codes.find( code => code._id === c);
+      const foundCode = this.codes.find( code => code.getId() === c);
       if (foundCode) {
         ret.push(foundCode);
       }
@@ -66,10 +67,10 @@ export class CodeService {
       .map((data: Response) => {
         const extracted = data.json();
         if (extracted._id) {
-          code._id = extracted._id;
+          code.setId(extracted._id);
         }
         if (extracted._id) {
-          code._etag = extracted._etag;
+          code.setEtag(extracted._etag);
         }
         this.codes.push(code);
         this.codes$.next(this.codes);
@@ -78,17 +79,17 @@ export class CodeService {
   }
 
   updateCode(code: Code): Observable<any> {
-    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': code._etag});
+    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': code.getEtag()});
     const updoptions = new RequestOptions({ headers: updheaders });
     const index = this.codes.indexOf(code, 0);
     if (index === -1) {
       return this.addCode(code);
     }
-    return this.http.patch(environment.apiUrl + 'code/' + code._id, code.getMessageBody(), updoptions)
+    return this.http.patch(environment.apiUrl + 'code/' + code.getId(), code.getMessageBody(), updoptions)
       .map((data: Response) => {
         const extracted = data.json();
         if (extracted._id) {
-          code._etag = extracted._etag;
+          code.setEtag(extracted._etag);
         }
         this.codes[index] = code;
         this.codes$.next(this.codes);
@@ -97,14 +98,14 @@ export class CodeService {
   }
 
   deleteCode(code: Code): Observable<any> {
-    const delheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': code._etag});
+    const delheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': code.getEtag()});
     const deloptions = new RequestOptions({ headers: delheaders });
     const index = this.codes.indexOf(code, 0);
     if (index === -1) {
       this.codes$.next(this.codes);
       return;
     }
-    return this.http.delete(environment.apiUrl + 'code/' + code._id, deloptions)
+    return this.http.delete(environment.apiUrl + 'code/' + code.getId(), deloptions)
       .map((data: Response) => {
         this.codes.splice(index, 1);
         this.codes$.next(this.codes);

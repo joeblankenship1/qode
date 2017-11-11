@@ -10,6 +10,7 @@ import { Project } from '../models/project.model';
 import { ProjectService } from './project.service';
 import { Code } from '../models/code.model';
 import { CodeService } from './code.service';
+import { DocumentService } from './document.service';
 
 @Injectable()
 export class QuoteService {
@@ -52,6 +53,19 @@ export class QuoteService {
       },
       error => console.error(error)
     );
+  }
+
+  getQuotesById(quotes): Quote[] {
+    const ret = [];
+    if (quotes) {
+      for (const q of quotes){
+        const foundQuote = this.quoteList.find( el => el.getId() === q);
+        if (foundQuote) {
+          ret.push(foundQuote);
+        }
+      }
+    }
+    return ret;
   }
 
   // Saves the new quote and returns the db _id.
@@ -106,6 +120,24 @@ export class QuoteService {
         this.quoteList$.next(this.quoteList);
       })
       .catch(this.handleErrorObservable);
+  }
+
+  removeCodeFromQuotes(code_id: string) {
+    let found = false;
+    this.quoteList.every( (q , i) => {
+      const index = q.removeCode(code_id);
+      if (index !== -1) {
+        found = true;
+        this.updateQuote(q).subscribe(
+          resp => { },
+          error => {
+            console.error(error); }
+        );
+      }
+      console.log(i);
+      return true;
+    });
+    return found;
   }
 
   private handleErrorObservable(error: Response | any) {

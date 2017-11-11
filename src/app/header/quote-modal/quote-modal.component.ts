@@ -54,10 +54,15 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
 
   public onCodeSelected(selected: CompleterItem) {
     if (selected) {
-      if (this.selectedCodes.indexOf(selected.originalObject) === -1) {
-        this.selectedCodes.push(selected.originalObject);
-        this.chosenCode = '';
-      }
+      this.addCode(selected.originalObject);
+    }
+  }
+
+  public addCode(code: Code) {
+    const index = this.selectedCodes.findIndex( c => c.getName().trim() === code.getName().trim());
+    if (index === -1) {
+      this.selectedCodes.push(code);
+      this.chosenCode = '';
     }
   }
 
@@ -122,8 +127,16 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
 
   public onKeyUp(event) {
     if (event.code === 'Enter' || event.key === 'Enter' || event.keycode === 13) {
+      if (this.chosenCode.trim() === '') {
+        return;
+      }
+      const index = this.codes.findIndex( c => this.chosenCode.trim() === c.getName());
+      if (index !== -1) {
+        this.addCode(this.codes[index]);
+        return;
+      }
       let code = new Code({
-        'name': this.chosenCode, 'description': '',
+        'name': this.chosenCode.trim(), 'description': '',
         'project': this.document.getProjectId()
       });
       this.codeService.addCode(code).subscribe(
@@ -144,10 +157,12 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
   }
 
   beforeDismiss(): boolean {
+    this.document = null;
     return true;
   }
 
   beforeClose(): boolean {
+    this.document = null;
     return false;
   }
 

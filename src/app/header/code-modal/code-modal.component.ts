@@ -21,13 +21,16 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
   code: Code;
   name: string;
   memo: string;
+  color: string;
 
   constructor(public dialog: DialogRef<CodeModalData>, private codeService: CodeService, private modal: Modal) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.code = dialog.context.code;
-    this.memo = this.code.memo;
-    this.name = this.code.name;
+    this.memo = this.code.getMemo();
+    this.name = this.code.getName();
+    this.color = this.code.getColor();
+
   }
 
   ngOnInit() {
@@ -39,9 +42,10 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
       return;
     }
     let oper: Observable<any>;
-    this.code.name = this.name;
-    this.code.memo = this.memo;
-    if (this.code._id === '0') {
+    this.code.setName(this.name);
+    this.code.setMemo(this.memo);
+    this.code.setColor(this.color);
+    if (this.code.getId() === '0') {
       oper = this.codeService.addCode(this.code);
     }else {
       oper  = this.codeService.updateCode(this.code);
@@ -59,7 +63,7 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
   public onDeleteCode() {
     this.codeService.deleteCode(this.code).subscribe(
       resp => {
-        this.dialog.close();
+        this.dialog.close(-1);
       },
       error => {
         this.modal.alert().headerClass('btn-danger').title('Error').body(error).open();

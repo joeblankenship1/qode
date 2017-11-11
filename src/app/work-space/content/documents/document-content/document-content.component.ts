@@ -16,7 +16,6 @@ import { overlayConfigFactory } from 'angular2-modal';
 import { WindowSelection } from '../../../../shared/helpers/window-selection';
 
 
-
 @Component({
   selector: 'app-document-content',
   templateUrl: './document-content.component.html',
@@ -31,6 +30,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   pages = [];
   allQuotes: Quote[] = [];
   colRange: number;
+  colRangeArray: Array<any> = [];
   menuOptions: MenuOption[][] = [];
   options = new OptionsComponent();
 
@@ -42,11 +42,11 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.workSpaceService.getSelectedDocumentContent().subscribe(
       content => {
         this.actualDocumentContent = content;
-        this.quoteService.getQuoteList().subscribe(
-          quotes => {
-            this.allQuotes = quotes;
-          }
-        );
+        // this.quoteService.getQuoteList().subscribe(
+        //   quotes => {
+        //     this.allQuotes = quotes;
+        //   }
+        // );
         this.updatePagesAndQuotes();
       },
       error => console.log(error)
@@ -61,7 +61,12 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   updatePagesAndQuotes() {
     if (this.actualDocumentContent) {
       this.pages = this.actualDocumentContent.getPages();
-      this.colRange = this.actualDocumentContent.getQuotesDisplay().length;
+      // sets the total number of opened quotes's associated codes
+      this.colRange = this.actualDocumentContent.getQuotesDisplay().map(
+                           qd => qd.getQuote().getCodes().length === 0 ? 1 : qd.getQuote().getCodes().length)
+                           .reduce((a, b) => a + b, 0);
+      // creates a dummy array for html columns management
+      this.colRangeArray = new Array<any>(this.colRange);
     }
   }
 
@@ -78,20 +83,22 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   }
 
   private onOpenQuoteModal(item: Quote) {
-    this.modal.open(QuoteModalComponent, overlayConfigFactory({ quote: item,
-    document: this.actualDocument, mode: 'new' }, BSModalContext ))
-    .then((resultPromise) => {
-      resultPromise.result.then((result) => {
-        if (result !== null) {
-          if (result === -1) {
-            this.workSpaceService.removeQuoteDocumentContent(item);
-          }else {
-            item = result;
-            this.workSpaceService.updateDocumentContent(result);
-          }
-        }
-      });
-    });
+    if (item) {
+      this.modal.open(QuoteModalComponent, overlayConfigFactory({ quote: item,
+        document: this.actualDocument, mode: 'new' }, BSModalContext ))
+        .then((resultPromise) => {
+          resultPromise.result.then((result) => {
+            if (result !== null) {
+              if (result === -1) {
+                this.workSpaceService.removeQuoteDocumentContent();
+              }else {
+                item = result;
+                this.workSpaceService.updateDocumentContent();
+              }
+            }
+          });
+        });
+    }
   }
 
     // Open context menu, the selected text will be passed as a parameter.
@@ -126,10 +133,5 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     }
   }
 
-    // Update the quotes related two each page and lines afected from selection.
-  // This function must be called after a new quote is saved.
-  // private updatePages(newQuote: Quote) {
-  //   this.actualDocumentContent.updatePages(newQuote);
-  // }
 
 }

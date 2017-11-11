@@ -26,6 +26,7 @@ export class WorkSpaceService {
 
   private selectedDocumentContent: DocumentContent;
   public selectedDocumentContent$ = new BehaviorSubject<DocumentContent>(null);
+  private selectedDocumentId: string;
 
   private quotesSelectedDocument: Quote[] = [];
   public quotesSelectedDocument$= new BehaviorSubject<Quote[]>([]);
@@ -40,6 +41,7 @@ export class WorkSpaceService {
   public initWorkSpace(projectId) {
     this.projectId = projectId;
     this.cleanWorkSpace();
+    this.selectedDocumentId = null;
     this.documentService.getDocuments().subscribe(
       documents => {
         documents.forEach( d => {
@@ -50,7 +52,8 @@ export class WorkSpaceService {
         });
         this.setOpenedDocuments(this.openedDocuments);
         this.setDocumentContents(this.documentContents);
-        this.selectDocument(this.openedDocuments[0]);
+        this.selectDocument(this.selectedDocumentId ?
+          this.openedDocuments.find(d => d.getId() === this.selectedDocumentId) : this.openedDocuments[0]);
       },
       error => console.error(error)
     );
@@ -84,6 +87,7 @@ export class WorkSpaceService {
   // Set document to be shown
   setSelectedDocument(selectedDocument: Document) {
     this.selectedDocument = selectedDocument;
+    this.selectedDocumentId = selectedDocument.getId();
     this.selectedDocument$.next(selectedDocument);
   }
 
@@ -139,13 +143,15 @@ export class WorkSpaceService {
     this.newSelection = quote;
   }
 
-  updateDocumentContent(quote: Quote) {
-    this.selectedDocumentContent.addQuote(quote);
+  updateDocumentContent() {
+    this.selectedDocumentContent.updateDocumentQuotesDisplay();
     this.selectedDocumentContent$.next(this.selectedDocumentContent);
   }
 
-  removeQuoteDocumentContent(quote: Quote) {
-    this.selectedDocumentContent.removeQuote(quote);
+  removeQuoteDocumentContent() {
+    // this.selectedDocumentContent.removeQuote(quote);
+    this.selectedDocumentContent.createPages();
+    this.selectedDocumentContent.updateDocumentQuotesDisplay();
     this.selectedDocumentContent$.next(this.selectedDocumentContent);
   }
 

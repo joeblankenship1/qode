@@ -7,6 +7,7 @@ import { HttpModule, Http, RequestOptions } from '@angular/http';
 import { routes } from './app.routes';
 import { Routes, RouterModule } from '@angular/router';
 import { Ng2CompleterModule } from 'ng2-completer';
+import {ColorPickerModule} from 'angular4-color-picker';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { SideBarComponent } from './work-space/side-bar/side-bar.component';
@@ -100,7 +101,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DataTableModule,
     InlineEditorModule,
     ContextMenuModule,
-    Ng2CompleterModule
+    Ng2CompleterModule,
+    ColorPickerModule
   ],
   providers: [DocumentService, CodeService,
     AuthGuard,

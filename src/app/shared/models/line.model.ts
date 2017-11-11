@@ -4,7 +4,7 @@ import { AppSettings } from '../../app.settings';
 export class Line {
   public text: string;
   public id: number;
-  public relatedQuotes: [{
+  private relatedQuotes: [{
     quote: Quote,
     borderTop: boolean,
     borderBottom: boolean,
@@ -32,7 +32,9 @@ export class Line {
 
   public getRelatedQuote(column: number) {
     return this.relatedQuotes.find( q => {
-      return q.column === column;
+      const len = q.quote.getCodes().length === 0 ? 1 : q.quote.getCodes().length;
+      return ((q.column <= column) && ((q.column + len) > column ));
+      //return q.column === column;
     });
   }
 
@@ -63,7 +65,20 @@ export class Line {
 
   public getBracketColor(column: number) {
     const relatedQuote = this.getRelatedQuote(column);
-    return relatedQuote ? relatedQuote.quote.getColor() : 'transparent';
+    let color = 'transparent';
+    if (relatedQuote) {
+      color = relatedQuote.quote.getCodes()[column - relatedQuote.column].getColor();
+    }
+    return color ;
+  }
+
+  public getBracketTitle(column: number) {
+    const relatedQuote = this.getRelatedQuote(column);
+    let title = '';
+    if (relatedQuote) {
+      title = relatedQuote.quote.getCodes()[column - relatedQuote.column].getName();
+    }
+    return title;
   }
 
 }

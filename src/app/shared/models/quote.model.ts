@@ -61,6 +61,14 @@ export class Quote {
     this.codes.push(code);
   }
 
+  public removeCode(id: string): number {
+    const index = this.codes.findIndex(c => c.getId() === id  );
+    if (index !== -1) {
+      this.codes.splice(index, 1);
+    }
+    return index;
+  }
+
   public setCodes(codes: Code[]) {
     this.codes = codes;
   }
@@ -88,7 +96,7 @@ export class Quote {
   public getMessageBody() {
     return {'text': this.text, 'position': this.position, 'color': this.color,
             'documentDisplay': this.documentDisplay, 'project': this.projectId,
-            'codes': this.codes.map(c => c._id), 'memo': this.memo
+            'codes': this.codes.map(c => c.getId()), 'memo': this.memo
     };
   }
 }
