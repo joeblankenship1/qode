@@ -77,8 +77,9 @@ export class DocumentContentComponent implements OnInit, OnChanges {
         if (item) {
           this.onOpenQuoteModal(item);
         }
-      }),
-      new MenuOption('Codificar con nuevo codigo', (item) => { console.log('fuuun'); })
+      })
+      // ,
+      // new MenuOption('Codificar con nuevo codigo', (item) => { console.log('fuuun'); })
     ]];
   }
 
