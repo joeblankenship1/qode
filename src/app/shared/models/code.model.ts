@@ -8,15 +8,18 @@ export class Code {
 
   constructor(data: any) {
     this._id = data._id == null ? '0' : data._id;
-    this.name = data.name;
-    this.project = data.project;
+    this.name = data.name ? data.name : data.key.name;
+    this.project = data.project ? data.project : data.key.project;
     this.memo = data.memo == null ? '' : data.memo;
     this.color = data.color == null ? 'black' : data.color;
     this._etag = data._etag == null ? '' : data._etag;
   }
 
   getMessageBody() {
-    return {'name': this.name, 'memo': this.memo, 'project': this.project, 'color': this.color};
+    return {'key': { name: this.name,
+                  project: this.project
+                  }
+            , 'memo': this.memo, 'color': this.color};
   }
 
   getProject() {

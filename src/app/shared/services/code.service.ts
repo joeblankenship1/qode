@@ -26,7 +26,7 @@ export class CodeService {
    }
 
   loadCodes(projectId): Observable<Code[]> {
-    return this.http.get(environment.apiUrl + `code?where={"project":"${projectId}"}`, this.options)
+    return this.http.get(environment.apiUrl + `code?where={"key.project":"${projectId}"}`, this.options)
       .map((data: Response) => {
         const extracted = data.json();
         const codeArray: Code[] = [];
@@ -69,7 +69,7 @@ export class CodeService {
         if (extracted._id) {
           code.setId(extracted._id);
         }
-        if (extracted._id) {
+        if (extracted._etag) {
           code.setEtag(extracted._etag);
         }
         this.codes.push(code);

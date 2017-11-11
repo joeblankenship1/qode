@@ -14,28 +14,27 @@ export class Document {
   public memos: Memo[];
   public quotes: Quote[];
   private opened: boolean;
-  private projectId: string;
+  private project: string;
 
 
-  constructor(data: any, projectId: string, quotes: Quote[]) {
-    this._id = data._id;
-    this._etag = data._etag;
-    this.name = data.name;
+  constructor(data: any, projectId: string, quotes?: Quote[]) {
+    this._id = data._id || undefined;
+    this._etag = data._etag || undefined;
+    this.name = data.name ? data.name : data.key.name;
     this.text = data.text;
-    this.path = data.path;
-    this.opened = data.opened ? data.opened : false;
-    this.projectId = projectId;
-    this.quotes = quotes;
+    this.path = data.path || '';
+    this.opened = data.opened || false;
+    this.project = projectId;
+    this.quotes = quotes ? quotes : [];
     this.memos = [];
   }
-
 
   getId() {
     return this._id;
   }
 
   getProjectId() {
-    return this.projectId;
+    return this.project;
   }
 
   getEtag() {
@@ -62,6 +61,10 @@ export class Document {
     }
   }
 
+  public setId(id: string) {
+    this._id = id;
+  }
+
   public setQuotes(quotes: Quote[]) {
     this.quotes = quotes;
   }
@@ -76,5 +79,17 @@ export class Document {
 
   public isOpened() {
     return this.opened;
+  }
+
+  public getMessageBody() {
+    return {
+      key: { name: this.name,
+        project: this.project
+      },
+      text: this.text,
+      opened: this.opened,
+      quotes: this.quotes,
+      memos: this.memos
+    };
   }
 }

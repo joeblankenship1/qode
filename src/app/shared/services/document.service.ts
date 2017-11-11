@@ -34,7 +34,7 @@ export class DocumentService {
   // Get all documents from server
   loadDocuments(projectId): Observable<Document[]> {
     this.projectId = projectId;
-    return this.http.get( environment.apiUrl + `document?where={"project": "${projectId}"}`, this.options)
+    return this.http.get( environment.apiUrl + `document?where={"key.project": "${projectId}"}`)
       .map((data: Response) => {
         const extracted = data.json();
         const documentArray: Document[] = [];
@@ -45,7 +45,7 @@ export class DocumentService {
             // if (element.quotes) {
             //   this.createQuotes(document,element.quotes);
             // }
-            if (element.memos) {
+            if (element.memos && element.memos.length > 0) {
               const memos = element.map( memo => new Memo());
               document.setMemos(memos);
             }
@@ -67,10 +67,21 @@ export class DocumentService {
   }
 
   // Send document to server
-  addDocument(document): Observable<any> {
-    const body = JSON.stringify(document);
+  addDocument(document: Document): Observable<any> {
+    const body = document.getMessageBody();
     return this.http.post( environment.apiUrl + 'document', body, this.options)
-      .map(res => res.json()._id || {})
+      .map((data: Response) => {
+          const extracted = data.json();
+          if (extracted._id) {
+            document.setId(extracted._id);
+          }
+          if (extracted._etag) {
+            document.setEtag(extracted._etag);
+          }
+          this.documentList.push(document);
+          this.documentList$.next(this.documentList);
+          return document;
+      })
       .catch(this.handleErrorObservable);
   }
 
@@ -87,6 +98,24 @@ export class DocumentService {
         }})
       .catch(this.handleErrorObservable);
   }
+
+  public updateDocument(document: Document, fields: any): Observable<any> {
+    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag()});
+    const updoptions = new RequestOptions({ headers: updheaders });
+    const index = this.documentList.indexOf(document, 0);
+    this.documentList[index] = document;
+    this.documentList$.next(this.documentList);
+    return this.http.patch(environment.apiUrl + 'document/' + document.getId(), fields, updoptions)
+      .map((data: Response) => {
+        const extracted = data.json();
+        if (extracted._id) {
+          document.setEtag(extracted._etag);
+        }
+        this.documentList[index] = document;
+        return document;
+      });
+  }
+
 
   private handleErrorObservable(error: Response | any) {
     console.error(error.message || error);
