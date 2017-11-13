@@ -42,7 +42,6 @@ export class DocumentService {
         if (extracted._items) {
           for (const element of extracted._items) {
             document = new Document(element, projectId);
-
             if (element.quotes && element.quotes.length > 0) {
               this.createQuotes(element.quotes, document);
             }
@@ -55,7 +54,10 @@ export class DocumentService {
         }
         this.setDocuments(documentArray);
         return documentArray;
-      }, e => console.error(e));
+      }).catch((err: Response) => {
+        const details = err.json();
+        return Observable.throw(details);
+      });
   }
 
   setDocuments(documents: Document[]) {

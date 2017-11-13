@@ -28,7 +28,7 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.project = dialog.context.project;
-    this.listCols = dialog.context.project.colaborators.map(x => Object.assign({}, x));
+    this.listCols = dialog.context.project.collaborators.map(x => Object.assign({}, x));
   }
 
   ngOnInit() {
@@ -50,7 +50,7 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
   public onSaveCollaborators() {
     this.projectService.saveCollaborators(this.project, this.listCols).subscribe(
       resp => {
-        this.project.colaborators = this.listCols;
+        this.project.collaborators = this.listCols;
         this.dialog.close();
       },
       error => {

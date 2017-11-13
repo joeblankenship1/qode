@@ -48,9 +48,10 @@ export class QuoteService {
           projectId, q._id, q.memo));
         this.setQuoteList(quotes);
         return quotes;
-      },
-      error => console.error(error)
-    );
+      }).catch((err: Response) => {
+        const details = err.json();
+        return Observable.throw(details);
+      });
   }
 
   // Saves the new quote and returns the db _id.

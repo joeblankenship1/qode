@@ -110,7 +110,7 @@ export class ProjectService {
     const headers = new Headers({ 'Content-Type': 'application/json', 'If-Match': proj._etag });
     const options = new RequestOptions({ headers: headers });
     const projGuardar = proj.getMessageBody();
-    projGuardar.colaborators = listCols;
+    projGuardar.collaborators = listCols;
     return this.http.patch(this.url + 'project/' + proj._id, projGuardar, options)
       .map((data: Response) => {
         const aux = data.json();

@@ -1,7 +1,5 @@
 DOMAIN = {
     'project': {
-        'cache_control': '',
-        'cache_expires': 0,
         'extra_response_fields': ['key'],
         'schema': {
             'key': {
@@ -17,7 +15,7 @@ DOMAIN = {
                 'type': 'string',
                 'maxlength': 300
             },
-            'colaborators': {
+            'collaborators': {
                 'type': 'list',
                 'schema': {
                     'type':'dict',

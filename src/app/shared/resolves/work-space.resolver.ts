@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { WorkSpaceService } from '../services/work-space.service';
 import { QuoteService } from '../services/quote.service';
 import { CodeService } from '../services/code.service';
 import { DocumentService } from '../services/document.service';
 import { Quote } from '../models/quote.model';
+import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 
 
 @Injectable()
@@ -14,8 +15,10 @@ export class WorkSpaceResolver implements Resolve<any> {
     private workspaceService: WorkSpaceService,
     private quotesService: QuoteService,
     private codeService: CodeService,
-    private documentService: DocumentService
-  ) {}
+    private documentService: DocumentService,
+    private router: Router,
+    private notificationsService: NotificationsService
+  ) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
     const projectId = route.params.id;
@@ -28,14 +31,21 @@ export class WorkSpaceResolver implements Resolve<any> {
                 this.workspaceService.cleanWorkSpace();
                 this.workspaceService.initWorkSpace(projectId);
               },
-              error => console.error(error)
+              error => {
+                this.router.navigate(['myprojects']);
+                this.notificationsService.error('Error', 'No tienes permisos para acceder a ese proyecto');
+              }
             );
-
           },
-          error => console.log(error)
+          error => {
+            this.router.navigate(['myprojects']);
+            this.notificationsService.error('Error', 'No tienes permisos para acceder a ese proyecto');
+          }
         );
-      },
-      error => console.error(error)
-    );
+      }).catch(error => {
+        this.router.navigate(['myprojects']);
+        this.notificationsService.error('Error', 'No tienes permisos para acceder a ese proyecto');
+        return Observable.of(null);
+    });
   }
 }
