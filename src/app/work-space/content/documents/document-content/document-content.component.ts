@@ -121,7 +121,16 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   // the text that has been selected. Also create temporary quote with the selected text.
   private getSelectedText() {
     const selection = window.getSelection();
+    console.log(selection);
     const docDisplay = this.windowSelection.getSelectedNodes(selection, 'tr');
+    docDisplay.every( dd => {
+      if (dd.page === 0 && dd.startline === 0 && dd.endline === 0 ) {
+        alert("000000");
+        return false;
+      }
+      return true;
+    });
+    console.log(docDisplay);
     return new Quote(selection.toString(), selection.baseOffset,
     selection.extentOffset - 1, docDisplay, this.workSpaceService.getProjectId());
   }

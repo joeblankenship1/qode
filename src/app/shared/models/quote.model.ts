@@ -94,9 +94,11 @@ export class Quote {
   }
 
   public getMessageBody() {
-    return {'text': this.text, 'position': this.position, 'color': this.color,
+    const msg = {'text': this.text, 'position': this.position, 'color': this.color,
             'documentDisplay': this.documentDisplay, 'project': this.projectId,
             'codes': this.codes.map(c => c.getId()), 'memo': this.memo
     };
+    console.log(msg);
+    return msg;
   }
 }
