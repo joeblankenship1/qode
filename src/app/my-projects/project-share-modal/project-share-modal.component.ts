@@ -55,7 +55,6 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
       },
       error => {
         this.dialog.close(error);
-        console.error(error);
       });
   }
 

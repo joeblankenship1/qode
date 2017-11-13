@@ -42,14 +42,6 @@ export class ProjectsComponent implements OnInit {
       },
       error => console.error(error)
       );
-
-    this.projectService.getArrayProyects()
-      .subscribe(
-      projects => {
-        this.projects = projects;
-      },
-      error => console.error(error)
-      );
   }
 
   onProjectSelected(project: Project) {
