@@ -10,6 +10,7 @@ import { NotificationsService } from 'angular2-notifications';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
   title = 'app';
   public options = {
@@ -18,7 +19,8 @@ export class AppComponent {
     pauseOnHover: true,
     clickToClose: true,
     timeOut: 4000,
-    showProgressBar: false
+    showProgressBar: false,
+    theClass: 'myClass'
   };
 
   constructor(public router: Router, public auth: AuthService, private _service: NotificationsService ) {

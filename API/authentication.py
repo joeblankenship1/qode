@@ -119,7 +119,6 @@ def requires_auth(f):
                     audience=API_AUDIENCE,
                     issuer="https://"+AUTH0_DOMAIN+"/"
                 )
-                # print payload
             except jwt.ExpiredSignatureError: 
                 raise AuthError({"code": "token_expired",
                                 "description": "token is expired"}, 401)

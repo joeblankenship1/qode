@@ -4,15 +4,15 @@
     height: calc(100% - 52px);
 }
 
-.sn-title {
-    font-size: 15px !important;
+:host /deep/ .sn-title {
+    font-size: 18px !important;
 }
 
-.simple-notification .sn-content {
-    font-size: 13px !important;
+:host /deep/ .simple-notification .sn-content {
+    font-size: 14px !important;
 }
 
-.simple-notification .icon {
+:host /deep/ .simple-notification .icon {
     position: absolute;
     box-sizing: border-box;
     top: 0;
@@ -22,30 +22,39 @@
     padding: 10px;
 }
 
-.simple-notification.error {
-    background: #E74C48 !important;
+:host /deep/ .simple-notification.error {
+    background: rgba(231, 75, 72, 0.808);
 }
 
-.simple-notification.success {
-    background: #18bc9c !important;
+:host /deep/ .simple-notification.success {
+    background: #18bc96c7;
 }
 
-.simple-notification.alert {
-    background: #ffdb5b;
+:host /deep/ .simple-notification.alert {
+    background: #ffd95bc7;
 }
 
-.simple-notification.info {
-    background: #03A9F4;
+:host /deep/ .simple-notification.info {
+    background: rgba(3, 176, 244, 0.767);
 }
 
-.simple-notification.warn {
-    background: #ffdb5b;
+:host /deep/ .simple-notification.warn {
+    background: #ffd95bc9;
 }
 
-.simple-notification.warn div .sn-title {
-    color: #444;
+:host /deep/ .simple-notification.warn div .sn-title {
+    color: rgba(68, 68, 68, 0.856);
 }
 
-.simple-notification.warn div .sn-content {
-    color: #444;
+:host /deep/ .simple-notification.warn div .sn-content {
+    color: rgba(68, 68, 68, 0.789);
+}
+
+:host /deep/ .myClass {
+    height: 20px;
+}
+
+:host /deep/ .simple-notification-wrapper {
+    height: 20px;
+    width: 420px !important;
 }

@@ -6,11 +6,11 @@
         <h5 class="modal-title">Compartir proyecto {{project.name}}</h5>
     </div>
     <div class="modal-body">
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-7">
                 <div class="input-group">
                     <span class="input-group-addon"> <i class="fa fa-envelope-o" aria-hidden="true"></i> </span>
-                    <input #email class="col-xs-6 form-control" type="text" placeholder="Ingrese el email">
+                    <input #email type="email" class="col-xs-6 form-control" type="text" placeholder="Ingrese el email" (keyup.enter)="onAddEmail()">
                 </div>
             </div>
             <div class="col-md-4">
@@ -23,6 +23,29 @@
                 </div>
             </div>
             <button style="margin: 4px 0px;" type="button" class="btn btn-info" (click)="onAddEmail()"> + </button>
+        </div> -->
+
+        <div class="row">
+            <form *ngIf="active" (ngSubmit)="onAddEmail()">
+                <div class="col-md-7">
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"> <i class="fa fa-envelope-o" aria-hidden="true"></i> </span>
+                        <input type="email" class="col-xs-6 form-control" placeholder="Ingrese el email" required [(ngModel)]="mail" name="mail" #subjectState="ngModel">
+                    </div>
+                    <div [hidden]="subjectState.valid || subjectState.pristine" class="alert alert-danger">
+                        Email is required
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <select #role class="form-control" style="width: 170px;">
+                                    <option> Lector </option>
+                                    <option> Lector/Escritor </option>
+                                    <option> Co-Owner </option>
+                             </select>
+                    </div>
+                </div>
+            </form>
         </div>
         <br>
         <ul class="list-group">

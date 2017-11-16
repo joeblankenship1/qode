@@ -96,7 +96,7 @@ export class AuthService {
 
   public getEmail() {
     if (JSON.parse(localStorage.getItem('profile'))) {
-      return JSON.parse(localStorage.getItem('profile')).name;
+      return JSON.parse(localStorage.getItem('profile')).nickname;
     }else {return ''; }
   }
 

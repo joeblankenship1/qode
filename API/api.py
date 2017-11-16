@@ -10,8 +10,8 @@ from bson import json_util
 from bson.objectid import ObjectId
 from flask import abort
 
-APP = Eve(auth=MyTokenAuth)
-# APP = Eve()
+# APP = Eve(auth=MyTokenAuth)
+APP = Eve()
 CORS(APP)
 
 @APP.errorhandler(AuthError)
@@ -24,7 +24,6 @@ def handle_auth_error(ex):
 def pre_GET_project(request, lookup):
     token = get_token_auth_header()
     mail = get_email(token)
-    print 'get proyects'
     lookup['$or'] = [{ "key.owner": mail }, { "collaborators.email": mail }]
 
 # Return only resources from project whose owner is the mail obtained from the access token in session
@@ -41,16 +40,14 @@ def pre_GET_resources(resource, request, lookup):
                 proj_id = d.get('key.project')  # proj_id -> is the project id from the request
             db = current_app.data.driver.db['project']
             cursor = db.find_one({'_id': ObjectId(proj_id)})
-            projects_json = json_util.dumps(cursor) #string
+            projects_json = json_util.dumps(cursor)
             if cursor:
                 # verifys that the mail corresponds for the owner of the project or a collaborator 
-                exist = False
+                esCol = False
                 for col in cursor['collaborators']:
                     if col['email'] == mail:
-                        exist = True
-                if cursor['key']['owner'] == mail or exist:
-                    print 'ok'
-                else:
+                        esCol = True
+                if cursor['key']['owner'] != mail and not esCol:
                     error_message = 'You do not have permissions to access this content'
                     abort(make_response(jsonify(message=error_message), 403))
 
@@ -60,11 +57,4 @@ def before_insert_project(projects):
     mail = get_email(token)
     for proj in projects:
         proj['key']['owner'] = mail
-
-if __name__ == '__main__':
-    CORS(APP)
-    APP.on_pre_GET_project += pre_GET_project
-    APP.on_pre_GET += pre_GET_resources
-    APP.on_insert_project += before_insert_project
-    APP.run(debug=True)
 

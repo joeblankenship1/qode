@@ -24,6 +24,11 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
   @ViewChild('email') emailRef: ElementRef;
   @ViewChild('role') roleRef: ElementRef;
 
+  mail = '';
+  role = '';
+  submitted = false;
+  active = true;
+
   constructor(public dialog: DialogRef<ProjectModalData>, private projectService: ProjectService) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
@@ -35,15 +40,27 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
 
   }
 
+  // public onAddEmail() {
+  //   const newEmail = this.emailRef.nativeElement.value;
+  //   const newRole = this.roleRef.nativeElement.value;
+  //   if ( newEmail !== '') {
+  //       this.listCols.push({ email: newEmail, role: newRole });
+  //       this.emailRef.nativeElement.value = '';
+  //   }
+  // }
+
   public onAddEmail() {
-    const newEmail = this.emailRef.nativeElement.value;
-    const newRole = this.roleRef.nativeElement.value;
-    if ( newEmail !== '') {
-        this.listCols.push({ email: newEmail, role: newRole });
+    this.submitted = true;
+    const newEmail = this.mail;
+    const newRole = this.role;
+    if (newEmail !== '') {
+      this.listCols.push({ email: newEmail, role: newRole });
     }
+    this.active = false;
+    setTimeout(() => { this.active = true; });
   }
 
-  public onRemoveEmail( i ) {
+  public onRemoveEmail(i) {
     this.listCols.splice(i, 1);
   }
 

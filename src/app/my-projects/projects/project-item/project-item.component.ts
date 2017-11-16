@@ -23,13 +23,13 @@ import { AuthService } from '../../../shared/services/auth.service';
 })
 export class ProjectItemComponent implements OnInit {
   @Input() project: Project;
-  myEmail = '';
+  myNick = '';
 
   constructor(private projectService: ProjectService, private router: Router, private notificationsService: NotificationsService,
     private modal: Modal, private workspaceService: WorkSpaceService, private authService: AuthService) { }
 
   ngOnInit() {
-    this.myEmail = this.authService.getEmail();
+    this.myNick = this.authService.getEmail();
   }
 
   onUpdateDescription(desc) {
