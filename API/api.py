@@ -51,10 +51,16 @@ def pre_GET_resources(resource, request, lookup):
                     error_message = 'You do not have permissions to access this content'
                     abort(make_response(jsonify(message=error_message), 403))
 
-# Assign the mail of the owner to the project
+# Assign the mail of the owner to the project and check that the combination name owner is unique
 def before_insert_project(projects):
     token = get_token_auth_header()
     mail = get_email(token)
     for proj in projects:
         proj['key']['owner'] = mail
+        name = proj['key']['name'] 
+        db = current_app.data.driver.db['project']
+        exists = db.find_one({"key.name": name },{"key.owner": mail})
+        if exists:
+            error_message = 'The name is not unique for this user'
+            abort(make_response(jsonify(message=error_message), 422))
 

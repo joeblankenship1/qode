@@ -64,13 +64,12 @@ export class ProjectsComponent implements OnInit {
             this.descProjectRef.nativeElement.value = '';
           },
           error => {
+            if (error.message.includes('is not unique')) {
+              this.notificationsService.error('Error', 'El nombre del proyecto ya existe.');
+            }
             if (error._issues) {
-              if (error._issues.name) {
-                if (error._issues.name.includes('is not unique')) {
-                  this.notificationsService.error('Error', 'El nombre del proyecto ya existe.');
-                } else { this.notificationsService.error('Error', 'Error'); }
-              } else { this.notificationsService.error('Error', 'Error'); }
-            } { this.notificationsService.error('Error', 'Error'); }
+              this.notificationsService.error('Error', 'Error');
+            }
           });
       } else { this.notificationsService.error('Error', 'La descripcion puede tener hasta 300 caracteres.'); }
     } else { this.notificationsService.error('Error', 'Debes ingresar un nombre para el nuevo proyecto'); }
