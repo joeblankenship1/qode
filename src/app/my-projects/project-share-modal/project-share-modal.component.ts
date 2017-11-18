@@ -5,6 +5,7 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { Project } from '../../shared/models/project.model';
 import { ProjectService } from '../../shared/services/project.service';
+import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 
 
 export class ProjectModalData extends BSModalContext {
@@ -21,15 +22,13 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
   context: ProjectModalData;
   project: Project;
   listCols: Array<{ email: string, role: string }>;
-  @ViewChild('email') emailRef: ElementRef;
-  @ViewChild('role') roleRef: ElementRef;
-
   mail = '';
   role = '';
   submitted = false;
   active = true;
 
-  constructor(public dialog: DialogRef<ProjectModalData>, private projectService: ProjectService) {
+  constructor(public dialog: DialogRef<ProjectModalData>, private projectService: ProjectService,
+    private notificationsService: NotificationsService) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.project = dialog.context.project;
@@ -40,14 +39,12 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
 
   }
 
-  // public onAddEmail() {
-  //   const newEmail = this.emailRef.nativeElement.value;
-  //   const newRole = this.roleRef.nativeElement.value;
-  //   if ( newEmail !== '') {
-  //       this.listCols.push({ email: newEmail, role: newRole });
-  //       this.emailRef.nativeElement.value = '';
-  //   }
-  // }
+  clearForm() {
+    this.mail = '';
+    this.role = '';
+    this.active = false;
+    setTimeout(() => { this.active = true; });
+  }
 
   public onAddEmail() {
     this.submitted = true;
@@ -55,9 +52,8 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
     const newRole = this.role;
     if (newEmail !== '') {
       this.listCols.push({ email: newEmail, role: newRole });
+      this.clearForm();
     }
-    this.active = false;
-    setTimeout(() => { this.active = true; });
   }
 
   public onRemoveEmail(i) {
@@ -69,6 +65,7 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
       resp => {
         this.project.collaborators = this.listCols;
         this.dialog.close();
+          this.notificationsService.success('Exito', 'Se actualizaron los colaboradores del proyecto');
       },
       error => {
         this.dialog.close(error);

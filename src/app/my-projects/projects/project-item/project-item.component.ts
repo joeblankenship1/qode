@@ -13,6 +13,7 @@ import { ProjectShareModalComponent } from '../../project-share-modal/project-sh
 import { overlayConfigFactory } from 'angular2-modal';
 import { WorkSpaceService } from '../../../shared/services/work-space.service';
 import { AuthService } from '../../../shared/services/auth.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: '[app-project-item]',
@@ -23,13 +24,19 @@ import { AuthService } from '../../../shared/services/auth.service';
 })
 export class ProjectItemComponent implements OnInit {
   @Input() project: Project;
-  myNick = '';
+  public myNick = '';
+  public myNick$ = new BehaviorSubject<string>('');
 
   constructor(private projectService: ProjectService, private router: Router, private notificationsService: NotificationsService,
     private modal: Modal, private workspaceService: WorkSpaceService, private authService: AuthService) { }
 
   ngOnInit() {
-    this.myNick = this.authService.getEmail();
+    this.authService.getEmail().subscribe(
+      nick => {
+        this.myNick = nick;
+      },
+      error => console.error(error)
+    );
   }
 
   onUpdateDescription(desc) {
@@ -47,28 +54,28 @@ export class ProjectItemComponent implements OnInit {
 
   onDeleteProject() {
     const dialogRef = this.modal.confirm().size('lg').isBlocking(true).showClose(true).keyboard(27)
-    .okBtn('Confirmar').okBtnClass('btn btn-info').cancelBtnClass('btn btn-danger')
-    .title('Eliminar proyecto').body(' Seguro que desea eliminar el proyecto y todos los documentos asociados? ').open();
+      .okBtn('Confirmar').okBtnClass('btn btn-info').cancelBtnClass('btn btn-danger')
+      .title('Eliminar proyecto').body(' Seguro que desea eliminar el proyecto y todos los documentos asociados? ').open();
     dialogRef
-    .then( r => {
+      .then(r => {
         r.result
-        .then( result => {
-          const id = this.project._id;
-          const projToDelete = this.projectService.getProject(id);
-          this.projectService.deleteProject(projToDelete)
-            .subscribe(
-            resp => {
-              this.notificationsService.success('Exito', 'El proyecto se elimino correctamente');
-              this.projectService.removeProject(projToDelete);
-            },
-            error => {
-              this.notificationsService.error('Error', 'Error en el borrado del proyecto');
-            });
-        })
-        .catch( error =>
-          console.log(error)
-        );
-    });
+          .then(result => {
+            const id = this.project._id;
+            const projToDelete = this.projectService.getProject(id);
+            this.projectService.deleteProject(projToDelete)
+              .subscribe(
+              resp => {
+                this.notificationsService.success('Exito', 'El proyecto se elimino correctamente');
+                this.projectService.removeProject(projToDelete);
+              },
+              error => {
+                this.notificationsService.error('Error', 'Error en el borrado del proyecto');
+              });
+          })
+          .catch(error =>
+            console.log(error)
+          );
+      });
   }
 
   onAccessProject() {
@@ -77,7 +84,7 @@ export class ProjectItemComponent implements OnInit {
 
   onShareProject() {
     const project = this.workspaceService.getProjectId();
-    this.modal.open(ProjectShareModalComponent, overlayConfigFactory({project: this.project}, BSModalContext))
+    this.modal.open(ProjectShareModalComponent, overlayConfigFactory({ project: this.project }, BSModalContext))
       .then((resultPromise) => {
         resultPromise.result.then((result) => {
           if (result != null) {

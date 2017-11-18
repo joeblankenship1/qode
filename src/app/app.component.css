@@ -23,11 +23,11 @@
 }
 
 :host /deep/ .simple-notification.error {
-    background: rgba(231, 75, 72, 0.808);
+    background: rgba(231, 75, 72, 0.87);
 }
 
 :host /deep/ .simple-notification.success {
-    background: #18bc96c7;
+    background: #18bc96d3;
 }
 
 :host /deep/ .simple-notification.alert {
