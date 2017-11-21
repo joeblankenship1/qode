@@ -67,7 +67,8 @@ export class Line {
     const relatedQuote = this.getRelatedQuote(column);
     let color = 'transparent';
     if (relatedQuote) {
-      color = relatedQuote.quote.getCodes()[column - relatedQuote.column].getColor();
+      const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
+      color = code ? code.getColor() : 'black';
     }
     return color ;
   }
@@ -76,7 +77,8 @@ export class Line {
     const relatedQuote = this.getRelatedQuote(column);
     let title = '';
     if (relatedQuote) {
-      title = relatedQuote.quote.getCodes()[column - relatedQuote.column].getName();
+      const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
+      title = code ? code.getName() : '';
     }
     return title;
   }

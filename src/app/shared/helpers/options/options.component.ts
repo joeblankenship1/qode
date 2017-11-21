@@ -22,7 +22,7 @@ export class OptionsComponent implements OnInit {
   }
 
   private getDefaultOptions() {
-    return [new MenuOption('Copiar', () => {console.log('fuuun'); })];
+    return [new MenuOption('Copiar', () => {})];
   }
 
 }

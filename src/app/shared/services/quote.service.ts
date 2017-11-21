@@ -134,7 +134,6 @@ export class QuoteService {
             console.error(error); }
         );
       }
-      console.log(i);
       return true;
     });
     return found;
