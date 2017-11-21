@@ -5,8 +5,7 @@
     (selected)="onDocumentSelected(doc)"
     ></app-documents-tabs>
   </div>
-  <div (contextmenu)="onContextMenu($event)">
+  <div>
     <app-document-content [actualDocument]="this.selectedDocument"></app-document-content>
-    <app-options [optionGroups]="menuOptions"></app-options>
   </div>
 </div>

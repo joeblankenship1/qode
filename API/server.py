@@ -2,6 +2,7 @@ from gevent.wsgi import WSGIServer
 from api import APP, pre_GET_resources, pre_GET_project, before_insert_project
 from flask_cors import CORS
 
+<<<<<<< HEAD
 if __name__ == '__main__':
     CORS(APP)
     APP.on_pre_GET_project += pre_GET_project
@@ -10,3 +11,8 @@ if __name__ == '__main__':
     APP.debug = True
     http_server = WSGIServer(('', 5000), APP)
     http_server.serve_forever() 
+=======
+http_server = WSGIServer(('', 5000), APP)
+http_server.serve_forever()
+# APP.run()
+>>>>>>> 19003bb85772fe2aeebaf7fbe4124115ae679200

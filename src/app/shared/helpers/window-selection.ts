@@ -75,7 +75,8 @@ export class WindowSelection {
     let endLine = 0;
     list.forEach( (line, i) => {
       if ( parseInt(line.parentElement.id, 0) !== page) {
-        page++;
+        // page++;
+        page = parseInt(line.parentElement.id, 0);
         startLine = parseInt(line.id, 0);
         endLine =  parseInt(line.id, 0);
       } else {

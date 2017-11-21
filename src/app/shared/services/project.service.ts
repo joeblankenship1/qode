@@ -18,7 +18,12 @@ export class ProjectService {
   private myProjects$ = new BehaviorSubject<Project[]>([]);
   private url = environment.apiUrl;
 
+  private headers: Headers;
+  private options: RequestOptions;
+
   constructor(private http: AuthHttp) {
+    this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache'});
+    this.options = new RequestOptions({ headers: this.headers });
   }
 
   getProjects(): Observable<any> {

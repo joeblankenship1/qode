@@ -3,6 +3,8 @@ import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext} from 'angular2-modal/plugins/bootstrap';
 import { Code } from '../../../../shared/models/code.model';
 import { CodeModalComponent, CodeModalData } from '../../../../header/code-modal/code-modal.component';
+import { QuoteService } from '../../../../shared/services/quote.service';
+import { WorkSpaceService } from '../../../../shared/services/work-space.service';
 
 @Component({
   selector: 'app-code-item',
@@ -10,12 +12,12 @@ import { CodeModalComponent, CodeModalData } from '../../../../header/code-modal
   styleUrls: ['./code-item.component.css'],
   providers: [Modal]
 })
-export class CodeItemComponent implements OnInit{
+export class CodeItemComponent implements OnInit {
   @Input() code: Code;
-  
-  constructor(private modal: Modal) {
+
+  constructor(private modal: Modal, private quoteService: QuoteService, private workspaceService: WorkSpaceService) {
   }
-  
+
   ngOnInit() {
   }
 
@@ -23,9 +25,12 @@ export class CodeItemComponent implements OnInit{
     this.modal.open(CodeModalComponent, overlayConfigFactory({ code: this.code, mode: 'new' }, BSModalContext ))
     .then((resultPromise) => {
       resultPromise.result.then((result) => {
-        if (result != null){
-          this.modal.alert().headerClass("btn-danger").title("Error al guardar").body(result).open();
-        }});
+        if (result === -1) {
+          if (this.quoteService.removeCodeFromQuotes(this.code.getId())) {
+            this.workspaceService.updateDocumentContent();
+          }
+        }
+      });
     });
   }
 

@@ -2,6 +2,7 @@ import { Memo } from './memo.model';
 import { Quote } from './quote.model';
 import { Project } from './project.model';
 import { Line } from './line.model';
+import { DocumentService } from '../services/document.service';
 
 export class Document {
   private _id: string;
@@ -16,7 +17,7 @@ export class Document {
   private project: string;
 
 
-  constructor(data: any, projectId: string) {
+  constructor(data: any, projectId: string, quotes?: Quote[]) {
     this._id = data._id || undefined;
     this._etag = data._etag || undefined;
     this.name = data.name ? data.name : data.key.name;
@@ -24,29 +25,44 @@ export class Document {
     this.path = data.path || '';
     this.opened = data.opened || false;
     this.project = projectId;
-    this.quotes = [];
+    this.quotes = quotes ? quotes : [];
     this.memos = [];
   }
 
-
   getId() {
     return this._id;
+  }
+
+  getProjectId() {
+    return this.project;
+  }
+
+  getEtag() {
+    return this._etag;
+  }
+
+  setEtag(etag: string) {
+    this._etag = etag;
   }
 
   public getQuotes() {
     return this.quotes;
   }
 
-  public getEtag() {
-    return this._etag;
+  public addQuote(quote: Quote) {
+    this.quotes.push(quote);
+   // this.documentService.addDocument
+  }
+
+  public removeQuote(quote: Quote) {
+    const index = this.quotes.findIndex(q => q.getId() === quote.getId() );
+    if (index !== -1) {
+      this.quotes.splice(index, 1);
+    }
   }
 
   public setId(id: string) {
     this._id = id;
-  }
-
-  public setEtag(etag: string) {
-    this._etag = etag;
   }
 
   public setQuotes(quotes: Quote[]) {
