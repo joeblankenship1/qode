@@ -3,28 +3,34 @@ import { Memo } from './memo.model';
 export class Quote {
 
   private _id: string;
+  private _etag: string;
   private text: string;
   private position: {start: number, end: number};
   private documentDisplay: [{page: number, startLine: number, endLine: number}];
   private codes: Code[];
-  private memo: Memo;
+  private memo: string;
   private projectId: string;
   private color: string;
 
   constructor(text: string, start: number, end: number, documentDisplay, projectId: string,
-    id?: string, memo?: Memo, color?: string) {
+    id?: string, memo?: string, color?: string, etag?: string, codes?: Code[]) {
     this._id = id ? id : undefined;
+    this._etag = etag;
     this.text = text;
     this.position = {start: start, end: end};
     this.documentDisplay = documentDisplay;
-    this.codes = [];
     this.memo = memo;
     this.projectId = projectId;
     this.color = color ? color : 'black';
+    this.codes = codes ? codes : [];
   }
 
   public getId() {
     return this._id;
+  }
+
+  public getEtag() {
+    return this._etag;
   }
 
   public getText() {
@@ -51,11 +57,31 @@ export class Quote {
     return this.color;
   }
 
+  public addCode(code: Code) {
+    this.codes.push(code);
+  }
+
+  public removeCode(id: string): number {
+    const index = this.codes.findIndex(c => c.getId() === id  );
+    if (index !== -1) {
+      this.codes.splice(index, 1);
+    }
+    return index;
+  }
+
+  public setCodes(codes: Code[]) {
+    this.codes = codes;
+  }
+
   public setId(id: string) {
     this._id = id;
   }
 
-  public setMemo(memo: Memo) {
+  public setEtag(etag: string) {
+    this._etag = etag;
+  }
+
+  public setMemo(memo: string) {
     this.memo = memo;
   }
 
@@ -65,5 +91,12 @@ export class Quote {
 
   public isEqual(quote: Quote): boolean {
     return this._id === quote.getId();
+  }
+
+  public getMessageBody() {
+    return {'text': this.text, 'position': this.position, 'color': this.color,
+            'documentDisplay': this.documentDisplay, 'project': this.projectId,
+            'codes': this.codes.map(c => c.getId()), 'memo': this.memo
+    };
   }
 }

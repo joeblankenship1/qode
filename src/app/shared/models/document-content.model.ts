@@ -14,11 +14,16 @@ export class DocumentContent {
 
   constructor(document: Document) {
     this.document = document;
-    this.pages = this.createPages(document);
+    this.createPages();
     if (document.getQuotes().length > 0) {
-      this.createQuotesDisplay(document.getQuotes());
-      this.setQuoteDisplayOfPage();
+      this.updateDocumentQuotesDisplay();
     }
+  }
+
+  public updateDocumentQuotesDisplay() {
+    this.quotesDisplay = [];
+    this.createQuotesDisplay(this.document.getQuotes());
+    this.setQuoteDisplayOfPage();
   }
 
   public getDocumentId() {
@@ -33,34 +38,48 @@ export class DocumentContent {
     return this.quotesDisplay;
   }
 
-  public addQuote(quote: Quote) {
-    const column = this.findColumnOfQuote(quote);
-    this.quotesDisplay.push(new QuoteDisplay(quote, column));
-    this.setQuoteDisplayOfPage();
-  }
+  // public addQuote(quote: Quote) {
+  //   const indxOf = this.document.getQuotes().findIndex( q => {
+  //     return q.getId() === quote.getId();
+  //   });
+  //   if (indxOf !== -1) {
+  //     this.document.getQuotes()[indxOf] = quote;
+  //   }else {
+  //     this.document.getQuotes().push(quote);
+  //   }
+  //   this.updateDocumentQuotesDisplay();
+  // }
 
-  public updatePages(newQuote: Quote) {
-    this.setQuoteDisplayOfPage();
-  }
+  // public removeQuote(quote: Quote) {
+  //   const indxOf = this.document.getQuotes().findIndex( q => {
+  //     return q.getId() === quote.getId();
+  //   });
+  //   if (indxOf !== -1) {
+  //     this.document.getQuotes().splice(indxOf, 1);
+  //   }
+  //   this.createPages();
+  //   this.updateDocumentQuotesDisplay();
+  // }
 
-  private createPages(document: Document) {
-    const quotes = document.getQuotes();
-    const pages: Page[] = [];
+  public createPages() {
+    const quotes = this.document.getQuotes();
+    // const pages: Page[] = [];
+    this.pages = [];
     let lines: Line[];
     let pageId = 0;
     let page: Page = new Page(pageId);
 
-    lines = LineDefinition.createLines(document.text);
+    lines = LineDefinition.createLines(this.document.text);
     lines.map((line, index) => {
       if (index % AppSettings.PAGE_SIZE === 0 && index !== 0) {
-        pages.push(page);
+        this.pages.push(page);
         pageId++;
         page = new Page(pageId);
       }
       page.setLine(line);
     });
-    pages.push(page);
-    return pages;
+    this.pages.push(page);
+    // return pages;
   }
 
 
@@ -88,7 +107,7 @@ export class DocumentContent {
 
   }
 
-  private columnIsTaken(pages, column, display) {
+  private columnIsTaken(pages, column, display: QuoteDisplay) {
     let taken = false;
     const list = this.zip(pages, display);
     let iter = 0;
@@ -96,8 +115,13 @@ export class DocumentContent {
       const item = list[iter];
       const p1 = item[0];
       const p2 = item[1];
-      if (p2.column === column) {
-        taken = this.intersect(p1.startLine, p2.page.startLine, p1.endLine, p2.page.endLine);
+      let i = 0;
+      const len = display.getQuote().getCodes().length === 0 ? 1 : display.getQuote().getCodes().length;
+      while (!taken && i < len) {
+        if (p2.column  + i === column) {
+          taken = this.intersect(p1.startLine, p2.page.startLine, p1.endLine, p2.page.endLine);
+        }
+        i++;
       }
       iter ++;
     }
@@ -119,16 +143,28 @@ export class DocumentContent {
   }
 
   private findColumnOfQuote(quote: Quote) {
-    let column = -1;
+    let column = 0;
     let success = false;
+    const len = quote.getCodes().length === 0 ? 1 : quote.getCodes().length;
     while (!success && column <= AppSettings.MAX_COLMNS) {
-      column++;
       const pages = quote.getDocumentDisplay();
-      success = this.quotesDisplay.find(display => {
-        return this.columnIsTaken(pages, column, display);
-      }) === undefined;
+      while (!success) {
+        let i = 0;
+        let iterSuccess = true;
+        while (iterSuccess && i < len) {
+          iterSuccess = this.quotesDisplay.find(display => {
+            return this.columnIsTaken(pages, column + i, display);
+          }) === undefined;
+          i++;
+        }
+        success = iterSuccess;
+        if (!success) {
+          column += i;
+        }
+      }
     }
     return column;
   }
+
 
 }

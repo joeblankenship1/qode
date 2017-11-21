@@ -26,6 +26,7 @@ export class WorkSpaceService {
 
   private selectedDocumentContent: DocumentContent;
   public selectedDocumentContent$ = new BehaviorSubject<DocumentContent>(null);
+  private selectedDocumentId: string;
 
   private quotesSelectedDocument: Quote[] = [];
   public quotesSelectedDocument$= new BehaviorSubject<Quote[]>([]);
@@ -39,6 +40,8 @@ export class WorkSpaceService {
 
   public initWorkSpace(projectId) {
     this.projectId = projectId;
+    this.cleanWorkSpace();
+    this.selectedDocumentId = null;
     this.documentService.getDocuments().subscribe(
       documents => {
         documents.forEach( d => {
@@ -54,7 +57,8 @@ export class WorkSpaceService {
         });
         this.setOpenedDocuments(this.openedDocuments);
         this.setDocumentContents(this.documentContents);
-        this.selectDocument(this.openedDocuments[0]);
+        this.selectDocument(this.selectedDocumentId ?
+          this.openedDocuments.find(d => d.getId() === this.selectedDocumentId) : this.openedDocuments[0]);
       },
       error => console.error(error)
     );
@@ -92,6 +96,7 @@ export class WorkSpaceService {
   // Set document to be shown
   setSelectedDocument(selectedDocument: Document) {
     this.selectedDocument = selectedDocument;
+    this.selectedDocumentId = selectedDocument ? selectedDocument.getId() : '';
     this.selectedDocument$.next(selectedDocument);
   }
 
@@ -127,44 +132,49 @@ export class WorkSpaceService {
     return this.documentContents$.asObservable();
   }
 
-    // Refresh quotes of selected doc
-    setSelectedDocumentQuotes(quotes: Quote[]) {
-      this.quotesSelectedDocument = quotes;
-      this.quotesSelectedDocument$.next(quotes);
-    }
+  // Refresh quotes of selected doc
+  setSelectedDocumentQuotes(quotes: Quote[]) {
+    this.quotesSelectedDocument = quotes;
+    this.quotesSelectedDocument$.next(quotes);
+  }
 
-    // Return quotes of selected doc
-    getSelectedDocumentQuotes() {
-      return this.quotesSelectedDocument$.asObservable();
-    }
+  // Return quotes of selected doc
+  getSelectedDocumentQuotes() {
+    return this.quotesSelectedDocument$.asObservable();
+  }
 
-    // Return id of actual project
-    getProjectId() {
-      return this.projectId;
-    }
+  // Return id of actual project
+  getProjectId() {
+    return this.projectId;
+  }
 
-    setNewSelection(quote: Quote) {
-      this.newSelection = quote;
-    }
+  setNewSelection(quote: Quote) {
+    this.newSelection = quote;
+  }
 
-    updateDocumentContent(quote: Quote) {
-      this.selectedDocumentContent.addQuote(quote);
-      this.selectedDocumentContent$.next(this.selectedDocumentContent);
-    }
+  updateDocumentContent() {
+    this.selectedDocumentContent.updateDocumentQuotesDisplay();
+    this.selectedDocumentContent$.next(this.selectedDocumentContent);
+  }
 
-    cleanWorkSpace() {
-      this.openedDocuments.splice(0);
-      this.openedDocuments$.next(this.openedDocuments);
-      this.selectedDocument = undefined;
-      this.selectedDocument$.next(this.selectedDocument);
-      this.selectedDocumentContent = undefined;
-      this.selectedDocumentContent$.next(this.selectedDocumentContent);
-      this.documentContents.splice(0);
-      this.documentContents$.next(this.documentContents);
-      this.quotesSelectedDocument.splice(0);
-      this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
-      this.codesSelectedDocument.splice(0);
-      this.codesSelectedDocument$.next(this.codesSelectedDocument);
-    }
+  removeQuoteDocumentContent() {
+    this.selectedDocumentContent.createPages();
+    this.selectedDocumentContent.updateDocumentQuotesDisplay();
+    this.selectedDocumentContent$.next(this.selectedDocumentContent);
+  }
 
+  cleanWorkSpace() {
+    this.openedDocuments.splice(0);
+    this.openedDocuments$.next(this.openedDocuments);
+    this.selectedDocument = undefined;
+    this.selectedDocument$.next(this.selectedDocument);
+    this.selectedDocumentContent = undefined;
+    this.selectedDocumentContent$.next(this.selectedDocumentContent);
+    this.documentContents.splice(0);
+    this.documentContents$.next(this.documentContents);
+    this.quotesSelectedDocument.splice(0);
+    this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
+    this.codesSelectedDocument.splice(0);
+    this.codesSelectedDocument$.next(this.codesSelectedDocument);
+  }
 }

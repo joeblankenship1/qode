@@ -34,18 +34,17 @@ export class DocumentService {
   // Get all documents from server
   loadDocuments(projectId): Observable<Document[]> {
     this.projectId = projectId;
-    return this.http.get( environment.apiUrl + `document?where={"key.project": "${projectId}"}`)
+    return this.http.get( environment.apiUrl + `document?where={"key.project": "${projectId}"}`, this.options)
       .map((data: Response) => {
         const extracted = data.json();
         const documentArray: Document[] = [];
         let document: Document;
         if (extracted._items) {
           for (const element of extracted._items) {
-            document = new Document(element, projectId);
-
-            if (element.quotes && element.quotes.length > 0) {
-              this.createQuotes(element.quotes, document);
-            }
+            document = new Document(element, projectId, this.quoteService.getQuotesById(element.quotes));
+            // if (element.quotes) {
+            //   this.createQuotes(document,element.quotes);
+            // }
             if (element.memos && element.memos.length > 0) {
               const memos = element.map( memo => new Memo());
               document.setMemos(memos);
@@ -86,6 +85,20 @@ export class DocumentService {
       .catch(this.handleErrorObservable);
   }
 
+  updateDocumentQuotes(document: Document): Observable<any> {
+    const doc = this.documentList.find(d => d.getId() === document.getId());
+    const body = {'quotes': document.getQuotes().map(q => q.getId())};
+    this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache', 'If-Match': document.getEtag()});
+    this.options = new RequestOptions({ headers: this.headers });
+    return this.http.patch( environment.apiUrl + 'document/' + document.getId(), body, this.options)
+      .map(res => {
+        const extracted = res.json();
+        if (extracted._etag) {
+          document.setEtag(extracted._etag);
+        }})
+      .catch(this.handleErrorObservable);
+  }
+
   public updateDocument(document: Document, fields: any): Observable<any> {
     const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag()});
     const updoptions = new RequestOptions({ headers: updheaders });
@@ -109,13 +122,8 @@ export class DocumentService {
     return Observable.throw(error.message || error);
   }
 
-  private createQuotes(quotes, document: Document) {
-      this.quoteService.getQuoteList().subscribe(
-      quoteList => {
-          document.setQuotes(quoteList.filter( q => quotes.find( e => e === q.getId()) !== undefined ));
-      },
-      error => console.log(error)
-    );
-  }
-
+  // private createQuotes(document: Document) {
+  //   // document.setQuotes(this.quoteService.quoteList.filter( q => quotes.find( e => e === q.getId()) !== undefined ));
+  //   document.setQuotes(this.quoteService.quoteList.filter( q => document.getQuotes().find( e => e.getId() === q.getId()) !== undefined ));
+  // }
 }

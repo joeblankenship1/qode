@@ -39,7 +39,7 @@ DOMAIN = {
                     'resource': 'user'
                 },
                 'required': True
-            },
+            }
         },
         'additional_lookup': {
             'url': 'regex("[\w]+")',
@@ -86,6 +86,7 @@ DOMAIN = {
             },
             'quotes': {
                 'type': 'list',
+                'default': [],
                 'schema': {
                     'type': 'objectid',
                     'data_relation': {
@@ -98,19 +99,22 @@ DOMAIN = {
     },
     'code': {
         'schema': {
-            'name':{
-                'type': 'string',
-                'required': True
+            'key': {
+                'type': 'dict',
+                'schema': {
+                    'name': {'type':'string'},
+                    'project': {
+                        'type': 'objectid',
+                        'data_relation': {
+                        'resource': 'project'
+                        }   
+                    }
+                },
+                'required': True,
+                'unique': True
             },
             'color':{
                 'type': 'string'
-            },
-            'project': {
-                'type': 'objectid',
-                'data_relation': {
-                    'resource': 'project'
-                },
-                'required': True
             },
             'memo':{
                 'type': 'string'
