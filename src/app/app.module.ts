@@ -123,10 +123,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     WorkSpaceResolver
   ],
   bootstrap: [AppComponent],
-<<<<<<< HEAD
-  entryComponents: [CodeModalComponent, ProjectShareModalComponent]
-=======
-  entryComponents: [CodeModalComponent, QuoteModalComponent]
->>>>>>> 19003bb85772fe2aeebaf7fbe4124115ae679200
+  entryComponents: [CodeModalComponent, ProjectShareModalComponent, QuoteModalComponent]
 })
 export class AppModule { }
