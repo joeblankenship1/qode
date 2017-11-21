@@ -1,6 +1,6 @@
 DOMAIN = {
     'project': {
-        'extra_response_fields': ['key'],
+        'extra_response_fields': ['key','_modified_by'],
         'schema': {
             'key': {
                 'type': 'dict',
@@ -24,7 +24,13 @@ DOMAIN = {
                         'role': {'type':'string'},
                     }
                 }
-            }
+            },
+            '_created_by': {
+                'type': 'string'
+            },
+            '_modified_by': {
+                'type': 'string'
+            },
         }
     },
     'document': {
@@ -74,7 +80,13 @@ DOMAIN = {
                         'embeddable': True
                     }
                 }
-            }
+            },
+            '_created_by': {
+                'type': 'string'
+            },
+            '_modified_by': {
+                'type': 'string'
+            },
         }
     },
     'code': {
@@ -98,7 +110,13 @@ DOMAIN = {
             },
             'memo':{
                 'type': 'string'
-            }
+            },
+            '_created_by': {
+                'type': 'string'
+            },
+            '_modified_by': {
+                'type': 'string'
+            },
         }
     },
     'quote': {
@@ -148,7 +166,13 @@ DOMAIN = {
                     'resource': 'project'
                 },
                 'required': True
-            }
+            },
+            '_created_by': {
+                'type': 'string'
+            },
+            '_modified_by': {
+                'type': 'string'
+            },
         }
     }
 }

@@ -4,6 +4,7 @@ from eve.auth import BasicAuth
 from flask_cors import CORS
 from flask import jsonify, request, make_response
 from authentication import MyTokenAuth, AuthError, requires_auth, get_token_auth_header, get_email
+from settings import DOMAIN
 
 from flask import Blueprint, Response, current_app, request
 from bson import json_util
@@ -50,17 +51,27 @@ def pre_GET_resources(resource, request, lookup):
                 if cursor['key']['owner'] != mail and not esCol:
                     error_message = 'You do not have permissions to access this content'
                     abort(make_response(jsonify(message=error_message), 403))
-
-# Assign the mail of the owner to the project and check that the combination name owner is unique
-def before_insert_project(projects):
+                     
+# Before every insert  
+def before_insert(resource, documents):
     token = get_token_auth_header()
     mail = get_email(token)
-    for proj in projects:
-        proj['key']['owner'] = mail
-        name = proj['key']['name'] 
-        db = current_app.data.driver.db['project']
-        exists = db.find_one({"key.name": name },{"key.owner": mail})
-        if exists:
-            error_message = 'The name is not unique for this user'
-            abort(make_response(jsonify(message=error_message), 422))
+    for document in documents:
+        # If resource is project: Assign the mail of the owner to the project and check that the combination name owner is unique     
+        if resource == 'project':
+            name = document['key']['name'] 
+            db = current_app.data.driver.db['project']
+            exists = db.find_one({"key.name": name },{"key.owner": mail})
+            if exists:
+                error_message = 'The name is not unique for this user'
+                abort(make_response(jsonify(message=error_message), 422))
+            else:
+                document['key']['owner'] = mail
+        # For all the resources 
+        document['_created_by'] = mail
+        document['_modified_by'] = mail
 
+def before_update(resource, documents, original):
+    token = get_token_auth_header()
+    mail = get_email(token)
+    documents['_modified_by'] = mail

@@ -73,6 +73,10 @@ export class ProjectService {
         proj.setId(aux._id);
         proj.setEtag(aux._etag);
         proj.setOwner(aux.key.owner);
+        proj.setCreated(aux._created);
+        proj.setCreatedBy(aux._created_by);
+        proj.setModified(aux._updated);
+        proj.setModifiedBy(aux._modified_by);
         return proj;
       }).catch((err: Response) => {
         const details = err.json();
@@ -87,6 +91,8 @@ export class ProjectService {
       .map((data: Response) => {
         const aux = data.json();
         proj.setEtag(aux._etag);
+        proj.setModified(aux._updated);
+        proj.setModifiedBy(aux._modified_by);
         return proj;
       }).catch((err: Response) => {
         const details = err.json();

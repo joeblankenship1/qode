@@ -16,6 +16,7 @@
     </button>
 
 </td>
+<td> {{ project._updated | date:'dd-MM-yyyy' }} <br> {{ project._updated | date:'HH:mm' }} hs {{ project._modified_by}} </td>
 <td>
     <button class="btn btn-danger" *ngIf="project.owner.split('@')[0] == myNick" (click)="onDeleteProject()">
         <i class="fa fa-trash-o" aria-hidden="true"></i>

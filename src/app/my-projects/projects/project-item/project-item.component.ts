@@ -14,13 +14,14 @@ import { overlayConfigFactory } from 'angular2-modal';
 import { WorkSpaceService } from '../../../shared/services/work-space.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: '[app-project-item]',
   templateUrl: './project-item.component.html',
   styleUrls: ['./project-item.component.css'],
   encapsulation: ViewEncapsulation.None,
-  providers: [Modal]
+  providers: [Modal, DatePipe]
 })
 export class ProjectItemComponent implements OnInit {
   @Input() project: Project;
@@ -28,7 +29,7 @@ export class ProjectItemComponent implements OnInit {
   public myNick$ = new BehaviorSubject<string>('');
 
   constructor(private projectService: ProjectService, private router: Router, private notificationsService: NotificationsService,
-    private modal: Modal, private workspaceService: WorkSpaceService, private authService: AuthService) { }
+    private modal: Modal, private workspaceService: WorkSpaceService, private authService: AuthService, private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.authService.getEmail().subscribe(
@@ -46,6 +47,8 @@ export class ProjectItemComponent implements OnInit {
       resp => {
         this.notificationsService.success('Exito', 'Se actualizo la descripcion del proyecto ' + this.project.name);
         this.project._etag = resp._etag;
+        this.project._updated = resp._updated;
+        this.project._modified_by = resp._modified_by;
       },
       error => {
         this.notificationsService.error('Error', 'Error en la actualizacion del proyecto');
