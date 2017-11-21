@@ -1,5 +1,60 @@
 .container-fluid {
-  height: -moz-calc(100% - 52px);
-  height: -webkit-calc(100% - 52px);
-  height: calc(100% - 52px);
+    height: -moz-calc(100% - 52px);
+    height: -webkit-calc(100% - 52px);
+    height: calc(100% - 52px);
+}
+
+:host /deep/ .sn-title {
+    font-size: 18px !important;
+}
+
+:host /deep/ .simple-notification .sn-content {
+    font-size: 14px !important;
+}
+
+:host /deep/ .simple-notification .icon {
+    position: absolute;
+    box-sizing: border-box;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+}
+
+:host /deep/ .simple-notification.error {
+    background: rgba(231, 75, 72, 0.87);
+}
+
+:host /deep/ .simple-notification.success {
+    background: #18bc96d3;
+}
+
+:host /deep/ .simple-notification.alert {
+    background: #ffd95bc7;
+}
+
+:host /deep/ .simple-notification.info {
+    background: rgba(3, 176, 244, 0.767);
+}
+
+:host /deep/ .simple-notification.warn {
+    background: #ffd95bc9;
+}
+
+:host /deep/ .simple-notification.warn div .sn-title {
+    color: rgba(68, 68, 68, 0.856);
+}
+
+:host /deep/ .simple-notification.warn div .sn-content {
+    color: rgba(68, 68, 68, 0.789);
+}
+
+:host /deep/ .myClass {
+    height: 20px;
+}
+
+:host /deep/ .simple-notification-wrapper {
+    height: 20px;
+    width: 420px !important;
 }

@@ -54,7 +54,10 @@ export class DocumentService {
         }
         this.setDocuments(documentArray);
         return documentArray;
-      }, e => console.error(e));
+      }).catch((err: Response) => {
+        const details = err.json();
+        return Observable.throw(details);
+      });
   }
 
   setDocuments(documents: Document[]) {

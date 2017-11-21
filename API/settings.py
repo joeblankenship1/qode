@@ -1,49 +1,30 @@
 DOMAIN = {
-    'user': {
-        'schema': {
-            'username': {
-                'type': 'string',
-                 'unique': True,
-                 'required': True
-            },
-            'password': {
-                'type': 'string',
-                'required': True
-            },
-            'role': {
-                'type': 'string',
-                'allowed': ["reader", "coder"],
-                'required': True
-            }
-        },
-        'id_field': 'username',
-        'additional_lookup': {
-            'url': 'regex("[\w]+")',
-            'field': 'username',
-        }
-    },
     'project': {
+        'extra_response_fields': ['key'],
         'schema': {
-            'name':{
-                'type': 'string',
-                'unique': True,
-                'required': True
+            'key': {
+                'type': 'dict',
+                'schema': {
+                    'name': {'type': 'string'},
+                    'owner': {'type': 'string'}
+                },
+                'required': True,
+                'unique': True
             },
             'description':{
                 'type': 'string',
                 'maxlength': 300
             },
-            'owner': {
-                'type': 'objectid',
-                'data_relation': {
-                    'resource': 'user'
-                },
-                'required': True
+            'collaborators': {
+                'type': 'list',
+                'schema': {
+                    'type':'dict',
+                    'schema': {
+                        'email': {'type':'string'},
+                        'role': {'type':'string'},
+                    }
+                }
             }
-        },
-        'additional_lookup': {
-            'url': 'regex("[\w]+")',
-            'field': 'name',
         }
     },
     'document': {
@@ -56,7 +37,7 @@ DOMAIN = {
                         'type': 'objectid',
                         'data_relation': {
                         'resource': 'project'
-                        }   
+                        }
                     }
                 },
                 'required': True,
@@ -107,7 +88,7 @@ DOMAIN = {
                         'type': 'objectid',
                         'data_relation': {
                         'resource': 'project'
-                        }   
+                        }
                     }
                 },
                 'required': True,
@@ -173,5 +154,5 @@ DOMAIN = {
     }
 }
 
-RESOURCE_METHODS = ['GET','POST']
+RESOURCE_METHODS = ['GET','POST','DELETE']
 ITEM_METHODS = ['GET','PATCH','DELETE']

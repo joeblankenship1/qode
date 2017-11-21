@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { CodeModalComponent } from './code-modal/code-modal.component';
+import { ProjectShareModalComponent } from '../my-projects/project-share-modal/project-share-modal.component';
+
 import { overlayConfigFactory } from 'angular2-modal';
 import { Code } from '../shared/models/code.model';
 import { AuthService } from '../shared/services/auth.service';
@@ -25,9 +27,9 @@ export class HeaderComponent implements OnInit {
   show: boolean;
   private projectId: string;
 
-
-  constructor(private authsvc: AuthService, private router: Router, private modal: Modal
-    , private workspaceService: WorkSpaceService, private documentService: DocumentService) {
+  constructor(private authsvc: AuthService, private router: Router, private modal: Modal,
+    private workspaceService: WorkSpaceService, private projectService: ProjectService,
+    private documentService: DocumentService) {
     this.appname = 'libreQDA';
   }
 
@@ -64,10 +66,8 @@ export class HeaderComponent implements OnInit {
       } else {
         reader.readAsArrayBuffer(f);
       }
-
     }
   }
-
 
   // Add a new code
   onNewCode() {
@@ -75,6 +75,19 @@ export class HeaderComponent implements OnInit {
     this.modal.open(CodeModalComponent, overlayConfigFactory({ code: newCode, mode: 'new' }, BSModalContext))
       .then((resultPromise) => {
         resultPromise.result.then((result) => {});
+      });
+  }
+
+  // Share the actual project
+  onShareProject() {
+    const projectId = this.workspaceService.getProjectId();
+    this.modal.open(ProjectShareModalComponent, overlayConfigFactory({project: this.projectService.getProject(projectId)}, BSModalContext))
+      .then((resultPromise) => {
+        resultPromise.result.then((result) => {
+          if (result != null) {
+            this.modal.alert().headerClass('btn-danger').title('Error al guardar').body(result).open();
+          }
+        });
       });
   }
 

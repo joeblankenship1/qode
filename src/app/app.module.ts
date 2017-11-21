@@ -30,7 +30,6 @@ import { DocumentContentComponent } from './work-space/content/documents/documen
 import { WorkSpaceComponent } from './work-space/work-space.component';
 import { ProjectsComponent } from './my-projects/projects/projects.component';
 import { ProjectItemComponent } from './my-projects/projects/project-item/project-item.component';
-import { ProjectItemColComponent } from './my-projects/projects/project-item-col/project-item-col.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { AuthService } from './shared/services/auth.service';
@@ -50,7 +49,9 @@ import {DataTableModule} from 'angular2-datatable';
 import {InlineEditorModule} from 'ng2-inline-editor';
 import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
 import { DataFilterPipe } from './my-projects/projects/data-filter.pipe';
-
+import { ProjectShareModalComponent } from './my-projects/project-share-modal/project-share-modal.component';
+import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -82,13 +83,12 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     QuoteModalComponent,
     ProjectsComponent,
     ProjectItemComponent,
-    ProjectItemColComponent,
     HomeComponent,
     LoginComponent,
     SignupComponent,
-    ProjectItemColComponent,
     OptionsComponent,
-    DataFilterPipe
+    DataFilterPipe,
+    ProjectShareModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -101,6 +101,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DataTableModule,
     InlineEditorModule,
     ContextMenuModule,
+    BrowserAnimationsModule,
+    SimpleNotificationsModule.forRoot(),
     Ng2CompleterModule,
     ColorPickerModule
   ],
@@ -121,6 +123,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     WorkSpaceResolver
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CodeModalComponent, QuoteModalComponent]
+  entryComponents: [CodeModalComponent, ProjectShareModalComponent, QuoteModalComponent]
 })
 export class AppModule { }

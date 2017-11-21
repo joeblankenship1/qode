@@ -28,6 +28,7 @@ export class CodeService {
   loadCodes(projectId): Observable<Code[]> {
     return this.http.get(environment.apiUrl + `code?where={"key.project":"${projectId}"}`, this.options)
       .map((data: Response) => {
+        console.log('data');
         const extracted = data.json();
         const codeArray: Code[] = [];
         let code;
@@ -39,6 +40,10 @@ export class CodeService {
         }
         this.setCodes(codeArray);
         return codeArray;
+      }).catch((err: Response) => {
+        const details = err.json();
+        console.log(details);
+        return Observable.throw(details);
       });
   }
 

@@ -12,6 +12,7 @@ export class AuthService {
 
   loggedIn: boolean;
   loggedIn$ = new BehaviorSubject<boolean>(this.loggedIn);
+  myNick = new BehaviorSubject<string>('');
 
   auth0 = new auth0.WebAuth({
     clientID: 'UhMrdGno87iwJacMYSZYOq53ImO7IHa6',
@@ -19,16 +20,17 @@ export class AuthService {
     responseType: 'token id_token',
     audience: 'http://localhost:5000/',
     redirectUri: 'http://localhost:4200/',
-    scope: 'openid'
+    scope: 'openid profile'
   });
 
   constructor(public router: Router) {
     if (this.isAuthenticated()) {
       this.setLoggedIn(true);
-    } else {this.setLoggedIn(false);
+      this.setMyNick();
+    } else {
+      this.setLoggedIn(false);
     }
   }
-
   // Login to Auth0 using user and password.
   public loginUserPassword(data) {
     this.auth0.client.login(data, (err, authResult) => {
@@ -57,13 +59,13 @@ export class AuthService {
 
   public signup(data): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-    this.auth0.signup(data, function(err, rslt)  {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data);
-      }
-    });
+      this.auth0.signup(data, function (err, rslt) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
     });
   }
 
@@ -95,6 +97,14 @@ export class AuthService {
     return localStorage.getItem('access_token');
   }
 
+  public setMyNick() {
+    this.myNick.next(JSON.parse(localStorage.getItem('profile')).nickname);
+  }
+
+  public getEmail() {
+    return this.myNick.asObservable();
+  }
+
   public isLoggedIn() {
     return this.loggedIn$.asObservable();
   }
@@ -104,6 +114,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
+    localStorage.removeItem('profile');
     this.setLoggedIn(false);
   }
 
@@ -127,6 +138,7 @@ export class AuthService {
       } else {
         const user = new User(profile);
         localStorage.setItem('profile', JSON.stringify(user));
+        this.myNick.next(user.nickname);
       }
     });
   }

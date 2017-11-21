@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse" *ngIf="(router.url !== '/') && (router.url !== '/signup')">
+<nav class="navbar navbar-default" *ngIf="(router.url !== '/') && (router.url !== '/signup')">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -6,14 +6,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">FingQDA</a>
+            <a class="navbar-brand" routerLink='/myprojects'>FingQDA</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav" *ngIf="router.url.includes('workspace')">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Proyecto <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
+                        <li><a (click)="onShareProject()" class="header-btn">Compartir</a></li>
                         <li><a href="#">Another action</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#">Separated link</a></li>
@@ -24,11 +24,11 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentos<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><input type="file" #files name="files[]" multiple style="display:none;" (change)="onChange($event)"/><a class="header-btn" (click)="files.click()">Importar</a></li>
+                        <li><input type="file" #files name="files[]" multiple style="display:none;" (change)="onChange($event)" /><a class="header-btn" (click)="files.click()">Importar</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Códigos<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Códigos<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a class="header-btn" (click)="onNewCode()">Nuevo código</a></li>
                     </ul>
@@ -44,7 +44,7 @@
                 <li><a href="#">Visualización</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a routerLink='/myprojects' *ngIf="this.authsvc.isAuthenticated()"> Mis Proyectos </a></li>
+                <li><a routerLink='/myprojects' *ngIf="this.authsvc.isAuthenticated() && router.url.includes('workspace')"> Mis Proyectos </a></li>
                 <li><a href="#" (click)="logout()" *ngIf="show"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
         </div>

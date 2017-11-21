@@ -2,30 +2,9 @@
     border: rgba(196, 74, 74, 0.78) solid 1px;
 }
 
-.col-md-1,
-.col-md-10,
-.col-md-11,
-.col-md-12,
-.col-md-2,
-.col-md-3,
-.col-md-4,
-.col-md-5,
-.col-md-6,
-.col-md-7,
-.col-md-8,
-.col-md-9 {
-    padding-left: 10px;
-    padding-right: 5px;
-}
-
-#crearProyecto {
-    border: none;
-    background-color: rgba(42, 197, 154, 0.82);
-    color: white;
-    font-weight: 300;
-    font-size: 20px;
-    border-radius: 2px;
-    width: -webkit-stretch;
+.col-md-12 {
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 input {
@@ -35,15 +14,10 @@ input {
 
 h2 {
     text-align: center;
-    font-weight: 300;
-    font-size: 40px;
-    color: dimgray;
 }
 
 h3 {
     text-align: center;
-    font-weight: 300;
-    color: #4A4D49;
 }
 
 .smallinput {
@@ -53,4 +27,9 @@ h3 {
     border-width: 0px 0px 2px 0px;
     box-shadow: none;
     border-radius: inherit;
+}
+
+.alert-danger {
+    padding-top: 6px;
+    padding-bottom: 6px;
 }

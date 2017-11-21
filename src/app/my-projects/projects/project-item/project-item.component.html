@@ -1,8 +1,23 @@
 <td>
-    <button class="btn btn-primary btn-access" (click)="onAccessProject()">Acceder</button>
-    <button class="btn btn-danger btn-delete" (click)="onDeleteProject()">x</button>
+    <button type="button" class="btn btn-success" (click)="onAccessProject()">
+        <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i> Acceder
+    </button>
+    <button class="btn btn-info" (click)="onShareProject()" title="Compartir">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+    </button>
 </td>
-<td> {{project.name.split('/')[1]}}</td>
+<td> {{project.name}}</td>
+<td> {{project.owner}}</td>
 <td>
-    <inline-editor type="text" [(ngModel)]="project.description" (onSave)="onUpdateDescription($event)" size=50></inline-editor>
+    <inline-editor type="text" [(ngModel)]="project.description" (onSave)="onUpdateDescription($event)" size=70 min=0 max=300></inline-editor>
+    <button class="btn btn-edit" *ngIf="project.description == ''" (click)="this.project.description = 'Ingresa aquí la nueva descripcion'">
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+
+    </button>
+
+</td>
+<td>
+    <button class="btn btn-danger" *ngIf="project.owner.split('@')[0] == myNick" (click)="onDeleteProject()">
+        <i class="fa fa-trash-o" aria-hidden="true"></i>
+    </button>
 </td>

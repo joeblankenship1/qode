@@ -23,9 +23,10 @@ export class CodeListComponent implements OnInit {
   ngOnInit() {
     this.codeService.getCodes()
       .subscribe(
-        codes => {
-          this.codes = codes;
-        }
+      codes => {
+        this.codes = codes;
+        this.projectId = this.workspaceService.getProjectId();
+      }
       );
       this.projectId = this.workspaceService.getProjectId();
   }

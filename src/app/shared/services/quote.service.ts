@@ -50,9 +50,10 @@ export class QuoteService {
           this.projectId, q._id, q.memo, q.color, q._etag, this.codeService.getCodesById(q.codes)) );
         this.setQuoteList(quotes);
         return quotes;
-      },
-      error => console.error(error)
-    );
+      }).catch((err: Response) => {
+        const details = err.json();
+        return Observable.throw(details);
+      });
   }
 
   getQuotesById(quotes): Quote[] {
