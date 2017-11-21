@@ -13,7 +13,6 @@ from flask import abort
 
 # APP = Eve(auth=MyTokenAuth)
 APP = Eve()
-CORS(APP)
 
 @APP.errorhandler(AuthError)
 def handle_auth_error(ex):

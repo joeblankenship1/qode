@@ -42,7 +42,6 @@ import { WindowSelection } from './shared/helpers/window-selection';
 import { QuoteService } from './shared/services/quote.service';
 import { WorkSpaceService } from './shared/services/work-space.service';
 
-
 import {DataTableModule} from 'angular2-datatable';
 import {InlineEditorModule} from 'ng2-inline-editor';
 import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
@@ -51,6 +50,7 @@ import { ProjectShareModalComponent } from './my-projects/project-share-modal/pr
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DatePipe } from '@angular/common';
+import { TreeModule } from 'angular-tree-component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -100,7 +100,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     InlineEditorModule,
     ContextMenuModule,
     BrowserAnimationsModule,
-    SimpleNotificationsModule.forRoot()
+    SimpleNotificationsModule.forRoot(),
+    TreeModule
   ],
   providers: [DocumentService, CodeService,
     AuthGuard,
