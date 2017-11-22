@@ -1,3 +1,53 @@
-<p>
-  quotes-modal works!
-</p>
+<div class="container-fluid fingqda-modal-container">
+    <div class="row fingqda-modal-header">
+        <button type="button" (click)="onClose()" class="close col-xs-1">&times;</button>
+        <div class="col-xs-6 col-md-4">
+            <h4>Editar cita</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group row">
+                <label for="inputCode" class="col-xs-2 control-label">Código</label>
+                <div class="col-xs-10">
+                        <ng2-completer [(ngModel)]="chosenCode" [datasource]="dataService" 
+                        (selected)="onCodeSelected($event)" [textNoResults]="'Enter para crear nuevo código'"
+                        [minSearchLength]="1" inputClass="form-control" inputID="inputCode" [autoMatch]="true"
+                        [placeholder]="'Buscar código o crear nuevo'" (keyup)="onKeyUp($event)">
+                        </ng2-completer>
+                </div>
+            </div>
+            <div class="panel panel-default"> 
+                <table class="table table-striped" [mfData]="selectedCodes" #mf="mfDataTable">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let c of mf.data">
+                            <td>
+                                <button class="btn btn-danger btn-delete" (click)="onRemoveCode(c)">x</button>
+                            </td>
+                            <td> {{c.name}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Memo</span>
+                <input class="col-xs-12 form-control" type="text" [(ngModel)]="memo">
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <button type="button" class="btn btn-success" (click)="onSaveQuote()">
+            Guardar
+            </button>
+            <button *ngIf="quote._id" type="button" class="btn btn-danger" (click)="onDeleteQuote()">
+            Borrar
+            </button>
+        </div>    
+    </div> 
+</div>

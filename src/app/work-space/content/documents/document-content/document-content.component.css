@@ -75,6 +75,7 @@
     cursor: pointer;
     padding: none;
     margin: none;
+    width: 8px;
     border-left: 2.5px solid;
   }
 

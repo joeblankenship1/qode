@@ -38,4 +38,12 @@ export class QuoteDisplay {
     return undefined;
   }
 
+  public getQuote(): Quote {
+    return this.quote;
+  }
+
+  public setQuote(quote: Quote) {
+    this.quote = quote;
+  }
+
 }

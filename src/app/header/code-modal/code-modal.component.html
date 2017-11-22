@@ -1,5 +1,5 @@
-<div class="container-fluid code-modal-container">
-    <div class="row code-modal-header">
+<div class="container-fluid fingqda-modal-container">
+    <div class="row fingqda-modal-header">
         <button type="button" (click)="onClose()" class="close col-xs-1">&times;</button>
         <div class="col-xs-6 col-md-4">
             <h4>Editar código</h4>
@@ -8,12 +8,20 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="input-group">
-            <span class="input-group-addon">Código     </span>
-            <input class="col-xs-12 form-control" type="text" [(ngModel)]="code.name">
+                <span class="input-group-addon">Código     </span>
+                <input class="col-xs-12 form-control" type="text" [(ngModel)]="name">
             </div>
             <div class="input-group">
-            <span class="input-group-addon">Descripción</span>
-            <input class="col-xs-12 form-control" type="text" [(ngModel)]="code.memo">
+                <span class="input-group-addon">Descripción</span>
+                <input class="col-xs-12 form-control" type="text" [(ngModel)]="memo">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Color</span>
+                <input [(colorPicker)]="color" [cpOKButton]="true" [cpAlphaChannel]="'disabled'"
+                 [style.background]="color" [class]="'colorInput col-xs-12 form-control'" [cpPosition]="'bottom'"
+                 [cpCancelButton]="true" [cpCancelButtonClass]="'btn btn-danger'"
+                 [cpOKButtonClass]="'btn btn-success'" [cpPositionOffset]="'-60%'"
+                 />
             </div>
         </div>
     </div>
