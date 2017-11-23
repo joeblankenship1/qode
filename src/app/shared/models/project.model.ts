@@ -10,7 +10,7 @@ export class Project {
   public _created_by: string;
   public _created: Date;
   public _modified_by: string;
-  public _updated: Date;
+  public _modified: Date;
 
   constructor(data: any) {
     this._id = data._id;
@@ -21,7 +21,7 @@ export class Project {
     this.owner = data.owner ? data.owner : data.key.owner ;
     this._created_by = data._created_by;
     this._created = data._created;
-    this._updated = data._updated;
+    this._modified = data._modified;
     this._modified_by = data._modified_by;
   }
 
@@ -49,8 +49,8 @@ export class Project {
     this._modified_by = _modified_by;
   }
 
-  setModified(_updated: Date) {
-    this._updated = _updated;
+  setModified(_modified: Date) {
+    this._modified = _modified;
   }
 
   getMessageBody() {

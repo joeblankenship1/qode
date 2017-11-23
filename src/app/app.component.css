@@ -57,4 +57,5 @@
 :host /deep/ .simple-notification-wrapper {
     height: 20px;
     width: 420px !important;
+    top: 100px !important;
 }

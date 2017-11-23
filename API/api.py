@@ -10,6 +10,7 @@ from flask import Blueprint, Response, current_app, request
 from bson import json_util
 from bson.objectid import ObjectId
 from flask import abort
+from datetime import datetime
 
 # APP = Eve(auth=MyTokenAuth)
 APP = Eve()
@@ -26,18 +27,31 @@ def pre_GET_project(request, lookup):
     mail = get_email(token)
     lookup['$or'] = [{ "key.owner": mail }, { "collaborators.email": mail }]
 
+# Returns the project id from the request
+def getProjectId(resource, request):
+    j = request.args.get('where').encode('utf-8')
+    d = json_util.loads(j)
+    if resource == 'quote' or resource == 'code':
+        return d.get('project') 
+    else:
+        return d.get('key.project')
+
+# Function that extracts the project id from the item and update the project attrs '_modified_by' and '_modified'
+def update_project_attrs(resource, item, mail):
+    if resource == 'document' or resource == 'code':
+        proj_id = item['key']['project']
+    if resource == 'quote':
+        proj_id = item['project']
+    upd = {"_id" : proj_id, "_modified_by" : mail , "_modified": datetime.now()}
+    current_app.data.driver.db['project'].update({'_id':proj_id}, {"$set": upd}, upsert=False)
+    
 # Return only resources from project whose owner is the mail obtained from the access token in session
 def pre_GET_resources(resource, request, lookup):
     if resource == 'document' or resource == 'quote' or resource == 'code':
-        token = get_token_auth_header()
-        mail = get_email(token)
         if request.args.get('where'):
-            j = request.args.get('where').encode('utf-8')
-            d = json_util.loads(j)
-            if resource == 'quote' or resource == 'code':
-                proj_id = d.get('project') 
-            else:
-                proj_id = d.get('key.project')  # proj_id -> is the project id from the request
+            token = get_token_auth_header()
+            mail = get_email(token)
+            proj_id = getProjectId(resource, request)
             db = current_app.data.driver.db['project']
             cursor = db.find_one({'_id': ObjectId(proj_id)})
             projects_json = json_util.dumps(cursor)
@@ -56,21 +70,41 @@ def before_insert(resource, documents):
     token = get_token_auth_header()
     mail = get_email(token)
     for document in documents:
-        # If resource is project: Assign the mail of the owner to the project and check that the combination name owner is unique     
+        # If resource is project  
         if resource == 'project':
+            # checks that the combination name owner is unique   
             name = document['key']['name'] 
             db = current_app.data.driver.db['project']
             exists = db.find_one({"key.name": name },{"key.owner": mail})
+            # If already exist: abort
             if exists:
                 error_message = 'The name is not unique for this user'
                 abort(make_response(jsonify(message=error_message), 422))
+            # Assign the mail of the owner to the project 
             else:
                 document['key']['owner'] = mail
-        # For all the resources 
+        # If resource is not project, update the attrs
+        else:
+            update_project_attrs(resource, document, mail)
+        # For all the resources init the attrs
         document['_created_by'] = mail
         document['_modified_by'] = mail
+        document['_modified'] = datetime.now()
 
-def before_update(resource, documents, original):
+# Before every patch, the atributes: '_modified_by' and '_modified' are updated for the resource and the project
+def before_update(resource, documents, item):
     token = get_token_auth_header()
     mail = get_email(token)
+    # update the resource atributes
     documents['_modified_by'] = mail
+    documents['_modified'] = datetime.now()
+    # update the project atributes
+    if resource != 'project':
+        update_project_attrs(resource, item, mail)
+
+# Update the project atributes 
+def before_delete_item(resource, item):
+    token = get_token_auth_header()
+    mail = get_email(token)
+    if resource != 'project':
+        update_project_attrs(resource, item, mail)

@@ -69,6 +69,14 @@ export class ProjectService {
     return this.myProjects.find(x => x._id === id);
   }
 
+  // TO DO -> Tendria que ser llamado despues de cada add/update/delete en alguno de los otros servicios
+  updateProjectAttrs(_id, _modified_by, _modified) {
+    const proj = this.getProject(_id);
+    proj._modified = _modified;
+    proj._modified_by = _modified_by;
+    this.setArrayProyects(this.myProjects);
+  }
+
   createProject(proj: Project): Observable<any> {
     const headers = new Headers({ 'Content-Type': 'application/json'});
     const options = new RequestOptions({ headers: headers });
@@ -80,7 +88,7 @@ export class ProjectService {
         proj.setOwner(aux.key.owner);
         proj.setCreated(aux._created);
         proj.setCreatedBy(aux._created_by);
-        proj.setModified(aux._updated);
+        proj.setModified(aux._modified);
         proj.setModifiedBy(aux._modified_by);
         return proj;
       }).catch((err: Response) => {
@@ -96,7 +104,7 @@ export class ProjectService {
       .map((data: Response) => {
         const aux = data.json();
         proj.setEtag(aux._etag);
-        proj.setModified(aux._updated);
+        proj.setModified(aux._modified);
         proj.setModifiedBy(aux._modified_by);
         return proj;
       }).catch((err: Response) => {

@@ -1,6 +1,6 @@
 DOMAIN = {
     'project': {
-        'extra_response_fields': ['key','_modified_by'],
+        'extra_response_fields': ['key','_modified_by','_modified' ],
         'schema': {
             'key': {
                 'type': 'dict',
@@ -26,6 +26,9 @@ DOMAIN = {
                 }
             },
             '_created_by': {
+                'type': 'string'
+            },
+            '_modified': {
                 'type': 'string'
             },
             '_modified_by': {
@@ -85,6 +88,9 @@ DOMAIN = {
             '_created_by': {
                 'type': 'string'
             },
+            '_modified': {
+                'type': 'string'
+            },
             '_modified_by': {
                 'type': 'string'
             },
@@ -113,6 +119,9 @@ DOMAIN = {
                 'type': 'string'
             },
             '_created_by': {
+                'type': 'string'
+            },
+            '_modified': {
                 'type': 'string'
             },
             '_modified_by': {
@@ -169,6 +178,9 @@ DOMAIN = {
                 'required': True
             },
             '_created_by': {
+                'type': 'string'
+            },
+            '_modified': {
                 'type': 'string'
             },
             '_modified_by': {

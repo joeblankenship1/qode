@@ -47,7 +47,7 @@ export class ProjectItemComponent implements OnInit {
       resp => {
         this.notificationsService.success('Exito', 'Se actualizo la descripcion del proyecto ' + this.project.name);
         this.project._etag = resp._etag;
-        this.project._updated = resp._updated;
+        this.project._modified = resp._modified;
         this.project._modified_by = resp._modified_by;
       },
       error => {
