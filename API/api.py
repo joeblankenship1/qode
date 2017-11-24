@@ -30,12 +30,16 @@ def get_project_id_from_req(resource, request):
     else:
         return d.get('key.project')
 
+# Returns the project id from the item
+def get_project_id_from_item(resource, item):
+    if resource == 'document' or resource == 'code':
+        return item['key']['project']
+    if resource == 'quote':
+        return item['project']
+
 # Function that extracts the project id from the item and update the project attrs '_modified_by' and '_modified'
 def update_project_attrs(resource, item, mail):
-    if resource == 'document' or resource == 'code':
-        proj_id = item['key']['project']
-    if resource == 'quote':
-        proj_id = item['project']
+    proj_id = get_project_id_from_item(resource, item)
     upd = {"_id" : proj_id, "_modified_by" : mail , "_modified": datetime.now()}
     current_app.data.driver.db['project'].update({'_id':proj_id}, {"$set": upd}, upsert=False)
 
@@ -45,7 +49,8 @@ def check_permissions(proj_id, mail, read_write):
     cursor = db.find_one({'_id': ObjectId(proj_id)})
     projects_json = json_util.dumps(cursor)
     if cursor:
-        # Verifys that the mail corresponds for the owner of the project or a collaborator and has the role 'Lector/Escritor'
+        # Verifys that the mail corresponds for the owner of the project or a collaborator
+        # If read_write is True, then if the user is a collaborator, must has the role 'Lector/Escritor'
         access = False
         for col in cursor['collaborators']:
             if col['email'] == mail:
@@ -93,10 +98,7 @@ def before_insert(resource, documents):
                 document['key']['owner'] = mail
         # If resource is not project, update the attrs
         else:
-            if resource == 'document' or resource == 'code':
-                proj_id = document['key']['project']
-            if resource == 'quote':
-                proj_id = document['project']
+            proj_id = get_project_id_from_item(resource, document)
             check_permissions(proj_id, mail, True)
             update_project_attrs(resource, document, mail)
         # For all the resources init the attrs
@@ -113,10 +115,7 @@ def before_update(resource, documents, item):
     documents['_modified'] = datetime.now()
     # update the project atributes
     if resource != 'project':
-        if resource == 'document' or resource == 'code':
-            proj_id = item['key']['project']
-        if resource == 'quote':
-            proj_id = item['project']
+        proj_id = get_project_id_from_item(resource, item)
         check_permissions(proj_id, mail, True)
         update_project_attrs(resource, item, mail)
 
@@ -125,9 +124,6 @@ def before_delete_item(resource, item):
     token = get_token_auth_header()
     mail = get_email(token)
     if resource != 'project':
-        if resource == 'document' or resource == 'code':
-            proj_id = item['key']['project']
-        if resource == 'quote':
-            proj_id = item['project']
+        proj_id = get_project_id_from_item(resource, item)
         check_permissions(proj_id, mail, True)
         update_project_attrs(resource, item, mail)

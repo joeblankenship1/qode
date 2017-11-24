@@ -87,7 +87,7 @@ export class ProjectItemComponent implements OnInit {
 
   onShareProject() {
     const project = this.workspaceService.getProjectId();
-    this.modal.open(ProjectShareModalComponent, overlayConfigFactory({ project: this.project }, BSModalContext))
+    this.modal.open(ProjectShareModalComponent, overlayConfigFactory({ project: this.project, myNick : this.myNick }, BSModalContext))
       .then((resultPromise) => {
         resultPromise.result.then((result) => {
           if (result != null) {
