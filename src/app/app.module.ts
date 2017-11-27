@@ -45,7 +45,6 @@ import { QuoteService } from './shared/services/quote.service';
 import { WorkSpaceService } from './shared/services/work-space.service';
 
 import {DataTableModule} from 'angular2-datatable';
-import {InlineEditorModule} from 'ng2-inline-editor';
 import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
 import { DataFilterPipe } from './my-projects/projects/data-filter.pipe';
 import { ProjectShareModalComponent } from './my-projects/project-share-modal/project-share-modal.component';
@@ -102,7 +101,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ReactiveFormsModule,
     RouterModule.forRoot(routes, { useHash: true }),
     DataTableModule,
-    InlineEditorModule,
     ContextMenuModule,
     BrowserAnimationsModule,
     SimpleNotificationsModule.forRoot(),

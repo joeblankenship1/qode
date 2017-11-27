@@ -16,9 +16,9 @@
     <h4>Creador:</h4>
     {{project.owner}}
     <h4>Fecha de creación:</h4>
-    {{project._created}}
+    {{project._created | date:'dd/MM/yyyy - HH:mm:ss' }} hs
     <h4>Ultima actualización: </h4>
-    {{project._modified}} por {{project._modified_by}}
+    {{project._modified | date:'dd/MM/yyyy - HH:mm:ss' }} hs por {{project._modified_by}}
     <h4>Colaboradores: </h4>
     <p *ngIf='project.collaborators == ""'> No tienes colaboradores </p>
     <ul class="list-group">

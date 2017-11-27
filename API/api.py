@@ -40,7 +40,7 @@ def get_project_id_from_item(resource, item):
 # Function that extracts the project id from the item and update the project attrs '_modified_by' and '_modified'
 def update_project_attrs(resource, item, mail):
     proj_id = get_project_id_from_item(resource, item)
-    upd = {"_id" : proj_id, "_modified_by" : mail , "_modified": datetime.now()}
+    upd = {"_id" : proj_id, "_modified_by" : mail , "_modified": datetime.utcnow()}
     current_app.data.driver.db['project'].update({'_id':proj_id}, {"$set": upd}, upsert=False)
 
 # Function that checks that the user has the privileges to insert, update or delete resources in a project
@@ -109,8 +109,8 @@ def before_insert(resource, documents):
         # For all the resources init the attrs
         document['_created_by'] = mail
         document['_modified_by'] = mail
-        document['_created'] = datetime.now()
-        document['_modified'] = datetime.now()
+        # document['_created'] = datetime.utcnow()
+        document['_modified'] = datetime.utcnow()
 
 # Before every patch, the atributes: '_modified_by' and '_modified' are updated for the resource and the project
 def before_update(resource, documents, item):
@@ -118,7 +118,7 @@ def before_update(resource, documents, item):
     mail = get_email(token)
     # update the resource atributes
     documents['_modified_by'] = mail
-    documents['_modified'] = datetime.now()
+    documents['_modified'] = datetime.utcnow()
     # update the project atributes
     if resource != 'project':
         proj_id = get_project_id_from_item(resource, item)

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { ProjectShareModalComponent } from '../../project-share-modal/project-share-modal.component';
@@ -14,15 +14,18 @@ import { ProjectService } from '../../../shared/services/project.service';
 import { Project } from '../../../shared/models/project.model';
 import { AuthHttp } from 'angular2-jwt';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-project-info',
   templateUrl: './project-info.component.html',
-  styleUrls: ['./project-info.component.css']
+  styleUrls: ['./project-info.component.css'],
+  providers: [Modal, DatePipe]
 })
 export class ProjectInfoComponent implements OnInit {
-  public profile;
-  public project;
+  profile;
+  @Input() project: Project;
   @ViewChild('descInfo') descInfoRef: ElementRef;
 
   constructor(private http: AuthHttp, private authService: AuthService, private projectService: ProjectService, private modal: Modal,
@@ -62,7 +65,7 @@ export class ProjectInfoComponent implements OnInit {
   }
 
   onShareProject() {
-    this.modal.open(ProjectShareModalComponent, overlayConfigFactory({ project: this.project }, BSModalContext))
+    this.modal.open(ProjectShareModalComponent, overlayConfigFactory({ project: this.project, profile : this.profile }, BSModalContext))
       .then((resultPromise) => {
         resultPromise.result.then((result) => {
           if (result != null) {

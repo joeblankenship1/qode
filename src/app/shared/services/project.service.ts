@@ -50,6 +50,11 @@ export class ProjectService {
   setArrayProyects(projectArray: Project[]) {
     this.myProjects = projectArray;
     this.myProjects$.next(this.myProjects);
+    const s = this.getSelectedProjectItem();
+    if (s) {
+      const p = this.getProject(s._id);
+      this.setSelectedProject(p);
+    }
   }
 
   getArrayProyects() {
@@ -84,11 +89,10 @@ export class ProjectService {
     this.selectedProject$.next(this.selectedProject);
   }
 
-  // TO DO -> Tendria que ser llamado despues de cada add/update/delete en alguno de los otros servicios
   updateProjectAttrs(_id, _modified_by, _modified) {
     const proj = this.getProject(_id);
-    proj._modified = _modified;
-    proj._modified_by = _modified_by;
+    proj.setModified(_modified);
+    proj.setModifiedBy(_modified_by);
     this.setArrayProyects(this.myProjects);
   }
 
@@ -149,6 +153,8 @@ export class ProjectService {
       .map((data: Response) => {
         const aux = data.json();
         proj.setEtag(aux._etag);
+        proj.setModified(aux._modified);
+        proj.setModifiedBy(aux._modified_by);
         return proj;
       }).catch((err: Response) => {
         const details = err.json();
