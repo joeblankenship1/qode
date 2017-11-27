@@ -14,8 +14,6 @@ import { FileExtraction } from '../shared/helpers/file-extraction';
 import { DocumentService } from '../shared/services/document.service';
 import { Document } from '../shared/models/document.model';
 
-
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',

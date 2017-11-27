@@ -13,6 +13,7 @@ export class AuthService {
   loggedIn: boolean;
   loggedIn$ = new BehaviorSubject<boolean>(this.loggedIn);
   myNick = new BehaviorSubject<string>('');
+  profile = new BehaviorSubject<Object>('');
 
   auth0 = new auth0.WebAuth({
     clientID: 'UhMrdGno87iwJacMYSZYOq53ImO7IHa6',
@@ -27,6 +28,7 @@ export class AuthService {
     if (this.isAuthenticated()) {
       this.setLoggedIn(true);
       this.setMyNick();
+      this.setProfile();
     } else {
       this.setLoggedIn(false);
     }
@@ -105,6 +107,14 @@ export class AuthService {
     return this.myNick.asObservable();
   }
 
+  public getProfile() {
+    return this.profile.asObservable();
+  }
+
+  public setProfile() {
+    this.profile.next(JSON.parse(localStorage.getItem('profile')));
+  }
+
   public isLoggedIn() {
     return this.loggedIn$.asObservable();
   }
@@ -139,6 +149,7 @@ export class AuthService {
         const user = new User(profile);
         localStorage.setItem('profile', JSON.stringify(user));
         this.myNick.next(user.nickname);
+        this.setProfile();
       }
     });
   }

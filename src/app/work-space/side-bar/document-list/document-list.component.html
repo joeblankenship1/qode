@@ -2,32 +2,14 @@
     <div class="panel-heading" role="tab" id="headingOne">
         <h4 class="panel-title">
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Documentos
-                              </a>
+            Documentos
+            </a>
         </h4>
     </div>
     <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
         <div class="panel-body">
             <ul>
-                <!-- <app-document-item
-                *ngFor="let doc of documents"
-                [document]="doc"></app-document-item> -->
-                <tree-root [nodes]="nodes">
-                    <ng-template #treeNodeWrapperTemplate let-node let-index="index">
-                        <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
-                            <tree-node-expander [node]="node"></tree-node-expander>
-                            <div class="node-content-wrapper" [class.node-content-wrapper-active]="node.isActive" [class.node-content-wrapper-focused]="node.isFocused" (click)="node.mouseAction('click', $event)" (dblclick)="node.mouseAction('dblClick', $event)" (contextmenu)="node.mouseAction('contextMenu', $event)"
-                                (treeDrop)="node.onDrop($event)" [treeAllowDrop]="node.allowDrop" [treeDrag]="node" [treeDragEnabled]="node.allowDrag()">
-
-                                <tree-node-content [node]="node" [index]="index"></tree-node-content>
-                            </div>
-                        </div>
-                    </ng-template>
-                </tree-root>
-                <ng-template #treeNodeTemplate let-node let-index="index">
-                    <span>{{ node.data.name }}</span>
-                    <button (click)="go($event)"> Abrir </button>
-                </ng-template>
+                <app-document-item *ngFor="let doc of documents" [document]="doc"></app-document-item>
             </ul>
         </div>
     </div>

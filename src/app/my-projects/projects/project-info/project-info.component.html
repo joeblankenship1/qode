@@ -1,0 +1,38 @@
+<div *ngIf='!project' class="col-md-4" style="text-align:center; background-color:white; color:#5f5f63; height: -webkit-fill-available;">
+    <h3> Bienvenido/a </h3>
+    <h2> {{profile.name}} </h2>
+    <img [src]=profile.picture alt="Smiley face" height="80" width="80" style="border: 5px solid #5f5f63; border-radius: 50%">
+    <br><br>
+    <h4>Haz click en el nombre del proyecto para ver más información </h4>
+</div>
+
+<div *ngIf='project' class="col-md-4" style="background-color: white; color:#5f5f63; height: -webkit-fill-available;">
+    <h2 style="text-align:center">{{project.name}} </h2>
+    <textarea type="text" rows="4" #descInfo [(ngModel)]="project.description" name='description' class="form-control" placeholder="Ingresa la descripción"></textarea>
+    <button class="btn btn-default btn-block" (click)="onUpdateDescription()">
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+        Editar descripción
+    </button>
+    <h4>Creador:</h4>
+    {{project.owner}}
+    <h4>Fecha de creación:</h4>
+    {{project._created}}
+    <h4>Ultima actualización: </h4>
+    {{project._modified}} por {{project._modified_by}}
+    <h4>Colaboradores: </h4>
+    <p *ngIf='project.collaborators == ""'> No tienes colaboradores </p>
+    <ul class="list-group">
+        <li class="list-group-item" style="border: none; padding: 3px 15px;" *ngFor="let col of project.collaborators; let i=index; ">
+            - {{col.email}} <small>( {{col.role}} ) </small>
+        </li>
+    </ul>
+    <button class="btn btn-info btn-block" (click)="onShareProject()" title="Compartir">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+        Compartir proyecto
+    </button>
+
+    <button class="btn btn-success btn-block" (click)="onAccessProject($event)">
+            <i class="fa fa-arrow-circle-o-up" aria-hidden="true"></i>
+        Acceder
+    </button>
+</div>

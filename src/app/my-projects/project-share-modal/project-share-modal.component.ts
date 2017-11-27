@@ -82,6 +82,7 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
         const isCol = this.listCols.find(e => e.email.split('@')[0] === this.myNick);
         if (!isOwner && isCol === undefined) {
           this.projectService.removeProject(this.project);
+          this.projectService.setSelectedProject(null);
         }
         this.dialog.close();
         this.notificationsService.success('Exito', 'Se actualizaron los colaboradores del proyecto');

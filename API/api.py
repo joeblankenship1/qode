@@ -88,7 +88,12 @@ def before_insert(resource, documents):
             # checks that the combination name owner is unique   
             name = document['key']['name'] 
             db = current_app.data.driver.db['project']
-            exists = db.find_one({"key.name": name },{"key.owner": mail})
+            exists = db.find_one({
+                "$and": [
+                    {"key.name": name },
+                    {"key.owner": mail }
+                ]
+            })
             # If already exist: abort
             if exists:
                 error_message = 'The name is not unique for this user'
@@ -104,6 +109,7 @@ def before_insert(resource, documents):
         # For all the resources init the attrs
         document['_created_by'] = mail
         document['_modified_by'] = mail
+        document['_created'] = datetime.now()
         document['_modified'] = datetime.now()
 
 # Before every patch, the atributes: '_modified_by' and '_modified' are updated for the resource and the project

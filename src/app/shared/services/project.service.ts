@@ -16,18 +16,20 @@ export class ProjectService {
 
   private myProjects: Project[] = [];
   private myProjects$ = new BehaviorSubject<Project[]>([]);
+  private selectedProject: Project = null;
+  private selectedProject$ = new BehaviorSubject<Project>(null);
   private url = environment.apiUrl;
 
   private headers: Headers;
   private options: RequestOptions;
 
   constructor(private http: AuthHttp) {
-    this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache'});
+    this.headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
     this.options = new RequestOptions({ headers: this.headers });
   }
 
   getProjects(): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache' });
+    const headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
     const options = new RequestOptions({ headers: headers });
     return this.http.get(this.url + 'project', options)
       .map((data: Response) => {
@@ -69,6 +71,19 @@ export class ProjectService {
     return this.myProjects.find(x => x._id === id);
   }
 
+  getSelectedProject() {
+    return this.selectedProject$.asObservable();
+  }
+
+  getSelectedProjectItem() {
+    return this.selectedProject;
+  }
+
+  setSelectedProject(proj) {
+    this.selectedProject = proj;
+    this.selectedProject$.next(this.selectedProject);
+  }
+
   // TO DO -> Tendria que ser llamado despues de cada add/update/delete en alguno de los otros servicios
   updateProjectAttrs(_id, _modified_by, _modified) {
     const proj = this.getProject(_id);
@@ -78,7 +93,7 @@ export class ProjectService {
   }
 
   createProject(proj: Project): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json'});
+    const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers });
     return this.http.post(this.url + 'project', proj.getMessageBody())
       .map((data: Response) => {

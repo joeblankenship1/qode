@@ -53,6 +53,7 @@ import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifi
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DatePipe } from '@angular/common';
 import { TreeModule } from 'angular-tree-component';
+import { ProjectInfoComponent } from './my-projects/projects/project-info/project-info.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -90,6 +91,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     OptionsComponent,
     DataFilterPipe,
     ProjectShareModalComponent,
+    ProjectInfoComponent,
   ],
   imports: [
     BrowserModule,
