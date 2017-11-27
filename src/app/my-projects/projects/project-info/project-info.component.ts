@@ -4,12 +4,7 @@ import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { ProjectShareModalComponent } from '../../project-share-modal/project-share-modal.component';
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 import { overlayConfigFactory } from 'angular2-modal';
-import {
-  Http,
-  Response,
-  RequestOptions,
-  Headers
-} from '@angular/http';
+import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { ProjectService } from '../../../shared/services/project.service';
 import { Project } from '../../../shared/models/project.model';
 import { AuthHttp } from 'angular2-jwt';
@@ -23,16 +18,19 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./project-info.component.css'],
   providers: [Modal, DatePipe]
 })
+
 export class ProjectInfoComponent implements OnInit {
   profile;
   @Input() project: Project;
   @ViewChild('descInfo') descInfoRef: ElementRef;
+  editmode;
 
   constructor(private http: AuthHttp, private authService: AuthService, private projectService: ProjectService, private modal: Modal,
     private notificationsService: NotificationsService, private router: Router ) {
    }
 
   ngOnInit() {
+    this.editmode = false;
     this.authService.getProfile().subscribe(
       profile => {
         this.profile = profile;
@@ -58,6 +56,7 @@ export class ProjectInfoComponent implements OnInit {
         this.project._etag = resp._etag;
         this.project._modified = resp._modified;
         this.project._modified_by = resp._modified_by;
+        this.editmode = false;
       },
       error => {
         this.notificationsService.error('Error', 'Error en la actualizacion del proyecto');

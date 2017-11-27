@@ -3,3 +3,41 @@ textarea {
     color: 5f5f63;
     background-color: transparent;
 }
+
+#picture {
+    border: 5px solid #5f5f63;
+    border-radius: 50%
+}
+
+#info-default {
+    text-align: center;
+    background-color: white;
+    color: #5f5f63;
+    height: 100%;
+}
+
+#info-project {
+    background-color: white;
+    color: #5f5f63;
+    height: 100%;
+}
+
+#col-list {
+    border: none;
+    padding: 3px 15px;
+}
+
+#project-desc {
+    min-height: 100px;
+    text-align: center;
+    font-size: 20px;
+}
+
+ul {
+    max-height: 180px;
+}
+
+ul {
+    overflow: hidden;
+    overflow-y: scroll;
+}
