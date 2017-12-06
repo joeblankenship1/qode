@@ -6,10 +6,12 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { Project } from '../../shared/models/project.model';
 import { ProjectService } from '../../shared/services/project.service';
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
+import { Router } from '@angular/router';
 
 
 export class ProjectModalData extends BSModalContext {
   public project: Project;
+  public profile;
 }
 
 @Component({
@@ -23,15 +25,17 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
   project: Project;
   listCols: Array<{ email: string, role: string }>;
   mail = '';
-  role = '';
+  role = 'Lector';
   submitted = false;
   active = true;
+  profile = null;
 
   constructor(public dialog: DialogRef<ProjectModalData>, private projectService: ProjectService,
-    private notificationsService: NotificationsService) {
+    private notificationsService: NotificationsService, private router: Router) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.project = dialog.context.project;
+    this.profile = dialog.context.profile;
     this.listCols = dialog.context.project.collaborators.map(x => Object.assign({}, x));
   }
 
@@ -41,7 +45,7 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
 
   clearForm() {
     this.mail = '';
-    this.role = '';
+    this.role = 'Lector';
     this.active = false;
     setTimeout(() => { this.active = true; });
   }
@@ -50,10 +54,20 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
     this.submitted = true;
     const newEmail = this.mail;
     const newRole = this.role;
-    if (newEmail !== '') {
-      this.listCols.push({ email: newEmail, role: newRole });
-      this.clearForm();
+    if (newEmail === '') {
+      this.notificationsService.info('Info', 'Debes ingresar un email valido');
+      return;
     }
+    if (newEmail === this.project.owner) {
+      this.notificationsService.info('Info', 'No puedes compartir el proyecto con su creador');
+      return;
+    }
+    if (this.listCols.find(x => x.email === newEmail)) {
+      this.notificationsService.info('Info', 'El usuario ya pertenece en la lista de colaboradores');
+      return;
+    }
+    this.listCols.push({ email: newEmail, role: newRole });
+    this.clearForm();
   }
 
   public onRemoveEmail(i) {
@@ -64,8 +78,19 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
     this.projectService.saveCollaborators(this.project, this.listCols).subscribe(
       resp => {
         this.project.collaborators = this.listCols;
+        // If the active user is one of the removed mails, removes the project for the list.
+        const isOwner = this.project.owner.split('@')[0] === this.profile.nickname;
+        const isCol = this.listCols.find(e => e.email.split('@')[0] === this.profile.nickname);
+        if (!isOwner && isCol === undefined) {
+          this.projectService.removeProject(this.project);
+          this.projectService.setSelectedProject(null);
+          console.log(this.router.url.includes('workspace'));
+          if (this.router.url.includes('workspace')) {
+            this.router.navigate(['myprojects']);
+          }
+        }
         this.dialog.close();
-          this.notificationsService.success('Exito', 'Se actualizaron los colaboradores del proyecto');
+        this.notificationsService.success('Exito', 'Se actualizaron los colaboradores del proyecto');
       },
       error => {
         this.dialog.close(error);

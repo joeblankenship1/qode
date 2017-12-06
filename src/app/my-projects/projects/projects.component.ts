@@ -22,11 +22,10 @@ import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifi
 })
 export class ProjectsComponent implements OnInit {
   public projects: Project[];
-  public selectedProject: Project;
   @ViewChild('nameProject') nameProjectRef: ElementRef;
   @ViewChild('descProject') descProjectRef: ElementRef;
 
-  constructor(private http: AuthHttp, private projectService: ProjectService, private notificationsService: NotificationsService) { }
+  constructor( private projectService: ProjectService, private notificationsService: NotificationsService) { }
 
   public filterQuery = '';
   public rowsOnPage = 10;
@@ -44,10 +43,6 @@ export class ProjectsComponent implements OnInit {
       );
   }
 
-  onProjectSelected(project: Project) {
-    this.selectedProject = project;
-  }
-
   onCreateProject() {
     const projName = this.nameProjectRef.nativeElement.value;
     if (projName !== '') {
@@ -62,6 +57,7 @@ export class ProjectsComponent implements OnInit {
             this.notificationsService.success('Exito', 'El proyecto ' + proj.name + ' fue creado.');
             this.nameProjectRef.nativeElement.value = '';
             this.descProjectRef.nativeElement.value = '';
+            this.projectService.setSelectedProject(proj);
           },
           error => {
             if (error.message.includes('is not unique')) {
@@ -74,13 +70,4 @@ export class ProjectsComponent implements OnInit {
       } else { this.notificationsService.error('Error', 'La descripcion puede tener hasta 300 caracteres.'); }
     } else { this.notificationsService.error('Error', 'Debes ingresar un nombre para el nuevo proyecto'); }
   }
-
-  public toInt(num: string) {
-    return +num;
-  }
-
-  public sortByWordLength = (a: any) => {
-    return a.city.length;
-  }
-
 }

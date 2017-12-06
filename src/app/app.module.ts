@@ -44,14 +44,15 @@ import { WindowSelection } from './shared/helpers/window-selection';
 import { QuoteService } from './shared/services/quote.service';
 import { WorkSpaceService } from './shared/services/work-space.service';
 
-
 import {DataTableModule} from 'angular2-datatable';
-import {InlineEditorModule} from 'ng2-inline-editor';
 import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
 import { DataFilterPipe } from './my-projects/projects/data-filter.pipe';
 import { ProjectShareModalComponent } from './my-projects/project-share-modal/project-share-modal.component';
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DatePipe } from '@angular/common';
+import { TreeModule } from 'angular-tree-component';
+import { ProjectInfoComponent } from './my-projects/projects/project-info/project-info.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -89,6 +90,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     OptionsComponent,
     DataFilterPipe,
     ProjectShareModalComponent,
+    ProjectInfoComponent,
   ],
   imports: [
     BrowserModule,
@@ -99,10 +101,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ReactiveFormsModule,
     RouterModule.forRoot(routes, { useHash: true }),
     DataTableModule,
-    InlineEditorModule,
     ContextMenuModule,
     BrowserAnimationsModule,
     SimpleNotificationsModule.forRoot(),
+    TreeModule,
     Ng2CompleterModule,
     ColorPickerModule
   ],
@@ -120,7 +122,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     QuoteService,
     WindowSelection,
     WorkSpaceService,
-    WorkSpaceResolver
+    WorkSpaceResolver,
+    [DatePipe]
   ],
   bootstrap: [AppComponent],
   entryComponents: [CodeModalComponent, ProjectShareModalComponent, QuoteModalComponent]

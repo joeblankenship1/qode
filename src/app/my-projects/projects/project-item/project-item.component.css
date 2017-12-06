@@ -1,13 +1,13 @@
-.btn-edit {
-    background-color: transparent;
-    color: grey;
-    float: right;
-}
-
 .col-md-1 {
     display: inline-grid;
 }
 
 .btn {
     padding: 5px 10px !important;
+}
+
+.lbl-hover {
+    background-color: #2c3e50;
+    color: white;
+    cursor: pointer;
 }

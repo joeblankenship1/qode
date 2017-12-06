@@ -16,18 +16,20 @@ export class ProjectService {
 
   private myProjects: Project[] = [];
   private myProjects$ = new BehaviorSubject<Project[]>([]);
+  private selectedProject: Project = null;
+  private selectedProject$ = new BehaviorSubject<Project>(null);
   private url = environment.apiUrl;
 
   private headers: Headers;
   private options: RequestOptions;
 
   constructor(private http: AuthHttp) {
-    this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache'});
+    this.headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
     this.options = new RequestOptions({ headers: this.headers });
   }
 
   getProjects(): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache' });
+    const headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
     const options = new RequestOptions({ headers: headers });
     return this.http.get(this.url + 'project', options)
       .map((data: Response) => {
@@ -48,6 +50,11 @@ export class ProjectService {
   setArrayProyects(projectArray: Project[]) {
     this.myProjects = projectArray;
     this.myProjects$.next(this.myProjects);
+    const s = this.getSelectedProjectItem();
+    if (s) {
+      const p = this.getProject(s._id);
+      this.setSelectedProject(p);
+    }
   }
 
   getArrayProyects() {
@@ -69,8 +76,28 @@ export class ProjectService {
     return this.myProjects.find(x => x._id === id);
   }
 
+  getSelectedProject() {
+    return this.selectedProject$.asObservable();
+  }
+
+  getSelectedProjectItem() {
+    return this.selectedProject;
+  }
+
+  setSelectedProject(proj) {
+    this.selectedProject = proj;
+    this.selectedProject$.next(this.selectedProject);
+  }
+
+  updateProjectAttrs(_id, _modified_by, _modified) {
+    const proj = this.getProject(_id);
+    proj.setModified(_modified);
+    proj.setModifiedBy(_modified_by);
+    this.setArrayProyects(this.myProjects);
+  }
+
   createProject(proj: Project): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json'});
+    const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers });
     return this.http.post(this.url + 'project', proj.getMessageBody())
       .map((data: Response) => {
@@ -78,6 +105,10 @@ export class ProjectService {
         proj.setId(aux._id);
         proj.setEtag(aux._etag);
         proj.setOwner(aux.key.owner);
+        proj.setCreated(aux._created);
+        proj.setCreatedBy(aux._created_by);
+        proj.setModified(aux._modified);
+        proj.setModifiedBy(aux._modified_by);
         return proj;
       }).catch((err: Response) => {
         const details = err.json();
@@ -92,6 +123,8 @@ export class ProjectService {
       .map((data: Response) => {
         const aux = data.json();
         proj.setEtag(aux._etag);
+        proj.setModified(aux._modified);
+        proj.setModifiedBy(aux._modified_by);
         return proj;
       }).catch((err: Response) => {
         const details = err.json();
@@ -120,6 +153,8 @@ export class ProjectService {
       .map((data: Response) => {
         const aux = data.json();
         proj.setEtag(aux._etag);
+        proj.setModified(aux._modified);
+        proj.setModifiedBy(aux._modified_by);
         return proj;
       }).catch((err: Response) => {
         const details = err.json();

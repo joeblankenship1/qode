@@ -26,6 +26,7 @@
         "angular2-modal": "^3.0.3",
         "angular2-notifications": "^0.9.1",
         "angular4-color-picker": "^1.4.2",
+        "angular-tree-component": "^5.2.1",
         "atob": "^2.0.3",
         "auth0-js": "^8.10.0",
         "bootstrap": "^3.3.7",

@@ -14,8 +14,6 @@ import { FileExtraction } from '../shared/helpers/file-extraction';
 import { DocumentService } from '../shared/services/document.service';
 import { Document } from '../shared/models/document.model';
 
-
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -23,6 +21,7 @@ import { Document } from '../shared/models/document.model';
   providers: [Modal]
 })
 export class HeaderComponent implements OnInit {
+  profile;
   appname = '';
   show: boolean;
   private projectId: string;
@@ -37,6 +36,13 @@ export class HeaderComponent implements OnInit {
     this.authsvc.loggedIn$.subscribe(s => {
       this.show = s;
     });
+
+    this.authsvc.getProfile().subscribe(
+      profile => {
+        this.profile = profile;
+      },
+      error => console.error(error)
+    );
   }
 
   logout() {
@@ -81,7 +87,8 @@ export class HeaderComponent implements OnInit {
   // Share the actual project
   onShareProject() {
     const projectId = this.workspaceService.getProjectId();
-    this.modal.open(ProjectShareModalComponent, overlayConfigFactory({project: this.projectService.getProject(projectId)}, BSModalContext))
+    this.modal.open(ProjectShareModalComponent,
+       overlayConfigFactory({project: this.projectService.getProject(projectId), profile: this.profile }, BSModalContext))
       .then((resultPromise) => {
         resultPromise.result.then((result) => {
           if (result != null) {

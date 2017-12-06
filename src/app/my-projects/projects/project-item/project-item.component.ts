@@ -14,13 +14,14 @@ import { overlayConfigFactory } from 'angular2-modal';
 import { WorkSpaceService } from '../../../shared/services/work-space.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: '[app-project-item]',
   templateUrl: './project-item.component.html',
   styleUrls: ['./project-item.component.css'],
   encapsulation: ViewEncapsulation.None,
-  providers: [Modal]
+  providers: [Modal, DatePipe]
 })
 export class ProjectItemComponent implements OnInit {
   @Input() project: Project;
@@ -28,28 +29,16 @@ export class ProjectItemComponent implements OnInit {
   public myNick$ = new BehaviorSubject<string>('');
 
   constructor(private projectService: ProjectService, private router: Router, private notificationsService: NotificationsService,
-    private modal: Modal, private workspaceService: WorkSpaceService, private authService: AuthService) { }
+    private modal: Modal, private workspaceService: WorkSpaceService, private authService: AuthService, private datePipe: DatePipe) { }
 
   ngOnInit() {
+
     this.authService.getEmail().subscribe(
       nick => {
         this.myNick = nick;
       },
       error => console.error(error)
     );
-  }
-
-  onUpdateDescription(desc) {
-    this.project.description = desc;
-    this.projectService.updateProject(this.project)
-      .subscribe(
-      resp => {
-        this.notificationsService.success('Exito', 'Se actualizo la descripcion del proyecto ' + this.project.name);
-        this.project._etag = resp._etag;
-      },
-      error => {
-        this.notificationsService.error('Error', 'Error en la actualizacion del proyecto');
-      });
   }
 
   onDeleteProject() {
@@ -67,6 +56,10 @@ export class ProjectItemComponent implements OnInit {
               resp => {
                 this.notificationsService.success('Exito', 'El proyecto se elimino correctamente');
                 this.projectService.removeProject(projToDelete);
+                const selectedProjItem = this.projectService.getSelectedProjectItem();
+                if (selectedProjItem._id === id) {
+                  this.projectService.setSelectedProject(null);
+                }
               },
               error => {
                 this.notificationsService.error('Error', 'Error en el borrado del proyecto');
@@ -78,19 +71,11 @@ export class ProjectItemComponent implements OnInit {
       });
   }
 
-  onAccessProject() {
-    this.router.navigate(['workspace', this.project._id]);
+  onSelectedProject() {
+    this.projectService.setSelectedProject(this.project);
   }
 
-  onShareProject() {
-    const project = this.workspaceService.getProjectId();
-    this.modal.open(ProjectShareModalComponent, overlayConfigFactory({ project: this.project }, BSModalContext))
-      .then((resultPromise) => {
-        resultPromise.result.then((result) => {
-          if (result != null) {
-            this.modal.alert().headerClass('btn-danger').title('Error al guardar').body(result).open();
-          }
-        });
-      });
+  onAccessProject() {
+    this.router.navigate(['workspace', this.project._id]);
   }
 }

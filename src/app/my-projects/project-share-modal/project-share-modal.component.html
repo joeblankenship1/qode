@@ -16,10 +16,9 @@
                 </div>
                 <div class="col-md-3">
                     <div class="input-group form-group" style="width: 140px;">
-                        <select #role class="form-control">
+                        <select [(ngModel)]="role" name="role" class="form-control">
                             <option> Lector </option>
                             <option> Lector/Escritor </option>
-                            <option> Co-Owner </option>
                         </select>
                     </div>
                 </div>
@@ -35,7 +34,7 @@
         <br>
         <ul class="list-group">
             <li class="list-group-item" *ngFor="let col of listCols; let i=index; ">
-                {{col.email}}
+                {{col.email}} <small>( {{col.role}} ) </small>
                 <button type="button" class="btn btn-danger btn-delete-mail" (click)="onRemoveEmail(i)"> <i class="fa fa-times" aria-hidden="true"></i> </button>
             </li>
         </ul>

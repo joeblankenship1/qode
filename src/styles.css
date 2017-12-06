@@ -1,3 +1,4 @@
+@import '~angular-tree-component/dist/angular-tree-component.css';
 html,
 body {
     height: 100%;
@@ -11,7 +12,7 @@ app-root {
 }
 
 .custom {
-    background-color: #e0e8e1;
+    background-color: #e8e8e8;
 }
 
 .fingqda-modal-container {
