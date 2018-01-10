@@ -77,7 +77,7 @@ export class HeaderComponent implements OnInit {
 
   // Add a new code
   onNewCode() {
-    const newCode = new Code({ name: '', project: this.workspaceService.getProjectId() });
+    const newCode = new Code({ 'name': '', 'project': this.workspaceService.getProjectId() });
     this.modal.open(CodeModalComponent, overlayConfigFactory({ code: newCode, mode: 'new' }, BSModalContext))
       .then((resultPromise) => {
         resultPromise.result.then((result) => {});

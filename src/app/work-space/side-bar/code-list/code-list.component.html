@@ -2,13 +2,13 @@
 <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingOne">
         <h4 class="panel-title">
-            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCodeList" aria-expanded="true" aria-controls="collapseOne">
                     Códigos
             </a>
         </h4>
     </div>
-    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-        <div class="panel-body">
+    <div id="collapseCodeList" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+        <div class="panel-body" style="overflow:auto; max-height:300px">
             <ul>
                 <app-code-item
                 *ngFor="let cod of codes"
