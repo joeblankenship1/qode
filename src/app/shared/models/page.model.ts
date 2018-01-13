@@ -71,14 +71,16 @@ export class Page {
     };
   }
 
-  public setLinesColour(relatedQuote, column: number, type: boolean) {
+  public setLinesColor(relatedQuote, column: number, type: boolean) {
     if (relatedQuote) {
       let quote: Quote;
       quote = relatedQuote.quote;
-      const display = quote.getDocumentDisplay();
+      const display = quote.getDocumentDisplay().filter( q => {
+        return q.page - this.id === 0;
+      })[0];
       const position = quote.getPosition();
       const quoteLines = this.lines.filter(l => {
-        return l.id >= display[this.id].startLine && l.id <= display[this.id].endLine;
+        return l.id >= display.startLine && l.id <= display.endLine;
       }).map(li => {
         li.setTextColor(column, type);
       });
