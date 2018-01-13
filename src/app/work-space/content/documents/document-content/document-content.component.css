@@ -86,3 +86,7 @@
   .borderBottom-quote {
     border-bottom: 2px solid;
   }
+
+  s {
+    text-decoration-line: unset;
+  }

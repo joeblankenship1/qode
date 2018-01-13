@@ -56,9 +56,9 @@ export class Page {
   public lineHasQuote(lines, lineId) {
     const line = lineId;
     if (lines.startLine === lines.endLine && lines.startLine === line) {
-       return true;
+      return true;
     } else {
-       return lines.startLine <= line && line <= lines.endLine;
+      return lines.startLine <= line && line <= lines.endLine;
     }
   }
 
@@ -69,6 +69,20 @@ export class Page {
       borderTop: pageDisplay.lines.startLine === l,
       borderBottom: pageDisplay.lines.endLine === l
     };
+  }
+
+  public setLinesColour(relatedQuote, column: number, type: boolean) {
+    if (relatedQuote) {
+      let quote: Quote;
+      quote = relatedQuote.quote;
+      const display = quote.getDocumentDisplay();
+      const position = quote.getPosition();
+      const quoteLines = this.lines.filter(l => {
+        return l.id >= display[this.id].startLine && l.id <= display[this.id].endLine;
+      }).map(li => {
+        li.setTextColor(column, type);
+      });
+    }
   }
 
 

@@ -34,6 +34,8 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   menuOptions: MenuOption[][] = [];
   options = new OptionsComponent();
 
+  public paint = false;
+
   constructor(private workSpaceService: WorkSpaceService, private modal: Modal,
         private contextMenuService: ContextMenuService,
         private quoteService: QuoteService, private windowSelection: WindowSelection) {}
@@ -123,7 +125,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     const selection = window.getSelection();
     const docDisplay = this.windowSelection.getSelectedNodes(selection, 'tr');
     return new Quote(selection.toString(), selection.baseOffset,
-    selection.extentOffset - 1, docDisplay, this.workSpaceService.getProjectId());
+    selection.extentOffset, docDisplay, this.workSpaceService.getProjectId());
   }
 
   private defineMenuOptions(newSelection) {
@@ -134,5 +136,6 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     }
   }
 
+  
 
 }
