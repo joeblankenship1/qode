@@ -118,12 +118,12 @@ export class DocumentContent {
       let i = 0;
       const len = display.getQuote().getCodes().length === 0 ? 1 : display.getQuote().getCodes().length;
       while (!taken && i < len) {
-        if (p2.column  + i === column) {
+        if (p2.column + i === column) {
           taken = this.intersect(p1.startLine, p2.page.startLine, p1.endLine, p2.page.endLine);
         }
         i++;
       }
-      iter ++;
+      iter++;
     }
     return taken;
   }
@@ -132,7 +132,7 @@ export class DocumentContent {
     const c = [];
     a.map((e, i) => {
       if (b.pages[i] && e.page === b.pages[i].page) {
-        c.push([e, {page: b.pages[i], column: b.column}]);
+        c.push([e, { page: b.pages[i], column: b.column }]);
       }
     });
     return c;
@@ -164,6 +164,28 @@ export class DocumentContent {
       }
     }
     return column;
+  }
+
+  // Given a quote it looks for the pages it iterates on the pages which are
+  // where the quote is defined. Then each page calls the same function which
+  // iterates on the lines.
+  public setLinesColor(relatedQuote, column: number, type: boolean) {
+    if (relatedQuote) {
+      window.getSelection().removeAllRanges();
+      let quote: Quote;
+      let pages: Page[] = [];
+      quote = relatedQuote.quote;
+      const position = quote.getPosition();
+      const relatedPages = quote.getDocumentDisplay().map(rp => {
+        return rp.page;
+      });
+      pages = this.pages.filter(p => {
+        return relatedPages.indexOf(p.getId()) > -1;
+      });
+      pages.forEach((p, i) => {
+        p.setLinesColor(relatedQuote, column, type, i === 0, pages.length - 1 - i === 0);
+      });
+    }
   }
 
 

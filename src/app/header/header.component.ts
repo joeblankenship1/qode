@@ -13,6 +13,7 @@ import { WorkSpaceService } from '../shared/services/work-space.service';
 import { FileExtraction } from '../shared/helpers/file-extraction';
 import { DocumentService } from '../shared/services/document.service';
 import { Document } from '../shared/models/document.model';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-header',
@@ -28,7 +29,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private authsvc: AuthService, private router: Router, private modal: Modal,
     private workspaceService: WorkSpaceService, private projectService: ProjectService,
-    private documentService: DocumentService) {
+    private documentService: DocumentService, private notificationsService: NotificationsService) {
     this.appname = 'libreQDA';
   }
 
@@ -64,6 +65,9 @@ export class HeaderComponent implements OnInit {
         const buffer = a.result;
         fileE.extractText(buffer, type).then(t => {
           this.newFile(name, t);
+        }).catch(error => {
+          console.error(error);
+          this.notificationsService.error('Error', 'El tipo de archivo no es soportado por el sistema.');
         });
       };
 

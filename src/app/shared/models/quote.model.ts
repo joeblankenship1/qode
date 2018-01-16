@@ -99,4 +99,5 @@ export class Quote {
             'codes': this.codes.map(c => c.getId()), 'memo': this.memo
     };
   }
+
 }
