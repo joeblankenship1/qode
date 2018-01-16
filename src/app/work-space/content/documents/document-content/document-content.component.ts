@@ -33,6 +33,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   colRangeArray: Array<any> = [];
   menuOptions: MenuOption[][] = [];
   options = new OptionsComponent();
+  selectedRange;
 
   public paint = false;
 
@@ -97,6 +98,8 @@ export class DocumentContentComponent implements OnInit, OnChanges {
               }else {
                 item = result;
                 this.workSpaceService.updateDocumentContent();
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(this.selectedRange);
               }
             }
           });
@@ -124,6 +127,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   private getSelectedText() {
     const selection = window.getSelection();
     const docDisplay = this.windowSelection.getSelectedNodes(selection, 'tr');
+    this.selectedRange = selection.getRangeAt(0);
     return new Quote(selection.toString(), selection.baseOffset,
     selection.extentOffset, docDisplay, this.workSpaceService.getProjectId());
   }
@@ -136,6 +140,5 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     }
   }
 
-  
 
 }

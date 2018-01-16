@@ -10,8 +10,8 @@
             [ngStyle]="{ 'color': line?.getBracketColor(colRange-i-1) }"
             (click)="onOpenQuoteModal(line?.getRelatedQuote(colRange-i-1)?.quote)" 
             [attr.title]="line?.getBracketTitle(colRange-i-1)"
-            (mouseover)="page?.setLinesColor(line?.getRelatedQuote(colRange-i-1),colRange-i-1,true)"
-            (mouseout)="page?.setLinesColor(line?.getRelatedQuote(colRange-i-1),colRange-i-1,false)"       
+            (mouseover)="actualDocumentContent?.setLinesColor(line?.getRelatedQuote(colRange-i-1),colRange-i-1,true)"
+            (mouseout)="actualDocumentContent?.setLinesColor(line?.getRelatedQuote(colRange-i-1),colRange-i-1,false)"       
             >
             </td>
             <td (contextmenu)="onContextMenu($event)"

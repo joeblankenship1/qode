@@ -19,15 +19,16 @@ export class FileExtraction {
       case 'pdf': {
         return this.extractTextPDF(content);
       }
-      case 'docx': {
+      case 'vnd.openxmlformats-officedocument.wordprocessingml.document': {
+        return this.extractTextDocx(content);
+      }
+      case 'txt': {
         return this.extractTextDocx(content);
       }
       default: {
-        console.error('Invalid type');
-        break;
+        return Promise.reject(new Error('Invalid Type'));
       }
     }
-    return this.extractTextDocx(content);
   }
 
   private extractTextPlain(content): Promise<any> {

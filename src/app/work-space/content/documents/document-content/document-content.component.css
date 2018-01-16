@@ -90,3 +90,10 @@
   s {
     text-decoration-line: unset;
   }
+
+  ::selection {
+    background: #d9cfcf; /* WebKit/Blink Browsers */
+  }
+  ::-moz-selection {
+    background: #d9cfcf; /* Gecko Browsers */
+  }

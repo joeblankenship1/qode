@@ -90,32 +90,41 @@ export class Line {
     return title;
   }
 
-  public setTextColor(column: number, type: boolean) {
+  // sets the default line color to the line
+  public setTextColor(column: number, type: boolean, isFirstPage: boolean,
+     isLastPage: boolean) {
     const relatedQuote = this.getRelatedQuote(column);
     let color = '';
     if (relatedQuote && type) {
-      const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      color = code ? code.getColor() : 'transparent';
-      this.setTextSpan(relatedQuote);
+      // const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
+      color = AppSettings.DEFAULT_LINE_COLOR; // code ? code.getColor() : 'transparent';
+      this.setTextSpan(relatedQuote, isFirstPage, isLastPage );
     } else {
       this.preSpanText = '';
       this.spanText = this.text;
       this.postSpanText = '';
     }
     this.background_color = color;
-    
   }
 
   public getTextColor(column: number) {
     return this.background_color;
   }
 
+  public setDefaultBackgroundColor() {
+    this.background_color = AppSettings.DEFAULT_LINE_COLOR;
+  }
+
   public isPainted() {
     return this.background_color !== 'transparent';
   }
 
-  private setTextSpan(relatedQuote) {
-    if (relatedQuote.borderTop || relatedQuote.borderBottom) {
+  // In order to highlight only the words of the quote, a span must be added to the
+  // html code. Therefore the text is divided into 3 parts prespantext, spantext and postspantext.
+  private setTextSpan(relatedQuote, isFirstLine: boolean, isLastLine: boolean) {
+
+
+    if ((relatedQuote.borderTop && isFirstLine) || (relatedQuote.borderBottom && isLastLine)) {
       let quote: Quote;
       quote = relatedQuote.quote;
 

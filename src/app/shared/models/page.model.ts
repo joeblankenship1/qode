@@ -71,18 +71,21 @@ export class Page {
     };
   }
 
-  public setLinesColor(relatedQuote, column: number, type: boolean) {
+  // Given a quote it iterates on each line defined by the quote. Then it calls a function
+  // on each line to set the background color of it.
+  public setLinesColor(relatedQuote, column: number, type: boolean, isFirstPage: boolean,
+    isLastPage: boolean) {
     if (relatedQuote) {
       let quote: Quote;
       quote = relatedQuote.quote;
-      const display = quote.getDocumentDisplay().filter( q => {
+      const display = quote.getDocumentDisplay().filter(q => {
         return q.page - this.id === 0;
       })[0];
       const position = quote.getPosition();
       const quoteLines = this.lines.filter(l => {
         return l.id >= display.startLine && l.id <= display.endLine;
       }).map(li => {
-        li.setTextColor(column, type);
+        li.setTextColor(column, type, isFirstPage, isLastPage);
       });
     }
   }
