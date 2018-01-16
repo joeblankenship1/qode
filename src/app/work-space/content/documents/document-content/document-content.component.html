@@ -10,10 +10,20 @@
             [ngStyle]="{ 'color': line?.getBracketColor(colRange-i-1) }"
             (click)="onOpenQuoteModal(line?.getRelatedQuote(colRange-i-1)?.quote)" 
             [attr.title]="line?.getBracketTitle(colRange-i-1)"
+            (mouseover)="actualDocumentContent?.setLinesColor(line?.getRelatedQuote(colRange-i-1),colRange-i-1,true)"
+            (mouseout)="actualDocumentContent?.setLinesColor(line?.getRelatedQuote(colRange-i-1),colRange-i-1,false)"       
             >
             </td>
             <td (contextmenu)="onContextMenu($event)"
-            [ngClass]="line? line.getLineType(): 'white-line'">{{line?.text}}<br>
+            [ngClass]="line? line.getLineType(): 'white-line'">
+            <s *ngIf="line?.isPainted()"
+            >{{line?.preSpanText}}
+             <span [ngStyle]="{'background-color': line?.getTextColor(colRange-i-1) }"
+             >{{line?.spanText}}</span>
+             {{line?.postSpanText}}
+            </s>
+            <s *ngIf="!line?.isPainted()"
+            >{{line?.text}}</s><br>
             </td>
           </tr>
         </tbody>

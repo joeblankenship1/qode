@@ -22,6 +22,7 @@ export class QuoteService {
   quoteList: Quote[];
   quoteList$ = new BehaviorSubject<Quote[]>([]);
 
+
   constructor(private http: AuthHttp , private codeService: CodeService) {
     this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache'});
     this.options = new RequestOptions({ headers: this.headers });
@@ -40,6 +41,7 @@ export class QuoteService {
     return this.quoteList.length;
   }
 
+
   // Load quotes from project
   loadQuotes(projectId: string): Observable<Quote[]> {
     this.projectId = projectId;
@@ -47,7 +49,7 @@ export class QuoteService {
       (data: Response) => {
         const extracted = data.json();
         const quotes = extracted._items.map( q =>  new Quote(q.text, q.position.start, q.position.end, q.documentDisplay,
-          this.projectId, q._id, q.memo, q.color, q._etag, this.codeService.getCodesById(q.codes)) );
+          this.projectId, q._id, q.memo, q.color, q._etag , this.codeService.getCodesById(q.codes)) );
         this.setQuoteList(quotes);
         return quotes;
       }).catch((err: Response) => {

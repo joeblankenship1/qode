@@ -56,9 +56,9 @@ export class Page {
   public lineHasQuote(lines, lineId) {
     const line = lineId;
     if (lines.startLine === lines.endLine && lines.startLine === line) {
-       return true;
+      return true;
     } else {
-       return lines.startLine <= line && line <= lines.endLine;
+      return lines.startLine <= line && line <= lines.endLine;
     }
   }
 
@@ -69,6 +69,25 @@ export class Page {
       borderTop: pageDisplay.lines.startLine === l,
       borderBottom: pageDisplay.lines.endLine === l
     };
+  }
+
+  // Given a quote it iterates on each line defined by the quote. Then it calls a function
+  // on each line to set the background color of it.
+  public setLinesColor(relatedQuote, column: number, type: boolean, isFirstPage: boolean,
+    isLastPage: boolean) {
+    if (relatedQuote) {
+      let quote: Quote;
+      quote = relatedQuote.quote;
+      const display = quote.getDocumentDisplay().filter(q => {
+        return q.page - this.id === 0;
+      })[0];
+      const position = quote.getPosition();
+      const quoteLines = this.lines.filter(l => {
+        return l.id >= display.startLine && l.id <= display.endLine;
+      }).map(li => {
+        li.setTextColor(column, type, isFirstPage, isLastPage);
+      });
+    }
   }
 
 
