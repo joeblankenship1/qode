@@ -1,5 +1,5 @@
 <span defaultOverlayTarget></span>
-<div class="panel panel-default">
+<div class="panel panel-default" style="max-height:300px">
     <div class="panel-heading" role="tab" id="headingOne">
         <h4 class="panel-title">
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCodeList" aria-expanded="true" aria-controls="collapseOne">
@@ -8,12 +8,14 @@
         </h4>
     </div>
     <div id="collapseCodeList" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-        <div class="panel-body" style="overflow:auto; max-height:300px">
-            <ul>
-                <app-code-item
-                *ngFor="let cod of codes"
-                [code]="cod"></app-code-item>
-            </ul>
+        <div class="panel-body">
+            <div style="overflow:auto; max-height:200px">
+                    <ul>
+                        <app-code-item
+                        *ngFor="let cod of codes"
+                        [code]="cod"></app-code-item>
+                    </ul>
+            </div>
             <div class="input-group">
                 <input class="col-xs-12 form-control" placeholder="Nuevo código" (keyup.enter)="onAddCode()"
                 type="text" [(ngModel)]="newCodeName" name="Nuevo código" id="newCode">

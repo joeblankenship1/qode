@@ -124,6 +124,9 @@ export class DocumentService {
     return Observable.throw(error.message || error);
   }
 
+  public validateDocName(name: string): boolean {
+    return (this.documentList.findIndex( d => d.name === name) === -1);
+  }
   // private createQuotes(document: Document) {
   //   // document.setQuotes(this.quoteService.quoteList.filter( q => quotes.find( e => e === q.getId()) !== undefined ));
   //   document.setQuotes(this.quoteService.quoteList.filter( q => document.getQuotes().find( e => e.getId() === q.getId()) !== undefined ));

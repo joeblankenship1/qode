@@ -58,6 +58,12 @@ export class HeaderComponent implements OnInit {
       const reader: FileReader = new FileReader();
       const fileE = new FileExtraction();
       const name = f.name;
+
+      if (!this.documentService.validateDocName(name)) {
+        this.notificationsService.error('Error', 'Ya existe un documento con ese nombre.');
+        reader.abort();
+        return;
+      }
       const type = f.type.split('/')[1];
 
       reader.onloadend = (e: ProgressEvent) => {
@@ -96,7 +102,7 @@ export class HeaderComponent implements OnInit {
       .then((resultPromise) => {
         resultPromise.result.then((result) => {
           if (result != null) {
-            this.modal.alert().headerClass('btn-danger').title('Error al guardar').body(result).open();
+            this.notificationsService.error('Error', result);
           }
         });
       });
