@@ -1,4 +1,4 @@
-
-    <button class="btn btn-primary" *ngIf="doc!=null" (click)="onSelectDocument()">{{doc.name}}
-      <span (click)="onCloseDocument()">&times;</span>
+<button class="btn btn-primary" *ngIf="doc!=null" [ngClass]="doc.name==selectedDoc ? 'tabSelected' : 'tabNotSelected'" (click)="onSelectDocument()">
+  <div id='a'>{{doc.name}}</div>
+    <span (click)="onCloseDocument()">&times;</span>
     </button>

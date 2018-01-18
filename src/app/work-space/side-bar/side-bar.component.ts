@@ -6,7 +6,6 @@ import { Component, OnInit, Input } from '@angular/core';
     styleUrls: ['./side-bar.component.css']
 })
 export class SideBarComponent implements OnInit {
-    isOpened = true;
     constructor() { }
 
     ngOnInit() {
