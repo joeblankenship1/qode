@@ -46,28 +46,30 @@ export class ProjectsComponent implements OnInit {
   onCreateProject() {
     const projName = this.nameProjectRef.nativeElement.value;
     if (projName !== '') {
-      const descName = this.descProjectRef.nativeElement.value;
-      if (descName.length < 300) {
-        const newProj = new Project({ name: projName, description: descName, owner: 'default' });
+      if (this.projects.findIndex(p => p.name === projName) === -1) {
+        const descName = this.descProjectRef.nativeElement.value;
+        if (descName.length < 300) {
+          const newProj = new Project({ name: projName, description: descName, owner: 'default' });
 
-        this.projectService.createProject(newProj)
-          .subscribe(
-          proj => {
-            this.projectService.addProject(proj);
-            this.notificationsService.success('Exito', 'El proyecto ' + proj.name + ' fue creado.');
-            this.nameProjectRef.nativeElement.value = '';
-            this.descProjectRef.nativeElement.value = '';
-            this.projectService.setSelectedProject(proj);
-          },
-          error => {
-            if (error.message.includes('is not unique')) {
-              this.notificationsService.error('Error', 'El nombre del proyecto ya existe.');
-            }
-            if (error._issues) {
-              this.notificationsService.error('Error', 'Error');
-            }
-          });
-      } else { this.notificationsService.error('Error', 'La descripcion puede tener hasta 300 caracteres.'); }
+          this.projectService.createProject(newProj)
+            .subscribe(
+            proj => {
+              this.projectService.addProject(proj);
+              this.notificationsService.success('Exito', 'El proyecto ' + proj.name + ' fue creado.');
+              this.nameProjectRef.nativeElement.value = '';
+              this.descProjectRef.nativeElement.value = '';
+              this.projectService.setSelectedProject(proj);
+            },
+            error => {
+              if (error.message.includes('is not unique')) {
+                this.notificationsService.error('Error', 'El nombre del proyecto ya existe.');
+              }
+              if (error._issues) {
+                this.notificationsService.error('Error', 'Error');
+              }
+            });
+        } else { this.notificationsService.error('Error', 'La descripcion puede tener hasta 300 caracteres.'); }
+      } else { this.notificationsService.error('Error', 'Ya existe un proyecto con el nombre ingresado'); }
     } else { this.notificationsService.error('Error', 'Debes ingresar un nombre para el nuevo proyecto'); }
   }
 }

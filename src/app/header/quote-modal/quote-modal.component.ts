@@ -9,6 +9,7 @@ import { CompleterItem, CompleterData, CompleterService } from 'ng2-completer';
 import { Observable } from 'rxjs/Observable';
 import { Document } from '../../shared/models/document.model';
 import { DocumentService } from '../../shared/services/document.service';
+import { NotificationsService } from 'angular2-notifications';
 
 export class QuoteModalData extends BSModalContext {
   public quote: Quote;
@@ -33,7 +34,7 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
 
   constructor(public dialog: DialogRef<QuoteModalData>, private quoteService: QuoteService,
               private codeService: CodeService, private completerService: CompleterService,
-              private documentService: DocumentService , private modal: Modal) {
+              private documentService: DocumentService , private modal: Modal, private notificationsService: NotificationsService) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.quote = dialog.context.quote;
@@ -68,7 +69,7 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
 
   public onSaveQuote() {
     if (this.memo === '' && this.selectedCodes.length === 0) {
-      this.modal.alert().headerClass('btn-danger').title('Error al guardar').body('Debe ingresar algún código o un memo.').open();
+      this.notificationsService.error('Error al guardar', 'Debe ingresar algún código o un memo.');
       return;
     }
     this.quote.setCodes(this.selectedCodes);
@@ -80,13 +81,13 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
           this.document.addQuote(this.quote);
           this.documentService.updateDocumentQuotes(this.document).subscribe(result => {} ,
             error => {
-              this.modal.alert().headerClass('btn-danger').title('Error al guardar').body(error).open();
+              this.notificationsService.error('Error al guardar', error);
               console.error(error); }
           );
           this.dialog.close(resp);
           },
           error => {
-            this.modal.alert().headerClass('btn-danger').title('Error al guardar').body(error).open();
+            this.notificationsService.error('Error al guardar', error);
             console.error(error); }
       );
     }else {
@@ -95,7 +96,7 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
           this.dialog.close(resp);
         },
         error => {
-          this.modal.alert().headerClass('btn-danger').title('Error al guardar').body(error).open();
+          this.notificationsService.error('Error al guardar', error);
           console.error(error); }
       );
     }
@@ -107,13 +108,13 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
         this.document.removeQuote(this.quote);
         this.documentService.updateDocumentQuotes(this.document).subscribe(result => {} ,
           error => {
-            this.modal.alert().headerClass('btn-danger').title('Error al guardar').body(error).open();
+            this.notificationsService.error('Error al actualizar documento', error);
             console.error(error); }
         );
         this.dialog.close(-1);
       },
       error => {
-        this.modal.alert().headerClass('btn-danger').title('Error al guardar').body(error).open();
+        this.notificationsService.error('Error al borrar', error);
         console.error(error); }
     );
   }
@@ -146,7 +147,7 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
           this.chosenCode = '';
         },
         error => {
-          this.modal.alert().headerClass('btn-danger').title('Error al guardar').body(error).open();
+          this.notificationsService.error('Error al guardar', error);
           console.error(error);
         });
     }

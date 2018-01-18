@@ -31,9 +31,6 @@ export class WorkSpaceService {
   private quotesSelectedDocument: Quote[] = [];
   public quotesSelectedDocument$= new BehaviorSubject<Quote[]>([]);
 
-  private codesSelectedDocument: Code[] = [];
-  public codesSelectedDocument$ =  new BehaviorSubject<Code[]>([]);
-
   private newSelection: Quote;
 
   constructor(private documentService: DocumentService, private quoteService: QuoteService) { }
@@ -57,15 +54,16 @@ export class WorkSpaceService {
         });
         this.setOpenedDocuments(this.openedDocuments);
         this.setDocumentContents(this.documentContents);
-        this.selectDocument(this.selectedDocumentId ?
-          this.openedDocuments.find(d => d.getId() === this.selectedDocumentId) : this.openedDocuments[0]);
+        const selectedDoc = this.selectedDocumentId != null ?
+        this.openedDocuments.find(d => d.getId() === this.selectedDocumentId) : null;
+        this.selectDocument(selectedDoc ? selectedDoc : this.openedDocuments[0]);
       },
       error => console.error(error)
     );
   }
 
 
-  // Add new document two list of openedDocuments
+  // Add new document too list of openedDocuments
   openDocument(doc: Document) {
     if (!this.openedDocuments.includes(doc)) {
       this.openedDocuments.push(doc);
@@ -84,7 +82,7 @@ export class WorkSpaceService {
     } else {
       this.setSelectedDocument(doc);
       this.setSelectedDocumentContent(undefined);
-      this.setSelectedDocumentQuotes(undefined);
+      this.setSelectedDocumentQuotes([]);
     }
   }
 
@@ -174,7 +172,5 @@ export class WorkSpaceService {
     this.documentContents$.next(this.documentContents);
     this.quotesSelectedDocument.splice(0);
     this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
-    this.codesSelectedDocument.splice(0);
-    this.codesSelectedDocument$.next(this.codesSelectedDocument);
   }
 }

@@ -46,4 +46,12 @@ export class QuoteDisplay {
     this.quote = quote;
   }
 
+  public getPages() {
+    return this.pages;
+  }
+
+  public getColumn() {
+    return this.column;
+  }
+
 }

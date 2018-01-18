@@ -13,6 +13,7 @@ import { WorkSpaceService } from '../shared/services/work-space.service';
 import { FileExtraction } from '../shared/helpers/file-extraction';
 import { DocumentService } from '../shared/services/document.service';
 import { Document } from '../shared/models/document.model';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-header',
@@ -28,7 +29,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private authsvc: AuthService, private router: Router, private modal: Modal,
     private workspaceService: WorkSpaceService, private projectService: ProjectService,
-    private documentService: DocumentService) {
+    private documentService: DocumentService, private notificationsService: NotificationsService) {
     this.appname = 'libreQDA';
   }
 
@@ -57,6 +58,12 @@ export class HeaderComponent implements OnInit {
       const reader: FileReader = new FileReader();
       const fileE = new FileExtraction();
       const name = f.name;
+
+      if (!this.documentService.validateDocName(name)) {
+        this.notificationsService.error('Error', 'Ya existe un documento con ese nombre.');
+        reader.abort();
+        return;
+      }
       const type = f.type.split('/')[1];
 
       reader.onloadend = (e: ProgressEvent) => {
@@ -64,6 +71,9 @@ export class HeaderComponent implements OnInit {
         const buffer = a.result;
         fileE.extractText(buffer, type).then(t => {
           this.newFile(name, t);
+        }).catch(error => {
+          console.error(error);
+          this.notificationsService.error('Error', 'El tipo de archivo no es soportado por el sistema.');
         });
       };
 
@@ -77,7 +87,7 @@ export class HeaderComponent implements OnInit {
 
   // Add a new code
   onNewCode() {
-    const newCode = new Code({ name: '', project: this.workspaceService.getProjectId() });
+    const newCode = new Code({ 'name': '', 'project': this.workspaceService.getProjectId() });
     this.modal.open(CodeModalComponent, overlayConfigFactory({ code: newCode, mode: 'new' }, BSModalContext))
       .then((resultPromise) => {
         resultPromise.result.then((result) => {});
@@ -92,7 +102,7 @@ export class HeaderComponent implements OnInit {
       .then((resultPromise) => {
         resultPromise.result.then((result) => {
           if (result != null) {
-            this.modal.alert().headerClass('btn-danger').title('Error al guardar').body(result).open();
+            this.notificationsService.error('Error', result);
           }
         });
       });

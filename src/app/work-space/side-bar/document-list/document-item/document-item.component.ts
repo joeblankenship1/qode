@@ -21,7 +21,7 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
   onOpenDocument() {
     this.document.setOpened(true);
     this.documentService.updateDocument(this.document, {'opened': true})
-    .subscribe();
+    .subscribe(doc => {this.workspaceService.selectDocument(doc); });
   }
 
   ngOnDestroy() {

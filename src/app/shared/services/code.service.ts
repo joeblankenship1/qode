@@ -28,7 +28,6 @@ export class CodeService {
   loadCodes(projectId): Observable<Code[]> {
     return this.http.get(environment.apiUrl + `code?where={"key.project":"${projectId}"}`, this.options)
       .map((data: Response) => {
-        console.log('data');
         const extracted = data.json();
         const codeArray: Code[] = [];
         let code;
@@ -68,6 +67,9 @@ export class CodeService {
   }
 
   addCode(code: Code): Observable<any> {
+    if (this.codes.findIndex(c => c.getName() === code.getName()) !== -1) {
+      return Observable.throw('Ya existe un código con ese nombre');
+    }
     return this.http.post(environment.apiUrl + 'code', code.getMessageBody(), this.options)
       .map((data: Response) => {
         const extracted = data.json();

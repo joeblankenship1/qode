@@ -33,6 +33,9 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   colRangeArray: Array<any> = [];
   menuOptions: MenuOption[][] = [];
   options = new OptionsComponent();
+  selectedRange;
+
+  public paint = false;
 
   constructor(private workSpaceService: WorkSpaceService, private modal: Modal,
         private contextMenuService: ContextMenuService,
@@ -67,6 +70,10 @@ export class DocumentContentComponent implements OnInit, OnChanges {
                            .reduce((a, b) => a + b, 0);
       // creates a dummy array for html columns management
       this.colRangeArray = new Array<any>(this.colRange);
+    }else {
+      this.pages = [];
+      this.colRange = 0;
+      this.colRangeArray = [];
     }
   }
 
@@ -95,6 +102,8 @@ export class DocumentContentComponent implements OnInit, OnChanges {
               }else {
                 item = result;
                 this.workSpaceService.updateDocumentContent();
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(this.selectedRange);
               }
             }
           });
@@ -122,8 +131,9 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   private getSelectedText() {
     const selection = window.getSelection();
     const docDisplay = this.windowSelection.getSelectedNodes(selection, 'tr');
+    this.selectedRange = selection.getRangeAt(0);
     return new Quote(selection.toString(), selection.baseOffset,
-    selection.extentOffset - 1, docDisplay, this.workSpaceService.getProjectId());
+    selection.extentOffset, docDisplay, this.workSpaceService.getProjectId());
   }
 
   private defineMenuOptions(newSelection) {
