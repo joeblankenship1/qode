@@ -6,6 +6,7 @@ import { Project } from '../../../shared/models/project.model';
 import { ProjectService } from '../../../shared/services/project.service';
 import { WorkSpaceService } from '../../../shared/services/work-space.service';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-code-list',
@@ -17,8 +18,8 @@ export class CodeListComponent implements OnInit {
   public newCodeName = '';
   public projectId: string;
 
-  constructor(private codeService: CodeService, private workspaceService: WorkSpaceService, 
-              private modal: Modal) { }
+  constructor(private codeService: CodeService, private workspaceService: WorkSpaceService,
+              private modal: Modal, private notificationsService: NotificationsService) { }
 
   ngOnInit() {
     this.codeService.getCodes()
@@ -43,7 +44,7 @@ export class CodeListComponent implements OnInit {
       resp => {
       },
       error => {
-        this.modal.alert().headerClass('btn-danger').title('Error al guardar').body(error).open();
+        this.notificationsService.error('Error al guardar', error);
         console.error(error);
       });
     this.newCodeName = '';

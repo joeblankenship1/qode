@@ -8,7 +8,7 @@ export class Code {
 
   constructor(data: any) {
     this._id = data._id == null ? '0' : data._id;
-    this.name = data.name ? data.name : data.key.name;
+    this.name = data.name != null ? data.name : data.key.name;
     this.project = data.project ? data.project : data.key.project;
     this.memo = data.memo == null ? '' : data.memo;
     this.color = data.color == null ? 'black' : data.color;

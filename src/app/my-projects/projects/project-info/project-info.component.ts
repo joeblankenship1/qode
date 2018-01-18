@@ -68,7 +68,7 @@ export class ProjectInfoComponent implements OnInit {
       .then((resultPromise) => {
         resultPromise.result.then((result) => {
           if (result != null) {
-            this.modal.alert().headerClass('btn-danger').title('Error al guardar').body(result).open();
+            this.notificationsService.error('Error', result);
           }
         });
       });

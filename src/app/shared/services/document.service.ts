@@ -106,8 +106,6 @@ export class DocumentService {
     const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag()});
     const updoptions = new RequestOptions({ headers: updheaders });
     const index = this.documentList.indexOf(document, 0);
-    this.documentList[index] = document;
-    this.documentList$.next(this.documentList);
     return this.http.patch(environment.apiUrl + 'document/' + document.getId(), fields, updoptions)
       .map((data: Response) => {
         const extracted = data.json();
@@ -115,6 +113,7 @@ export class DocumentService {
           document.setEtag(extracted._etag);
         }
         this.documentList[index] = document;
+        this.documentList$.next(this.documentList);
         return document;
       });
   }
@@ -125,6 +124,9 @@ export class DocumentService {
     return Observable.throw(error.message || error);
   }
 
+  public validateDocName(name: string): boolean {
+    return (this.documentList.findIndex( d => d.name === name) === -1);
+  }
   // private createQuotes(document: Document) {
   //   // document.setQuotes(this.quoteService.quoteList.filter( q => quotes.find( e => e === q.getId()) !== undefined ));
   //   document.setQuotes(this.quoteService.quoteList.filter( q => document.getQuotes().find( e => e.getId() === q.getId()) !== undefined ));

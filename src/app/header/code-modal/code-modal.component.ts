@@ -5,6 +5,7 @@ import { BSModalContext, Modal } from 'angular2-modal/plugins/bootstrap';
 import { Code } from '../../shared/models/code.model';
 import { CodeService } from '../../shared/services/code.service';
 import { Observable } from 'rxjs/Observable';
+import { NotificationsService } from 'angular2-notifications';
 
 export class CodeModalData extends BSModalContext {
   public code: Code;
@@ -23,7 +24,8 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
   memo: string;
   color: string;
 
-  constructor(public dialog: DialogRef<CodeModalData>, private codeService: CodeService, private modal: Modal) {
+  constructor(public dialog: DialogRef<CodeModalData>, private codeService: CodeService,
+              private modal: Modal, private notificationsService: NotificationsService) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.code = dialog.context.code;
@@ -38,7 +40,7 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
 
   public onSaveCode() {
     if (this.name === '' ) {
-      this.modal.alert().headerClass('btn-danger').title('Error').body('Nombre vacío, debe ingresar un nombre de código').open();
+      this.notificationsService.error('Error', 'Nombre vacío, debe ingresar un nombre de código');
       return;
     }
     let oper: Observable<any>;
@@ -55,7 +57,7 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
         this.dialog.close();
       },
       error => {
-        this.modal.alert().headerClass('btn-danger').title('Error').body(error).open();
+        this.notificationsService.error('Error', error);
         console.error(error); }
     );
   }
@@ -66,7 +68,7 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
         this.dialog.close(-1);
       },
       error => {
-        this.modal.alert().headerClass('btn-danger').title('Error').body(error).open();
+        this.notificationsService.error('Error', error);
         console.error(error); });
   }
 

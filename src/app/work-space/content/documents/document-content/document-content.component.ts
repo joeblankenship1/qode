@@ -70,6 +70,10 @@ export class DocumentContentComponent implements OnInit, OnChanges {
                            .reduce((a, b) => a + b, 0);
       // creates a dummy array for html columns management
       this.colRangeArray = new Array<any>(this.colRange);
+    }else {
+      this.pages = [];
+      this.colRange = 0;
+      this.colRangeArray = [];
     }
   }
 
