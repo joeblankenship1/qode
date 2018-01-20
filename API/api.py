@@ -129,23 +129,40 @@ def before_update(resource, documents, item):
 def before_delete_item(resource, item):
     token = get_token_auth_header()
     mail = get_email(token)
-    # if resource != 'project':
-    proj_id = get_project_id_from_item(resource, item)
-    check_permissions(proj_id, mail, True)
-    update_project_attrs(resource, item, mail)
-    if resource == 'quote':
-        # delete all codes of that quote
-        db = current_app.data.driver.db['quote']
-        # get the quote to delete
+    # Update the project atributes
+    if resource != 'project':
+        proj_id = get_project_id_from_item(resource, item)
+        check_permissions(proj_id, mail, True)
+        update_project_attrs(resource, item, mail)
+    if resource == 'project':
+        db = current_app.data.driver.db['documents']
         print(item['_id'])
-        cursor = db.find_one({'_id': item['_id']})
+        cursor = db.find({'key.project': ObjectId(item['_id'])})
         if cursor:
             print(cursor)
-            for code in cursor['codes']:
-                # delete in db that code
-                # current_app.data.driver.db['project'].delete({'_id':code[_id]}, {"$set": upd}, upsert=False)
-                # collection.remove({"date": {"$gt": "2012-12-15"}})
-                print('code to remove:')
-                print(code)
-                # current_app.data.driver.db['code'].remove(({'_id':code}))
+            for doc in cursor['quotes']:
+                print(doc)
+                # print(doc['_id'])
+                # print(doc['key']['name'])
+                # print(doc['key']['project'])
+                # deleteDocument(doc)
+    if resource == 'document':
+        deleteDocument(item)
+
+def deleteDocument(item):
+    db = current_app.data.driver.db['document']
+    cursor = db.find_one({'_id': item['_id']})
+    if cursor:
+        for quote in cursor['quotes']:
+            print(quote)
+            current_app.data.driver.db['quotes'].remove(({'_id':quote}))
+
+
+    # if resource == 'quote':
+    #     db = current_app.data.driver.db['quote']
+    #     cursor = db.find_one({'_id': item['_id']})
+    #     if cursor:
+    #         for code in cursor['codes']:
+    #             print(code)
+    #             current_app.data.driver.db['code'].remove(({'_id':code}))
 

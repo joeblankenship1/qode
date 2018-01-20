@@ -2,7 +2,8 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Document } from '../../../../shared/models/document.model';
 import { DocumentService } from '../../../../shared/services/document.service';
 import { WorkSpaceService } from '../../../../shared/services/work-space.service';
-
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { overlayConfigFactory } from 'angular2-modal';
 @Component({
   selector: 'app-document-item',
   templateUrl: './document-item.component.html',
@@ -13,7 +14,7 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
   selected: Document;
 
   constructor(private workspaceService: WorkSpaceService,
-    private documentService: DocumentService) { }
+    private documentService: DocumentService, private modal: Modal) { }
 
 
   ngOnInit() {
@@ -31,14 +32,26 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
   }
 
   onDeleteDocument() {
-    this.documentService.deleteDocument(this.document)
-      .subscribe(doc => {
-        this.workspaceService.closeDocument(this.document);
+    const dialogRef = this.modal.confirm().size('lg').isBlocking(true).showClose(true).keyboard(27)
+      .okBtn('Confirmar').okBtnClass('btn btn-info').cancelBtnClass('btn btn-danger')
+      .title('Eliminar documento').body(' Seguro que desea eliminar el documento y todas las citas asociadas? ').open();
+    dialogRef
+      .then(r => {
+        r.result
+          .then(result => {
+            this.documentService.deleteDocument(this.document)
+              .subscribe(doc => {
+                this.workspaceService.closeDocument(this.document);
+              });
+          })
+          .catch(error =>
+            console.log(error)
+          );
       });
-}
+  }
 
-ngOnDestroy() {
+  ngOnDestroy() {
 
-}
+  }
 
 }
