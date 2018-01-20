@@ -10,22 +10,35 @@ import { WorkSpaceService } from '../../../../shared/services/work-space.service
 })
 export class DocumentItemComponent implements OnInit, OnDestroy {
   @Input() document: Document;
+  selected: Document;
 
-  constructor(private  workspaceService: WorkSpaceService,
-  private documentService: DocumentService) { }
+  constructor(private workspaceService: WorkSpaceService,
+    private documentService: DocumentService) { }
 
 
   ngOnInit() {
+    this.workspaceService.getSelectedDocument()
+      .subscribe(
+      selectedDocument => {
+        this.selected = selectedDocument;
+      });
   }
 
   onOpenDocument() {
     this.document.setOpened(true);
-    this.documentService.updateDocument(this.document, {'opened': true})
-    .subscribe(doc => {this.workspaceService.selectDocument(doc); });
+    this.documentService.updateDocument(this.document, { 'opened': true })
+      .subscribe(doc => { this.workspaceService.selectDocument(doc); });
   }
 
-  ngOnDestroy() {
+  onDeleteDocument() {
+    this.documentService.deleteDocument(this.document)
+      .subscribe(doc => {
+        this.workspaceService.closeDocument(this.document);
+      });
+}
 
-  }
+ngOnDestroy() {
+
+}
 
 }

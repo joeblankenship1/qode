@@ -1,5 +1,5 @@
 .tabSelected {
-    background-color: rgba(225, 218, 223, 0.767);
+    background-color: white;
     border-bottom: none;
     color: #2d3e4f;
     padding: 5px 10px;
@@ -20,9 +20,9 @@ div {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    max-width: 350px;
+    max-width: 250px;
 }
 
-col-md-10 {
-    overflow-x: auto;
+.inline-x {
+    display: inline-block;
 }

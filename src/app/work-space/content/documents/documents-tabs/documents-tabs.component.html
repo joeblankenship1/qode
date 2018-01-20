@@ -1,4 +1,4 @@
-<button class="btn btn-primary" *ngIf="doc!=null" [ngClass]="doc.name==selectedDoc ? 'tabSelected' : 'tabNotSelected'" (click)="onSelectDocument()">
-  <div id='a'>{{doc.name}}</div>
-    <span (click)="onCloseDocument()">&times;</span>
+<button class="btn btn-primary" *ngIf="doc!=null" [ngClass]="doc.name == sele.name ? 'tabSelected' : 'tabNotSelected'" (click)="onSelectDocument()">
+  <div class="inline-x" [attr.title]=(doc.name)>{{doc.name}}</div>
+    <div class="inline-x" (click)="onCloseDocument()">&times;</div>
     </button>

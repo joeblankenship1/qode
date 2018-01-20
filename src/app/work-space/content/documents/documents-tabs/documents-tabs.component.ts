@@ -12,11 +12,16 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class DocumentsTabsComponent implements OnInit {
   @Input() doc: Document = null;
   @Output() selected = new EventEmitter<void>();
-  private selectedProject$ = new BehaviorSubject<Document>(null);
+  sele: Document = null;
 
   constructor(private documentService: DocumentService, private workspaceService: WorkSpaceService) { }
 
   ngOnInit() {
+    this.workspaceService.getSelectedDocument()
+    .subscribe(
+    selectedDocument => {
+      this.sele = selectedDocument;
+    });
   }
 
   onSelectDocument() {
