@@ -1,7 +1,15 @@
 <li
+  (contextmenu)="onContextMenu($event)"
   class="list-item"
-  style="cursor: pointer" (click)="onOpenCode()">{{code.name}}
+  style="cursor: pointer" (click)="onOpenCode()">
+  <span *ngIf="code.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer">
+  </span>
+  <span *ngIf="!code.isActivated()" class="list-marker">
+    &#9679;
+  </span>
+  {{code.name}}
   <span [ngStyle]="{'color': code.getColor() }">
     &#9679;
   </span>
 </li>
+<app-options [optionGroups]="menuOptions"></app-options>

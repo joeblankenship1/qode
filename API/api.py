@@ -12,8 +12,8 @@ from bson.objectid import ObjectId
 from flask import abort
 from datetime import datetime
 
-# APP = Eve(auth=MyTokenAuth)
-APP = Eve()
+APP = Eve(auth=MyTokenAuth)
+#APP = Eve()
 
 @APP.errorhandler(AuthError)
 def handle_auth_error(ex):

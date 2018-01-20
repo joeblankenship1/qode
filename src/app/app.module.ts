@@ -111,7 +111,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   providers: [DocumentService, CodeService,
     AuthGuard,
     AuthService,
-    ContextMenuService,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,

@@ -18,6 +18,7 @@ import { WindowSelection } from '../../../../shared/helpers/window-selection';
 
 @Component({
   selector: 'app-document-content',
+  providers: [ContextMenuService],
   templateUrl: './document-content.component.html',
   styleUrls: ['./document-content.component.css']
 })
@@ -139,7 +140,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   private defineMenuOptions(newSelection) {
     if (newSelection) {
       this.menuOptions.map(group => {
-        group.map(op => newSelection ? op.enabled = true : op.enabled = false);
+        group.map(op => newSelection ? op.enable() : op.desable());
       });
     }
   }

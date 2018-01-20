@@ -15,6 +15,7 @@ export class Document {
   public quotes: Quote[];
   private opened: boolean;
   private project: string;
+  private activated: boolean;
 
 
   constructor(data: any, projectId: string, quotes?: Quote[]) {
@@ -27,6 +28,7 @@ export class Document {
     this.project = projectId;
     this.quotes = quotes ? quotes : [];
     this.memos = [];
+    this.activated = false;
   }
 
   getId() {
@@ -92,4 +94,17 @@ export class Document {
       memos: this.memos
     };
   }
+
+  public isActivated() {
+    return this.activated;
+  }
+
+  public activate() {
+    this.activated = true;
+  }
+
+  public deactivate() {
+    this.activated = false;
+  }
+
 }

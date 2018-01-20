@@ -1,1 +1,9 @@
-<li><span style="cursor: pointer" (click)="onOpenDocument()">{{document.name}}</span></li>
+<li (contextmenu)="onContextMenu($event)">
+  <span *ngIf="document.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer">
+  </span>
+  <span *ngIf="!document.isActivated()" class="list-marker">
+    &#9679;
+  </span>
+  <span style="cursor: pointer" (click)="onOpenDocument()">{{document.name}}</span>
+</li>
+<app-options [optionGroups]="menuOptions"></app-options>

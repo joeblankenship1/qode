@@ -1,0 +1,10 @@
+.list-pointer {
+  color: red;
+  padding-right: 3px;
+  font-size: 11px;
+}
+
+.list-marker {
+  font-size: 10px;
+  padding-right: 3px
+}

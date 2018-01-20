@@ -13,4 +13,15 @@ export class MenuOption {
     this.visible = visible ? visible : true;
   }
 
+  public enable() {
+    this.enabled = true;
+  }
+
+  public desable() {
+    this.enabled = false;
+  }
+
+  public setVisible(visible) {
+    this.visible = visible;
+  }
 }
