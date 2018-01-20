@@ -73,4 +73,8 @@ export class CodeItemComponent implements OnInit {
     }
   }
 
+  public getItemClass() {
+    return this.code.isActivated() ? 'list-item-selected' : 'list-item';
+  }
+
 }

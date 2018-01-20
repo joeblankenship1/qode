@@ -1,3 +1,16 @@
+.list-item {
+  cursor: pointer;
+}
+
+.list-item-selected {
+  color:red;
+  cursor: pointer;
+}
+
+.list-item:hover {
+  background-color: #dcdcdc42;
+}
+
 .list-pointer {
   color: red;
   padding-right: 3px;

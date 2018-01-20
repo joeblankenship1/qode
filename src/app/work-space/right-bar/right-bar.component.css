@@ -1,0 +1,43 @@
+@media screen and (min-width: 1200px) {
+  .rightbar {
+    padding: 2px;
+    padding-top: 20px;
+    background-color: #333534;
+    height: -moz-calc(100vh - 52px);
+    height: -webkit-calc(100vh - 52px - 25px);
+    height: calc(100vh - 52px);
+    width: 20%;
+    position: absolute;
+    right: 0;
+    margin-top: 25px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .rightbar {
+    padding: 2px;
+    padding-top: 30px;
+    background-color: #333534;
+    height: -moz-calc(100vh - 52px - 25px);
+    height: -webkit-calc(100vh - 52px - 25px);
+    height: calc(100vh - 52px);
+    width: 20%;
+    position: absolute;
+    right: 0;
+    margin-top: 25px;
+  }
+}
+
+.right-bar-heading {
+  background-color: #ecf0f1;
+  color: #333534;
+  position: absolute;
+  right: 0;
+  width: 20%;
+  height: 25px;
+}
+
+.right-bar-title {
+  margin-top: 2px;
+  font-size: 18px
+}

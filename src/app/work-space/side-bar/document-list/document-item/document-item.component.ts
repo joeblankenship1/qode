@@ -61,6 +61,10 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
     }
   }
 
+  public getItemClass() {
+    return this.document.isActivated() ? 'list-item-selected' : 'list-item';
+  }
+
   ngOnDestroy() {
 
   }

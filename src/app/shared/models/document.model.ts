@@ -107,4 +107,8 @@ export class Document {
     this.activated = false;
   }
 
+  public hasQuote(quote: Quote) {
+    return this.quotes.indexOf(quote) > -1;
+  }
+
 }

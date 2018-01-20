@@ -2,6 +2,11 @@
   cursor: pointer;
 }
 
+.list-item-selected {
+  color:red;
+  cursor: pointer;
+}
+
 .list-item:hover {
   background-color: #dcdcdc42;
 }

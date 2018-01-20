@@ -1,4 +1,7 @@
-<li (contextmenu)="onContextMenu($event)">
+<li 
+(contextmenu)="onContextMenu($event)"
+[ngClass]="getItemClass()"
+>
   <span *ngIf="document.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer">
   </span>
   <span *ngIf="!document.isActivated()" class="list-marker">
