@@ -37,7 +37,11 @@ export class ProjectsComponent implements OnInit {
     this.projectService.getProjects()
       .subscribe(
       projects => {
-        this.projects = projects;
+        if (projects) {
+          this.projects = projects;
+        }else {
+          this.projects = [];
+        }
       },
       error => console.error(error)
       );

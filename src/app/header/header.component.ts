@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit {
   constructor(private authsvc: AuthService, private router: Router, private modal: Modal,
     private workspaceService: WorkSpaceService, private projectService: ProjectService,
     private documentService: DocumentService, private notificationsService: NotificationsService) {
-    this.appname = 'libreQDA';
+    this.appname = 'fingQDA';
   }
 
   ngOnInit() {
