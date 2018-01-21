@@ -1,12 +1,20 @@
 <li 
 (contextmenu)="onContextMenu($event)"
 [ngClass]="getItemClass()"
+ style="cursor: pointer"
+ (dblclick)="onOpenDocument()"
 >
-  <span *ngIf="document.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer">
+  <span 
+    *ngIf="document.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer"
+    (click)="onDeactivateDocument()"
+    >
   </span>
-  <span *ngIf="!document.isActivated()" class="list-marker">
+  <span 
+    *ngIf="!document.isActivated()" class="list-marker"
+    (click)="onActivateDocument()"
+    >
     &#9679;
   </span>
-  <span style="cursor: pointer" (click)="onOpenDocument()">{{document.name}}</span>
+  {{document.name}}
 </li>
 <app-options [optionGroups]="menuOptions"></app-options>

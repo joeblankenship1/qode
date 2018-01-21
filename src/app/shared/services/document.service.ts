@@ -25,6 +25,9 @@ export class DocumentService {
   private documentList: Document[];
   private documentList$ = new BehaviorSubject<Document[]>(null);
 
+  private activatedDocuments: Document[] = [];
+  private activatedDocuments$= new BehaviorSubject<Document[]>(null);
+
   constructor(private http: AuthHttp, private quoteService: QuoteService) {
     this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache'});
     this.options = new RequestOptions({ headers: this.headers });
@@ -127,8 +130,28 @@ export class DocumentService {
   public validateDocName(name: string): boolean {
     return (this.documentList.findIndex( d => d.name === name) === -1);
   }
-  // private createQuotes(document: Document) {
-  //   // document.setQuotes(this.quoteService.quoteList.filter( q => quotes.find( e => e === q.getId()) !== undefined ));
-  //   document.setQuotes(this.quoteService.quoteList.filter( q => document.getQuotes().find( e => e.getId() === q.getId()) !== undefined ));
-  // }
+
+  setActivatedDocuments(documents: Document[]) {
+    this.activatedDocuments = documents;
+    this.activatedDocuments$.next(documents);
+  }
+
+  setActivatedDocument(document: Document) {
+    if (this.activatedDocuments.indexOf(document) === -1) {
+      this.activatedDocuments.push(document);
+      this.activatedDocuments$.next(this.activatedDocuments);
+    }
+  }
+
+  removeActivatedDocument(document: Document) {
+    if (this.activatedDocuments.indexOf(document) > -1) {
+      this.activatedDocuments.splice(this.activatedDocuments.indexOf(document), 1);
+      this.activatedDocuments$.next(this.activatedDocuments);
+    }
+  }
+
+  getActivatedDocuments() {
+    return this.activatedDocuments$.asObservable();
+  }
+
 }

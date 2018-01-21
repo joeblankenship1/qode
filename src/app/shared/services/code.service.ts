@@ -20,6 +20,9 @@ export class CodeService {
   private codes$ = new BehaviorSubject<Code[]>([]);
   private project: Project;
 
+  private activatedCodes: Code[] = [];
+ // private activatedCodes$ = new BehaviorSubject<Code[]>([]);
+
   constructor(private http: AuthHttp, private projectService: ProjectService) {
     this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache'});
     this.options = new RequestOptions({ headers: this.headers });
@@ -117,6 +120,26 @@ export class CodeService {
         this.codes.splice(index, 1);
         this.codes$.next(this.codes);
       });
+  }
+
+  setActivatedCodes(codes: Code[]) {
+    this.activatedCodes = codes;
+  }
+
+  setActivatedCode(code: Code) {
+    if (this.activatedCodes.indexOf(code) === -1) {
+      this.activatedCodes.push(code);
+    }
+  }
+
+  removeActivatedCode(code: Code) {
+    if (this.activatedCodes.indexOf(code) > -1) {
+      this.activatedCodes.splice(this.activatedCodes.indexOf(code), 1);
+    }
+  }
+
+  getActivatedCodes() {
+    return this.activatedCodes;
   }
 
 }

@@ -5,19 +5,22 @@ import { WorkSpaceService } from '../../../../shared/services/work-space.service
 import { ContextMenuService } from 'ngx-contextmenu';
 import { MenuOption } from '../../../../shared/models/menu-option.model';
 import { OptionsComponent } from '../../../../shared/helpers/options/options.component';
+import { QuotesRetrievalService } from '../../../../shared/services/quotes-retrieval.service';
 
 @Component({
   selector: 'app-document-item',
   templateUrl: './document-item.component.html',
-  styleUrls: ['./document-item.component.css']
+  styleUrls: ['./document-item.component.css'],
+  providers: [ContextMenuService]
 })
 export class DocumentItemComponent implements OnInit, OnDestroy {
   @Input() document: Document;
   menuOptions: MenuOption[][] = [];
   options = new OptionsComponent();
 
-  constructor(private  workspaceService: WorkSpaceService,
-  private documentService: DocumentService, private contextMenuService: ContextMenuService) { }
+  constructor(private workspaceService: WorkSpaceService,
+    private documentService: DocumentService, private contextMenuService: ContextMenuService,
+    private quotesRetrievalService: QuotesRetrievalService) { }
 
 
   ngOnInit() {
@@ -26,14 +29,14 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
 
   onOpenDocument() {
     this.document.setOpened(true);
-    this.documentService.updateDocument(this.document, {'opened': true})
-    .subscribe(doc => {this.workspaceService.selectDocument(doc); });
+    this.documentService.updateDocument(this.document, { 'opened': true })
+      .subscribe(doc => { this.workspaceService.selectDocument(doc); });
   }
 
   private createMenuOptions() {
     this.menuOptions = [[
-      new MenuOption('Activar', (item) => { item.activate(); }),
-      new MenuOption('Desactivar', (item) => { item.deactivate();  })
+      new MenuOption('Activar', (item) => { this.onActivateDocument(); }),
+      new MenuOption('Desactivar', (item) => { this.onDeactivateDocument(); })
     ]];
     this.defineMenuOptions();
   }
@@ -59,6 +62,18 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
       this.menuOptions[0][0].setVisible(true);
       this.menuOptions[0][1].setVisible(false);
     }
+  }
+
+  public onActivateDocument() {
+    this.document.activate();
+    this.documentService.setActivatedDocument(this.document);
+    this.quotesRetrievalService.updateFromActivation();
+  }
+
+  public onDeactivateDocument() {
+    this.document.deactivate();
+    this.documentService.removeActivatedDocument(this.document);
+    this.quotesRetrievalService.updateFromActivation();
   }
 
   public getItemClass() {

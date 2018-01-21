@@ -1,10 +1,16 @@
 <li
   (contextmenu)="onContextMenu($event)"
   [ngClass]="getItemClass()"
-  (click)="onOpenCode()">
-  <span *ngIf="code.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer">
+  (dblclick)="onOpenCode()">
+  <span 
+    (click)="onDeactivateCode()"
+    *ngIf="code.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer"
+    >
   </span>
-  <span *ngIf="!code.isActivated()" class="list-marker">
+  <span 
+    *ngIf="!code.isActivated()" class="list-marker"
+    (click)="onActivateCode()"
+    >
     &#9679;
   </span>
   {{code.name}}

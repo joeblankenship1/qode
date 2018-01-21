@@ -11,6 +11,10 @@
   background-color: #dcdcdc42;
 }
 
+.list-item-selected:hover {
+  background-color: #dcdcdc42;
+}
+
 .list-pointer {
   color: red;
   padding-right: 3px;

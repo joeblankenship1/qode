@@ -8,6 +8,8 @@ import { WorkSpaceService } from '../../../../shared/services/work-space.service
 import { MenuOption } from '../../../../shared/models/menu-option.model';
 import { OptionsComponent } from '../../../../shared/helpers/options/options.component';
 import { ContextMenuService } from 'ngx-contextmenu';
+import { CodeService } from '../../../../shared/services/code.service';
+import { QuotesRetrievalService } from '../../../../shared/services/quotes-retrieval.service';
 
 @Component({
   selector: 'app-code-item',
@@ -22,7 +24,10 @@ export class CodeItemComponent implements OnInit {
   options = new OptionsComponent();
 
   constructor(private modal: Modal, private quoteService: QuoteService,
-     private workspaceService: WorkSpaceService, private contextMenuService: ContextMenuService) {
+     private workspaceService: WorkSpaceService,
+     private contextMenuService: ContextMenuService,
+     private codeService: CodeService,
+     private quoteRetrievalService: QuotesRetrievalService) {
   }
 
   ngOnInit() {
@@ -44,8 +49,8 @@ export class CodeItemComponent implements OnInit {
 
   private createMenuOptions() {
     this.menuOptions = [[
-      new MenuOption('Activar', (item) => { item.activate(); }),
-      new MenuOption('Desactivar', (item) => { item.deactivate();  })
+      new MenuOption('Activar', (item) => { this.onActivateCode(); }),
+      new MenuOption('Desactivar', (item) => { this.onDeactivateCode(); })
     ]];
     this.defineMenuOptions();
   }
@@ -75,6 +80,18 @@ export class CodeItemComponent implements OnInit {
 
   public getItemClass() {
     return this.code.isActivated() ? 'list-item-selected' : 'list-item';
+  }
+
+  public onActivateCode() {
+    this.code.activate();
+    this.codeService.setActivatedCode(this.code);
+    this.quoteRetrievalService.updateFromActivation();
+  }
+
+  public onDeactivateCode() {
+    this.code.deactivate();
+    this.codeService.removeActivatedCode(this.code);
+    this.quoteRetrievalService.updateFromActivation();
   }
 
 }
