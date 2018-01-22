@@ -31,14 +31,18 @@
     margin-top: 2%;
     border-spacing: 0 10px;
     width: 20cm;
-    float: right;
+    /*float: right;*/
+    margin-left: 1%;
   }
 
   .page-container {
-    padding-bottom: 5px;
+    /*padding-bottom: 5px;
     padding-top: 5px;
     padding-left: 5%;
-    padding-right: 1%;
+    padding-right: 1%;*/
+    width: 23cm;
+    margin-left: 10%;
+    margin-top: 2%;
   }
   /* Lines */
 
@@ -67,7 +71,7 @@
 
   .quote-empty {
     color: transparent;
-    width: 8px;
+    width: 0px;
   }
 
   .quote {

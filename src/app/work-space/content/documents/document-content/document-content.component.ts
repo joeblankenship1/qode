@@ -31,6 +31,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   @Output() selectedQuote = new EventEmitter<Quote>();
 
   actualDocumentContent: DocumentContent;
+  aux: Line[] = [];
   pages = [];
   allQuotes: Quote[] = [];
   colRange: number;
@@ -52,6 +53,14 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.workSpaceService.getSelectedDocumentContent().subscribe(
       content => {
         this.actualDocumentContent = content;
+        if (content) {
+          this.aux.splice(0);
+          content.getPages().forEach( p => {
+          p.getLines().map( l => {
+            this.aux.push(l);
+          });
+        });
+      }
         // this.quoteService.getQuoteList().subscribe(
         //   quotes => {
         //     this.allQuotes = quotes;
@@ -93,7 +102,12 @@ export class DocumentContentComponent implements OnInit, OnChanges {
 
   updatePagesAndQuotes() {
     if (this.actualDocumentContent) {
-      this.pages = this.actualDocumentContent.getPages();
+      this.aux.splice(0);
+      this.actualDocumentContent.getPages().forEach( p => {
+        p.getLines().map( l => {
+          this.aux.push(l);
+        });
+      });
       // sets the total number of opened quotes's associated codes
       this.colRange = this.actualDocumentContent.getQuotesDisplay().map(
         qd => qd.getQuote().getCodes().length === 0 ? 1 : qd.getQuote().getCodes().length)

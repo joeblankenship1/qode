@@ -46,9 +46,9 @@ export class Line {
 
   public getLineType() {
     let styleClass = 'text-area white-line';
-    if (this.id === 0) {
+    if (this.id % AppSettings.PAGE_SIZE === 0) {
       styleClass += 'text-area top-line';
-    } else if (this.id === AppSettings.PAGE_SIZE - 1) {
+    } else if (this.id % AppSettings.PAGE_SIZE === AppSettings.PAGE_SIZE - 1) {
       styleClass += 'text-area bottom-line';
     }
     return styleClass;

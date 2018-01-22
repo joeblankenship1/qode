@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AppSettings } from '../../app.settings';
 
 @Injectable()
 export class WindowSelection {
@@ -24,6 +25,7 @@ export class WindowSelection {
     const endNode = range.endContainer;
 
     // Special case for a range that is contained within a single node
+    console.log(range);
     if (node === endNode) {
       return [this.getAppLineFromText(range.commonAncestorContainer.parentElement, filterTag)];
     }
@@ -70,6 +72,22 @@ export class WindowSelection {
 
   createDocumentDisplay(list: any[]) {
     const result = [];
+    const firstPage = Math.trunc(list[0].id / AppSettings.PAGE_SIZE);
+    const lastPage = Math.trunc(list[list.length - 1].id / AppSettings.PAGE_SIZE);
+
+    for ( let i = firstPage; i < lastPage + 1; i++) {
+      result.push({
+        page: i,
+        startLine: i === firstPage ? parseInt(list[0].id, 0) :  i  * AppSettings.PAGE_SIZE,
+        endLine: i === lastPage ? parseInt(list[list.length - 1].id, 0) : ( i + 1 ) * AppSettings.PAGE_SIZE - 1
+      });
+    }
+   return result;
+
+  }
+
+  /*createDocumentDisplay(list: any[]) {
+    const result = [];
     let page = -1;
     let startLine = 0;
     let endLine = 0;
@@ -92,6 +110,6 @@ export class WindowSelection {
     });
    return result;
 
-  }
+  }*/
 
 }
