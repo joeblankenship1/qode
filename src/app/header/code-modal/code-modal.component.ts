@@ -67,7 +67,7 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
     this.codeService.deleteCode(this.code).subscribe(
       resp => {
         this.dialog.close(-1);
-        this.workspaceService.removeQuoteDocumentContent();
+        this.workspaceService.removeQuotesInDocumentContent(this.code);
       },
       error => {
         this.notificationsService.error('Error', error);

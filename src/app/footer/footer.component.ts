@@ -16,12 +16,12 @@ export class FooterComponent implements OnInit {
   constructor(private router: Router, private projectService: ProjectService) { }
 
   ngOnInit() {
-    // this.projectService.getSelectedProject().subscribe(
-    //   project => {
-    //     this.project = project;
-    //   },
-    //   error => console.error(error)
-    // );
+    this.projectService.getSelectedProject().subscribe(
+      project => {
+        this.project = project;
+      },
+      error => console.error(error)
+    );
   }
 
 }

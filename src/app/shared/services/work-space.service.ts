@@ -161,6 +161,25 @@ export class WorkSpaceService {
     this.newSelection = quote;
   }
 
+  removeQuotesInDocumentContent(code) {
+    const quotes = this.quotesSelectedDocument;
+    quotes.forEach( (q, i) => {
+      if (q.getCodes().length === 1 && q.getCodes()[0] === code && q.getMemo() === '') {
+        this.quotesSelectedDocument.splice(i, 1);
+        this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
+      }
+    });
+
+    this.documentContents.forEach(doc => {
+      const qAux = doc.getQuotesDisplay();
+      qAux.forEach( q => {
+        if (q.getQuote().getCodes().length === 1 && q.getQuote().getCodes()[0] === code && q.getQuote().getMemo() === '') {
+          doc.removeQuote(q.getQuote());
+        }
+      });
+  });
+}
+
   updateDocumentContent() {
     this.selectedDocumentContent.updateDocumentQuotesDisplay();
     this.selectedDocumentContent$.next(this.selectedDocumentContent);
