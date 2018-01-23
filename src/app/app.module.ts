@@ -57,6 +57,7 @@ import { QuotesRetrievalService } from './shared/services/quotes-retrieval.servi
 import { RightBarComponent } from './work-space/right-bar/right-bar.component';
 import { RetrievedQuotesComponent } from './work-space/right-bar/retrieved-quotes-list/retrieved-quotes-list.component';
 import { RetrievedQuoteItemComponent } from './work-space/right-bar/retrieved-quotes-list/retrieved-quote-item/retrieved-quote-item.component';
+import { BottomBarComponent } from './work-space/bottom-bar/bottom-bar.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -98,6 +99,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     RightBarComponent,
     RetrievedQuotesComponent,
     RetrievedQuoteItemComponent,
+    BottomBarComponent,
   ],
   imports: [
     BrowserModule,
