@@ -9,6 +9,7 @@ import { DocumentContent } from '../models/document-content.model';
 import { Code } from '../models/code.model';
 import { Project } from '../models/project.model';
 import { QuoteDisplay } from '../models/quote-display';
+import { indexDebugNode } from '@angular/core/src/debug/debug_node';
 
 @Injectable()
 export class WorkSpaceService {
@@ -22,14 +23,14 @@ export class WorkSpaceService {
   public selectedDocument$ = new BehaviorSubject<Document>(null);
 
   private documentContents: DocumentContent[] = [];
-  public documentContents$= new BehaviorSubject<DocumentContent[]>([]);
+  public documentContents$ = new BehaviorSubject<DocumentContent[]>([]);
 
   private selectedDocumentContent: DocumentContent;
   public selectedDocumentContent$ = new BehaviorSubject<DocumentContent>(null);
   private selectedDocumentId: string;
 
   private quotesSelectedDocument: Quote[] = [];
-  public quotesSelectedDocument$= new BehaviorSubject<Quote[]>([]);
+  public quotesSelectedDocument$ = new BehaviorSubject<Quote[]>([]);
 
   private newSelection: Quote;
 
@@ -41,21 +42,21 @@ export class WorkSpaceService {
     this.selectedDocumentId = null;
     this.documentService.getDocuments().subscribe(
       documents => {
-        documents.forEach( d => {
+        documents.forEach(d => {
           if (d.isOpened() && !this.openedDocuments.includes(d)) {
             this.openedDocuments.push(d);
           } else if (!d.isOpened() && this.openedDocuments.includes(d)) {
             const i = this.openedDocuments.indexOf(d);
             this.openedDocuments.splice(i, 1);
           }
-          if (this.documentContents.find( dc => d.getId() === dc.getDocumentId()) === undefined) {
+          if (this.documentContents.find(dc => d.getId() === dc.getDocumentId()) === undefined) {
             this.documentContents.push(new DocumentContent(d));
           }
         });
         this.setOpenedDocuments(this.openedDocuments);
         this.setDocumentContents(this.documentContents);
         const selectedDoc = this.selectedDocumentId != null ?
-        this.openedDocuments.find(d => d.getId() === this.selectedDocumentId) : null;
+          this.openedDocuments.find(d => d.getId() === this.selectedDocumentId) : null;
         this.selectDocument(selectedDoc ? selectedDoc : this.openedDocuments[0]);
       },
       error => console.error(error)
@@ -72,10 +73,20 @@ export class WorkSpaceService {
     this.selectDocument(doc);
   }
 
+  // Remove document from list of openedDocuments
+  closeDocument(doc: Document) {
+    const i = this.openedDocuments.indexOf(doc);
+    this.openedDocuments.splice(i, 1);
+    this.openedDocuments$.next(this.openedDocuments);
+    if (this.selectedDocument === doc) {
+      this.selectDocument(this.openedDocuments[0]);
+    }
+  }
+
   // Select a document to show on content
   selectDocument(doc: Document) {
     if (doc) {
-      const docContent = this.documentContents.find( dc => doc.getId() === dc.getDocumentId());
+      const docContent = this.documentContents.find(dc => doc.getId() === dc.getDocumentId());
       this.setSelectedDocument(doc);
       this.setSelectedDocumentContent(docContent);
       this.setSelectedDocumentQuotes(doc.getQuotes());
@@ -149,6 +160,25 @@ export class WorkSpaceService {
   setNewSelection(quote: Quote) {
     this.newSelection = quote;
   }
+
+  removeQuotesInDocumentContent(code) {
+    const quotes = this.quotesSelectedDocument;
+    quotes.forEach( (q, i) => {
+      if (q.getCodes().length === 1 && q.getCodes()[0] === code && q.getMemo() === '') {
+        this.quotesSelectedDocument.splice(i, 1);
+        this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
+      }
+    });
+
+    this.documentContents.forEach(doc => {
+      const qAux = doc.getQuotesDisplay();
+      qAux.forEach( q => {
+        if (q.getQuote().getCodes().length === 1 && q.getQuote().getCodes()[0] === code && q.getQuote().getMemo() === '') {
+          doc.removeQuote(q.getQuote());
+        }
+      });
+  });
+}
 
   updateDocumentContent() {
     this.selectedDocumentContent.updateDocumentQuotesDisplay();

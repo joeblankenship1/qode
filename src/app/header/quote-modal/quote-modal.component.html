@@ -1,20 +1,16 @@
-<div class="container-fluid fingqda-modal-container">
-    <div class="row fingqda-modal-header">
+<div class="container-fluid">
+    <div class="modal-header">
         <button type="button" (click)="onClose()" class="close col-xs-1">&times;</button>
-        <div class="col-xs-6 col-md-4">
-            <h4>Editar cita</h4>
-        </div>
+        <h5 class="modal-title">Editar cita</h5>
     </div>
     <div class="row">
         <div class="col-xs-12">
             <div class="form-group row">
                 <label for="inputCode" class="col-xs-2 control-label">Código</label>
                 <div class="col-xs-10">
-                        <ng2-completer [(ngModel)]="chosenCode" [datasource]="dataService" 
-                        (selected)="onCodeSelected($event)" [textNoResults]="'Enter para crear nuevo código'"
-                        [minSearchLength]="1" inputClass="form-control" inputID="inputCode"
-                        [placeholder]="'Buscar código o crear nuevo'" (keyup)="onKeyUp($event)">
-                        </ng2-completer>
+                    <ng2-completer [(ngModel)]="chosenCode" [datasource]="dataService" (selected)="onCodeSelected($event)" [textNoResults]="'Enter para crear nuevo código'" [minSearchLength]="1" inputClass="form-control" inputID="inputCode" [placeholder]="'Buscar código o crear nuevo'"
+                        (keyup)="onKeyUp($event)">
+                    </ng2-completer>
                 </div>
             </div>
             <div class="panel panel-default" style="overflow:auto;max-height:200px"> 
@@ -39,15 +35,12 @@
             </div>
         </div>
     </div>
-    <hr>
-    <div class="row">
-        <div class="col-xs-12 text-center">
-            <button type="button" class="btn btn-success" (click)="onSaveQuote()">
+    <div class="modal-footer text-center ">
+        <button type="button" class="btn btn-success" (click)="onSaveQuote()">
             Guardar
             </button>
-            <button *ngIf="quote._id" type="button" class="btn btn-danger" (click)="onDeleteQuote()">
+        <button *ngIf="quote._id" type="button" class="btn btn-danger" (click)="onDeleteQuote()">
             Borrar
             </button>
-        </div>    
-    </div> 
+    </div>
 </div>

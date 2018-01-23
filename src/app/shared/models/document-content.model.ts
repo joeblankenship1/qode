@@ -50,16 +50,16 @@ export class DocumentContent {
   //   this.updateDocumentQuotesDisplay();
   // }
 
-  // public removeQuote(quote: Quote) {
-  //   const indxOf = this.document.getQuotes().findIndex( q => {
-  //     return q.getId() === quote.getId();
-  //   });
-  //   if (indxOf !== -1) {
-  //     this.document.getQuotes().splice(indxOf, 1);
-  //   }
-  //   this.createPages();
-  //   this.updateDocumentQuotesDisplay();
-  // }
+  public removeQuote(quote: Quote) {
+    const indxOf = this.document.getQuotes().findIndex( q => {
+      return q.getId() === quote.getId();
+    });
+    if (indxOf !== -1) {
+      this.document.getQuotes().splice(indxOf, 1);
+    }
+    this.createPages();
+    this.updateDocumentQuotesDisplay();
+  }
 
   public createPages() {
     const quotes = this.document.getQuotes();

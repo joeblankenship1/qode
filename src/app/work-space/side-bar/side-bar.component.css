@@ -22,28 +22,6 @@
                 }
             }
             
-            #miniside {
-                width: 25px;
-                padding-top: 10%;
-                padding-left: 1px;
-                padding-right: 1px;
-            }
-            
-            #sidenavCollapseBtn {
-                padding: 2px;
-                background-color: transparent;
-                color: #A4A0A0;
-                border: none;
-            }
-            
             .btn {
                 border-radius: 0px;
-            }
-            
-            .opened {
-                display: block;
-            }
-            
-            .closed {
-                display: none;
             }

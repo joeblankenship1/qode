@@ -1,1 +1,4 @@
-<li><span [attr.title]="document.memo" style="cursor: pointer" (click)="onOpenDocument()">{{document.name}}</span></li>
+<li>
+    <div [attr.title]="document.memo" style="cursor: pointer" (click)="onOpenDocument()">{{document.name}}</div>
+    <div> <i class="fa fa-trash" (click)="onDeleteDocument()" aria-hidden="true" style="cursor: pointer"></i> </div>
+</li>

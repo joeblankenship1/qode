@@ -13,18 +13,43 @@ import { BSModalContext, Modal } from 'angular2-modal/plugins/bootstrap';
 })
 export class DocumentItemComponent implements OnInit, OnDestroy {
   @Input() document: Document;
+  selected: Document;
 
-  constructor(private  workspaceService: WorkSpaceService, private modal: Modal,
-  private documentService: DocumentService) { }
+  constructor(private workspaceService: WorkSpaceService,
+    private documentService: DocumentService, private modal: Modal) { }
 
 
   ngOnInit() {
+    this.workspaceService.getSelectedDocument()
+      .subscribe(
+      selectedDocument => {
+        this.selected = selectedDocument;
+      });
   }
 
   onOpenDocument() {
     this.document.setOpened(true);
-    this.documentService.updateDocument(this.document, {'opened': true})
-    .subscribe(doc => {this.workspaceService.selectDocument(doc); });
+    this.documentService.updateDocument(this.document, { 'opened': true })
+      .subscribe(doc => { this.workspaceService.selectDocument(doc); });
+  }
+
+  onDeleteDocument() {
+    const dialogRef = this.modal.confirm().size('lg').isBlocking(true).showClose(true).keyboard(27)
+      .okBtn('Confirmar').okBtnClass('btn btn-info').cancelBtnClass('btn btn-danger')
+      .title('Eliminar documento').body(' Seguro que desea eliminar el documento y todas las citas asociadas? ').open();
+    dialogRef
+      .then(r => {
+        r.result
+          .then(result => {
+            this.documentService.deleteDocument(this.document)
+              .subscribe(doc => {
+                this.workspaceService.closeDocument(this.document);
+              });
+          })
+          .catch(error =>
+            console.log(error)
+          );
+      });
   }
 
   onEditDcument() {
