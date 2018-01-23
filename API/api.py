@@ -136,11 +136,18 @@ def before_delete_item(resource, item):
         update_project_attrs(resource, item, mail)
     # Delete in cascade
     if resource == 'project':
+        # delete docs and quotes
         db = current_app.data.driver.db['document']
         cursor = db.find({'key.project': ObjectId(item['_id'])})
         if cursor:
             for doc in cursor:
                 deleteDocument(doc)
+        # delete codes
+        db = current_app.data.driver.db['code']
+        cursor = db.find({'key.project': ObjectId(item['_id'])})
+        if cursor:
+            for code in cursor:
+                current_app.data.driver.db['code'].remove(({'_id':code['_id']}))
     if resource == 'document':
         deleteDocument(item)
     if resource == 'code':
@@ -159,7 +166,8 @@ def deleteDocument(item):
     cursor = db.find_one({'_id': item['_id']})
     if cursor:
         for quote in cursor['quotes']:
-            current_app.data.driver.db['quotes'].remove(({'_id':quote}))
+            current_app.data.driver.db['quote'].remove(({'_id':quote}))
+    current_app.data.driver.db['document'].remove(({'_id':item['_id']}))
 
 
 
