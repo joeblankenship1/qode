@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { WorkSpaceService } from '../../shared/services/work-space.service';
 
 @Component({
   selector: 'app-bottom-bar',
@@ -7,11 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BottomBarComponent implements OnInit {
 
-  isOpened = true;
+  isOpened = false;
 
-  constructor() { }
+  constructor(private workspaceService: WorkSpaceService) { }
 
   ngOnInit() {
+    this.workspaceService.getBottomBar().subscribe( io => {
+      this.isOpened = io;
+    });
   }
 
 }

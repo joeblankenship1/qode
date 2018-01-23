@@ -25,7 +25,6 @@ export class WindowSelection {
     const endNode = range.endContainer;
 
     // Special case for a range that is contained within a single node
-    console.log(range);
     if (node === endNode) {
       return [this.getAppLineFromText(range.commonAncestorContainer.parentElement, filterTag)];
     }
