@@ -1,9 +1,7 @@
-<div class="container-fluid fingqda-modal-container">
-  <div class="row fingqda-modal-header">
+<div class="container-fluid">
+  <div class="modal-header">
       <button type="button" (click)="onClose()" class="close col-xs-1">&times;</button>
-      <div class="col-xs-6 col-md-4">
-          <h4>Editar documento: {{doc.name}}</h4>
-      </div>
+      <h5 class="modal-title">Editar documento: {{doc.name}}</h5>
   </div>
   <div class="row">
       <div class="col-xs-12" style="overflow:auto;max-height:200px">
@@ -35,15 +33,12 @@
           </table>
       </div>
   </div>
-  <hr>
-  <div class="row">
-      <div class="col-xs-12 text-center">
-          <button type="button" class="btn btn-success" (click)="onSaveDocument()">
-          Guardar
-          </button>
-          <button *ngIf="doc._id !== '0'" type="button" class="btn btn-danger" (click)="onDeleteDocument()">
-          Borrar
-          </button>
-      </div>    
-  </div> 
+  <div class="modal-footer text-center ">
+    <button type="button" class="btn btn-success" (click)="onSaveDocument()">
+    Guardar
+    </button>
+    <button *ngIf="doc._id !== '0'" type="button" class="btn btn-danger" (click)="onDeleteDocument()">
+    Borrar documento
+    </button>
+  </div>    
 </div>

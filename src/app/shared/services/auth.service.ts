@@ -56,7 +56,7 @@ export class AuthService {
   public logOut() {
     this.clearSession();
     this.auth0.logout({
-      clientID: 'UhMrdGno87iwJacMYSZYOq53ImO7IHa6'
+      clientID: environment.clientID
     });
   }
 

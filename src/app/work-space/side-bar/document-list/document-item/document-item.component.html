@@ -1,4 +1,4 @@
-<li>
+<li class="list-item" (contextmenu)="onContextMenu($event)">
     <div [attr.title]="document.memo" style="cursor: pointer" (click)="onOpenDocument()">{{document.name}}</div>
-    <div> <i class="fa fa-trash" (click)="onDeleteDocument()" aria-hidden="true" style="cursor: pointer"></i> </div>
 </li>
+<app-options [optionGroups]="menuOptions"></app-options>

@@ -4,6 +4,7 @@ import { Document } from '../../shared/models/document.model';
 import { CloseGuard, ModalComponent, DialogRef } from 'angular2-modal';
 import { DocumentService } from '../../shared/services/document.service';
 import { NotificationsService } from 'angular2-notifications';
+import { WorkSpaceService } from '../../shared/services/work-space.service';
 
 export class DocumentModalData extends BSModalContext {
   public doc: Document;
@@ -25,7 +26,7 @@ export class DocumentModalComponent implements OnInit, CloseGuard, ModalComponen
   atributesList = [];
 
   constructor(public dialog: DialogRef<DocumentModalData>, private documentService: DocumentService,
-    private modal: Modal, private notificationsService: NotificationsService) {
+    private modal: Modal, private notificationsService: NotificationsService, private workspaceService: WorkSpaceService) {
       dialog.setCloseGuard(this);
       this.context = dialog.context;
       this.doc = dialog.context.doc;
@@ -77,6 +78,26 @@ export class DocumentModalComponent implements OnInit, CloseGuard, ModalComponen
     if (index !== -1) {
       this.atributesList.splice(index, 1);
     }
+  }
+
+  onDeleteDocument() {
+    const dialogRef = this.modal.confirm().size('lg').isBlocking(true).showClose(true).keyboard(27)
+      .okBtn('Confirmar').okBtnClass('btn btn-info').cancelBtnClass('btn btn-danger')
+      .title('Eliminar documento').body(' Seguro que desea eliminar el documento y todas las citas asociadas? ').open();
+    dialogRef
+      .then(r => {
+        r.result
+          .then(result => {
+            this.documentService.deleteDocument(this.doc)
+              .subscribe(doc => {
+                this.dialog.close(-1);
+                this.workspaceService.closeDocument(this.doc);
+              });
+          })
+          .catch(error =>
+            console.log(error)
+          );
+      });
   }
 
   public onClose() {

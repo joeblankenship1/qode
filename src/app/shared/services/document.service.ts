@@ -109,15 +109,12 @@ export class DocumentService {
     const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag() });
     const updoptions = new RequestOptions({ headers: updheaders });
     const index = this.documentList.indexOf(document, 0);
-    console.log(document);
     return this.http.patch(environment.apiUrl + 'document/' + document.getId(), fields, updoptions)
       .map((data: Response) => {
         const extracted = data.json();
-        console.log(extracted);
         if (extracted._id) {
           document.setEtag(extracted._etag);
         }
-        console.log(document);
         this.documentList[index] = document;
         this.documentList$.next(this.documentList);
         return document;

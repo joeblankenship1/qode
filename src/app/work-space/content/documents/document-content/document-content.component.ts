@@ -18,6 +18,7 @@ import { WindowSelection } from '../../../../shared/helpers/window-selection';
 
 @Component({
   selector: 'app-document-content',
+  providers: [ContextMenuService],
   templateUrl: './document-content.component.html',
   styleUrls: ['./document-content.component.css']
 })
