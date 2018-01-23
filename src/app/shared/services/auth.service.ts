@@ -17,7 +17,7 @@ export class AuthService {
   profile = new BehaviorSubject<Object>('');
 
   auth0 = new auth0.WebAuth({
-    clientID: 'UhMrdGno87iwJacMYSZYOq53ImO7IHa6',
+    clientID: environment.clientID,
     domain: 'nurruty.auth0.com',
     responseType: 'token id_token',
     audience: environment.apiUrl,

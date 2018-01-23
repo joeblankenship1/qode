@@ -13,7 +13,7 @@ import { WorkSpaceService } from '../../../../shared/services/work-space.service
   providers: [Modal]
 })
 export class CodeItemComponent implements OnInit {
-  @Input() code: Code; 
+  @Input() code: Code;
 
   constructor(private modal: Modal, private quoteService: QuoteService, private workspaceService: WorkSpaceService) {
   }

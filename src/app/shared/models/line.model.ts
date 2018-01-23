@@ -85,7 +85,7 @@ export class Line {
     let title = '';
     if (relatedQuote) {
       const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      title = code ? code.getName() : '';
+      title = code ? code.getName() : relatedQuote.quote.getMemo();
     }
     return title;
   }

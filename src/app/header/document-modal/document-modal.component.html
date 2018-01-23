@@ -1,3 +1,49 @@
-<p>
-  document-modal works!
-</p>
+<div class="container-fluid fingqda-modal-container">
+  <div class="row fingqda-modal-header">
+      <button type="button" (click)="onClose()" class="close col-xs-1">&times;</button>
+      <div class="col-xs-6 col-md-4">
+          <h4>Editar documento: {{doc.name}}</h4>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-xs-12" style="overflow:auto;max-height:200px">
+          <table class="table table-striped" >
+              <tbody>
+                  <tr>
+                      <td class="col-xs-3"> <span class="form-control" readonly>Descripción</span></td>
+                      <td class="col-xs-9" colspan="2"><input class="form-control" type="text" [(ngModel)]="memo"></td>
+                  </tr>
+                  <tr *ngFor="let atr of atributesList">
+                      <td class="col-xs-3"> <span class="form-control" readonly>{{atr.key}}</span></td>
+                      <td class="col-xs-8"><input class="form-control" type="text" [(ngModel)]="atr.value"></td>
+                      <td class="col-xs-1">
+                          <button class="btn btn-danger btn-delete" (click)="onRemoveAtribute(atr.key)">x</button>
+                      </td>
+                  </tr>
+                  <tr>
+                    <td class="col-xs-3">
+                      <input class="form-control" (keyup.enter)="onAddAtribute()" placeholder="Nuevo atributo" 
+                      type="text" [(ngModel)]="newKey">
+                    </td>
+                    <td class="col-xs-8">
+                        <input class="form-control" (keyup.enter)="onAddAtribute()" placeholder="Nuevo valor" 
+                        type="text" [(ngModel)]="newValue">
+                    </td>
+                    <td class="col-xs-1"><button type="button" class="btn btn-info" (click)="onAddAtribute()">Agregar</button></td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+  <hr>
+  <div class="row">
+      <div class="col-xs-12 text-center">
+          <button type="button" class="btn btn-success" (click)="onSaveDocument()">
+          Guardar
+          </button>
+          <button *ngIf="doc._id !== '0'" type="button" class="btn btn-danger" (click)="onDeleteDocument()">
+          Borrar
+          </button>
+      </div>    
+  </div> 
+</div>

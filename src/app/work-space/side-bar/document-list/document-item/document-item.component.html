@@ -1,1 +1,1 @@
-<li><span style="cursor: pointer" (click)="onOpenDocument()">{{document.name}}</span></li>
+<li><span [attr.title]="document.memo" style="cursor: pointer" (click)="onOpenDocument()">{{document.name}}</span></li>

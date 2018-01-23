@@ -1,4 +1,4 @@
-<li
+<li [attr.title]="code.memo"
   class="list-item"
   style="cursor: pointer" (click)="onOpenCode()">{{code.name}}
   <span [ngStyle]="{'color': code.getColor() }">
