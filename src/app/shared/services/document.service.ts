@@ -48,9 +48,11 @@ export class DocumentService {
             // if (element.quotes) {
             //   this.createQuotes(document,element.quotes);
             // }
-            if (element.memos && element.memos.length > 0) {
-              const memos = element.map(memo => new Memo());
-              document.setMemos(memos);
+            // if (element.memo) {
+            //   document.setMemo(elemmemo);
+            // }
+            if (element.atributes) {
+              document.setAtributes(element.atributes);
             }
             documentArray.push(document);
           }
@@ -111,6 +113,22 @@ export class DocumentService {
     const updoptions = new RequestOptions({ headers: updheaders });
     const index = this.documentList.indexOf(document, 0);
     return this.http.patch(environment.apiUrl + 'document/' + document.getId(), fields, updoptions)
+      .map((data: Response) => {
+        const extracted = data.json();
+        if (extracted._id) {
+          document.setEtag(extracted._etag);
+        }
+        this.documentList[index] = document;
+        this.documentList$.next(this.documentList);
+        return document;
+      });
+  }
+
+  public updateDocumentAtributes(document: Document): Observable<any> {
+    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag()});
+    const updoptions = new RequestOptions({ headers: updheaders });
+    const index = this.documentList.indexOf(document, 0);
+    return this.http.put(environment.apiUrl + 'document/' + document.getId(), document.getMessageBody(), updoptions)
       .map((data: Response) => {
         const extracted = data.json();
         if (extracted._id) {

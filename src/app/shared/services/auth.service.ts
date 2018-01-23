@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { tokenNotExpired } from 'angular2-jwt';
 import { User } from '../../shared/models/user.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AuthService {
@@ -16,11 +17,11 @@ export class AuthService {
   profile = new BehaviorSubject<Object>('');
 
   auth0 = new auth0.WebAuth({
-    clientID: 'UhMrdGno87iwJacMYSZYOq53ImO7IHa6',
+    clientID: environment.clientID,
     domain: 'nurruty.auth0.com',
     responseType: 'token id_token',
-    audience: 'http://localhost:5000/',
-    redirectUri: 'http://localhost:4200/',
+    audience: environment.apiUrl,
+    redirectUri: environment.frontUrl,
     scope: 'openid profile'
   });
 
@@ -55,7 +56,7 @@ export class AuthService {
   public logOut() {
     this.clearSession();
     this.auth0.logout({
-      clientID: 'UhMrdGno87iwJacMYSZYOq53ImO7IHa6'
+      clientID: environment.clientID
     });
   }
 

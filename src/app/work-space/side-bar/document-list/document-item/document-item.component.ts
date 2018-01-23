@@ -2,18 +2,19 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Document } from '../../../../shared/models/document.model';
 import { DocumentService } from '../../../../shared/services/document.service';
 import { WorkSpaceService } from '../../../../shared/services/work-space.service';
-import { ContextMenuService } from 'ngx-contextmenu';
-import { MenuOption } from '../../../../shared/models/menu-option.model';
 import { OptionsComponent } from '../../../../shared/helpers/options/options.component';
 import { QuotesRetrievalService } from '../../../../shared/services/quotes-retrieval.service';
-
-import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { DocumentModalComponent } from '../../../../header/document-modal/document-modal.component';
 import { overlayConfigFactory } from 'angular2-modal';
+import { BSModalContext, Modal } from 'angular2-modal/plugins/bootstrap';
+import { MenuOption } from '../../../../shared/models/menu-option.model';
+import { ContextMenuService } from 'ngx-contextmenu';
+
 @Component({
   selector: 'app-document-item',
+  providers: [ContextMenuService],
   templateUrl: './document-item.component.html',
   styleUrls: ['./document-item.component.css'],
-  providers: [ContextMenuService]
 })
 export class DocumentItemComponent implements OnInit, OnDestroy {
   @Input() document: Document;
@@ -34,6 +35,7 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
       selectedDocument => {
         this.selected = selectedDocument;
       });
+    this.createMenuOptions();
   }
 
   onOpenDocument() {
@@ -47,7 +49,8 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
       new MenuOption('Activar', (item) => { this.onActivateDocument(); }),
       new MenuOption('Desactivar', (item) => { this.onDeactivateDocument(); })
     ],
-    [ new MenuOption('Borrar', (item) => { this.onDeleteDocument(); })]];
+    [new MenuOption('Editar', (item) => { this.onEditDocument(); }),
+     new MenuOption('Eliminar', (item) => { this.onDeleteDocument(); })]];
     this.defineMenuOptions();
   }
 
@@ -93,7 +96,7 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
   onDeleteDocument() {
     const dialogRef = this.modal.confirm().size('lg').isBlocking(true).showClose(true).keyboard(27)
       .okBtn('Confirmar').okBtnClass('btn btn-info').cancelBtnClass('btn btn-danger')
-      .title('Eliminar documento').body(' Seguro que desea eliminar el documento y todas las citas asociadas? ').open();
+      .title('Eliminar documento').body(' ¿Seguro que desea eliminar el documento y todas las citas asociadas? ').open();
     dialogRef
       .then(r => {
         r.result
@@ -108,6 +111,15 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
           );
       });
   }
+
+  onEditDocument() {
+    this.modal.open(DocumentModalComponent, overlayConfigFactory({ doc: this.document, mode: 'new' }, BSModalContext ))
+    .then((resultPromise) => {
+      resultPromise.result.then((result) => { });
+    });
+  }
+
+
 
   ngOnDestroy() {
 

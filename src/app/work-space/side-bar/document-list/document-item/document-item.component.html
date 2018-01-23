@@ -4,6 +4,7 @@
  style="cursor: pointer"
  (dblclick)="onOpenDocument()"
 >
+<div [attr.title]="document.memo">
   <span 
     *ngIf="document.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer"
     (click)="onDeactivateDocument()"
@@ -16,5 +17,6 @@
     &#9679;
   </span>
   {{document.name}}
+</div>
 </li>
 <app-options [optionGroups]="menuOptions"></app-options>

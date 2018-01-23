@@ -139,13 +139,15 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   // If there's no slected text, several options won't be enabled.
   public onContextMenu($event: MouseEvent, item: any): void {
     const newSelection = this.getSelectedText();
-    this.workSpaceService.setNewSelection(newSelection);
-    this.defineMenuOptions(newSelection);
-    this.contextMenuService.show.next({
-      contextMenu: this.options.optionsMenu,
-      event: $event,
-      item: newSelection
-    });
+    if (newSelection) {
+      this.workSpaceService.setNewSelection(newSelection);
+      this.defineMenuOptions(newSelection);
+      this.contextMenuService.show.next({
+        contextMenu: this.options.optionsMenu,
+        event: $event,
+        item: newSelection
+      });
+    }
     $event.preventDefault();
     $event.stopPropagation();
   }
@@ -155,6 +157,9 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   private getSelectedText() {
     const selection = window.getSelection();
     const docDisplay = this.windowSelection.getSelectedNodes(selection, 'tr');
+    if (docDisplay.length === 0) {
+      return undefined;
+    }
     this.selectedRange = selection.getRangeAt(0);
     if (this.selectedRange && (this.selectedRange.startOffset !== this.selectedRange.endOffset)) {
       return new Quote(selection.toString(), selection.baseOffset,
