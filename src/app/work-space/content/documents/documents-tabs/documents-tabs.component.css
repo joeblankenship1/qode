@@ -1,9 +1,9 @@
 .tabSelected {
-    background-color: white;
+    background-color: #333534;
     border-bottom: none;
-    color: #2d3e4f;
     padding: 5px 10px;
     border-radius: 0px;
+    border-bottom: 0px;
 }
 
 .tabNotSelected {
@@ -11,6 +11,7 @@
     border-top: none;
     border-right: none;
     border-left: none;
+    border-bottom: 0px;
     color: #2d3e4f;
     padding: 5px 10px;
     border-radius: 0px;
