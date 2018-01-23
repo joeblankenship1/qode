@@ -126,6 +126,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     [DatePipe]
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CodeModalComponent, ProjectShareModalComponent, QuoteModalComponent]
+  entryComponents: [CodeModalComponent, ProjectShareModalComponent, QuoteModalComponent, DocumentModalComponent]
 })
 export class AppModule { }

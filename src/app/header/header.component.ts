@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { CodeModalComponent } from './code-modal/code-modal.component';
 import { ProjectShareModalComponent } from '../my-projects/project-share-modal/project-share-modal.component';
@@ -22,6 +22,7 @@ import { NotificationsService } from 'angular2-notifications';
   providers: [Modal]
 })
 export class HeaderComponent implements OnInit {
+  @ViewChild('files') filesVar: any;
   profile;
   appname = '';
   show: boolean;
@@ -30,7 +31,7 @@ export class HeaderComponent implements OnInit {
   constructor(private authsvc: AuthService, private router: Router, private modal: Modal,
     private workspaceService: WorkSpaceService, private projectService: ProjectService,
     private documentService: DocumentService, private notificationsService: NotificationsService) {
-    this.appname = 'libreQDA';
+    this.appname = 'fingQDA';
   }
 
   ngOnInit() {
@@ -61,6 +62,7 @@ export class HeaderComponent implements OnInit {
 
       if (!this.documentService.validateDocName(name)) {
         this.notificationsService.error('Error', 'Ya existe un documento con ese nombre.');
+        this.filesVar.nativeElement.value = '';
         reader.abort();
         return;
       }
@@ -83,6 +85,7 @@ export class HeaderComponent implements OnInit {
         reader.readAsArrayBuffer(f);
       }
     }
+    this.filesVar.nativeElement.value = '';
   }
 
   // Add a new code

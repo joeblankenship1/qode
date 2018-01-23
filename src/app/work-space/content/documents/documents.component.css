@@ -3,3 +3,7 @@
     overflow-x: scroll;
     white-space: nowrap;
 }
+
+app-documents-tabs::-webkit-scrollbar {
+    display: none; 
+ }

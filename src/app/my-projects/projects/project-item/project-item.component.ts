@@ -44,7 +44,7 @@ export class ProjectItemComponent implements OnInit {
   onDeleteProject() {
     const dialogRef = this.modal.confirm().size('lg').isBlocking(true).showClose(true).keyboard(27)
       .okBtn('Confirmar').okBtnClass('btn btn-info').cancelBtnClass('btn btn-danger')
-      .title('Eliminar proyecto').body(' Seguro que desea eliminar el proyecto y todos los documentos asociados? ').open();
+      .title('Eliminar proyecto').body(' ¿Seguro que desea eliminar el proyecto y todos los documentos asociados? ').open();
     dialogRef
       .then(r => {
         r.result

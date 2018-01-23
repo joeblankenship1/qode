@@ -19,7 +19,7 @@ export class Quote {
     this.text = text;
     this.position = {start: start, end: end};
     this.documentDisplay = documentDisplay;
-    this.memo = memo;
+    this.memo = memo === undefined ? '' : memo;
     this.projectId = projectId;
     this.color = color ? color : 'black';
     this.codes = codes ? codes : [];

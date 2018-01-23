@@ -37,7 +37,11 @@ export class ProjectsComponent implements OnInit {
     this.projectService.getProjects()
       .subscribe(
       projects => {
-        this.projects = projects;
+        if (projects) {
+          this.projects = projects;
+        }else {
+          this.projects = [];
+        }
       },
       error => console.error(error)
       );
@@ -46,6 +50,9 @@ export class ProjectsComponent implements OnInit {
   onCreateProject() {
     const projName = this.nameProjectRef.nativeElement.value;
     if (projName !== '') {
+      if (this.projects == null) {
+        this.projects = [];
+      }
       if (this.projects.findIndex(p => p.name === projName) === -1) {
         const descName = this.descProjectRef.nativeElement.value;
         if (descName.length < 300) {
@@ -61,11 +68,13 @@ export class ProjectsComponent implements OnInit {
               this.projectService.setSelectedProject(proj);
             },
             error => {
-              if (error.message.includes('is not unique')) {
-                this.notificationsService.error('Error', 'El nombre del proyecto ya existe.');
-              }
-              if (error._issues) {
-                this.notificationsService.error('Error', 'Error');
+              if (error.message !== null){
+                if (error.message.includes('is not unique')) {
+                  this.notificationsService.error('Error', 'El nombre del proyecto ya existe.');
+                }
+                if (error._issues) {
+                  this.notificationsService.error('Error', 'Error');
+                }
               }
             });
         } else { this.notificationsService.error('Error', 'La descripcion puede tener hasta 300 caracteres.'); }
