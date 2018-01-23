@@ -54,9 +54,8 @@ import { DatePipe } from '@angular/common';
 import { TreeModule } from 'angular-tree-component';
 import { ProjectInfoComponent } from './my-projects/projects/project-info/project-info.component';
 import { QuotesRetrievalService } from './shared/services/quotes-retrieval.service';
-import { RightBarComponent } from './work-space/right-bar/right-bar.component';
-import { RetrievedQuotesComponent } from './work-space/right-bar/retrieved-quotes-list/retrieved-quotes-list.component';
-import { RetrievedQuoteItemComponent } from './work-space/right-bar/retrieved-quotes-list/retrieved-quote-item/retrieved-quote-item.component';
+import { RetrievedQuotesComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quotes-list.component';
+import { RetrievedQuoteItemComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quote-item/retrieved-quote-item.component';
 import { BottomBarComponent } from './work-space/bottom-bar/bottom-bar.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -96,7 +95,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DataFilterPipe,
     ProjectShareModalComponent,
     ProjectInfoComponent,
-    RightBarComponent,
     RetrievedQuotesComponent,
     RetrievedQuoteItemComponent,
     BottomBarComponent,

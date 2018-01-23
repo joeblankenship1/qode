@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BottomBarComponent implements OnInit {
 
+  isOpened = true;
+
   constructor() { }
 
   ngOnInit() {
