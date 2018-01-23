@@ -53,6 +53,8 @@ export class DocumentModalComponent implements OnInit, CloseGuard, ModalComponen
     }
     const val = this.newValue === undefined ? '' : this.newValue.trim();
     this.atributesList.push({key: key, value: val});
+    this.newKey = '';
+    this.newValue = '';
   }
 
   onSaveDocument() {
@@ -83,7 +85,7 @@ export class DocumentModalComponent implements OnInit, CloseGuard, ModalComponen
   onDeleteDocument() {
     const dialogRef = this.modal.confirm().size('lg').isBlocking(true).showClose(true).keyboard(27)
       .okBtn('Confirmar').okBtnClass('btn btn-info').cancelBtnClass('btn btn-danger')
-      .title('Eliminar documento').body(' Seguro que desea eliminar el documento y todas las citas asociadas? ').open();
+      .title('Eliminar documento').body(' ¿Seguro que desea eliminar el documento y todas las citas asociadas? ').open();
     dialogRef
       .then(r => {
         r.result
