@@ -129,7 +129,45 @@ def before_update(resource, documents, item):
 def before_delete_item(resource, item):
     token = get_token_auth_header()
     mail = get_email(token)
+    # Update the project atributes
     if resource != 'project':
         proj_id = get_project_id_from_item(resource, item)
         check_permissions(proj_id, mail, True)
         update_project_attrs(resource, item, mail)
+    # Delete in cascade
+    if resource == 'project':
+        # delete docs and quotes
+        db = current_app.data.driver.db['document']
+        cursor = db.find({'key.project': ObjectId(item['_id'])})
+        if cursor:
+            for doc in cursor:
+                deleteDocument(doc)
+        # delete codes
+        db = current_app.data.driver.db['code']
+        cursor = db.find({'key.project': ObjectId(item['_id'])})
+        if cursor:
+            for code in cursor:
+                current_app.data.driver.db['code'].remove(({'_id':code['_id']}))
+    if resource == 'document':
+        deleteDocument(item)
+    if resource == 'code':
+        # iterate in all the quotes of the project
+        db = current_app.data.driver.db['quote']
+        cursor = db.find({'project': ObjectId(item['key']['project'])})
+        if cursor:
+            for quote in cursor:
+                borrar = quote['memo'] == '' and len(quote['codes']) == 1 and quote['codes'][0] == item['_id']
+                if borrar:
+                    current_app.data.driver.db['quote'].remove(({'_id':quote['_id']}))
+                
+
+def deleteDocument(item):
+    db = current_app.data.driver.db['document']
+    cursor = db.find_one({'_id': item['_id']})
+    if cursor:
+        for quote in cursor['quotes']:
+            current_app.data.driver.db['quote'].remove(({'_id':quote}))
+    current_app.data.driver.db['document'].remove(({'_id':item['_id']}))
+
+
+

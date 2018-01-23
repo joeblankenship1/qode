@@ -1,0 +1,28 @@
+.tabSelected {
+    background-color: white;
+    border-bottom: none;
+    color: #2d3e4f;
+    padding: 5px 10px;
+    border-radius: 0px;
+}
+
+.tabNotSelected {
+    background-color: rgba(225, 218, 223, 0.767);
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    color: #2d3e4f;
+    padding: 5px 10px;
+    border-radius: 0px;
+}
+
+div {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
+
+.inline-x {
+    display: inline-block;
+}

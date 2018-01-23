@@ -1,39 +1,31 @@
-<div class="container-fluid fingqda-modal-container">
-    <div class="row fingqda-modal-header">
+<div class="container-fluid">
+    <div class="modal-header">
         <button type="button" (click)="onClose()" class="close col-xs-1">&times;</button>
-        <div class="col-xs-6 col-md-4">
-            <h4>Editar código</h4>
-        </div>
+        <h5 class="modal-title">Editar código</h5>
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <div class="input-group">
+            <div class="input-group col-md-8" style="float:left">
                 <span class="input-group-addon">Código     </span>
                 <input class="col-xs-12 form-control" type="text" [(ngModel)]="name">
+            </div>
+            <div class="input-group col-md-4">
+                <span class="input-group-addon">Color</span>
+                <input [(colorPicker)]="color" [cpOKButton]="true" [cpAlphaChannel]="'disabled'" [style.background]="color" [class]="'colorInput col-xs-12 form-control'" [cpPosition]="'bottom'" [cpCancelButton]="true" [cpCancelButtonClass]="'btn btn-danger'" [cpOKButtonClass]="'btn btn-success'"
+                    [cpPositionOffset]="'-300%'" />
             </div>
             <div class="input-group">
                 <span class="input-group-addon">Descripción</span>
                 <input class="col-xs-12 form-control" type="text" [(ngModel)]="memo">
             </div>
-            <div class="input-group">
-                <span class="input-group-addon">Color</span>
-                <input [(colorPicker)]="color" [cpOKButton]="true" [cpAlphaChannel]="'disabled'"
-                 [style.background]="color" [class]="'colorInput col-xs-12 form-control'" [cpPosition]="'bottom'"
-                 [cpCancelButton]="true" [cpCancelButtonClass]="'btn btn-danger'"
-                 [cpOKButtonClass]="'btn btn-success'" [cpPositionOffset]="'-60%'"
-                 />
-            </div>
         </div>
     </div>
-    <hr>
-    <div class="row">
-        <div class="col-xs-12 text-center">
-            <button type="button" class="btn btn-success" (click)="onSaveCode()">
+    <div class="modal-footer text-center ">
+        <button type="button" class="btn btn-success" (click)="onSaveCode()">
             Guardar
             </button>
-            <button *ngIf="code._id !== '0'" type="button" class="btn btn-danger" (click)="onDeleteCode()">
+        <button *ngIf="code._id !== '0'" type="button" class="btn btn-danger" (click)="onDeleteCode()">
             Borrar
             </button>
-        </div>    
-    </div> 
+    </div>
 </div>

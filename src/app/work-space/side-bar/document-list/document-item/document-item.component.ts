@@ -7,6 +7,8 @@ import { MenuOption } from '../../../../shared/models/menu-option.model';
 import { OptionsComponent } from '../../../../shared/helpers/options/options.component';
 import { QuotesRetrievalService } from '../../../../shared/services/quotes-retrieval.service';
 
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { overlayConfigFactory } from 'angular2-modal';
 @Component({
   selector: 'app-document-item',
   templateUrl: './document-item.component.html',
@@ -20,11 +22,18 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
 
   constructor(private workspaceService: WorkSpaceService,
     private documentService: DocumentService, private contextMenuService: ContextMenuService,
-    private quotesRetrievalService: QuotesRetrievalService) { }
+    private quotesRetrievalService: QuotesRetrievalService, private modal: Modal) { }
 
+
+  selected: Document;
 
   ngOnInit() {
     this.createMenuOptions();
+    this.workspaceService.getSelectedDocument()
+      .subscribe(
+      selectedDocument => {
+        this.selected = selectedDocument;
+      });
   }
 
   onOpenDocument() {
@@ -37,7 +46,8 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
     this.menuOptions = [[
       new MenuOption('Activar', (item) => { this.onActivateDocument(); }),
       new MenuOption('Desactivar', (item) => { this.onDeactivateDocument(); })
-    ]];
+    ],
+    [ new MenuOption('Borrar', (item) => { this.onDeleteDocument(); })]];
     this.defineMenuOptions();
   }
 
@@ -78,6 +88,25 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
 
   public getItemClass() {
     return this.document.isActivated() ? 'list-item-selected' : 'list-item';
+  }
+
+  onDeleteDocument() {
+    const dialogRef = this.modal.confirm().size('lg').isBlocking(true).showClose(true).keyboard(27)
+      .okBtn('Confirmar').okBtnClass('btn btn-info').cancelBtnClass('btn btn-danger')
+      .title('Eliminar documento').body(' Seguro que desea eliminar el documento y todas las citas asociadas? ').open();
+    dialogRef
+      .then(r => {
+        r.result
+          .then(result => {
+            this.documentService.deleteDocument(this.document)
+              .subscribe(doc => {
+                this.workspaceService.closeDocument(this.document);
+              });
+          })
+          .catch(error =>
+            console.log(error)
+          );
+      });
   }
 
   ngOnDestroy() {

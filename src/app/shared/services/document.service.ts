@@ -29,7 +29,7 @@ export class DocumentService {
   private activatedDocuments$= new BehaviorSubject<Document[]>(null);
 
   constructor(private http: AuthHttp, private quoteService: QuoteService) {
-    this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache'});
+    this.headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
     this.options = new RequestOptions({ headers: this.headers });
   }
 
@@ -37,7 +37,7 @@ export class DocumentService {
   // Get all documents from server
   loadDocuments(projectId): Observable<Document[]> {
     this.projectId = projectId;
-    return this.http.get( environment.apiUrl + `document?where={"key.project": "${projectId}"}`, this.options)
+    return this.http.get(environment.apiUrl + `document?where={"key.project": "${projectId}"}`, this.options)
       .map((data: Response) => {
         const extracted = data.json();
         const documentArray: Document[] = [];
@@ -49,7 +49,7 @@ export class DocumentService {
             //   this.createQuotes(document,element.quotes);
             // }
             if (element.memos && element.memos.length > 0) {
-              const memos = element.map( memo => new Memo());
+              const memos = element.map(memo => new Memo());
               document.setMemos(memos);
             }
             documentArray.push(document);
@@ -75,38 +75,39 @@ export class DocumentService {
   // Send document to server
   addDocument(document: Document): Observable<any> {
     const body = document.getMessageBody();
-    return this.http.post( environment.apiUrl + 'document', body, this.options)
+    return this.http.post(environment.apiUrl + 'document', body, this.options)
       .map((data: Response) => {
-          const extracted = data.json();
-          if (extracted._id) {
-            document.setId(extracted._id);
-          }
-          if (extracted._etag) {
-            document.setEtag(extracted._etag);
-          }
-          this.documentList.push(document);
-          this.documentList$.next(this.documentList);
-          return document;
+        const extracted = data.json();
+        if (extracted._id) {
+          document.setId(extracted._id);
+        }
+        if (extracted._etag) {
+          document.setEtag(extracted._etag);
+        }
+        this.documentList.push(document);
+        this.documentList$.next(this.documentList);
+        return document;
       })
       .catch(this.handleErrorObservable);
   }
 
   updateDocumentQuotes(document: Document): Observable<any> {
     const doc = this.documentList.find(d => d.getId() === document.getId());
-    const body = {'quotes': document.getQuotes().map(q => q.getId())};
-    this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache', 'If-Match': document.getEtag()});
+    const body = { 'quotes': document.getQuotes().map(q => q.getId()) };
+    this.headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache', 'If-Match': document.getEtag() });
     this.options = new RequestOptions({ headers: this.headers });
-    return this.http.patch( environment.apiUrl + 'document/' + document.getId(), body, this.options)
+    return this.http.patch(environment.apiUrl + 'document/' + document.getId(), body, this.options)
       .map(res => {
         const extracted = res.json();
         if (extracted._etag) {
           document.setEtag(extracted._etag);
-        }})
+        }
+      })
       .catch(this.handleErrorObservable);
   }
 
   public updateDocument(document: Document, fields: any): Observable<any> {
-    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag()});
+    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag() });
     const updoptions = new RequestOptions({ headers: updheaders });
     const index = this.documentList.indexOf(document, 0);
     return this.http.patch(environment.apiUrl + 'document/' + document.getId(), fields, updoptions)
@@ -128,7 +129,22 @@ export class DocumentService {
   }
 
   public validateDocName(name: string): boolean {
-    return (this.documentList.findIndex( d => d.name === name) === -1);
+    return (this.documentList.findIndex(d => d.name === name) === -1);
+  }
+
+  deleteDocument(doc: Document): Observable<any> {
+    const headers = new Headers({ 'Content-Type': 'application/json', 'If-Match': doc.getEtag() });
+    const options = new RequestOptions({ headers: headers });
+    return this.http.delete(environment.apiUrl + 'document/' + doc.getId(), options)
+      .map((data: Response) => {
+        const indxOf = this.documentList.findIndex(x => x.getId() === doc.getId());
+        this.documentList.splice(indxOf, 1);
+        this.setDocuments(this.documentList);
+        return 'OK';
+      }).catch((err: Response) => {
+        const details = err.json();
+        return Observable.throw(details);
+      });
   }
 
   setActivatedDocuments(documents: Document[]) {
@@ -154,4 +170,8 @@ export class DocumentService {
     return this.activatedDocuments$.asObservable();
   }
 
+  // private createQuotes(document: Document) {
+  //   // document.setQuotes(this.quoteService.quoteList.filter( q => quotes.find( e => e === q.getId()) !== undefined ));
+  //   document.setQuotes(this.quoteService.quoteList.filter( q => document.getQuotes().find( e => e.getId() === q.getId()) !== undefined ));
+  // }
 }
