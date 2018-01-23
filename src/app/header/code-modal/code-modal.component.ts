@@ -6,6 +6,7 @@ import { Code } from '../../shared/models/code.model';
 import { CodeService } from '../../shared/services/code.service';
 import { Observable } from 'rxjs/Observable';
 import { NotificationsService } from 'angular2-notifications';
+import { WorkSpaceService } from '../../shared/services/work-space.service';
 
 export class CodeModalData extends BSModalContext {
   public code: Code;
@@ -24,7 +25,7 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
   memo: string;
   color: string;
 
-  constructor(public dialog: DialogRef<CodeModalData>, private codeService: CodeService,
+  constructor(public dialog: DialogRef<CodeModalData>, private codeService: CodeService, private workspaceService: WorkSpaceService,
               private modal: Modal, private notificationsService: NotificationsService) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
@@ -66,6 +67,7 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
     this.codeService.deleteCode(this.code).subscribe(
       resp => {
         this.dialog.close(-1);
+        this.workspaceService.removeQuotesInDocumentContent(this.code);
       },
       error => {
         this.notificationsService.error('Error', error);

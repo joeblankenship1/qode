@@ -5,41 +5,40 @@
         </button>
         <h5 class="modal-title">Compartir proyecto {{project.name}}</h5>
     </div>
-    <div class="modal-body">
-        <div class="row">
-            <form #collForm="ngForm" *ngIf="active">
-                <div class="col-md-7">
-                    <div class="input-group form-group">
-                        <span class="input-group-addon"> <i class="fa fa-envelope-o" aria-hidden="true"></i> </span>
-                        <input type="email" class="form-control" placeholder="ejemplo@mail.com" required [(ngModel)]="mail" name="mail" #mailState="ngModel" email required>
-                    </div>
+
+    <div class="row">
+        <form #collForm="ngForm" *ngIf="active">
+            <div class="col-md-7">
+                <div class="input-group form-group">
+                    <span class="input-group-addon"> <i class="fa fa-envelope-o" aria-hidden="true"></i> </span>
+                    <input type="email" class="form-control" placeholder="ejemplo@mail.com" required [(ngModel)]="mail" name="mail" #mailState="ngModel" email required>
                 </div>
-                <div class="col-md-3">
-                    <div class="input-group form-group" style="width: 140px;">
-                        <select [(ngModel)]="role" name="role" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <div class="input-group form-group" style="width: 140px;">
+                    <select [(ngModel)]="role" name="role" class="form-control">
                             <option> Lector </option>
                             <option> Lector/Escritor </option>
                         </select>
-                    </div>
                 </div>
-                <div class="col-md-1">
-                    <div class=" form-group">
-                        <button style="margin: 4px 0px;" type="button" class="btn btn-info" (click)="onAddEmail()" [disabled]="!collForm.form.valid"> 
+            </div>
+            <div class="col-md-1">
+                <div class=" form-group">
+                    <button style="margin: 4px 0px;" type="button" class="btn btn-info" (click)="onAddEmail()" [disabled]="!collForm.form.valid"> 
                             <i class="fa fa-plus" aria-hidden="true"></i> 
                          </button>
-                    </div>
                 </div>
-            </form>
-        </div>
-        <br>
-        <ul class="list-group">
-            <li class="list-group-item" *ngFor="let col of listCols; let i=index; ">
-                {{col.email}} <small>( {{col.role}} ) </small>
-                <button type="button" class="btn btn-danger btn-delete-mail" (click)="onRemoveEmail(i)"> <i class="fa fa-times" aria-hidden="true"></i> </button>
-            </li>
-        </ul>
+            </div>
+        </form>
     </div>
-    <div class="modal-footer text-center ">
-        <button type="button " class="btn btn-success " (click)="onSaveCollaborators() "> Guardar </button>
-    </div>
+    <br>
+    <ul class="list-group">
+        <li class="list-group-item" *ngFor="let col of listCols; let i=index; ">
+            {{col.email}} <small>( {{col.role}} ) </small>
+            <button type="button" class="btn btn-danger btn-delete-mail" (click)="onRemoveEmail(i)"> <i class="fa fa-times" aria-hidden="true"></i> </button>
+        </li>
+    </ul>
+</div>
+<div class="modal-footer text-center ">
+    <button type="button " class="btn btn-success " (click)="onSaveCollaborators() "> Guardar </button>
 </div>
