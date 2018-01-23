@@ -45,7 +45,7 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
     .subscribe(
       codes => {
         this.codes = codes;
-        this.dataService = completerService.local(this.codes, 'name', 'name').descriptionField('memo');
+        this.dataService = completerService.local(this.codes, 'name', 'name');
       }
     );
   }

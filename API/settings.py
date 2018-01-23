@@ -68,11 +68,8 @@ DOMAIN = {
                 'type': 'string',
                 'required': True
             },
-            'memos':{
-                'type': 'list',
-                'schema': {
-                    'type': 'string'
-                }
+            'memo':{
+                'type': 'string'
             },
             'quotes': {
                 'type': 'list',
@@ -191,4 +188,4 @@ DOMAIN = {
 }
 
 RESOURCE_METHODS = ['GET','POST','DELETE']
-ITEM_METHODS = ['GET','PATCH','DELETE']
+ITEM_METHODS = ['GET','PATCH','DELETE','PUT']

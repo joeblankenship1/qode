@@ -11,7 +11,7 @@ export class Document {
   public path: string;
   public atributes = {};
   public text: string;
-  public memos: Memo[];
+  public memo: string;
   public quotes: Quote[];
   private opened: boolean;
   private project: string;
@@ -27,8 +27,8 @@ export class Document {
     this.opened = data.opened || false;
     this.project = projectId;
     this.quotes = quotes ? quotes : [];
-    this.memos = [];
     this.activated = false;
+    this.memo = data.memo == null ? '' : data.memo;
   }
 
   getId() {
@@ -45,6 +45,14 @@ export class Document {
 
   setEtag(etag: string) {
     this._etag = etag;
+  }
+
+  getAtributes() {
+    return this.atributes;
+  }
+
+  setAtributes(atributes) {
+    this.atributes = atributes;
   }
 
   public getQuotes() {
@@ -71,8 +79,8 @@ export class Document {
     this.quotes = quotes;
   }
 
-  public setMemos(memos: Memo[]) {
-    this.memos = memos;
+  public setMemo(memo: string) {
+    this.memo = memo;
   }
 
   public setOpened(state: boolean) {
@@ -90,8 +98,11 @@ export class Document {
       },
       text: this.text,
       opened: this.opened,
-      quotes: this.quotes,
-      memos: this.memos
+      quotes: this.quotes.map( q => q.getId()),
+      memo: this.memo,
+      atributes: this.atributes,
+      path: this.path,
+      _id: this._id
     };
   }
 
