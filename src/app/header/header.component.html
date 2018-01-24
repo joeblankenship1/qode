@@ -42,8 +42,8 @@
                         <li><a class="header-btn" (click)="onSimpleQuery()">Por elementos activados.</a></li>
                     </ul>
                 </li>
-                <li><a href="#">Análisis</a></li>
-                <li><a href="#">Visualización</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#exampleModal">Análisis</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#exampleModal">Visualización</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a routerLink='/myprojects' *ngIf="this.authsvc.isAuthenticated() && router.url.includes('workspace')"> Mis Proyectos </a></li>
