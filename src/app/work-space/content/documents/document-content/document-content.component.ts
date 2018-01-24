@@ -32,7 +32,6 @@ export class DocumentContentComponent implements OnInit, OnChanges {
 
   actualDocumentContent: DocumentContent;
   aux: Line[] = [];
-  pages = [];
   allQuotes: Quote[] = [];
   colRange: number;
   colRangeArray: Array<any> = [];
@@ -115,7 +114,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
       // creates a dummy array for html columns management
       this.colRangeArray = new Array<any>(this.colRange);
     } else {
-      this.pages = [];
+      this.aux = [];
       this.colRange = 0;
       this.colRangeArray = [];
     }
