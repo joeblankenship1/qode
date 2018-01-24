@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Response, Headers, RequestOptions } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/Rx';
 import { environment } from '../../../environments/environment';
 import { Quote } from '../models/quote.model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -20,7 +21,7 @@ export class QuoteService {
   projectId: string;
 
   quoteList: Quote[];
-  quoteList$ = new BehaviorSubject<Quote[]>([]);
+  quoteList$ = new BehaviorSubject<Quote[]>(null);
 
 
   constructor(private http: AuthHttp, private codeService: CodeService) {

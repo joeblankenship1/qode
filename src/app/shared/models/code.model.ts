@@ -5,6 +5,7 @@ export class Code {
   private color: string;
   private _id: string;
   private _etag: string;
+  private activated: boolean;
 
   constructor(data: any) {
     this._id = data._id == null ? '0' : data._id;
@@ -13,6 +14,7 @@ export class Code {
     this.memo = data.memo == null ? '' : data.memo;
     this.color = data.color == null ? 'black' : data.color;
     this._etag = data._etag == null ? '' : data._etag;
+    this.activated = false;
   }
 
   getMessageBody() {
@@ -64,5 +66,17 @@ export class Code {
 
   getId() {
     return this._id;
+  }
+
+  public isActivated() {
+    return this.activated;
+  }
+
+  public activate() {
+    this.activated = true;
+  }
+
+  public deactivate() {
+    this.activated = false;
   }
 }

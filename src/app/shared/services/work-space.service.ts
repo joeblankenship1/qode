@@ -34,6 +34,9 @@ export class WorkSpaceService {
 
   private newSelection: Quote;
 
+  private showBottomBar = false;
+  private showBottomBar$ = new BehaviorSubject<boolean>(null);
+
   constructor(private documentService: DocumentService, private quoteService: QuoteService) { }
 
   public initWorkSpace(projectId) {
@@ -191,6 +194,15 @@ export class WorkSpaceService {
     this.selectedDocumentContent$.next(this.selectedDocumentContent);
   }
 
+  setBottomBar(visible: boolean) {
+    this.showBottomBar = visible;
+    this.showBottomBar$.next(visible);
+  }
+
+  getBottomBar() {
+    return this.showBottomBar$.asObservable();
+  }
+
   cleanWorkSpace() {
     this.openedDocuments.splice(0);
     this.openedDocuments$.next(this.openedDocuments);
@@ -202,5 +214,6 @@ export class WorkSpaceService {
     this.documentContents$.next(this.documentContents);
     this.quotesSelectedDocument.splice(0);
     this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
+    this.showBottomBar = false;
   }
 }

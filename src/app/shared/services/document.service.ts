@@ -25,6 +25,9 @@ export class DocumentService {
   private documentList: Document[];
   private documentList$ = new BehaviorSubject<Document[]>(null);
 
+  private activatedDocuments: Document[] = [];
+  private activatedDocuments$= new BehaviorSubject<Document[]>(null);
+
   constructor(private http: AuthHttp, private quoteService: QuoteService) {
     this.headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
     this.options = new RequestOptions({ headers: this.headers });
@@ -160,6 +163,29 @@ export class DocumentService {
         const details = err.json();
         return Observable.throw(details);
       });
+  }
+
+  setActivatedDocuments(documents: Document[]) {
+    this.activatedDocuments = documents;
+    this.activatedDocuments$.next(documents);
+  }
+
+  setActivatedDocument(document: Document) {
+    if (this.activatedDocuments.indexOf(document) === -1) {
+      this.activatedDocuments.push(document);
+      this.activatedDocuments$.next(this.activatedDocuments);
+    }
+  }
+
+  removeActivatedDocument(document: Document) {
+    if (this.activatedDocuments.indexOf(document) > -1) {
+      this.activatedDocuments.splice(this.activatedDocuments.indexOf(document), 1);
+      this.activatedDocuments$.next(this.activatedDocuments);
+    }
+  }
+
+  getActivatedDocuments() {
+    return this.activatedDocuments$.asObservable();
   }
 
   // private createQuotes(document: Document) {

@@ -25,7 +25,7 @@ export class LineDefinition {
     lines.forEach(list => {
       list.forEach( (item) => {
         newArray.push(new Line(lineId, item));
-        lineId = (lineId + 1) % AppSettings.PAGE_SIZE;
+        lineId = (lineId + 1); //% AppSettings.PAGE_SIZE;
       } );
     });
     if (newArray.length < AppSettings.PAGE_SIZE) {

@@ -5,20 +5,33 @@ import { Code } from '../../../../shared/models/code.model';
 import { CodeModalComponent, CodeModalData } from '../../../../header/code-modal/code-modal.component';
 import { QuoteService } from '../../../../shared/services/quote.service';
 import { WorkSpaceService } from '../../../../shared/services/work-space.service';
+import { MenuOption } from '../../../../shared/models/menu-option.model';
+import { OptionsComponent } from '../../../../shared/helpers/options/options.component';
+import { ContextMenuService } from 'ngx-contextmenu';
+import { CodeService } from '../../../../shared/services/code.service';
+import { QuotesRetrievalService } from '../../../../shared/services/quotes-retrieval.service';
 
 @Component({
   selector: 'app-code-item',
   templateUrl: './code-item.component.html',
   styleUrls: ['./code-item.component.css'],
-  providers: [Modal]
+  providers: [Modal, ContextMenuService]
 })
 export class CodeItemComponent implements OnInit {
-  @Input() code: Code;
 
-  constructor(private modal: Modal, private quoteService: QuoteService, private workspaceService: WorkSpaceService) {
+  @Input() code: Code;
+  menuOptions: MenuOption[][] = [];
+  options = new OptionsComponent();
+
+  constructor(private modal: Modal, private quoteService: QuoteService,
+     private workspaceService: WorkSpaceService,
+     private contextMenuService: ContextMenuService,
+     private codeService: CodeService,
+     private quoteRetrievalService: QuotesRetrievalService) {
   }
 
   ngOnInit() {
+    this.createMenuOptions();
   }
 
   public onOpenCode() {
@@ -32,6 +45,53 @@ export class CodeItemComponent implements OnInit {
         }
       });
     });
+  }
+
+  private createMenuOptions() {
+    this.menuOptions = [[
+      new MenuOption('Activar', (item) => { this.onActivateCode(); }),
+      new MenuOption('Desactivar', (item) => { this.onDeactivateCode(); })
+    ]];
+    this.defineMenuOptions();
+  }
+
+  // Open context menu, the selected text will be passed as a parameter.
+  // If there's no slected text, several options won't be enabled.
+  public onContextMenu($event: MouseEvent, item: any): void {
+    this.defineMenuOptions();
+    this.contextMenuService.show.next({
+      contextMenu: this.options.optionsMenu,
+      event: $event,
+      item: this.code
+    });
+    $event.preventDefault();
+    $event.stopPropagation();
+  }
+
+  private defineMenuOptions() {
+    if (this.code.isActivated()) {
+      this.menuOptions[0][0].setVisible(false);
+      this.menuOptions[0][1].setVisible(true);
+    } else {
+      this.menuOptions[0][0].setVisible(true);
+      this.menuOptions[0][1].setVisible(false);
+    }
+  }
+
+  public getItemClass() {
+    return this.code.isActivated() ? 'list-item-selected' : 'list-item';
+  }
+
+  public onActivateCode() {
+    this.code.activate();
+    this.codeService.setActivatedCode(this.code);
+    this.quoteRetrievalService.updateFromActivation();
+  }
+
+  public onDeactivateCode() {
+    this.code.deactivate();
+    this.codeService.removeActivatedCode(this.code);
+    this.quoteRetrievalService.updateFromActivation();
   }
 
 }

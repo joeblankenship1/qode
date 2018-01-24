@@ -111,6 +111,10 @@ export class HeaderComponent implements OnInit {
       });
   }
 
+  onSimpleQuery() {
+    this.workspaceService.setBottomBar(true);
+  }
+
   private newFile(name, text) {
     this.documentService.addDocument(new Document({
       name: name,

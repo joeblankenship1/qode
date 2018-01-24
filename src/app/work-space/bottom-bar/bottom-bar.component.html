@@ -1,0 +1,13 @@
+<div *ngIf="isOpened" class='bottombar-container'>
+    <div class="col-sm-2 bottom-bar-heading" role="tab" id="headingOne">
+        <h4 class="bottom-bar-title">
+            Citas Recuperadas
+        </h4>
+        <span class='bottombar-close glyphicon glyphicon-remove' (click)='isOpened=false'></span>
+    </div>
+    <div class="col-sm-2 bottombar" id="mysidenav" [ngClass]="isOpened ? 'opened' : 'closed'">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <app-retrieved-quotes-list></app-retrieved-quotes-list>
+        </div>
+    </div>
+</div>

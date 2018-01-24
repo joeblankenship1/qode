@@ -53,6 +53,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DatePipe } from '@angular/common';
 import { TreeModule } from 'angular-tree-component';
 import { ProjectInfoComponent } from './my-projects/projects/project-info/project-info.component';
+import { QuotesRetrievalService } from './shared/services/quotes-retrieval.service';
+import { RetrievedQuotesComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quotes-list.component';
+import { RetrievedQuoteItemComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quote-item/retrieved-quote-item.component';
+import { BottomBarComponent } from './work-space/bottom-bar/bottom-bar.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -91,6 +95,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DataFilterPipe,
     ProjectShareModalComponent,
     ProjectInfoComponent,
+    RetrievedQuotesComponent,
+    RetrievedQuoteItemComponent,
+    BottomBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -111,7 +118,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   providers: [DocumentService, CodeService,
     AuthGuard,
     AuthService,
-    ContextMenuService,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,
@@ -120,6 +126,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     UserService,
     ProjectService,
     QuoteService,
+    QuotesRetrievalService,
     WindowSelection,
     WorkSpaceService,
     WorkSpaceResolver,

@@ -7,6 +7,7 @@ import { CodeService } from '../services/code.service';
 import { DocumentService } from '../services/document.service';
 import { Quote } from '../models/quote.model';
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
+import { QuotesRetrievalService } from '../services/quotes-retrieval.service';
 
 
 @Injectable()
@@ -17,7 +18,8 @@ export class WorkSpaceResolver implements Resolve<any> {
     private codeService: CodeService,
     private documentService: DocumentService,
     private router: Router,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private quotesRetrievalService: QuotesRetrievalService
   ) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
@@ -26,6 +28,7 @@ export class WorkSpaceResolver implements Resolve<any> {
       codes => {
         this.quotesService.loadQuotes(projectId).subscribe(
           quotes => {
+            this.quotesRetrievalService.initQuotesRetrieval();
             this.documentService.loadDocuments(projectId).subscribe(
               docs => {
                 this.workspaceService.cleanWorkSpace();
