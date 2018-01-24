@@ -28,7 +28,7 @@
         "angular4-color-picker": "^1.4.2",
         "angular-tree-component": "^5.2.1",
         "atob": "^2.0.3",
-        "auth0-js": "^8.10.0",
+        "auth0-js": "^8.12.0",
         "bootstrap": "^3.3.7",
         "core-js": "^2.4.1",
         "docxtemplater": "^3.1.9",
