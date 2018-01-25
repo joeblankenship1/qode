@@ -7,5 +7,6 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:5000/',
   frontUrl: 'http://localhost:4200/',
-  clientID: 'UhMrdGno87iwJacMYSZYOq53ImO7IHa6'
+  clientID: 'UhMrdGno87iwJacMYSZYOq53ImO7IHa6',
+  domain: 'nurruty.auth0.com'
 };

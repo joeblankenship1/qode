@@ -18,7 +18,7 @@ export class AuthService {
 
   auth0 = new auth0.WebAuth({
     clientID: environment.clientID,
-    domain: 'nurruty.auth0.com',
+    domain: environment.domain,
     responseType: 'token id_token',
     audience: environment.apiUrl,
     redirectUri: environment.frontUrl,
