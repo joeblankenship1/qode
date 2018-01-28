@@ -17,7 +17,7 @@ import { WindowSelection } from '../../../../shared/helpers/window-selection';
 import { CodeService } from '../../../../shared/services/code.service';
 import { DocumentService } from '../../../../shared/services/document.service';
 import { NotificationsService } from 'angular2-notifications';
-
+import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-document-content',
@@ -46,7 +46,9 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     private codeService: CodeService,
     private documentService: DocumentService,
     private notificationsService: NotificationsService,
-    private quoteService: QuoteService, private windowSelection: WindowSelection) { }
+    private quoteService: QuoteService,
+    private windowSelection: WindowSelection,
+    private spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
     this.workSpaceService.getSelectedDocumentContent().subscribe(

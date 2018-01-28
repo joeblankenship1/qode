@@ -12,7 +12,7 @@ import { Memo } from '../models/memo.model';
 import { Project } from '../models/project.model';
 import { QuoteService } from './quote.service';
 import { element } from 'protractor';
-
+import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 @Injectable()
 export class DocumentService {
@@ -28,7 +28,7 @@ export class DocumentService {
   private activatedDocuments: Document[] = [];
   private activatedDocuments$= new BehaviorSubject<Document[]>(null);
 
-  constructor(private http: AuthHttp, private quoteService: QuoteService) {
+  constructor(private http: AuthHttp, private quoteService: QuoteService,  private spinnerService: Ng4LoadingSpinnerService) {
     this.headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
     this.options = new RequestOptions({ headers: this.headers });
   }
@@ -58,8 +58,10 @@ export class DocumentService {
           }
         }
         this.setDocuments(documentArray);
+        this.spinnerService.hide();
         return documentArray;
       }).catch((err: Response) => {
+        this.spinnerService.hide();
         const details = err.json();
         return Observable.throw(details);
       });
@@ -88,6 +90,7 @@ export class DocumentService {
         }
         this.documentList.push(document);
         this.documentList$.next(this.documentList);
+        this.spinnerService.hide();
         return document;
       })
       .catch(this.handleErrorObservable);

@@ -14,6 +14,7 @@ import { FileExtraction } from '../shared/helpers/file-extraction';
 import { DocumentService } from '../shared/services/document.service';
 import { Document } from '../shared/models/document.model';
 import { NotificationsService } from 'angular2-notifications';
+import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-header',
@@ -30,7 +31,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(private authsvc: AuthService, private router: Router, private modal: Modal,
     private workspaceService: WorkSpaceService, private projectService: ProjectService,
-    private documentService: DocumentService, private notificationsService: NotificationsService) {
+    private documentService: DocumentService, private notificationsService: NotificationsService,
+    private spinnerService: Ng4LoadingSpinnerService) {
     this.appname = 'fingQDA';
   }
 
@@ -54,6 +56,7 @@ export class HeaderComponent implements OnInit {
   // Get result from input file
   onChange(event) {
     const files = event.srcElement.files;
+    this.spinnerService.show();
     for (let index = 0; index < files.length; index++) {
       const f = files[index.toString()];
       const reader: FileReader = new FileReader();
@@ -64,6 +67,7 @@ export class HeaderComponent implements OnInit {
         this.notificationsService.error('Error', 'Ya existe un documento con ese nombre.');
         this.filesVar.nativeElement.value = '';
         reader.abort();
+        this.spinnerService.hide();
         return;
       }
       const type = f.type.split('/')[1];

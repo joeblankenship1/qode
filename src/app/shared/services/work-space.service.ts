@@ -10,6 +10,7 @@ import { Code } from '../models/code.model';
 import { Project } from '../models/project.model';
 import { QuoteDisplay } from '../models/quote-display';
 import { indexDebugNode } from '@angular/core/src/debug/debug_node';
+import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Injectable()
 export class WorkSpaceService {
@@ -37,7 +38,8 @@ export class WorkSpaceService {
   private showBottomBar = false;
   private showBottomBar$ = new BehaviorSubject<boolean>(null);
 
-  constructor(private documentService: DocumentService, private quoteService: QuoteService) { }
+  constructor(private documentService: DocumentService, private quoteService: QuoteService,
+    private spinnerService: Ng4LoadingSpinnerService) { }
 
   public initWorkSpace(projectId) {
     this.projectId = projectId;
@@ -62,7 +64,10 @@ export class WorkSpaceService {
           this.openedDocuments.find(d => d.getId() === this.selectedDocumentId) : null;
         this.selectDocument(selectedDoc ? selectedDoc : this.openedDocuments[0]);
       },
-      error => console.error(error)
+      error => {
+        this.spinnerService.hide();
+        console.error(error);
+      }
     );
   }
 
@@ -166,7 +171,7 @@ export class WorkSpaceService {
 
   removeQuotesInDocumentContent(code) {
     const quotes = this.quotesSelectedDocument;
-    quotes.forEach( (q, i) => {
+    quotes.forEach((q, i) => {
       if (q.getCodes().length === 1 && q.getCodes()[0] === code && q.getMemo() === '') {
         this.quotesSelectedDocument.splice(i, 1);
         this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
@@ -175,13 +180,13 @@ export class WorkSpaceService {
 
     this.documentContents.forEach(doc => {
       const qAux = doc.getQuotesDisplay();
-      qAux.forEach( q => {
+      qAux.forEach(q => {
         if (q.getQuote().getCodes().length === 1 && q.getQuote().getCodes()[0] === code && q.getQuote().getMemo() === '') {
           doc.removeQuote(q.getQuote());
         }
       });
-  });
-}
+    });
+  }
 
   updateDocumentContent() {
     this.selectedDocumentContent.updateDocumentQuotesDisplay();
