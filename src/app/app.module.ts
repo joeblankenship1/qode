@@ -57,6 +57,8 @@ import { QuotesRetrievalService } from './shared/services/quotes-retrieval.servi
 import { RetrievedQuotesComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quotes-list.component';
 import { RetrievedQuoteItemComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quote-item/retrieved-quote-item.component';
 import { BottomBarComponent } from './work-space/bottom-bar/bottom-bar.component';
+import { ResetPasswordComponent } from './home/reset-password/reset-password.component';
+import { EqualValidatorDirective } from './shared/directives/equal-validator.directive';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -98,6 +100,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     RetrievedQuotesComponent,
     RetrievedQuoteItemComponent,
     BottomBarComponent,
+    ResetPasswordComponent,
+    EqualValidatorDirective
   ],
   imports: [
     BrowserModule,

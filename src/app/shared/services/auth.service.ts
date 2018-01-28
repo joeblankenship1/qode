@@ -60,6 +60,18 @@ export class AuthService {
     });
   }
 
+  public resetPassword(data): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.auth0.changePassword(data, function (err, rslt) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(rslt);
+        }
+      });
+    });
+  }
+
   public signup(data): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       this.auth0.signup(data, function (err, rslt) {
