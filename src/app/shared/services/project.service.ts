@@ -113,7 +113,6 @@ export class ProjectService {
   }
 
   updateProject(proj: Project): Observable<any> {
-    // const headers = new Headers({ 'Content-Type': 'application/json', 'If-Match': proj._etag });
     const headers = new Headers({'If-Match': proj._etag });
     const options = new RequestOptions({ headers: headers });
     return this.http.patch(this.url + 'project/' + proj._id, proj.getMessageBody(), options)
@@ -142,7 +141,6 @@ export class ProjectService {
   }
 
   saveCollaborators(proj: Project, listCols: Array<{ email: string, role: string }>) {
-    // const headers = new Headers({ 'Content-Type': 'application/json', 'If-Match': proj._etag });
     const headers = new Headers({'If-Match': proj._etag });
     const options = new RequestOptions({ headers: headers });
     const projGuardar = proj.getMessageBody();

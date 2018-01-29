@@ -89,7 +89,6 @@ export class CodeService {
   }
 
   updateCode(code: Code): Observable<any> {
-    // const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': code.getEtag()});
     const updheaders = new Headers({'If-Match': code.getEtag()});
     const updoptions = new RequestOptions({ headers: updheaders });
     const index = this.codes.indexOf(code, 0);

@@ -93,7 +93,6 @@ export class QuoteService {
 
 
   updateQuote(quote: Quote): Observable<any> {
-    // const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': quote.getEtag() });
     const updheaders = new Headers({'If-Match': quote.getEtag() });
     const updoptions = new RequestOptions({ headers: updheaders });
     const body = quote.getMessageBody();

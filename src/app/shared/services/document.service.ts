@@ -96,7 +96,6 @@ export class DocumentService {
   updateDocumentQuotes(document: Document): Observable<any> {
     const doc = this.documentList.find(d => d.getId() === document.getId());
     const body = { 'quotes': document.getQuotes().map(q => q.getId()) };
-    // this.headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache', 'If-Match': document.getEtag() });
     this.headers = new Headers({'Cache-Control': 'no-cache', 'If-Match': document.getEtag() });
     this.options = new RequestOptions({ headers: this.headers });
     return this.http.patch(environment.apiUrl + 'document/' + document.getId(), body, this.options)
@@ -110,7 +109,6 @@ export class DocumentService {
   }
 
   public updateDocument(document: Document, fields: any): Observable<any> {
-    // const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag() });
     const updheaders = new Headers({'If-Match': document.getEtag() });
     const updoptions = new RequestOptions({ headers: updheaders });
     const index = this.documentList.indexOf(document, 0);
@@ -127,7 +125,6 @@ export class DocumentService {
   }
 
   public updateDocumentAtributes(document: Document): Observable<any> {
-    // const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag()});
     const updheaders = new Headers({'If-Match': document.getEtag()});
     const updoptions = new RequestOptions({ headers: updheaders });
     const index = this.documentList.indexOf(document, 0);
