@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BSModalContext, Modal } from 'angular2-modal/plugins/bootstrap';
@@ -33,7 +33,6 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
     this.memo = this.code.getMemo();
     this.name = this.code.getName();
     this.color = this.code.getColor();
-
   }
 
   ngOnInit() {
@@ -47,7 +46,7 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
     let oper: Observable<any>;
     this.code.setName(this.name);
     this.code.setMemo(this.memo);
-    this.code.setColor(this.color);
+    this.code.setColor(this.color === '#fff' ? 'black' : this.color);
     if (this.code.getId() === '0') {
       oper = this.codeService.addCode(this.code);
     }else {

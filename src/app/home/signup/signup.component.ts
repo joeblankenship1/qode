@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-signup',
@@ -34,11 +35,11 @@ export class SignupComponent implements OnInit {
     };
     this.authService.signup(data).then( (val: any) => {
       const info = {
-        realm: val.connection,
-        username: val.email,
-        password: val.password,
+        realm: data.connection,
+        username: data.email,
+        password: data.password,
         scope: 'openid profile',
-        audience: ''
+        audience: environment.apiUrl
       };
       this.authService.loginUserPassword(info);
     },
