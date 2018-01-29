@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnChanges, Output, EventEmitter, HostListener } from '@angular/core';
 import { Document } from '../../../../shared/models/document.model';
 import { ContextMenuService, ContextMenuComponent } from 'ngx-contextmenu';
 import { ContentComponent } from '../../content.component';
@@ -56,12 +56,12 @@ export class DocumentContentComponent implements OnInit, OnChanges {
         this.actualDocumentContent = content;
         if (content) {
           this.aux.splice(0);
-          content.getPages().forEach( p => {
-          p.getLines().map( l => {
-            this.aux.push(l);
+          content.getPages().forEach(p => {
+            p.getLines().map(l => {
+              this.aux.push(l);
+            });
           });
-        });
-      }
+        }
         // this.quoteService.getQuoteList().subscribe(
         //   quotes => {
         //     this.allQuotes = quotes;
@@ -76,6 +76,11 @@ export class DocumentContentComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.updatePagesAndQuotes();
+  }
+
+  private onScroll(e) {
+    console.log(e.srcElement.scrollTop);
+    // document.getElementById('99').scrollIntoView()
   }
 
   private createNewQuote(quote: Quote) {
@@ -104,8 +109,8 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   updatePagesAndQuotes() {
     if (this.actualDocumentContent) {
       this.aux.splice(0);
-      this.actualDocumentContent.getPages().forEach( p => {
-        p.getLines().map( l => {
+      this.actualDocumentContent.getPages().forEach(p => {
+        p.getLines().map(l => {
           this.aux.push(l);
         });
       });
@@ -203,10 +208,10 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.codeService.getActivatedCodes().map(c => {
       codes.push(c);
     });
-      quote.setCodes(codes);
-      if (codes && codes.length > 0) {
-        this.createNewQuote(quote);
-      }
+    quote.setCodes(codes);
+    if (codes && codes.length > 0) {
+      this.createNewQuote(quote);
+    }
   }
 
 

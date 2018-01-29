@@ -23,6 +23,7 @@
     "@angular/router": "^4.2.4",
     "angular-tree-component": "^5.2.1",
     "angular2-datatable": "^0.6.0",
+    "angular2-hotkeys": "^2.0.3",
     "angular2-jwt": "^0.2.3",
     "angular2-modal": "^3.0.3",
     "angular2-notifications": "^0.9.1",
