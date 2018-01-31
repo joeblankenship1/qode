@@ -18,6 +18,7 @@ import { CodeService } from '../../../../shared/services/code.service';
 import { DocumentService } from '../../../../shared/services/document.service';
 import { NotificationsService } from 'angular2-notifications';
 import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { UserService } from '../../../../shared/services/user.service';
 
 @Component({
   selector: 'app-document-content',
@@ -47,6 +48,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     private documentService: DocumentService,
     private notificationsService: NotificationsService,
     private quoteService: QuoteService,
+    private userService: UserService,
     private windowSelection: WindowSelection,
     private spinnerService: Ng4LoadingSpinnerService) { }
 

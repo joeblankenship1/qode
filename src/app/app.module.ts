@@ -58,6 +58,7 @@ import { RetrievedQuotesComponent } from './work-space/bottom-bar/retrieved-quot
 import { RetrievedQuoteItemComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quote-item/retrieved-quote-item.component';
 import { BottomBarComponent } from './work-space/bottom-bar/bottom-bar.component';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -115,7 +116,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TreeModule,
     Ng2CompleterModule,
     ColorPickerModule,
-    Ng4LoadingSpinnerModule.forRoot()
+    Ng4LoadingSpinnerModule.forRoot(),
+    NgxPermissionsModule.forRoot()
   ],
   providers: [DocumentService, CodeService,
     AuthGuard,

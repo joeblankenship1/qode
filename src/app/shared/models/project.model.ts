@@ -53,6 +53,10 @@ export class Project {
     this._modified = _modified;
   }
 
+  getCollaborator( email ) {
+    return this.collaborators.find(r => r.email.split('@')[0] === email)
+  }
+
   getMessageBody() {
     return {
       _id: this._id,

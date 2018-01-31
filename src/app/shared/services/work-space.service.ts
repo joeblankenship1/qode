@@ -11,6 +11,8 @@ import { Project } from '../models/project.model';
 import { QuoteDisplay } from '../models/quote-display';
 import { indexDebugNode } from '@angular/core/src/debug/debug_node';
 import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { UserService } from './user.service';
+import { ProjectService } from './project.service';
 
 @Injectable()
 export class WorkSpaceService {
@@ -38,12 +40,15 @@ export class WorkSpaceService {
   private showBottomBar = false;
   private showBottomBar$ = new BehaviorSubject<boolean>(null);
 
-  constructor(private documentService: DocumentService, private quoteService: QuoteService,
+  constructor(private documentService: DocumentService,
+    private quoteService: QuoteService,
+    private userService: UserService,
     private spinnerService: Ng4LoadingSpinnerService) { }
 
   public initWorkSpace(projectId) {
     this.projectId = projectId;
-    this.cleanWorkSpace();
+    this.userService.loadRole(projectId);
+    // this.cleanWorkSpace();
     this.selectedDocumentId = null;
     this.documentService.getDocuments().subscribe(
       documents => {
@@ -209,6 +214,7 @@ export class WorkSpaceService {
   }
 
   cleanWorkSpace() {
+    this.userService.removeRoles();
     this.openedDocuments.splice(0);
     this.openedDocuments$.next(this.openedDocuments);
     this.selectedDocument = undefined;
