@@ -11,16 +11,8 @@ export class UserService {
     private projectService: ProjectService,
     private permissionService: NgxPermissionsService) { }
 
-  lector_permissions = ['perm1'];
-  escritor_permissions = ['perm2', 'perm3'];
-
-  // addPermission() {
-  //   this.permissionService.loadPermissions(['OWNER']);
-  // }
-
-  // removePermission() {
-  //   this.permissionService.removePermission('OWNER');
-  // }
+  lector_permissions = ['search_activated_quotes'];
+  escritor_permissions = ['importar_docs', 'create_code', 'search_activated_quotes' ];
 
   removePermissions() {
     this.permissionService.flushPermissions();
@@ -52,13 +44,11 @@ export class UserService {
         const isOwner = proj.owner.split('@')[0] === nick;
         const col = proj.getCollaborator(nick);
         if (isOwner) {
-          this.addRole('Owner');
-          console.log('user sevice: owner');
+          this.addRole('Lector/Escritor');
         } else if (col) {
           this.addRole(col.role);
-          console.log('user sevice: cola: ' + col.role);
         } else {
-          console.error( nick + ' no es owner ni colaborador de ese proyecto.');
+          console.error(nick + ' no es owner ni colaborador de ese proyecto.');
         }
       },
       error => console.error(error)
