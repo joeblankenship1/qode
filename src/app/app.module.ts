@@ -59,6 +59,8 @@ import { RetrievedQuoteItemComponent } from './work-space/bottom-bar/retrieved-q
 import { BottomBarComponent } from './work-space/bottom-bar/bottom-bar.component';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { ResetPasswordComponent } from './home/reset-password/reset-password.component';
+import { EqualValidatorDirective } from './shared/directives/equal-validator.directive';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -100,6 +102,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     RetrievedQuotesComponent,
     RetrievedQuoteItemComponent,
     BottomBarComponent,
+    ResetPasswordComponent,
+    EqualValidatorDirective
   ],
   imports: [
     BrowserModule,
