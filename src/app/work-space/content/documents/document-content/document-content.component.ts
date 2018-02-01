@@ -177,7 +177,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
 
   private defineMenuOptions(newSelection) {
     this.menuOptions.map(group => {
-      group.map(op => newSelection ? op.enable() : op.desable());
+      group.map(op => newSelection ? op.enable() : op.disable());
     });
   }
 

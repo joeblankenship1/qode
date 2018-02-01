@@ -20,14 +20,19 @@
             <ul class="nav navbar-nav" *ngIf="router.url.includes('workspace')">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentos<span class="caret"></span></a>
-                    <ul class="dropdown-menu" *ngxPermissionsOnly="['importar_docs']">
-                        <li><input type="file" #files name="files[]" multiple style="display:none;" (change)="onChange($event)" /><a class="header-btn" (click)="files.click()">Importar</a></li>
+                    <ul class="dropdown-menu">
+                        <li *ngxPermissionsOnly="['importar_docs']">
+                            <input type="file" #files name="files[]" multiple style="display:none;" (change)="onChange($event)" />
+                            <a class="header-btn" (click)="files.click()">Importar</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Códigos<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="header-btn" (click)="onNewCode()" *ngxPermissionsOnly="['create_code']">Nuevo código</a></li>
+                        <li *ngxPermissionsOnly="['create_code']">
+                            <a class="header-btn" (click)="onNewCode()">Nuevo código</a>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -39,7 +44,9 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Búsquedas<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="header-btn" (click)="onSimpleQuery()" *ngxPermissionsOnly="['search_activated_quotes']">Por elementos activados.</a></li>
+                        <li *ngxPermissionsOnly="['search_activated_quotes']">
+                            <a class="header-btn" (click)="onSimpleQuery()">Por elementos activados.</a>
+                        </li>
                     </ul>
                 </li>
                 <li><a href="#" data-toggle="modal" data-target="#exampleModal">Análisis</a></li>

@@ -10,6 +10,7 @@ import { OptionsComponent } from '../../../../shared/helpers/options/options.com
 import { ContextMenuService } from 'ngx-contextmenu';
 import { CodeService } from '../../../../shared/services/code.service';
 import { QuotesRetrievalService } from '../../../../shared/services/quotes-retrieval.service';
+import { UserService } from '../../../../shared/services/user.service';
 
 @Component({
   selector: 'app-code-item',
@@ -27,6 +28,7 @@ export class CodeItemComponent implements OnInit {
      private workspaceService: WorkSpaceService,
      private contextMenuService: ContextMenuService,
      private codeService: CodeService,
+     private userService: UserService,
      private quoteRetrievalService: QuotesRetrievalService) {
   }
 
@@ -75,6 +77,13 @@ export class CodeItemComponent implements OnInit {
     } else {
       this.menuOptions[0][0].setVisible(true);
       this.menuOptions[0][1].setVisible(false);
+    }
+    if (this.userService.getRole() === 'Lector') {
+      this.menuOptions[0][0].disable();
+      this.menuOptions[0][1].disable();
+    } else {
+      this.menuOptions[0][0].enable();
+      this.menuOptions[0][1].enable();
     }
   }
 

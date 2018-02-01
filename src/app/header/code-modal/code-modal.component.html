@@ -21,11 +21,7 @@
         </div>
     </div>
     <div class="modal-footer text-center ">
-        <button type="button" class="btn btn-success" (click)="onSaveCode()">
-            Guardar
-            </button>
-        <button *ngIf="code._id !== '0'" type="button" class="btn btn-danger" (click)="onDeleteCode()">
-            Borrar
-            </button>
+        <button type="button" class="btn btn-success" (click)="onSaveCode()" [disabled]='role == "Lector"'> Guardar  </button>
+        <button *ngIf="code._id !== '0'" type="button" class="btn btn-danger" (click)="onDeleteCode()" [disabled]='role == "Lector"'>  Borrar </button>
     </div>
 </div>

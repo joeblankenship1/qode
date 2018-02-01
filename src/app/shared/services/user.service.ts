@@ -12,13 +12,19 @@ export class UserService {
     private permissionService: NgxPermissionsService) { }
 
   lector_permissions = ['search_activated_quotes'];
-  escritor_permissions = ['importar_docs', 'create_code', 'search_activated_quotes' ];
+  escritor_permissions = ['importar_docs', 'create_code', 'search_activated_quotes'];
+  private role = '';
 
+  getRole() {
+    return this.role;
+  }
+  
   removePermissions() {
     this.permissionService.flushPermissions();
   }
 
   addRole(role) {
+    this.role = role;
     if (role === 'Lector') {
       this.permissionService.loadPermissions(this.lector_permissions);
       this.roleService.addRole(role, this.lector_permissions);
@@ -31,10 +37,12 @@ export class UserService {
 
   removeRole(role) {
     this.roleService.removeRole(role);
+    this.role = '';
   }
 
   removeRoles() {
     this.roleService.flushRoles();
+    this.role = '';
   }
 
   loadRole(projId) {

@@ -7,6 +7,7 @@ import { CodeService } from '../../shared/services/code.service';
 import { Observable } from 'rxjs/Observable';
 import { NotificationsService } from 'angular2-notifications';
 import { WorkSpaceService } from '../../shared/services/work-space.service';
+import { UserService } from '../../shared/services/user.service';
 
 export class CodeModalData extends BSModalContext {
   public code: Code;
@@ -24,16 +25,17 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
   name: string;
   memo: string;
   color: string;
+  role: string;
 
   constructor(public dialog: DialogRef<CodeModalData>, private codeService: CodeService, private workspaceService: WorkSpaceService,
-              private modal: Modal, private notificationsService: NotificationsService) {
+              private modal: Modal, private notificationsService: NotificationsService, private userService: UserService) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.code = dialog.context.code;
     this.memo = this.code.getMemo();
     this.name = this.code.getName();
     this.color = this.code.getColor();
-
+    this.role = this.userService.getRole();
   }
 
   ngOnInit() {
