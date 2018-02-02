@@ -120,7 +120,8 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
     SimpleNotificationsModule.forRoot(),
     TreeModule,
     Ng2CompleterModule,
-    ColorPickerModule
+    ColorPickerModule,
+    FusionChartsModule
   ],
   providers: [DocumentService, CodeService,
     AuthGuard,

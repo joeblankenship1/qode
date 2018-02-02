@@ -6,6 +6,7 @@ import { LoginComponent } from './home/login/login.component';
 import { SignupComponent } from './home/signup/signup.component';
 import { ProjectsComponent } from './my-projects/projects/projects.component';
 import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
+import { ResetPasswordComponent } from './home/reset-password/reset-password.component';
 
 
 
@@ -17,6 +18,7 @@ export const routes: Routes = [
   },
   { path: '', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'resetpassword', component: ResetPasswordComponent},
   {path: 'myprojects', component: ProjectsComponent, canActivate: [AuthGuard]},
 
   // otherwise redirect to home
