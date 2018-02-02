@@ -51,6 +51,10 @@ import { ProjectShareModalComponent } from './my-projects/project-share-modal/pr
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DatePipe } from '@angular/common';
+import * as FusionCharts from 'fusioncharts';
+import * as Charts from 'fusioncharts/fusioncharts.charts';
+import * as FintTheme from 'fusioncharts/themes/fusioncharts.theme.fint';
+import { FusionChartsModule } from 'angular4-fusioncharts';
 import { TreeModule } from 'angular-tree-component';
 import { ProjectInfoComponent } from './my-projects/projects/project-info/project-info.component';
 import { QuotesRetrievalService } from './shared/services/quotes-retrieval.service';
@@ -66,6 +70,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     globalHeaders: [],
   }), http, options);
 }
+
+FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
 
 @NgModule({
   declarations: [
