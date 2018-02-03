@@ -2,11 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { AuthService } from '../../shared/services/auth.service';
-<<<<<<< HEAD
 import { environment } from '../../../environments/environment.prod';
-=======
 import { EqualValidatorDirective } from '../../shared/directives/equal-validator.directive';
->>>>>>> ed850dcbda7c165f49f4cf559c86d8597948c7d5
 
 @Component({
   selector: 'app-signup',

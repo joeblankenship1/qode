@@ -10,5 +10,5 @@ if __name__ == '__main__':
     APP.on_update += before_update
     APP.on_delete_item += before_delete_item
     APP.debug = True
-    http_server = WSGIServer(('', 6000), APP)
+    http_server = WSGIServer(('', 5000), APP)
     http_server.serve_forever() 

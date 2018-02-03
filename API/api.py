@@ -182,7 +182,7 @@ def docCodeMatrix():
     cursor = db.find({'key.project': ObjectId(proj_id)})
     if cursor:
         for code in cursor:
-            codes[code['_id']] = {'position':i, 'name':code['key']['name']}
+            codes[ObjectId.toString(code['_id'])] = {'position':i, 'name':code['key']['name']}
             i+=1
     if len(codes) == 0:
         error_message = 'No existen códigos en el proyecto'
@@ -198,15 +198,11 @@ def docCodeMatrix():
                     for q_code in quote_cursor['codes']:
                         pos = codes[q_code]['position']
                         ocurrences[pos] += 1
-            docs[doc['_id']] = {'name':doc['key']['name'], 'ocurrences': ocurrences}
+            docs[ObjectId.toString(doc['_id'])] = {'name':doc['key']['name'], 'ocurrences': ocurrences}
     if len(docs) == 0:
         error_message = 'No existen documentos en el proyecto'
         abort(make_response(jsonify(message=error_message), 449))
-    print('DOCS:')
-    print(docs)
-    print('CODES:')
-    print(codes)
-    return "Matriz de codigos por documentos"
+    return jsonify({"codes":codes , "docs":docs})
 
 
 
