@@ -4,6 +4,7 @@ import { DocumentService } from '../../../../shared/services/document.service';
 import { WorkSpaceService } from '../../../../shared/services/work-space.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { UserService } from '../../../../shared/services/user.service';
 
 @Component({
   selector: 'app-documents-tabs',
@@ -17,14 +18,15 @@ export class DocumentsTabsComponent implements OnInit {
 
   constructor(private documentService: DocumentService,
     private workspaceService: WorkSpaceService,
+    private userService: UserService,
     private spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
     this.workspaceService.getSelectedDocument()
-    .subscribe(
-    selectedDocument => {
-      this.sele = selectedDocument;
-    });
+      .subscribe(
+      selectedDocument => {
+        this.sele = selectedDocument;
+      });
   }
 
   onSelectDocument() {
@@ -34,7 +36,11 @@ export class DocumentsTabsComponent implements OnInit {
 
   onCloseDocument() {
     this.doc.setOpened(false);
-    this.documentService.updateDocument(this.doc, { 'opened': false })
-      .subscribe();
+    if (this.userService.getRole() !== 'Lector') {
+      this.documentService.updateDocument(this.doc, { 'opened': false })
+        .subscribe();
+    } else {
+      this.documentService.updateOpened(this.doc, false);
+    }
   }
 }

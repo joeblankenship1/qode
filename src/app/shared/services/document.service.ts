@@ -127,6 +127,13 @@ export class DocumentService {
       });
   }
 
+  public updateOpened( document: Document, opened: boolean) {
+    document.setOpened(opened);
+    const index = this.documentList.indexOf(document, 0);
+    this.documentList[index] = document;
+    this.documentList$.next(this.documentList);
+  }
+
   public updateDocumentAtributes(document: Document): Observable<any> {
     const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag()});
     const updoptions = new RequestOptions({ headers: updheaders });

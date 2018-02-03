@@ -25,7 +25,7 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
   name: string;
   memo: string;
   color: string;
-  role: string;
+  permissions: Array<string>;
 
   constructor(public dialog: DialogRef<CodeModalData>, private codeService: CodeService, private workspaceService: WorkSpaceService,
               private modal: Modal, private notificationsService: NotificationsService, private userService: UserService) {
@@ -35,10 +35,15 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
     this.memo = this.code.getMemo();
     this.name = this.code.getName();
     this.color = this.code.getColor();
-    this.role = this.userService.getRole();
   }
 
   ngOnInit() {
+    this.userService.getRolePermissions().subscribe(
+      permissions => {
+        this.permissions = permissions;
+      },
+      error => { console.error(error); }
+    );
   }
 
   public onSaveCode() {

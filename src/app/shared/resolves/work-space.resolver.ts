@@ -31,7 +31,6 @@ export class WorkSpaceResolver implements Resolve<any> {
             this.quotesRetrievalService.initQuotesRetrieval();
             this.documentService.loadDocuments(projectId).subscribe(
               docs => {
-                this.workspaceService.cleanWorkSpace();
                 this.workspaceService.initWorkSpace(projectId);
               },
               error => {

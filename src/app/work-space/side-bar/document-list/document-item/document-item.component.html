@@ -1,22 +1,13 @@
-<li 
-(contextmenu)="onContextMenu($event)"
-[ngClass]="getItemClass()"
- style="cursor: pointer"
- (dblclick)="onOpenDocument()"
->
-<div [attr.title]="document.memo">
-  <span 
-    *ngIf="document.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer"
-    (click)="onDeactivateDocument()"
-    >
+<li (contextmenu)="onContextMenu($event)" [ngClass]="getItemClass()" style="cursor: pointer" (dblclick)="onOpenDocument()">
+    <div [attr.title]="document.memo">
+        <span *ngIf="permissions.includes('activate_document') && document.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer" (click)="onDeactivateDocument()">
   </span>
-  <span 
-    *ngIf="!document.isActivated()" class="list-marker"
-    (click)="onActivateDocument()"
-    >
+        <span *ngIf="permissions.includes('activate_document') && !document.isActivated()" class="list-marker" (click)="onActivateDocument()">
     &#9679;
   </span>
-  {{document.name}}
-</div>
+        <span *ngIf="!permissions.includes('activate_document')" class="list-marker">
+  &#9679;
+</span> {{document.name}}
+    </div>
 </li>
 <app-options [optionGroups]="menuOptions"></app-options>

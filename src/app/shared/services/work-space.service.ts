@@ -13,6 +13,7 @@ import { indexDebugNode } from '@angular/core/src/debug/debug_node';
 import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { UserService } from './user.service';
 import { ProjectService } from './project.service';
+import { CodeService } from './code.service';
 
 @Injectable()
 export class WorkSpaceService {
@@ -42,13 +43,14 @@ export class WorkSpaceService {
 
   constructor(private documentService: DocumentService,
     private quoteService: QuoteService,
+    private codeService: CodeService,
     private userService: UserService,
+    private projectService: ProjectService,
     private spinnerService: Ng4LoadingSpinnerService) { }
 
   public initWorkSpace(projectId) {
     this.projectId = projectId;
     this.userService.loadRole(projectId);
-    // this.cleanWorkSpace();
     this.selectedDocumentId = null;
     this.documentService.getDocuments().subscribe(
       documents => {
@@ -75,7 +77,6 @@ export class WorkSpaceService {
       }
     );
   }
-
 
   // Add new document too list of openedDocuments
   openDocument(doc: Document) {
@@ -214,6 +215,8 @@ export class WorkSpaceService {
   }
 
   cleanWorkSpace() {
+    this.codeService.setCodes([]);
+    this.documentService.setDocuments([]);
     this.userService.removeRoles();
     this.openedDocuments.splice(0);
     this.openedDocuments$.next(this.openedDocuments);

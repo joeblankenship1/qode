@@ -23,7 +23,6 @@ export class DocumentListComponent implements OnInit {
       },
       error => console.error(error)
       );
-
   }
 
 }

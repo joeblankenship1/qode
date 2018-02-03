@@ -14,6 +14,7 @@ import { AuthHttp } from 'angular2-jwt';
 import { ProjectService } from '../../shared/services/project.service';
 import { Project } from '../../shared/models/project.model';
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
+import { WorkSpaceService } from '../../shared/services/work-space.service';
 
 @Component({
   selector: 'app-projects',
@@ -25,7 +26,9 @@ export class ProjectsComponent implements OnInit {
   @ViewChild('nameProject') nameProjectRef: ElementRef;
   @ViewChild('descProject') descProjectRef: ElementRef;
 
-  constructor( private projectService: ProjectService, private notificationsService: NotificationsService) { }
+  constructor( private projectService: ProjectService, 
+    private notificationsService: NotificationsService,
+  private workspaceService: WorkSpaceService ) { }
 
   public filterQuery = '';
   public rowsOnPage = 10;
@@ -33,7 +36,7 @@ export class ProjectsComponent implements OnInit {
   public sortOrder = 'asc';
 
   ngOnInit() {
-
+    this.workspaceService.cleanWorkSpace();
     this.projectService.getProjects()
       .subscribe(
       projects => {
