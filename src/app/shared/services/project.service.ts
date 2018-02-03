@@ -24,14 +24,12 @@ export class ProjectService {
   private options: RequestOptions;
 
   constructor(private http: AuthHttp) {
-    this.headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
+    this.headers = new Headers({ 'Cache-Control': 'no-cache' });
     this.options = new RequestOptions({ headers: this.headers });
   }
 
   getProjects(): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
-    const options = new RequestOptions({ headers: headers });
-    return this.http.get(this.url + 'project', options)
+    return this.http.get(this.url + 'project', this.options)
       .map((data: Response) => {
         const extracted = data.json();
         const projectArray: Project[] = [];
@@ -97,8 +95,6 @@ export class ProjectService {
   }
 
   createProject(proj: Project): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers });
     return this.http.post(this.url + 'project', proj.getMessageBody())
       .map((data: Response) => {
         const aux = data.json();
@@ -117,7 +113,7 @@ export class ProjectService {
   }
 
   updateProject(proj: Project): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json', 'If-Match': proj._etag });
+    const headers = new Headers({'If-Match': proj._etag });
     const options = new RequestOptions({ headers: headers });
     return this.http.patch(this.url + 'project/' + proj._id, proj.getMessageBody(), options)
       .map((data: Response) => {
@@ -133,7 +129,7 @@ export class ProjectService {
   }
 
   deleteProject(proj: Project): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json', 'If-Match': proj._etag });
+    const headers = new Headers({ 'If-Match': proj._etag });
     const options = new RequestOptions({ headers: headers });
     return this.http.delete(this.url + 'project/' + proj._id, options)
       .map((data: Response) => {
@@ -145,7 +141,7 @@ export class ProjectService {
   }
 
   saveCollaborators(proj: Project, listCols: Array<{ email: string, role: string }>) {
-    const headers = new Headers({ 'Content-Type': 'application/json', 'If-Match': proj._etag });
+    const headers = new Headers({'If-Match': proj._etag });
     const options = new RequestOptions({ headers: headers });
     const projGuardar = proj.getMessageBody();
     projGuardar.collaborators = listCols;

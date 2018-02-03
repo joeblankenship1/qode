@@ -37,6 +37,9 @@ export class WorkSpaceService {
   private showBottomBar = false;
   private showBottomBar$ = new BehaviorSubject<boolean>(null);
 
+  private matrixResult = {};
+  private matrixResult$ = new BehaviorSubject<any>(null);
+
   constructor(private documentService: DocumentService, private quoteService: QuoteService) { }
 
   public initWorkSpace(projectId) {
@@ -201,6 +204,15 @@ export class WorkSpaceService {
 
   getBottomBar() {
     return this.showBottomBar$.asObservable();
+  }
+
+  setMatrixResult(result) {
+    this.matrixResult = result;
+    this.matrixResult$.next(result);
+  }
+
+  getMatrixResult() {
+    return this.matrixResult$.asObservable();
   }
 
   cleanWorkSpace() {

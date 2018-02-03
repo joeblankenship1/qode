@@ -3,6 +3,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-login',
@@ -37,7 +38,7 @@ export class LoginComponent implements OnInit {
       username: this.model.email,
       password: this.model.password,
       scope: 'openid profile',
-      audience: ''
+      audience: environment.apiUrl
     });
   }
 

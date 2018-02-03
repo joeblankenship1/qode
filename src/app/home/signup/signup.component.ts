@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { environment } from '../../../environments/environment.prod';
 import { EqualValidatorDirective } from '../../shared/directives/equal-validator.directive';
 
 @Component({
@@ -35,20 +36,20 @@ export class SignupComponent implements OnInit {
   }
 
   signup() {
-      this.loading = true;
-      const data = {
-        connection: 'Username-Password-Authentication',
-        email: this.model.email,
-        password: this.model.password
+    this.loading = true;
+    const data = {
+      connection: 'Username-Password-Authentication',
+      email: this.model.email,
+      password: this.model.password
+    };
+    this.authService.signup(data).then( (val: any) => {
+      const info = {
+        realm: data.connection,
+        username: data.email,
+        password: data.password,
+        scope: 'openid profile',
+        audience: environment.apiUrl
       };
-      this.authService.signup(data).then((val: any) => {
-        const info = {
-          realm: val.connection,
-          username: val.email,
-          password: val.password,
-          scope: 'openid profile',
-          audience: ''
-        };
         this.authService.loginUserPassword(info);
       },
         error => {

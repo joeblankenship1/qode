@@ -51,7 +51,12 @@ import { ProjectShareModalComponent } from './my-projects/project-share-modal/pr
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DatePipe } from '@angular/common';
+import * as FusionCharts from 'fusioncharts';
+import * as Charts from 'fusioncharts/fusioncharts.charts';
+import * as FintTheme from 'fusioncharts/themes/fusioncharts.theme.fint';
+import { FusionChartsModule } from 'angular4-fusioncharts';
 import { TreeModule } from 'angular-tree-component';
+import { AngularDraggableModule } from 'angular2-draggable';
 import { ProjectInfoComponent } from './my-projects/projects/project-info/project-info.component';
 import { QuotesRetrievalService } from './shared/services/quotes-retrieval.service';
 import { RetrievedQuotesComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quotes-list.component';
@@ -59,14 +64,18 @@ import { RetrievedQuoteItemComponent } from './work-space/bottom-bar/retrieved-q
 import { BottomBarComponent } from './work-space/bottom-bar/bottom-bar.component';
 import { ResetPasswordComponent } from './home/reset-password/reset-password.component';
 import { EqualValidatorDirective } from './shared/directives/equal-validator.directive';
+import { ChartPopupComponent } from './work-space/chart-popup/chart-popup.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
     tokenName: 'access_token',
     tokenGetter: (() => localStorage.getItem('access_token')),
-    globalHeaders: [{ 'Content-Type': 'application/json' }],
+    // globalHeaders: [{ 'Content-Type': 'application/json' }],
+    globalHeaders: [],
   }), http, options);
 }
+
+FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
 
 @NgModule({
   declarations: [
@@ -101,7 +110,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     RetrievedQuoteItemComponent,
     BottomBarComponent,
     ResetPasswordComponent,
-    EqualValidatorDirective
+    EqualValidatorDirective,
+    ChartPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -117,7 +127,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SimpleNotificationsModule.forRoot(),
     TreeModule,
     Ng2CompleterModule,
-    ColorPickerModule
+    ColorPickerModule,
+    FusionChartsModule,
+    AngularDraggableModule
   ],
   providers: [DocumentService, CodeService,
     AuthGuard,

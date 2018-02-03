@@ -13,7 +13,7 @@ from flask import abort
 from datetime import datetime
 
 APP = Eve(auth=MyTokenAuth)
-#APP = Eve()
+# APP = Eve()
 
 @APP.errorhandler(AuthError)
 def handle_auth_error(ex):
@@ -25,7 +25,7 @@ def handle_auth_error(ex):
 def get_project_id_from_req(resource, request):
     j = request.args.get('where').encode('utf-8')
     d = json_util.loads(j)
-    if resource == 'quote' or resource == 'code':
+    if resource == 'quote':
         return d.get('project') 
     else:
         return d.get('key.project')
@@ -168,6 +168,41 @@ def deleteDocument(item):
         for quote in cursor['quotes']:
             current_app.data.driver.db['quote'].remove(({'_id':quote}))
     current_app.data.driver.db['document'].remove(({'_id':item['_id']}))
+
+@APP.route("/doc-code-matrix")
+def docCodeMatrix():
+    token = get_token_auth_header()
+    mail = get_email(token)
+    proj_id = request.args.get('project_id')
+    check_permissions(proj_id, mail, False)
+    codes = {}
+    docs = {}
+    i = 0
+    db = current_app.data.driver.db['code']
+    cursor = db.find({'key.project': ObjectId(proj_id)})
+    if cursor:
+        for code in cursor:
+            codes[ObjectId.toString(code['_id'])] = {'position':i, 'name':code['key']['name']}
+            i+=1
+    if len(codes) == 0:
+        error_message = 'No existen códigos en el proyecto'
+        abort(make_response(jsonify(message=error_message), 449))
+    db = current_app.data.driver.db['document']
+    cursor = db.find({'key.project': ObjectId(proj_id)})
+    if cursor:
+        for doc in cursor:
+            ocurrences = [0]*len(codes)
+            for quote in doc['quotes']:
+                quote_cursor = current_app.data.driver.db['quote'].find_one(({'_id':quote}))
+                if quote_cursor:
+                    for q_code in quote_cursor['codes']:
+                        pos = codes[q_code]['position']
+                        ocurrences[pos] += 1
+            docs[ObjectId.toString(doc['_id'])] = {'name':doc['key']['name'], 'ocurrences': ocurrences}
+    if len(docs) == 0:
+        error_message = 'No existen documentos en el proyecto'
+        abort(make_response(jsonify(message=error_message), 449))
+    return jsonify({"codes":codes , "docs":docs})
 
 
 

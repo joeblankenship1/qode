@@ -18,7 +18,16 @@ export class AuthService {
 
   auth0 = new auth0.WebAuth({
     clientID: environment.clientID,
-    domain: 'nurruty.auth0.com',
+    domain: environment.domain,
+    responseType: 'token id_token',
+    audience: environment.apiUrl,
+    redirectUri: environment.frontUrl,
+    scope: 'openid profile'
+  });
+  
+  auth0Social = new auth0.WebAuth({
+    clientID: environment.clientID,
+    domain: environment.domainSocial,
     responseType: 'token id_token',
     audience: environment.apiUrl,
     redirectUri: environment.frontUrl,
@@ -50,7 +59,7 @@ export class AuthService {
 
   // Login to Auth0 using a social connection.
   public loginUserSocial(connection) {
-    this.auth0.authorize(connection);
+    this.auth0Social.authorize(connection);
   }
 
   public logOut() {
@@ -86,7 +95,7 @@ export class AuthService {
 
   // Handle callback from social login
   public handleAuthentication() {
-    this.auth0.parseHash((err, authResult) => {
+    this.auth0Social.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         window.location.hash = 'myprojects';
         this.setSession(authResult);
