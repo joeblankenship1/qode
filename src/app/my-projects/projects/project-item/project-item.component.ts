@@ -79,6 +79,6 @@ export class ProjectItemComponent implements OnInit {
 
   onAccessProject() {
     this.router.navigate(['workspace', this.project._id]);
-    this.spinnerService.show();
+    // this.spinnerService.show();
   }
 }

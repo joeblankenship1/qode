@@ -26,9 +26,9 @@ export class ProjectsComponent implements OnInit {
   @ViewChild('nameProject') nameProjectRef: ElementRef;
   @ViewChild('descProject') descProjectRef: ElementRef;
 
-  constructor( private projectService: ProjectService, 
+  constructor(private projectService: ProjectService,
     private notificationsService: NotificationsService,
-  private workspaceService: WorkSpaceService ) { }
+    private workspaceService: WorkSpaceService) { }
 
   public filterQuery = '';
   public rowsOnPage = 10;
@@ -42,12 +42,11 @@ export class ProjectsComponent implements OnInit {
       projects => {
         if (projects) {
           this.projects = projects;
-        }else {
+        } else {
           this.projects = [];
         }
       },
-      error => console.error(error)
-      );
+      error => console.error(error));
   }
 
   onCreateProject() {
@@ -71,7 +70,7 @@ export class ProjectsComponent implements OnInit {
               this.projectService.setSelectedProject(proj);
             },
             error => {
-              if (error.message !== null){
+              if (error.message !== null) {
                 if (error.message.includes('is not unique')) {
                   this.notificationsService.error('Error', 'El nombre del proyecto ya existe.');
                 }

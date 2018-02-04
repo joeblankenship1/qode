@@ -17,7 +17,6 @@ import { WindowSelection } from '../../../../shared/helpers/window-selection';
 import { CodeService } from '../../../../shared/services/code.service';
 import { DocumentService } from '../../../../shared/services/document.service';
 import { NotificationsService } from 'angular2-notifications';
-import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { UserService } from '../../../../shared/services/user.service';
 
 @Component({
@@ -41,6 +40,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   selectedRange;
 
   public paint = false;
+  showLoader: boolean;
 
   constructor(private workSpaceService: WorkSpaceService, private modal: Modal,
     private contextMenuService: ContextMenuService,
@@ -216,5 +216,11 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     }
   }
 
+  showsLoader() {
+    this.showLoader = true;
+  }
+  hideLoader() {
+    this.showLoader = true;
+  }
 
 }

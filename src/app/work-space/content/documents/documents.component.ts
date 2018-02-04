@@ -25,11 +25,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       );
 
     this.workspaceService.getSelectedDocument()
-    .subscribe(
-    selectedDocument => {
-      this.selectedDocument = selectedDocument;
-    }
-    );
+      .subscribe(
+      selectedDocument => {
+        this.selectedDocument = selectedDocument;
+      }
+      );
   }
 
   onDocumentSelected(document: Document) {

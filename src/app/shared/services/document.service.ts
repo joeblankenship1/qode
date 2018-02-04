@@ -58,10 +58,8 @@ export class DocumentService {
           }
         }
         this.setDocuments(documentArray);
-        this.spinnerService.hide();
         return documentArray;
       }).catch((err: Response) => {
-        this.spinnerService.hide();
         const details = err.json();
         return Observable.throw(details);
       });
@@ -90,7 +88,6 @@ export class DocumentService {
         }
         this.documentList.push(document);
         this.documentList$.next(this.documentList);
-        this.spinnerService.hide();
         return document;
       })
       .catch(this.handleErrorObservable);

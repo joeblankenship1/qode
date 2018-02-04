@@ -71,19 +71,22 @@ export class UserService {
   loadRole(projId) {
     this.authService.getEmail().subscribe(
       nick => {
-        const proj = this.projectService.getProject(projId);
-        const isOwner = proj.getOwner().split('@')[0] === nick;
-        const col = proj.getCollaborator(nick);
-        if (isOwner) {
-          this.addRole('Lector/Escritor');
-        } else if (col) {
-          this.addRole(col.role);
-        } else {
-          console.error(nick + ' no es owner ni colaborador de ese proyecto.');
-        }
+        this.projectService.getSelectedProject().subscribe(
+          project => {
+            const isOwner = project.getOwner().split('@')[0] === nick;
+            const col = project.getCollaborator(nick);
+            if (isOwner) {
+              this.addRole('Lector/Escritor');
+            } else if (col) {
+              this.addRole(col.role);
+            } else {
+              console.error(nick + ' no es owner ni colaborador de ese proyecto.');
+            }
+          },
+          error => console.error(error)
+        );
       },
       error => console.error(error)
     );
   }
-
 }

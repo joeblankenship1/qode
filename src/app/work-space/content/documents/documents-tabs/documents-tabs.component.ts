@@ -3,7 +3,6 @@ import { Document } from '../../../../shared/models/document.model';
 import { DocumentService } from '../../../../shared/services/document.service';
 import { WorkSpaceService } from '../../../../shared/services/work-space.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { UserService } from '../../../../shared/services/user.service';
 
 @Component({
@@ -18,8 +17,7 @@ export class DocumentsTabsComponent implements OnInit {
 
   constructor(private documentService: DocumentService,
     private workspaceService: WorkSpaceService,
-    private userService: UserService,
-    private spinnerService: Ng4LoadingSpinnerService) { }
+    private userService: UserService) { }
 
   ngOnInit() {
     this.workspaceService.getSelectedDocument()
@@ -30,7 +28,6 @@ export class DocumentsTabsComponent implements OnInit {
   }
 
   onSelectDocument() {
-    // this.spinnerService.show();
     this.selected.emit();
   }
 

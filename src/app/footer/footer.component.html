@@ -1,9 +1,6 @@
 <footer class="container-fluid footer" *ngIf="(router.url !== '/') && (router.url !== '/signup') && (router.url.includes('workspace'))">
     <div *ngIf='project' style="text-align:right">
         <i class="fa fa-book" aria-hidden="true"></i> {{project.name}}
+        <!-- <i class="fa fa-clock-o" aria-hidden="true"></i> Ultima modificación: {{project._modified | date:'dd/MM/yyyy - HH:mm:ss' }} hs por {{project._modified_by}} -->
     </div>
-    <!-- 
-    <div class="col-md-6" *ngIf='project' style="text-align:right">
-        <i class="fa fa-clock-o" aria-hidden="true"></i> Ultima modificación: {{project._modified | date:'dd/MM/yyyy - HH:mm:ss' }} hs por {{project._modified_by}}
-    </div> -->
 </footer>

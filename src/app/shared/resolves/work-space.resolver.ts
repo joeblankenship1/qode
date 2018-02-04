@@ -8,6 +8,7 @@ import { DocumentService } from '../services/document.service';
 import { Quote } from '../models/quote.model';
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 import { QuotesRetrievalService } from '../services/quotes-retrieval.service';
+import { ProjectService } from '../services/project.service';
 
 
 @Injectable()
@@ -17,6 +18,7 @@ export class WorkSpaceResolver implements Resolve<any> {
     private quotesService: QuoteService,
     private codeService: CodeService,
     private documentService: DocumentService,
+    private projectService: ProjectService,
     private router: Router,
     private notificationsService: NotificationsService,
     private quotesRetrievalService: QuotesRetrievalService
@@ -31,23 +33,27 @@ export class WorkSpaceResolver implements Resolve<any> {
             this.quotesRetrievalService.initQuotesRetrieval();
             this.documentService.loadDocuments(projectId).subscribe(
               docs => {
-                this.workspaceService.initWorkSpace(projectId);
+                this.projectService.loadSelectedProject(projectId).subscribe(
+                  proj => {
+                    this.workspaceService.initWorkSpace(projectId);
+                  }, error => {
+                    this.router.navigate(['myprojects']);
+                    this.notificationsService.error('Error', 'No tienes permisos para acceder a ese proyecto');
+                  });
               },
               error => {
                 this.router.navigate(['myprojects']);
                 this.notificationsService.error('Error', 'No tienes permisos para acceder a ese proyecto');
-              }
-            );
+              });
           },
           error => {
             this.router.navigate(['myprojects']);
             this.notificationsService.error('Error', 'No tienes permisos para acceder a ese proyecto');
-          }
-        );
+           });
       }).catch(error => {
         this.router.navigate(['myprojects']);
         this.notificationsService.error('Error', 'No tienes permisos para acceder a ese proyecto');
         return Observable.of(null);
-    });
+      });
   }
 }

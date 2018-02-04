@@ -12,7 +12,6 @@ import { QuoteDisplay } from '../models/quote-display';
 import { indexDebugNode } from '@angular/core/src/debug/debug_node';
 import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { UserService } from './user.service';
-import { ProjectService } from './project.service';
 import { CodeService } from './code.service';
 
 @Injectable()
@@ -45,7 +44,6 @@ export class WorkSpaceService {
     private quoteService: QuoteService,
     private codeService: CodeService,
     private userService: UserService,
-    private projectService: ProjectService,
     private spinnerService: Ng4LoadingSpinnerService) { }
 
   public initWorkSpace(projectId) {
@@ -72,7 +70,6 @@ export class WorkSpaceService {
         this.selectDocument(selectedDoc ? selectedDoc : this.openedDocuments[0]);
       },
       error => {
-        this.spinnerService.hide();
         console.error(error);
       }
     );

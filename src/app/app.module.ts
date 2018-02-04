@@ -61,6 +61,7 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { ResetPasswordComponent } from './home/reset-password/reset-password.component';
 import { EqualValidatorDirective } from './shared/directives/equal-validator.directive';
+import { SpinnerComponentModule } from 'ng2-component-spinner';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -121,7 +122,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     Ng2CompleterModule,
     ColorPickerModule,
     Ng4LoadingSpinnerModule.forRoot(),
-    NgxPermissionsModule.forRoot()
+    NgxPermissionsModule.forRoot(),
+    SpinnerComponentModule
   ],
   providers: [DocumentService, CodeService,
     AuthGuard,

@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit {
   // Get result from input file
   onChange(event) {
     const files = event.srcElement.files;
-    this.spinnerService.show();
+    // this.spinnerService.show();
     for (let index = 0; index < files.length; index++) {
       const f = files[index.toString()];
       const reader: FileReader = new FileReader();
@@ -67,7 +67,7 @@ export class HeaderComponent implements OnInit {
         this.notificationsService.error('Error', 'Ya existe un documento con ese nombre.');
         this.filesVar.nativeElement.value = '';
         reader.abort();
-        this.spinnerService.hide();
+        // this.spinnerService.hide();
         return;
       }
       const type = f.type.split('/')[1];
@@ -105,7 +105,7 @@ export class HeaderComponent implements OnInit {
   onShareProject() {
     const projectId = this.workspaceService.getProjectId();
     this.modal.open(ProjectShareModalComponent,
-       overlayConfigFactory({project: this.projectService.getProject(projectId), profile: this.profile }, BSModalContext))
+       overlayConfigFactory({project: this.projectService.getSelectedProjectItem(), profile: this.profile }, BSModalContext))
       .then((resultPromise) => {
         resultPromise.result.then((result) => {
           if (result != null) {
