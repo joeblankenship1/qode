@@ -176,13 +176,15 @@ def docCodeMatrix():
     proj_id = request.args.get('project_id')
     check_permissions(proj_id, mail, False)
     codes = {}
-    docs = {}
+    docs = []
+    code_labels = []
     i = 0
     db = current_app.data.driver.db['code']
     cursor = db.find({'key.project': ObjectId(proj_id)})
     if cursor:
         for code in cursor:
             codes[str(code['_id'])] = {'position':i, 'name':code['key']['name']}
+            code_labels.append({ 'name':code['key']['name'], 'color': code['color']})
             i+=1
     if len(codes) == 0:
         error_message = 'No existen códigos en el proyecto'
@@ -196,13 +198,13 @@ def docCodeMatrix():
                 quote_cursor = current_app.data.driver.db['quote'].find_one(({'_id':quote}))
                 if quote_cursor:
                     for q_code in quote_cursor['codes']:
-                        pos = codes[q_code]['position']
+                        pos = codes[str(q_code)]['position']
                         ocurrences[pos] += 1
-            docs[str(doc['_id'])] = {'name':doc['key']['name'], 'ocurrences': ocurrences}
+            docs.append({'name':doc['key']['name'], 'ocurrences': ocurrences})
     if len(docs) == 0:
         error_message = 'No existen documentos en el proyecto'
         abort(make_response(jsonify(message=error_message), 449))
-    return jsonify({"codes":codes , "docs":docs})
+    return jsonify({"codes":code_labels , "docs":docs})
 
 
 

@@ -194,6 +194,14 @@ export class DocumentService {
   // }
 
   getCodesDocumentsMatrix() {
-    return this.http.get(environment.apiUrl + `doc-code-matrix?project_id=${this.projectId}`, this.options);
+    return this.http.get(environment.apiUrl + `doc-code-matrix?project_id=${this.projectId}`, this.options).map(
+      (data: Response) => {
+        const extracted = data.json();
+        return extracted;
+      }).catch((err: Response) => {
+        const details = err.json();
+        console.log(details);
+        return Observable.throw(details);
+      });
   }
 }

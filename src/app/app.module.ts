@@ -66,6 +66,8 @@ import { ResetPasswordComponent } from './home/reset-password/reset-password.com
 import { EqualValidatorDirective } from './shared/directives/equal-validator.directive';
 import { ChartPopupComponent } from './work-space/chart-popup/chart-popup.component';
 
+FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
+
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
     tokenName: 'access_token',
@@ -74,8 +76,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     globalHeaders: [],
   }), http, options);
 }
-
-FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
 
 @NgModule({
   declarations: [

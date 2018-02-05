@@ -9,14 +9,54 @@ import { WorkSpaceService } from '../../shared/services/work-space.service';
 export class ChartPopupComponent implements OnInit {
 
   isOpened = false;
-  result = {};
+  result = {docs: [], codes: []};
+  width = 600;
+  height = 400;
+  type = 'mscombi2d';
+  dataFormat = 'json';
+  dataSource = {'chart': {
+                            'caption': 'Ocurrencia de códigos por documento',
+                            'subcaption': '',
+                            'xaxisname': 'Documento',
+                            'yaxisname': 'Cantidad de ocurrencias',
+                            'numberprefix': '',
+                            'exportEnabled': '1',
+                            'exportMode': 'client',
+                            'theme': 'ocean'
+                          },
+                          'categories': [
+                              {}
+                          ],
+                          'dataset': [
+                              {}
+                          ]};
 
   constructor(private workspaceService: WorkSpaceService) { }
 
   ngOnInit() {
     this.workspaceService.getMatrixResult().subscribe(
-      matrixResult => this.result = matrixResult
+      matrixResult => {
+        if (matrixResult) {
+          this.result = matrixResult;
+          this.isOpened = true;
+          const category = this.result.docs.map( d => ( {'label': d.name}));
+          this.dataSource.categories = [{category}];
+          const dataset = this.result.codes.map( (c , i) => {
+            const data = [];
+            this.result.docs.forEach(element => {
+              data.push({ 'value': element.ocurrences[i] , 'color': c.color});
+            });
+            return { 'seriesname': c.name , 'color': c.color , 'data': data};
+          });
+          this.dataSource.dataset = dataset;
+        }
+      }
     );
+  }
+
+  onClose() {
+    this.isOpened = false;
+    this.result = null;
   }
 
 }

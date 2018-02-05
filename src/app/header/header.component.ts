@@ -126,7 +126,9 @@ export class HeaderComponent implements OnInit {
 
   onCodeMatrix() {
     this.documentService.getCodesDocumentsMatrix().subscribe(
-      resp => this.workspaceService.setMatrixResult(resp),
+      resp => {
+        this.workspaceService.setMatrixResult(resp);
+      },
       error => this.notificationsService.error('Error', error) );
   }
 }

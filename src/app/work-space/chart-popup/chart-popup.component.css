@@ -1,0 +1,8 @@
+.chart-popup {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    background-color: white;
+    padding-left: 25px;
+    padding-right: 15px;
+}
