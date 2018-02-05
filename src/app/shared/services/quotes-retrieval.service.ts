@@ -39,10 +39,9 @@ export class QuotesRetrievalService {
   }
 
   public updateFromActivation() {
-    this.documentService.getActivatedDocuments().subscribe( docs => {
-      const codes = this.codeService.getActivatedCodes()
-        this.updateRetrievedQuotes(docs, codes);
-      });
+    const docs = this.documentService.getActivatedDocuments();
+    const codes = this.codeService.getActivatedCodes();
+    this.updateRetrievedQuotes(docs, codes);
   }
 
 
