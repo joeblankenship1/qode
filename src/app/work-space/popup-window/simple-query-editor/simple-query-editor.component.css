@@ -1,0 +1,28 @@
+
+.container {
+  width: 400px;
+}
+
+.divider {
+  border-top: 1.5px solid #dcd6d6;
+}
+.btn-close {
+  position: absolute;
+  right: 0;
+  padding: 2px;
+  color: #9d9f9e;
+}
+
+.buttons {
+  margin-top: 10px;
+}
+
+.panel {
+  border: 0.5px solid gray;
+  box-shadow: 0px 0px 10px 5px #888888;
+}
+
+.panel-heading {
+  background-color: #2c3e50;
+  color: white;
+}

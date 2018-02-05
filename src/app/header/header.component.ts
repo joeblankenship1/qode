@@ -14,6 +14,7 @@ import { FileExtraction } from '../shared/helpers/file-extraction';
 import { DocumentService } from '../shared/services/document.service';
 import { Document } from '../shared/models/document.model';
 import { NotificationsService } from 'angular2-notifications';
+import { PopupLoaderService } from '../shared/services/popup-loader.service';
 
 @Component({
   selector: 'app-header',
@@ -30,7 +31,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(private authsvc: AuthService, private router: Router, private modal: Modal,
     private workspaceService: WorkSpaceService, private projectService: ProjectService,
-    private documentService: DocumentService, private notificationsService: NotificationsService) {
+    private documentService: DocumentService, private notificationsService: NotificationsService,
+    private popupLoaderService: PopupLoaderService) {
     this.appname = 'fingQDA';
   }
 
@@ -112,7 +114,12 @@ export class HeaderComponent implements OnInit {
   }
 
   onSimpleQuery() {
-    this.workspaceService.setBottomBar(true);
+    //this.workspaceService.setBottomBar(true);
+    this.workspaceService.setPopup(true, 'SimpleQueryEditor');
+  }
+
+  onComplexQuery() {
+    this.workspaceService.setPopup(true, 'ComplexQueryEditor');
   }
 
   private newFile(name, text) {

@@ -64,7 +64,11 @@ import { RetrievedQuoteItemComponent } from './work-space/bottom-bar/retrieved-q
 import { BottomBarComponent } from './work-space/bottom-bar/bottom-bar.component';
 import { ResetPasswordComponent } from './home/reset-password/reset-password.component';
 import { EqualValidatorDirective } from './shared/directives/equal-validator.directive';
-import { ChartPopupComponent } from './work-space/chart-popup/chart-popup.component';
+import { ChartPopupComponent } from './work-space/popup-window/chart-popup/chart-popup.component';
+import { PopupWindowComponent } from './work-space/popup-window/popup-window.component';
+import { SimpleQueryEditorComponent } from './work-space/popup-window/simple-query-editor/simple-query-editor.component';
+import { ComplexQueryEditorComponent } from './work-space/popup-window/complex-query-editor/complex-query-editor.component';
+import { PopupLoaderService } from './shared/services/popup-loader.service';
 
 FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
 
@@ -111,7 +115,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BottomBarComponent,
     ResetPasswordComponent,
     EqualValidatorDirective,
-    ChartPopupComponent
+    ChartPopupComponent,
+    PopupWindowComponent,
+    SimpleQueryEditorComponent,
+    ComplexQueryEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -141,6 +148,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     },
     UserService,
     ProjectService,
+    PopupLoaderService,
     QuoteService,
     QuotesRetrievalService,
     WindowSelection,
@@ -149,6 +157,11 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     [DatePipe]
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CodeModalComponent, ProjectShareModalComponent, QuoteModalComponent, DocumentModalComponent]
+  entryComponents: [CodeModalComponent,
+    ProjectShareModalComponent,
+    QuoteModalComponent,
+    DocumentModalComponent,
+    SimpleQueryEditorComponent,
+    ComplexQueryEditorComponent]
 })
 export class AppModule { }

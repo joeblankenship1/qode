@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WorkSpaceService } from '../../shared/services/work-space.service';
+import { WorkSpaceService } from '../../../shared/services/work-space.service';
 
 @Component({
   selector: 'app-chart-popup',
