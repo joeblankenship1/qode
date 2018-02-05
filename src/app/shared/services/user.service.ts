@@ -12,7 +12,7 @@ export class UserService {
     private projectService: ProjectService,
     private permissionService: NgxPermissionsService) { }
 
-  lector_permissions = ['search_activated_quotes'];
+  lector_permissions = ['search_activated_quotes', 'activate_document', 'activate_code'];
   escritor_permissions = ['importar_docs', 'create_code', 'save_code', 'delete_code'
     , 'activate_code', 'search_activated_quotes', 'code_menu', 'activate_document',
      'edite_document', 'delete_document', 'save_quote', 'delete_quote'];

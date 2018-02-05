@@ -12,11 +12,10 @@ import { Memo } from '../models/memo.model';
 import { Project } from '../models/project.model';
 import { QuoteService } from './quote.service';
 import { element } from 'protractor';
-import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
+import { SpinnerService } from './spinner.service';
 
 @Injectable()
 export class DocumentService {
-
 
   headers: Headers;
   options: RequestOptions;
@@ -26,9 +25,10 @@ export class DocumentService {
   private documentList$ = new BehaviorSubject<Document[]>(null);
 
   private activatedDocuments: Document[] = [];
-  private activatedDocuments$= new BehaviorSubject<Document[]>(null);
+  private activatedDocuments$ = new BehaviorSubject<Document[]>(null);
 
-  constructor(private http: AuthHttp, private quoteService: QuoteService,  private spinnerService: Ng4LoadingSpinnerService) {
+  constructor(private http: AuthHttp, private quoteService: QuoteService,
+    private spinnerService: SpinnerService) {
     this.headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
     this.options = new RequestOptions({ headers: this.headers });
   }
@@ -58,6 +58,7 @@ export class DocumentService {
           }
         }
         this.setDocuments(documentArray);
+        this.spinnerService.setSpinner('document_list', false);
         return documentArray;
       }).catch((err: Response) => {
         const details = err.json();
@@ -124,7 +125,7 @@ export class DocumentService {
       });
   }
 
-  public updateOpened( document: Document, opened: boolean) {
+  public updateOpened(document: Document, opened: boolean) {
     document.setOpened(opened);
     const index = this.documentList.indexOf(document, 0);
     this.documentList[index] = document;
@@ -132,7 +133,7 @@ export class DocumentService {
   }
 
   public updateDocumentAtributes(document: Document): Observable<any> {
-    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag()});
+    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag() });
     const updoptions = new RequestOptions({ headers: updheaders });
     const index = this.documentList.indexOf(document, 0);
     return this.http.put(environment.apiUrl + 'document/' + document.getId(), document.getMessageBody(), updoptions)

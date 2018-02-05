@@ -49,8 +49,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     private notificationsService: NotificationsService,
     private quoteService: QuoteService,
     private userService: UserService,
-    private windowSelection: WindowSelection,
-    private spinnerService: Ng4LoadingSpinnerService) { }
+    private windowSelection: WindowSelection) { }
 
   ngOnInit() {
     this.workSpaceService.getSelectedDocumentContent().subscribe(

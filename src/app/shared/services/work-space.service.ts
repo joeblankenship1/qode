@@ -10,9 +10,9 @@ import { Code } from '../models/code.model';
 import { Project } from '../models/project.model';
 import { QuoteDisplay } from '../models/quote-display';
 import { indexDebugNode } from '@angular/core/src/debug/debug_node';
-import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { UserService } from './user.service';
 import { CodeService } from './code.service';
+import { SpinnerService } from './spinner.service';
 
 @Injectable()
 export class WorkSpaceService {
@@ -44,7 +44,7 @@ export class WorkSpaceService {
     private quoteService: QuoteService,
     private codeService: CodeService,
     private userService: UserService,
-    private spinnerService: Ng4LoadingSpinnerService) { }
+    private spinnerService: SpinnerService) { }
 
   public initWorkSpace(projectId) {
     this.projectId = projectId;
@@ -68,9 +68,11 @@ export class WorkSpaceService {
         const selectedDoc = this.selectedDocumentId != null ?
           this.openedDocuments.find(d => d.getId() === this.selectedDocumentId) : null;
         this.selectDocument(selectedDoc ? selectedDoc : this.openedDocuments[0]);
+        this.spinnerService.setSpinner('document', false);
       },
       error => {
         console.error(error);
+        this.spinnerService.setSpinner('document', false);
       }
     );
   }

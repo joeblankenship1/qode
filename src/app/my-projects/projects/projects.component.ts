@@ -15,6 +15,7 @@ import { ProjectService } from '../../shared/services/project.service';
 import { Project } from '../../shared/models/project.model';
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 import { WorkSpaceService } from '../../shared/services/work-space.service';
+import { SpinnerService } from '../../shared/services/spinner.service';
 
 @Component({
   selector: 'app-projects',
@@ -28,20 +29,30 @@ export class ProjectsComponent implements OnInit {
 
   constructor(private projectService: ProjectService,
     private notificationsService: NotificationsService,
-    private workspaceService: WorkSpaceService) { }
+    private workspaceService: WorkSpaceService,
+    private spinnerService: SpinnerService) { }
 
   public filterQuery = '';
   public rowsOnPage = 10;
   public sortBy = 'name';
   public sortOrder = 'asc';
+  spinner = false;
 
   ngOnInit() {
     this.workspaceService.cleanWorkSpace();
+    this.spinnerService.getSpinner('projects')
+      .subscribe(
+      state => {
+        this.spinner = state;
+      });
+    this.spinnerService.setSpinner('projects', true);
+
     this.projectService.getProjects()
       .subscribe(
       projects => {
         if (projects) {
           this.projects = projects;
+          this.spinnerService.setSpinner('projects', false);
         } else {
           this.projects = [];
         }

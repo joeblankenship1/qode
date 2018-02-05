@@ -43,6 +43,7 @@ import { OptionsComponent } from './shared/helpers/options/options.component';
 import { WindowSelection } from './shared/helpers/window-selection';
 import { QuoteService } from './shared/services/quote.service';
 import { WorkSpaceService } from './shared/services/work-space.service';
+import { SpinnerService } from './shared/services/spinner.service';
 
 import {DataTableModule} from 'angular2-datatable';
 import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
@@ -57,7 +58,6 @@ import { QuotesRetrievalService } from './shared/services/quotes-retrieval.servi
 import { RetrievedQuotesComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quotes-list.component';
 import { RetrievedQuoteItemComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quote-item/retrieved-quote-item.component';
 import { BottomBarComponent } from './work-space/bottom-bar/bottom-bar.component';
-import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { ResetPasswordComponent } from './home/reset-password/reset-password.component';
 import { EqualValidatorDirective } from './shared/directives/equal-validator.directive';
@@ -121,7 +121,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TreeModule,
     Ng2CompleterModule,
     ColorPickerModule,
-    Ng4LoadingSpinnerModule.forRoot(),
     NgxPermissionsModule.forRoot(),
     SpinnerComponentModule
   ],
@@ -140,6 +139,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     WindowSelection,
     WorkSpaceService,
     WorkSpaceResolver,
+    SpinnerService,
     [DatePipe]
   ],
   bootstrap: [AppComponent],

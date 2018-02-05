@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
-import { DocumentService } from '../../../shared/services/document.service';
+import { SpinnerService } from '../../../shared/services/spinner.service';
 import { Document } from '../../../shared/models/document.model';
 import { WorkSpaceService } from '../../../shared/services/work-space.service';
 
@@ -13,23 +13,30 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   public openedDocuments: Document[] = [];
   public selectedDocument: Document;
+  spinner = false;
 
-  constructor(private workspaceService: WorkSpaceService) { }
+  constructor(private workspaceService: WorkSpaceService,
+    private spinnerService: SpinnerService) { }
 
   ngOnInit() {
+    this.spinnerService.getSpinner('document')
+      .subscribe(
+      state => {
+        this.spinner = state;
+      });
+    this.spinnerService.setSpinner('document', true);
+
     this.workspaceService.getOpenedDocuments()
       .subscribe(
       openedDocuments => {
         this.openedDocuments = openedDocuments;
-      }
-      );
+      });
 
     this.workspaceService.getSelectedDocument()
       .subscribe(
       selectedDocument => {
         this.selectedDocument = selectedDocument;
-      }
-      );
+      });
   }
 
   onDocumentSelected(document: Document) {

@@ -15,7 +15,6 @@ import { WorkSpaceService } from '../../../shared/services/work-space.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DatePipe } from '@angular/common';
-import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: '[app-project-item]',
@@ -31,7 +30,7 @@ export class ProjectItemComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private router: Router, private notificationsService: NotificationsService,
     private modal: Modal, private workspaceService: WorkSpaceService, private authService: AuthService, private datePipe: DatePipe,
-    private spinnerService: Ng4LoadingSpinnerService) { }
+    ) { }
 
   ngOnInit() {
 
@@ -79,6 +78,5 @@ export class ProjectItemComponent implements OnInit {
 
   onAccessProject() {
     this.router.navigate(['workspace', this.project._id]);
-    // this.spinnerService.show();
   }
 }

@@ -4,6 +4,7 @@ import { DocumentService } from '../../../../shared/services/document.service';
 import { WorkSpaceService } from '../../../../shared/services/work-space.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { UserService } from '../../../../shared/services/user.service';
+import { SpinnerService } from '../../../../shared/services/spinner.service';
 
 @Component({
   selector: 'app-documents-tabs',
@@ -17,7 +18,8 @@ export class DocumentsTabsComponent implements OnInit {
 
   constructor(private documentService: DocumentService,
     private workspaceService: WorkSpaceService,
-    private userService: UserService) { }
+    private userService: UserService,
+  private spinnerService: SpinnerService) { }
 
   ngOnInit() {
     this.workspaceService.getSelectedDocument()
