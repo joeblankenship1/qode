@@ -15,6 +15,8 @@ import { WorkSpaceService } from '../../../shared/services/work-space.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DatePipe } from '@angular/common';
+import { AdfsUserProfile } from 'auth0-js';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   selector: '[app-project-item]',
@@ -29,7 +31,8 @@ export class ProjectItemComponent implements OnInit {
   public myNick$ = new BehaviorSubject<string>('');
 
   constructor(private projectService: ProjectService, private router: Router, private notificationsService: NotificationsService,
-    private modal: Modal, private workspaceService: WorkSpaceService, private authService: AuthService, private datePipe: DatePipe,
+    private modal: Modal, private workspaceService: WorkSpaceService, private authService: AuthService, private userService: UserService,
+     private datePipe: DatePipe,
     ) { }
 
   ngOnInit() {
@@ -74,6 +77,7 @@ export class ProjectItemComponent implements OnInit {
 
   onSelectedProject() {
     this.projectService.setSelectedProject(this.project);
+    this.userService.loadRole(this.project._id);
   }
 
   onAccessProject() {

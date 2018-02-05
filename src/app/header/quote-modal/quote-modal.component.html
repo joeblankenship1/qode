@@ -5,7 +5,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <div class="form-group row">
+            <div class="form-group row" style="margin-top:10px;">
                 <label for="inputCode" class="col-xs-2 control-label">Código</label>
                 <div class="col-xs-10">
                     <ng2-completer [(ngModel)]="chosenCode" [datasource]="dataService" (selected)="onCodeSelected($event)" [textNoResults]="'Enter para crear nuevo código'" [minSearchLength]="1" inputClass="form-control" inputID="inputCode" [placeholder]="'Buscar código o crear nuevo'"
@@ -19,8 +19,8 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let c of mf.data">
-                            <td>
-                                <button class="btn btn-danger btn-delete" (click)="onRemoveCode(c)" [disabled]='!permissions.includes("delete_code")'>x</button>
+                            <td style="padding: 3px;">
+                                <button class="btn btn-danger" style="border:none;" (click)="onRemoveCode(c)" [disabled]='!permissions.includes("delete_code")'>x</button>
                             </td>
                             <td> {{c.name}}</td>
                         </tr>

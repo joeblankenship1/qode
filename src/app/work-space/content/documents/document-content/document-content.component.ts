@@ -38,6 +38,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   menuOptions: MenuOption[][] = [];
   options = new OptionsComponent();
   selectedRange;
+  permissions: Array<string>;
 
   public paint = false;
   showLoader: boolean;
@@ -73,16 +74,23 @@ export class DocumentContentComponent implements OnInit, OnChanges {
       error => console.log(error)
     );
     this.createMenuOptions();
+
+    this.userService.getRolePermissions().subscribe(
+      permissions => {
+        this.permissions = permissions;
+      },
+      error => { console.error(error); }
+    );
   }
 
   ngOnChanges() {
     this.updatePagesAndQuotes();
   }
 
-  private onScroll(e) {
-    console.log(e.srcElement.scrollTop);
-    // document.getElementById('99').scrollIntoView()
-  }
+  // private onScroll(e) {
+  //   console.log(e.srcElement.scrollTop);
+  //   // document.getElementById('99').scrollIntoView()
+  // }
 
   private createNewQuote(quote: Quote) {
     this.quoteService.addQuote(quote).subscribe(
@@ -178,8 +186,19 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.menuOptions.map(group => {
       group.map(op => newSelection ? op.enable() : op.disable());
     });
+    if (this.permissions) {
+      if (this.permissions.includes('coding')) {
+        this.menuOptions[0][0].enable();
+      } else {
+        this.menuOptions[0][0].disable();
+      }
+      if (this.permissions.includes('coding_with_activated_codes')) {
+        this.menuOptions[0][1].enable();
+      } else {
+        this.menuOptions[0][1].disable();
+      }
+    }
   }
-
 
   private onOpenQuoteModal(item: Quote) {
     if (item) {

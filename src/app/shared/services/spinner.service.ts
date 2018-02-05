@@ -10,17 +10,12 @@ export class SpinnerService {
   private spinnerDocumentList$ = new BehaviorSubject<boolean>(false);
   private spinnerProjects = false;
   private spinnerProjects$ = new BehaviorSubject<boolean>(false);
+  private spinnerCodeList = false;
+  private spinnerCodeList$ = new BehaviorSubject<boolean>(false);
 
   constructor() { }
 
   getSpinner(spinner) {
-    console.log('get ' + spinner);
-    // if (spinner === 'document') {
-    //   return this.spinnerDocument$.asObservable();
-    // } else {
-    //   return this.spinnerDocumentList$.asObservable();
-    // }
-
     switch (spinner) {
       case 'document':
         return this.spinnerDocument$.asObservable();
@@ -28,19 +23,12 @@ export class SpinnerService {
         return this.spinnerDocumentList$.asObservable();
       case 'projects':
         return this.spinnerProjects$.asObservable();
+      case 'code_list':
+        return this.spinnerCodeList$.asObservable();
     }
   }
 
   setSpinner(spinner, state) {
-    console.log('set ' + spinner + ' ' + state);
-    // if (spinner === 'document') {
-    //   this.spinnerDocument = state;
-    //   this.spinnerDocument$.next(this.spinnerDocument);
-    // } else {
-    //   this.spinnerDocumentList = state;
-    //   this.spinnerDocumentList$.next(this.spinnerDocumentList);
-    // }
-
     switch (spinner) {
       case 'document':
         this.spinnerDocument = state;
@@ -53,6 +41,10 @@ export class SpinnerService {
       case 'projects':
         this.spinnerProjects = state;
         this.spinnerProjects$.next(this.spinnerProjects);
+        break;
+      case 'code_list':
+        this.spinnerCodeList = state;
+        this.spinnerCodeList$.next(this.spinnerCodeList);
         break;
     }
   }
