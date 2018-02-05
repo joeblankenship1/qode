@@ -162,6 +162,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     QuoteModalComponent,
     DocumentModalComponent,
     SimpleQueryEditorComponent,
-    ComplexQueryEditorComponent]
+    ComplexQueryEditorComponent,
+    ChartPopupComponent
+  ]
 })
 export class AppModule { }

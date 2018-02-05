@@ -135,6 +135,7 @@ export class HeaderComponent implements OnInit {
     this.documentService.getCodesDocumentsMatrix().subscribe(
       resp => {
         this.workspaceService.setMatrixResult(resp);
+        this.workspaceService.setPopup(true, 'ChartPopup');
       },
       error => this.notificationsService.error('Error', error) );
   }

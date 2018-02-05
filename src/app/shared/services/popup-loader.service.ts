@@ -5,6 +5,7 @@ import { ComponentFactoryResolver,
 import { SimpleQueryEditorComponent } from '../../work-space/popup-window/simple-query-editor/simple-query-editor.component';
 import { ViewContainerRef } from '@angular/core';
 import { ComplexQueryEditorComponent } from '../../work-space/popup-window/complex-query-editor/complex-query-editor.component';
+import { ChartPopupComponent } from '../../work-space/popup-window/chart-popup/chart-popup.component';
 
 @Injectable()
 export class PopupLoaderService {
@@ -30,6 +31,14 @@ export class PopupLoaderService {
   loadComplexQueryEditor() {
     const factory = this.factoryResolver
                         .resolveComponentFactory(ComplexQueryEditorComponent);
+    const component = factory
+      .create(this.rootViewContainer.parentInjector);
+    this.rootViewContainer.insert(component.hostView);
+  }
+
+  loadChartPopup() {
+    const factory = this.factoryResolver
+                        .resolveComponentFactory(ChartPopupComponent);
     const component = factory
       .create(this.rootViewContainer.parentInjector);
     this.rootViewContainer.insert(component.hostView);

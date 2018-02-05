@@ -8,7 +8,6 @@ import { WorkSpaceService } from '../../../shared/services/work-space.service';
 })
 export class ChartPopupComponent implements OnInit {
 
-  isOpened = false;
   result = {docs: [], codes: []};
   width = 600;
   height = 400;
@@ -38,7 +37,6 @@ export class ChartPopupComponent implements OnInit {
       matrixResult => {
         if (matrixResult) {
           this.result = matrixResult;
-          this.isOpened = true;
           const category = this.result.docs.map( d => ( {'label': d.name}));
           this.dataSource.categories = [{category}];
           const dataset = this.result.codes.map( (c , i) => {
@@ -55,8 +53,8 @@ export class ChartPopupComponent implements OnInit {
   }
 
   onClose() {
-    this.isOpened = false;
     this.result = null;
+    this.workspaceService.setPopup(false);
   }
 
 }
