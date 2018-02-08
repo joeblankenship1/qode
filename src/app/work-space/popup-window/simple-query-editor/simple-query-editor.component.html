@@ -1,5 +1,5 @@
  
-<div class="container">
+<div class="popup-container">
   <div class="panel">
     <div class="panel-heading">Búsqueda Simple
       <span class='btn-close glyphicon glyphicon-remove' (click)='onClose()'></span>
@@ -12,7 +12,7 @@
                   id="actDocsInput"
                   name="adocs" 
                   [(ngModel)]="activatedDocs">
-                  <label for="actDocsInput">Documentos Activados</label> 
+                  <label for="actDocsInput">Solo Documentos Activados</label> 
                   <br> 
              </div>
              <hr class='divider'>
@@ -21,34 +21,9 @@
                   id="actCodesInput"
                   name="acodes"  
                   [(ngModel)]="activatedCodes">
-                  <label for="actCodesInput">Códigos Activados</label> 
+                  <label for="actCodesInput">Solo Códigos Activados</label> 
                   <br> 
-             </div>
-            <hr class='divider'>
-            <div class="field">
-              <label >Operador</label> <br>
-              <input type="checkbox"  
-                  id="andInput"
-                  name="and"  
-                  [ngModel]="operAnd"
-                  (change)="operAnd = !operAnd; operOr = false; operNot = false"
-                  >
-                  AND
-              <input type="checkbox"  
-                  id="orInput"
-                  name="or"  
-                  [ngModel]="operOr"
-                  (change)="operAnd = false; operOr = !operOr; operNot = false"
-                  >
-                  OR
-              <input type="checkbox"  
-                id="notInput"
-                name="not"  
-                [ngModel]="operNot"
-                (change)="operAnd = false; operOr = false; operNot = !operNot"
-                >
-                NOT
-            </div>          
+             </div>            
             <div class="buttons">
               <button type="submit" class="btn btn-success">Buscar</button>
             </div>            

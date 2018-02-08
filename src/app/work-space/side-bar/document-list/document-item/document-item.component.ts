@@ -80,13 +80,13 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
   public onActivateDocument() {
     this.document.activate();
     this.documentService.setActivatedDocument(this.document);
-    this.quotesRetrievalService.updateFromActivation();
+    this.quotesRetrievalService.addDocument(this.document);
   }
 
   public onDeactivateDocument() {
     this.document.deactivate();
     this.documentService.removeActivatedDocument(this.document);
-    this.quotesRetrievalService.updateFromActivation();
+    this.quotesRetrievalService.removeDocument(this.document);
   }
 
   public getItemClass() {

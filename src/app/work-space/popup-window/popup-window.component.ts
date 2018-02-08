@@ -13,6 +13,7 @@ export class PopupWindowComponent implements OnInit {
   service;
   height;
   width;
+  margin;
 
   @ViewChild('dynamic', {
     read: ViewContainerRef
@@ -34,7 +35,7 @@ export class PopupWindowComponent implements OnInit {
         switch (name) {
           case 'SimpleQueryEditor': {
             this.service.loadSimpleQueryEditor();
-            this.width = '400px';
+            this.margin = '15%';
             break;
           }
           case 'ComplexQueryEditor': {

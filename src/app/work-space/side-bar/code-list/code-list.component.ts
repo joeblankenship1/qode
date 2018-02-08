@@ -18,6 +18,9 @@ export class CodeListComponent implements OnInit {
   public newCodeName = '';
   public projectId: string;
 
+  public noSelection = true;
+  public selectAllClass = '';
+
   constructor(private codeService: CodeService, private workspaceService: WorkSpaceService,
               private modal: Modal, private notificationsService: NotificationsService) { }
 
@@ -48,5 +51,15 @@ export class CodeListComponent implements OnInit {
         console.error(error);
       });
     this.newCodeName = '';
+  }
+
+  onSelectAll() {
+    this.codes.map(c => {
+      this.noSelection ? c.activate() : c.deactivate();
+      this.noSelection ? this.codeService.setActivatedCode(c)
+      : this.codeService.removeActivatedCode(c);
+    });
+    this.noSelection = !this.noSelection;
+    this.noSelection ? this.selectAllClass = '' : this.selectAllClass = 'action-selected';
   }
 }

@@ -35,6 +35,8 @@
 .bottombar-actions {
     position: absolute;
     bottom: 0;
+    margin-left: 155px;
+    cursor: pointer;
 }
 
 .bottombar-close {

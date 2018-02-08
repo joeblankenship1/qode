@@ -203,6 +203,3 @@ def docCodeMatrix():
         error_message = 'No existen documentos en el proyecto'
         abort(make_response(jsonify(message=error_message), 449))
     return jsonify({"codes":codes , "docs":docs})
-
-
-

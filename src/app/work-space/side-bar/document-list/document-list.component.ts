@@ -13,6 +13,9 @@ import { TREE_ACTIONS, KEYS, IActionMapping, ITreeOptions } from 'angular-tree-c
 export class DocumentListComponent implements OnInit {
   public documents: Document[] = [];
 
+  public noSelection = true;
+  public selectAllClass = '';
+
   constructor(private documentService: DocumentService) { }
 
   ngOnInit() {
@@ -24,6 +27,16 @@ export class DocumentListComponent implements OnInit {
       error => console.error(error)
       );
 
+  }
+
+  onSelectAll() {
+    this.documents.map(d => {
+      this.noSelection ? d.activate() : d.deactivate();
+      this.noSelection ? this.documentService.setActivatedDocument(d)
+      : this.documentService.removeActivatedDocument(d);
+    });
+    this.noSelection = !this.noSelection;
+    this.noSelection ? this.selectAllClass = '' : this.selectAllClass = 'action-selected';
   }
 
 }

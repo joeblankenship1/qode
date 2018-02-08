@@ -18,9 +18,7 @@ export class SimpleQueryEditorComponent implements OnInit {
 
   activatedDocs;
   activatedCodes;
-  operAnd;
-  operOr;
-  operNot;
+  projectId: string;
 
   operator: OperatorsEnum;
 
@@ -32,9 +30,6 @@ export class SimpleQueryEditorComponent implements OnInit {
   private documentService: DocumentService, private codeService: CodeService ) {
     this.activatedCodes = true;
     this.activatedDocs = true;
-    this.operAnd = false;
-    this.operNot = false;
-    this.operOr = true;
   }
 
   ngOnInit() {
@@ -43,11 +38,11 @@ export class SimpleQueryEditorComponent implements OnInit {
       this.codeService.getCodes().subscribe( codes => {
         this.codes = codes;
       });
+      this.projectId = this.workspaceService.getProjectId();
     });
   }
 
   onFormSubmit(f) {
-    this.operator = this.getOper();
     let codes: Code[] = this.codes;
     let docs: Document[] = this.documents;
     if (this.activatedCodes && this.activatedDocs) {
@@ -62,25 +57,13 @@ export class SimpleQueryEditorComponent implements OnInit {
         }
       }
     }
+    this.quotesRetrievalService.doSimpleQuery(docs, codes);
+    this.workspaceService.setBottomBar(true);
+    this.workspaceService.setPopup(false);
   }
 
   onClose() {
     this.workspaceService.setPopup(false);
-  }
-
-  private getOper(): OperatorsEnum {
-    if (this.operAnd) {
-      this.operator = OperatorsEnum['AND'];
-    } else {
-      if (this.operOr) {
-        this.operator = OperatorsEnum['OR'];
-      } else {
-        if (this.operNot) {
-          this.operator = OperatorsEnum['NOT'];
-        }
-      }
-    }
-    return this.operator;
   }
 
 }

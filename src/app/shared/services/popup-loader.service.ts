@@ -24,15 +24,15 @@ export class PopupLoaderService {
   loadSimpleQueryEditor() {
     const factory = this.factoryResolver
                         .resolveComponentFactory(SimpleQueryEditorComponent);
+    this.rootViewContainer.clear();
     this.component = this.rootViewContainer.createComponent(factory);
   }
 
   loadComplexQueryEditor() {
     const factory = this.factoryResolver
                         .resolveComponentFactory(ComplexQueryEditorComponent);
-    const component = factory
-      .create(this.rootViewContainer.parentInjector);
-    this.rootViewContainer.insert(component.hostView);
+    this.rootViewContainer.clear();
+    this.component = this.rootViewContainer.createComponent(factory);
   }
 
   destroyComponent() {

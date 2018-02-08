@@ -85,13 +85,13 @@ export class CodeItemComponent implements OnInit {
   public onActivateCode() {
     this.code.activate();
     this.codeService.setActivatedCode(this.code);
-    this.quoteRetrievalService.updateFromActivation();
+    this.quoteRetrievalService.addCode(this.code);
   }
 
   public onDeactivateCode() {
     this.code.deactivate();
     this.codeService.removeActivatedCode(this.code);
-    this.quoteRetrievalService.updateFromActivation();
+    this.quoteRetrievalService.removeCode(this.code);
   }
 
 }
