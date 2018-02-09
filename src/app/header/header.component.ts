@@ -124,4 +124,8 @@ export class HeaderComponent implements OnInit {
     }, this.workspaceService.getProjectId()))
       .subscribe();
   }
+
+  searchInDoc() {
+    // this.documentService.searchInDocuments();
+  }
 }
