@@ -6,6 +6,8 @@ export class SpinnerService {
 
   private spinnerDocument = false;
   private spinnerDocument$ = new BehaviorSubject<boolean>(false);
+  private spinnerCoding = false;
+  private spinnerCoding$ = new BehaviorSubject<boolean>(false);
   private spinnerDocumentList = false;
   private spinnerDocumentList$ = new BehaviorSubject<boolean>(false);
   private spinnerProjects = false;
@@ -19,6 +21,8 @@ export class SpinnerService {
     switch (spinner) {
       case 'document':
         return this.spinnerDocument$.asObservable();
+        case 'coding':
+        return this.spinnerCoding$.asObservable();
       case 'document_list':
         return this.spinnerDocumentList$.asObservable();
       case 'projects':
@@ -33,6 +37,10 @@ export class SpinnerService {
       case 'document':
         this.spinnerDocument = state;
         this.spinnerDocument$.next(this.spinnerDocument);
+        break;
+        case 'coding':
+        this.spinnerCoding = state;
+        this.spinnerCoding$.next(this.spinnerCoding);
         break;
       case 'document_list':
         this.spinnerDocumentList = state;

@@ -18,6 +18,7 @@ import { CodeService } from '../../../../shared/services/code.service';
 import { DocumentService } from '../../../../shared/services/document.service';
 import { NotificationsService } from 'angular2-notifications';
 import { UserService } from '../../../../shared/services/user.service';
+import { SpinnerService } from '../../../../shared/services/spinner.service';
 
 @Component({
   selector: 'app-document-content',
@@ -39,6 +40,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   options = new OptionsComponent();
   selectedRange;
   permissions: Array<string>;
+  spinner = false;
 
   public paint = false;
   showLoader: boolean;
@@ -50,6 +52,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     private notificationsService: NotificationsService,
     private quoteService: QuoteService,
     private userService: UserService,
+    private spinnerService: SpinnerService,
     private windowSelection: WindowSelection) { }
 
   ngOnInit() {
@@ -81,6 +84,12 @@ export class DocumentContentComponent implements OnInit, OnChanges {
       },
       error => { console.error(error); }
     );
+
+    this.spinnerService.getSpinner('document')
+    .subscribe(
+    state => {
+      this.spinner = state;
+    });
   }
 
   ngOnChanges() {
@@ -101,15 +110,18 @@ export class DocumentContentComponent implements OnInit, OnChanges {
           this.workSpaceService.updateDocumentContent();
           window.getSelection().removeAllRanges();
           window.getSelection().addRange(this.selectedRange);
+          this.spinnerService.setSpinner('coding', false);
         },
           error => {
             this.notificationsService.error('Error al guardar', error);
+            this.spinnerService.setSpinner('coding', false);
             console.error(error);
           }
         );
       },
       error => {
         this.notificationsService.error('Error al guardar', error);
+        this.spinnerService.setSpinner('coding', false);
         console.error(error);
       }
     );
@@ -226,6 +238,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   private onCodeWithActivatedCodes(quote: Quote) {
     const codes = [];
     this.codeService.getActivatedCodes().map(c => {
+      this.spinnerService.setSpinner('coding', true);
       codes.push(c);
     });
     quote.setCodes(codes);
@@ -233,12 +246,4 @@ export class DocumentContentComponent implements OnInit, OnChanges {
       this.createNewQuote(quote);
     }
   }
-
-  showsLoader() {
-    this.showLoader = true;
-  }
-  hideLoader() {
-    this.showLoader = true;
-  }
-
 }

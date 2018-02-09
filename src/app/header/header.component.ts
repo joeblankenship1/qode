@@ -14,6 +14,7 @@ import { FileExtraction } from '../shared/helpers/file-extraction';
 import { DocumentService } from '../shared/services/document.service';
 import { Document } from '../shared/models/document.model';
 import { NotificationsService } from 'angular2-notifications';
+import { UserService } from '../shared/services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -27,9 +28,11 @@ export class HeaderComponent implements OnInit {
   appname = '';
   show: boolean;
   private projectId: string;
+  permissions: Array<string>;
 
   constructor(private authsvc: AuthService, private router: Router, private modal: Modal,
     private workspaceService: WorkSpaceService, private projectService: ProjectService,
+    private userService: UserService,
     private documentService: DocumentService, private notificationsService: NotificationsService
   ) {
     this.appname = 'fingQDA';
@@ -46,6 +49,14 @@ export class HeaderComponent implements OnInit {
       },
       error => console.error(error)
     );
+
+    this.userService.getRolePermissions().subscribe(
+      permissions => {
+        this.permissions = permissions;
+      },
+      error => { console.error(error); }
+    );
+
   }
 
   logout() {

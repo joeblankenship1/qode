@@ -13,7 +13,8 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   public openedDocuments: Document[] = [];
   public selectedDocument: Document;
-  spinner = false;
+  spinnerDocuments = false;
+  spinnerCoding = false;
 
   constructor(private workspaceService: WorkSpaceService,
     private spinnerService: SpinnerService) { }
@@ -22,9 +23,14 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.spinnerService.getSpinner('document')
       .subscribe(
       state => {
-        this.spinner = state;
+        this.spinnerDocuments = state;
       });
     this.spinnerService.setSpinner('document', true);
+    this.spinnerService.getSpinner('coding')
+    .subscribe(
+    state => {
+      this.spinnerCoding = state;
+    });
 
     this.workspaceService.getOpenedDocuments()
       .subscribe(
