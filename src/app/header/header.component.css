@@ -17,7 +17,6 @@
     cursor: pointer;
 }
 
-a.disabled {
+.disabled {
     pointer-events: none;
-    cursor: not-allowed;
 }
