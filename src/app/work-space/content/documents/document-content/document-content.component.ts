@@ -137,7 +137,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   // Open context menu, the selected text will be passed as a parameter.
   // If there's no slected text, several options won't be enabled.
   public onContextMenu($event: MouseEvent, item: any): void {
-    const newSelection = this.getSelectedText();
+    const newSelection = this.getSelectedText();;
     if (newSelection) {
       this.workSpaceService.setNewSelection(newSelection);
       this.defineMenuOptions(newSelection);
@@ -160,7 +160,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
       return undefined;
     }
     this.selectedRange = selection.getRangeAt(0);
-    if (this.selectedRange && (this.selectedRange.startOffset !== this.selectedRange.endOffset)) {
+    if (this.selectedRange) { //&& (this.selectedRange.startOffset !== this.selectedRange.endOffset)) {
       return new Quote(selection.toString(), selection.baseOffset,
         selection.extentOffset, docDisplay, this.workSpaceService.getProjectId());
     }
