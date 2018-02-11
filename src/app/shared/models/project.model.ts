@@ -5,7 +5,7 @@ export class Project {
   public _etag: string;
   public name: string;
   public description: string;
-  public collaborators: Array<{email: string, role: string}>;
+  public collaborators: Array<{ email: string, role: string }>;
   public owner: string;
   public _created_by: string;
   public _created: Date;
@@ -18,7 +18,7 @@ export class Project {
     this.name = data.name ? data.name : data.key.name;
     this.description = data.description;
     this.collaborators = data.collaborators ? data.collaborators : [];
-    this.owner = data.owner ? data.owner : data.key.owner ;
+    this.owner = data.owner ? data.owner : data.key.owner;
     this._created_by = data._created_by;
     this._created = data._created;
     this._modified = data._modified;
@@ -51,6 +51,14 @@ export class Project {
 
   setModified(_modified: Date) {
     this._modified = _modified;
+  }
+
+  getCollaborator(email) {
+    return this.collaborators.find(r => r.email.split('@')[0] === email);
+  }
+
+  getOwner() {
+    return this.owner;
   }
 
   getMessageBody() {

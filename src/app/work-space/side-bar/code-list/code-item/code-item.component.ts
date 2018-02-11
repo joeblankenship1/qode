@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewContainerRef, ViewEncapsulation } from '@angular/core';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
-import { Modal, BSModalContext} from 'angular2-modal/plugins/bootstrap';
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { Code } from '../../../../shared/models/code.model';
 import { CodeModalComponent, CodeModalData } from '../../../../header/code-modal/code-modal.component';
 import { QuoteService } from '../../../../shared/services/quote.service';
@@ -10,6 +10,7 @@ import { OptionsComponent } from '../../../../shared/helpers/options/options.com
 import { ContextMenuService } from 'ngx-contextmenu';
 import { CodeService } from '../../../../shared/services/code.service';
 import { QuotesRetrievalService } from '../../../../shared/services/quotes-retrieval.service';
+import { UserService } from '../../../../shared/services/user.service';
 
 @Component({
   selector: 'app-code-item',
@@ -22,29 +23,37 @@ export class CodeItemComponent implements OnInit {
   @Input() code: Code;
   menuOptions: MenuOption[][] = [];
   options = new OptionsComponent();
+  permissions: Array<string>;
 
   constructor(private modal: Modal, private quoteService: QuoteService,
-     private workspaceService: WorkSpaceService,
-     private contextMenuService: ContextMenuService,
-     private codeService: CodeService,
-     private quoteRetrievalService: QuotesRetrievalService) {
+    private workspaceService: WorkSpaceService,
+    private contextMenuService: ContextMenuService,
+    private codeService: CodeService,
+    private userService: UserService,
+    private quoteRetrievalService: QuotesRetrievalService) {
   }
 
   ngOnInit() {
+    this.userService.getRolePermissions().subscribe(
+      permissions => {
+        this.permissions = permissions;
+      },
+      error => { console.error(error); }
+    );
     this.createMenuOptions();
   }
 
   public onOpenCode() {
-    this.modal.open(CodeModalComponent, overlayConfigFactory({ code: this.code, mode: 'new' }, BSModalContext ))
-    .then((resultPromise) => {
-      resultPromise.result.then((result) => {
-        if (result === -1) {
-          if (this.quoteService.removeCodeFromQuotes(this.code.getId())) {
-            this.workspaceService.updateDocumentContent();
+    this.modal.open(CodeModalComponent, overlayConfigFactory({ code: this.code, mode: 'new' }, BSModalContext))
+      .then((resultPromise) => {
+        resultPromise.result.then((result) => {
+          if (result === -1) {
+            if (this.quoteService.removeCodeFromQuotes(this.code.getId())) {
+              this.workspaceService.updateDocumentContent();
+            }
           }
-        }
+        });
       });
-    });
   }
 
   private createMenuOptions() {
@@ -75,6 +84,15 @@ export class CodeItemComponent implements OnInit {
     } else {
       this.menuOptions[0][0].setVisible(true);
       this.menuOptions[0][1].setVisible(false);
+    }
+    if (this.permissions) {
+      if (this.permissions.includes('activate_code')) {
+        this.menuOptions[0][0].enable();
+        this.menuOptions[0][1].enable();
+      } else {
+        this.menuOptions[0][0].disable();
+        this.menuOptions[0][1].disable();
+      }
     }
   }
 

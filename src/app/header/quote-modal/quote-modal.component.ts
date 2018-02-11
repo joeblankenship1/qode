@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { Document } from '../../shared/models/document.model';
 import { DocumentService } from '../../shared/services/document.service';
 import { NotificationsService } from 'angular2-notifications';
+import { UserService } from '../../shared/services/user.service';
 
 export class QuoteModalData extends BSModalContext {
   public quote: Quote;
@@ -31,10 +32,13 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
   protected codes: Code[];
   protected dataService: CompleterData;
   private memo: string;
+  private permissions: Array<string>;
 
   constructor(public dialog: DialogRef<QuoteModalData>, private quoteService: QuoteService,
               private codeService: CodeService, private completerService: CompleterService,
-              private documentService: DocumentService , private modal: Modal, private notificationsService: NotificationsService) {
+              private documentService: DocumentService , private userService: UserService,
+              private modal: Modal,
+              private notificationsService: NotificationsService) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.quote = dialog.context.quote;
@@ -51,6 +55,12 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
   }
 
   ngOnInit() {
+    this.userService.getRolePermissions().subscribe(
+      permissions => {
+        this.permissions = permissions;
+      },
+      error => { console.error(error); }
+    );
   }
 
   public onCodeSelected(selected: CompleterItem) {

@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="panel panel-default">
-                <table class="table table-striped" [mfData]="projects | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                <table style="position:relative" class="table table-striped" [mfData]="projects | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
                     <thead>
                         <tr>
                             <th colspan="1">
@@ -88,6 +88,15 @@
                             </td>
                         </tr>
                     </tfoot>
+                    <spinner-component [spinnerShow]="spinner">
+                        <div class="sk-folding-cube">
+                            <div class="sk-cube1 sk-cube"></div>
+                            <div class="sk-cube2 sk-cube"></div>
+                            <div class="sk-cube4 sk-cube"></div>
+                            <div class="sk-cube3 sk-cube"></div>
+                        </div>
+                        <h5> Cargando lista de proyectos.. </h5>
+                    </spinner-component>
                 </table>
             </div>
         </div>

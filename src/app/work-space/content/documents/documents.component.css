@@ -3,3 +3,8 @@
     overflow-x: scroll;
     white-space: nowrap;
 }
+
+h2 {
+    text-align: center;
+    color: rgba(51, 53, 52, 0.829);
+}

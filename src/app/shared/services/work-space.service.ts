@@ -10,6 +10,9 @@ import { Code } from '../models/code.model';
 import { Project } from '../models/project.model';
 import { QuoteDisplay } from '../models/quote-display';
 import { indexDebugNode } from '@angular/core/src/debug/debug_node';
+import { UserService } from './user.service';
+import { CodeService } from './code.service';
+import { SpinnerService } from './spinner.service';
 
 @Injectable()
 export class WorkSpaceService {
@@ -37,11 +40,15 @@ export class WorkSpaceService {
   private showBottomBar = false;
   private showBottomBar$ = new BehaviorSubject<boolean>(null);
 
-  constructor(private documentService: DocumentService, private quoteService: QuoteService) { }
+  constructor(private documentService: DocumentService,
+    private quoteService: QuoteService,
+    private codeService: CodeService,
+    private userService: UserService,
+    private spinnerService: SpinnerService) { }
 
   public initWorkSpace(projectId) {
     this.projectId = projectId;
-    this.cleanWorkSpace();
+    this.userService.loadRole(projectId);
     this.selectedDocumentId = null;
     this.documentService.getDocuments().subscribe(
       documents => {
@@ -61,11 +68,14 @@ export class WorkSpaceService {
         const selectedDoc = this.selectedDocumentId != null ?
           this.openedDocuments.find(d => d.getId() === this.selectedDocumentId) : null;
         this.selectDocument(selectedDoc ? selectedDoc : this.openedDocuments[0]);
+        this.spinnerService.setSpinner('document', false);
       },
-      error => console.error(error)
+      error => {
+        console.error(error);
+        this.spinnerService.setSpinner('document', false);
+      }
     );
   }
-
 
   // Add new document too list of openedDocuments
   openDocument(doc: Document) {
@@ -166,7 +176,7 @@ export class WorkSpaceService {
 
   removeQuotesInDocumentContent(code) {
     const quotes = this.quotesSelectedDocument;
-    quotes.forEach( (q, i) => {
+    quotes.forEach((q, i) => {
       if (q.getCodes().length === 1 && q.getCodes()[0] === code && q.getMemo() === '') {
         this.quotesSelectedDocument.splice(i, 1);
         this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
@@ -175,13 +185,13 @@ export class WorkSpaceService {
 
     this.documentContents.forEach(doc => {
       const qAux = doc.getQuotesDisplay();
-      qAux.forEach( q => {
+      qAux.forEach(q => {
         if (q.getQuote().getCodes().length === 1 && q.getQuote().getCodes()[0] === code && q.getQuote().getMemo() === '') {
           doc.removeQuote(q.getQuote());
         }
       });
-  });
-}
+    });
+  }
 
   updateDocumentContent() {
     this.selectedDocumentContent.updateDocumentQuotesDisplay();
@@ -204,6 +214,9 @@ export class WorkSpaceService {
   }
 
   cleanWorkSpace() {
+    this.codeService.setCodes([]);
+    this.documentService.setDocuments([]);
+    this.userService.removeRoles();
     this.openedDocuments.splice(0);
     this.openedDocuments$.next(this.openedDocuments);
     this.selectedDocument = undefined;
