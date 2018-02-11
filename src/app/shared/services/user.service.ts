@@ -4,19 +4,22 @@ import { NgxRolesService } from 'ngx-permissions';
 import { ProjectService } from './project.service';
 import { AuthService } from './auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Router } from '@angular/router';
+import { NotificationsService } from 'angular2-notifications';
 @Injectable()
 export class UserService {
 
   constructor(private roleService: NgxRolesService,
     private authService: AuthService,
     private projectService: ProjectService,
-    private permissionService: NgxPermissionsService) { }
+    private permissionService: NgxPermissionsService
+  ) { }
 
   lector_permissions = ['search_activated_quotes', 'activate_document', 'activate_code'];
   escritor_permissions = ['importar_docs', 'create_code', 'save_code', 'delete_code',
-     'share_project', 'edit_project_description',
+    'share_project', 'edit_project_description',
     , 'activate_code', 'search_activated_quotes', 'code_menu', 'activate_document',
-     'edite_document', 'delete_document', 'save_quote', 'delete_quote', 'coding', 'coding_with_activated_codes'];
+    'edite_document', 'delete_document', 'save_quote', 'delete_quote', 'coding', 'coding_with_activated_codes'];
   private role = '';
   permissions = <Array<string>>([]);
   permissions$ = new BehaviorSubject<Array<string>>([]);
@@ -29,7 +32,7 @@ export class UserService {
     return this.permissions$.asObservable();
   }
 
-  setPermissions( permissions ) {
+  setPermissions(permissions) {
     this.permissions = permissions;
     this.setRolePermissions();
   }
@@ -48,13 +51,13 @@ export class UserService {
     if (role === 'Lector') {
       this.permissionService.flushPermissions();
       this.permissionService.loadPermissions(this.lector_permissions);
-      this.setPermissions( this.lector_permissions);
+      this.setPermissions(this.lector_permissions);
       this.roleService.addRole(role, this.lector_permissions);
     }
     if (role === 'Lector/Escritor') {
       this.permissionService.flushPermissions();
       this.permissionService.loadPermissions(this.lector_permissions.concat(this.escritor_permissions));
-      this.setPermissions( this.escritor_permissions);
+      this.setPermissions(this.escritor_permissions);
       this.roleService.addRole(role, this.lector_permissions.concat(this.escritor_permissions));
     }
   }
@@ -74,14 +77,16 @@ export class UserService {
       nick => {
         this.projectService.getSelectedProject().subscribe(
           project => {
-            const isOwner = project.getOwner().split('@')[0] === nick;
-            const col = project.getCollaborator(nick);
-            if (isOwner) {
-              this.addRole('Lector/Escritor');
-            } else if (col) {
-              this.addRole(col.role);
-            } else {
-              console.error(nick + ' no es owner ni colaborador de ese proyecto.');
+            if (project) {
+              const isOwner = project.getOwner().split('@')[0] === nick;
+              const col = project.getCollaborator(nick);
+              if (isOwner) {
+                this.addRole('Lector/Escritor');
+              } else if (col) {
+                this.addRole(col.role);
+              } else {
+                console.error(nick + ' no es owner ni colaborador de ese proyecto.');
+              }
             }
           },
           error => console.error(error)
