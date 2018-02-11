@@ -74,7 +74,7 @@ export class Line {
     let color = 'transparent';
     if (relatedQuote) {
       const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      color = code ? code.getColor() : 'black';
+      color = code ? code.getColor() : 'rgb(0,0,0)';
     }
     return color;
   }

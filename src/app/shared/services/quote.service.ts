@@ -25,7 +25,7 @@ export class QuoteService {
 
 
   constructor(private http: AuthHttp, private codeService: CodeService) {
-    this.headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
+    this.headers = new Headers({ 'Cache-Control': 'no-cache' });
     this.options = new RequestOptions({ headers: this.headers });
   }
 
@@ -93,7 +93,7 @@ export class QuoteService {
 
 
   updateQuote(quote: Quote): Observable<any> {
-    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': quote.getEtag() });
+    const updheaders = new Headers({'If-Match': quote.getEtag() });
     const updoptions = new RequestOptions({ headers: updheaders });
     const body = quote.getMessageBody();
     const index = this.quoteList.findIndex(q => {
@@ -113,7 +113,7 @@ export class QuoteService {
   }
 
   deleteQuote(quote: Quote): Observable<any> {
-    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': quote.getEtag() });
+    const updheaders = new Headers({ 'If-Match': quote.getEtag() });
     const updoptions = new RequestOptions({ headers: updheaders });
     const index = this.quoteList.findIndex(q => {
       return q.getId() === quote.getId();

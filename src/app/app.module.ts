@@ -53,6 +53,8 @@ import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifi
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DatePipe } from '@angular/common';
 import { TreeModule } from 'angular-tree-component';
+import { AngularDraggableModule } from 'angular2-draggable';
+import { ChartsModule } from 'ng2-charts';
 import { ProjectInfoComponent } from './my-projects/projects/project-info/project-info.component';
 import { QuotesRetrievalService } from './shared/services/quotes-retrieval.service';
 import { RetrievedQuotesComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quotes-list.component';
@@ -61,13 +63,19 @@ import { BottomBarComponent } from './work-space/bottom-bar/bottom-bar.component
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { ResetPasswordComponent } from './home/reset-password/reset-password.component';
 import { EqualValidatorDirective } from './shared/directives/equal-validator.directive';
+import { ChartPopupComponent } from './work-space/popup-window/chart-popup/chart-popup.component';
+import { PopupWindowComponent } from './work-space/popup-window/popup-window.component';
+import { SimpleQueryEditorComponent } from './work-space/popup-window/simple-query-editor/simple-query-editor.component';
+import { ComplexQueryEditorComponent } from './work-space/popup-window/complex-query-editor/complex-query-editor.component';
+import { PopupLoaderService } from './shared/services/popup-loader.service';
 import { SpinnerComponentModule } from 'ng2-component-spinner';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
     tokenName: 'access_token',
     tokenGetter: (() => localStorage.getItem('access_token')),
-    globalHeaders: [{ 'Content-Type': 'application/json' }],
+    // globalHeaders: [{ 'Content-Type': 'application/json' }],
+    globalHeaders: [],
   }), http, options);
 }
 
@@ -104,7 +112,11 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     RetrievedQuoteItemComponent,
     BottomBarComponent,
     ResetPasswordComponent,
-    EqualValidatorDirective
+    EqualValidatorDirective,
+    ChartPopupComponent,
+    PopupWindowComponent,
+    SimpleQueryEditorComponent,
+    ComplexQueryEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -121,6 +133,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TreeModule,
     Ng2CompleterModule,
     ColorPickerModule,
+    AngularDraggableModule,
+    ChartsModule,
     NgxPermissionsModule.forRoot(),
     SpinnerComponentModule
   ],
@@ -134,6 +148,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     },
     UserService,
     ProjectService,
+    PopupLoaderService,
     QuoteService,
     QuotesRetrievalService,
     WindowSelection,
@@ -143,6 +158,13 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     [DatePipe]
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CodeModalComponent, ProjectShareModalComponent, QuoteModalComponent, DocumentModalComponent]
+  entryComponents: [CodeModalComponent,
+    ProjectShareModalComponent,
+    QuoteModalComponent,
+    DocumentModalComponent,
+    SimpleQueryEditorComponent,
+    ComplexQueryEditorComponent,
+    ChartPopupComponent
+  ]
 })
 export class AppModule { }

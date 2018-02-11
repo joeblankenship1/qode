@@ -37,21 +37,24 @@
                         </li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="Citas">Citas</a>
-                </li>
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="Memos">Memos</a>
-                </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Búsquedas<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li [ngClass]="{ 'disabled': permissions && !permissions.includes('search_activated_quotes')}">
-                            <a class="header-btn" (click)="onSimpleQuery()">Por elementos activados.</a>
+                            <a class="header-btn" (click)="onSimpleQuery()">Búsqueda Simple</a>
+                        </li>
+                        <li [ngClass]="{ 'disabled': permissions && !permissions.includes('search_activated_quotes')}">
+                            <a class="header-btn" (click)="onComplexQuery()">Búsqueda Compleja</a>
                         </li>
                     </ul>
                 </li>
-                <li><a href="#" data-toggle="modal" data-target="#exampleModal">Análisis</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Análisis<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="header-btn" (click)="onCodeMatrix(false)">Matriz de códigos por documento</a></li>
+                        <li><a class="header-btn" (click)="onCodeMatrix(true)">Matriz de co-ocurrencia de códigos</a></li>
+                    </ul>
+                </li>
                 <li><a href="#" data-toggle="modal" data-target="#exampleModal">Visualización</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

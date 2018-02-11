@@ -14,6 +14,7 @@ import { FileExtraction } from '../shared/helpers/file-extraction';
 import { DocumentService } from '../shared/services/document.service';
 import { Document } from '../shared/models/document.model';
 import { NotificationsService } from 'angular2-notifications';
+import { PopupLoaderService } from '../shared/services/popup-loader.service';
 import { SpinnerService } from '../shared/services/spinner.service';
 import { UserService } from '../shared/services/user.service';
 
@@ -34,8 +35,8 @@ export class HeaderComponent implements OnInit {
   constructor(private authsvc: AuthService, private router: Router, private modal: Modal,
     private workspaceService: WorkSpaceService, private projectService: ProjectService,
     private documentService: DocumentService, private notificationsService: NotificationsService,
-    private userService: UserService, private spinnerService: SpinnerService
-  ) {
+    private popupLoaderService: PopupLoaderService, private userService: UserService,
+    private spinnerService: SpinnerService) {
     this.appname = 'fingQDA';
   }
 
@@ -138,7 +139,12 @@ export class HeaderComponent implements OnInit {
   }
 
   onSimpleQuery() {
-    this.workspaceService.setBottomBar(true);
+    //this.workspaceService.setBottomBar(true);
+    this.workspaceService.setPopup(true, 'SimpleQueryEditor');
+  }
+
+  onComplexQuery() {
+    this.workspaceService.setPopup(true, 'ComplexQueryEditor');
   }
 
   private newFile(name, text) {
@@ -149,5 +155,15 @@ export class HeaderComponent implements OnInit {
       opened: true
     }, this.workspaceService.getProjectId()))
       .subscribe(() => this.spinnerService.setSpinner('document', false));
+  }
+
+  onCodeMatrix(cooc: boolean) {
+    this.documentService.getCodesDocumentsMatrix(cooc).subscribe(
+      resp => {
+        resp['cooc'] = cooc;
+        this.workspaceService.setMatrixResult(resp);
+        this.workspaceService.setPopup(true, 'ChartPopup');
+      },
+      error => this.notificationsService.error('Error', error) );
   }
 }

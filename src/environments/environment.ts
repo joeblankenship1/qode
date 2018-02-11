@@ -7,5 +7,17 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:5000/',
   frontUrl: 'http://localhost:4200/',
-  clientID: 'UhMrdGno87iwJacMYSZYOq53ImO7IHa6'
+  clientID: 'UhMrdGno87iwJacMYSZYOq53ImO7IHa6',
+  domain: 'nurruty.auth0.com',
+  domainSocial: 'nurruty.auth0.com'
 };
+
+
+
+// export const environment = {
+//   production: true,
+//   apiUrl: 'http://apifingqda.herokuapp.com/',
+//   frontUrl: 'http://fingqda.herokuapp.com/',
+//   clientID: 'lGt2nd74XZdKFDOCDYTj4Lq5EMksnJas',
+//   domain: 'fingqda.auth0.com'
+// };

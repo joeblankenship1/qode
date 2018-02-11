@@ -1,0 +1,14 @@
+
+.container {
+  width: 400px;
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+.divider {
+  border-top: 1.5px solid #dcd6d6;
+}
+
+.buttons {
+  margin-top: 10px;
+}

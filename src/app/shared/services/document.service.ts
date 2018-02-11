@@ -29,7 +29,7 @@ export class DocumentService {
 
   constructor(private http: AuthHttp, private quoteService: QuoteService,
     private spinnerService: SpinnerService) {
-    this.headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
+    this.headers = new Headers({'Cache-Control': 'no-cache' });
     this.options = new RequestOptions({ headers: this.headers });
   }
 
@@ -97,7 +97,7 @@ export class DocumentService {
   updateDocumentQuotes(document: Document): Observable<any> {
     const doc = this.documentList.find(d => d.getId() === document.getId());
     const body = { 'quotes': document.getQuotes().map(q => q.getId()) };
-    this.headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache', 'If-Match': document.getEtag() });
+    this.headers = new Headers({'Cache-Control': 'no-cache', 'If-Match': document.getEtag() });
     this.options = new RequestOptions({ headers: this.headers });
     return this.http.patch(environment.apiUrl + 'document/' + document.getId(), body, this.options)
       .map(res => {
@@ -110,7 +110,7 @@ export class DocumentService {
   }
 
   public updateDocument(document: Document, fields: any): Observable<any> {
-    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag() });
+    const updheaders = new Headers({'If-Match': document.getEtag() });
     const updoptions = new RequestOptions({ headers: updheaders });
     const index = this.documentList.indexOf(document, 0);
     return this.http.patch(environment.apiUrl + 'document/' + document.getId(), fields, updoptions)
@@ -133,7 +133,7 @@ export class DocumentService {
   }
 
   public updateDocumentAtributes(document: Document): Observable<any> {
-    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': document.getEtag() });
+    const updheaders = new Headers({'If-Match': document.getEtag()});
     const updoptions = new RequestOptions({ headers: updheaders });
     const index = this.documentList.indexOf(document, 0);
     return this.http.put(environment.apiUrl + 'document/' + document.getId(), document.getMessageBody(), updoptions)
@@ -159,7 +159,7 @@ export class DocumentService {
   }
 
   deleteDocument(doc: Document): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json', 'If-Match': doc.getEtag() });
+    const headers = new Headers({ 'If-Match': doc.getEtag() });
     const options = new RequestOptions({ headers: headers });
     return this.http.delete(environment.apiUrl + 'document/' + doc.getId(), options)
       .map((data: Response) => {
@@ -175,25 +175,25 @@ export class DocumentService {
 
   setActivatedDocuments(documents: Document[]) {
     this.activatedDocuments = documents;
-    this.activatedDocuments$.next(documents);
+    //this.activatedDocuments$.next(documents);
   }
 
   setActivatedDocument(document: Document) {
     if (this.activatedDocuments.indexOf(document) === -1) {
       this.activatedDocuments.push(document);
-      this.activatedDocuments$.next(this.activatedDocuments);
+      //this.activatedDocuments$.next(this.activatedDocuments);
     }
   }
 
   removeActivatedDocument(document: Document) {
     if (this.activatedDocuments.indexOf(document) > -1) {
       this.activatedDocuments.splice(this.activatedDocuments.indexOf(document), 1);
-      this.activatedDocuments$.next(this.activatedDocuments);
+      //this.activatedDocuments$.next(this.activatedDocuments);
     }
   }
 
   getActivatedDocuments() {
-    return this.activatedDocuments$.asObservable();
+    return this.activatedDocuments;
   }
 
   // private createQuotes(document: Document) {
@@ -201,4 +201,17 @@ export class DocumentService {
   //   document.setQuotes(this.quoteService.quoteList.filter( q =>
   // document.getQuotes().find( e => e.getId() === q.getId()) !== undefined ));
   // }
+
+  getCodesDocumentsMatrix(cooc: boolean) {
+    return this.http.get(environment.apiUrl + `doc-code-matrix?project_id=${this.projectId}` + (cooc ? `&cooc=${cooc}` : ``),
+     this.options).map(
+      (data: Response) => {
+        const extracted = data.json();
+        return extracted;
+      }).catch((err: Response) => {
+        const details = err.json();
+        console.log(details);
+        return Observable.throw(JSON.stringify(details));
+      });
+  }
 }

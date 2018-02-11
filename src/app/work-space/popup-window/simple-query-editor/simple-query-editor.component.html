@@ -1,0 +1,60 @@
+ 
+<div class="container modal-content">
+  <div>
+    <div class="panel-heading modal-header">
+      <h5 class="modal-title">Búsqueda Simple</h5>
+      <span class='btn-close glyphicon glyphicon-remove' (click)='onClose()'></span>
+    </div>
+    <div class="panel-body">
+      <div class="col-sm-12">
+        <form #f="ngForm" (ngSubmit)="onFormSubmit(f.value)" novalidate>
+            <div class="field">   
+                <input type="checkbox"  
+                  id="actDocsInput"
+                  name="adocs" 
+                  [(ngModel)]="activatedDocs">
+                  <label for="actDocsInput">Documentos Activados</label> 
+                  <br> 
+             </div>
+             <hr class='divider'>
+            <div class="field">   
+                <input type="checkbox"  
+                  id="actCodesInput"
+                  name="acodes"  
+                  [(ngModel)]="activatedCodes">
+                  <label for="actCodesInput">Códigos Activados</label> 
+                  <br> 
+             </div>
+            <hr class='divider'>
+            <div class="field">
+              <label >Operador</label> <br>
+              <input type="checkbox"  
+                  id="andInput"
+                  name="and"  
+                  [ngModel]="operAnd"
+                  (change)="operAnd = !operAnd; operOr = false; operNot = false"
+                  >
+                  AND
+              <input type="checkbox"  
+                  id="orInput"
+                  name="or"  
+                  [ngModel]="operOr"
+                  (change)="operAnd = false; operOr = !operOr; operNot = false"
+                  >
+                  OR
+              <input type="checkbox"  
+                id="notInput"
+                name="not"  
+                [ngModel]="operNot"
+                (change)="operAnd = false; operOr = false; operNot = !operNot"
+                >
+                NOT
+            </div>          
+            <div class="buttons">
+              <button type="submit" class="btn btn-success">Buscar</button>
+            </div>            
+        </form>       
+      </div>
+    </div>
+  </div>
+</div>

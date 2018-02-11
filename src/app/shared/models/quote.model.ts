@@ -21,7 +21,7 @@ export class Quote {
     this.documentDisplay = documentDisplay;
     this.memo = memo === undefined ? '' : memo;
     this.projectId = projectId;
-    this.color = color ? color : 'black';
+    this.color = color ? color : 'rgb(0,0,0)';
     this.codes = codes ? codes : [];
   }
 
