@@ -2,8 +2,8 @@
     display: inline-grid;
 }
 
-.btn {
-    padding: 5px 10px !important;
+.btn-delete {
+    padding: 2px 5px !important;
 }
 
 .lbl-hover {

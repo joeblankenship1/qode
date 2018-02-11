@@ -4,6 +4,7 @@ import { DocumentService } from './shared/services/document.service';
 import { Router } from '@angular/router';
 import { AuthService } from './shared/services/auth.service';
 import { NotificationsService } from 'angular2-notifications';
+import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 
 @Component({
   selector: 'app-root',
@@ -23,8 +24,14 @@ export class AppComponent {
     theClass: 'myClass'
   };
 
-  constructor(public router: Router, public auth: AuthService, private _service: NotificationsService ) {
+  constructor(public router: Router, public auth: AuthService, private _service: NotificationsService,
+    private _hotkeysService: HotkeysService) {
     auth.handleAuthentication();
+    this._hotkeysService.add(new Hotkey('Cmd+f', (event: KeyboardEvent): boolean => {
+      console.log('Cmd + f');
+      return false; // Prevent bubbling
+    }));
+
   }
 
 }

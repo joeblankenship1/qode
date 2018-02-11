@@ -62,6 +62,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { ResetPasswordComponent } from './home/reset-password/reset-password.component';
 import { EqualValidatorDirective } from './shared/directives/equal-validator.directive';
 import { SpinnerComponentModule } from 'ng2-component-spinner';
+import {HotkeyModule} from 'angular2-hotkeys';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -122,7 +123,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     Ng2CompleterModule,
     ColorPickerModule,
     NgxPermissionsModule.forRoot(),
-    SpinnerComponentModule
+    SpinnerComponentModule,
+    HotkeyModule.forRoot()
   ],
   providers: [DocumentService, CodeService,
     AuthGuard,
