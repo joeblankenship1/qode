@@ -12,7 +12,7 @@ export class Code {
     this.name = data.name != null ? data.name : data.key.name;
     this.project = data.project ? data.project : data.key.project;
     this.memo = data.memo == null ? '' : data.memo;
-    this.color = data.color == null ? 'black' : data.color;
+    this.color = data.color == null ? 'rgb(0,0,0)' : data.color;
     this._etag = data._etag == null ? '' : data._etag;
     this.activated = false;
   }

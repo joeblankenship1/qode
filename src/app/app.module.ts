@@ -51,12 +51,9 @@ import { ProjectShareModalComponent } from './my-projects/project-share-modal/pr
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DatePipe } from '@angular/common';
-import * as FusionCharts from 'fusioncharts';
-import * as Charts from 'fusioncharts/fusioncharts.charts';
-import * as FintTheme from 'fusioncharts/themes/fusioncharts.theme.fint';
-import { FusionChartsModule } from 'angular4-fusioncharts';
 import { TreeModule } from 'angular-tree-component';
 import { AngularDraggableModule } from 'angular2-draggable';
+import { ChartsModule } from 'ng2-charts';
 import { ProjectInfoComponent } from './my-projects/projects/project-info/project-info.component';
 import { QuotesRetrievalService } from './shared/services/quotes-retrieval.service';
 import { RetrievedQuotesComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quotes-list.component';
@@ -69,8 +66,6 @@ import { PopupWindowComponent } from './work-space/popup-window/popup-window.com
 import { SimpleQueryEditorComponent } from './work-space/popup-window/simple-query-editor/simple-query-editor.component';
 import { ComplexQueryEditorComponent } from './work-space/popup-window/complex-query-editor/complex-query-editor.component';
 import { PopupLoaderService } from './shared/services/popup-loader.service';
-
-FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -135,8 +130,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TreeModule,
     Ng2CompleterModule,
     ColorPickerModule,
-    FusionChartsModule,
-    AngularDraggableModule
+    AngularDraggableModule,
+    ChartsModule
   ],
   providers: [DocumentService, CodeService,
     AuthGuard,

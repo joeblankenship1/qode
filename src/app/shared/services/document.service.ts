@@ -193,8 +193,8 @@ export class DocumentService {
   //   document.setQuotes(this.quoteService.quoteList.filter( q => document.getQuotes().find( e => e.getId() === q.getId()) !== undefined ));
   // }
 
-  getCodesDocumentsMatrix() {
-    return this.http.get(environment.apiUrl + `doc-code-matrix?project_id=${this.projectId}`, this.options).map(
+  getCodesDocumentsMatrix(cooc: boolean) {
+    return this.http.get(environment.apiUrl + `doc-code-matrix?project_id=${this.projectId}` + (cooc ? `&cooc=${cooc}` : ``), this.options).map(
       (data: Response) => {
         const extracted = data.json();
         return extracted;

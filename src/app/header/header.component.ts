@@ -131,9 +131,10 @@ export class HeaderComponent implements OnInit {
       .subscribe();
   }
 
-  onCodeMatrix() {
-    this.documentService.getCodesDocumentsMatrix().subscribe(
+  onCodeMatrix(cooc: boolean) {
+    this.documentService.getCodesDocumentsMatrix(cooc).subscribe(
       resp => {
+        resp['cooc'] = cooc;
         this.workspaceService.setMatrixResult(resp);
         this.workspaceService.setPopup(true, 'ChartPopup');
       },
