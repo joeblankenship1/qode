@@ -1,0 +1,30 @@
+.chart-popup {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    background-color: white;
+    padding-right: 15px;
+}
+
+.tabSelected {
+    background-color: #333534;
+    border-bottom: none;
+    padding: 5px 10px;
+    border-radius: 0px;
+    border-bottom: 0px;
+    margin:5px;
+    width: 80px;
+}
+
+.tabNotSelected {
+    background-color: rgba(225, 218, 223, 0.767);
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 0px;
+    color: #2d3e4f;
+    padding: 5px 10px;
+    border-radius: 0px;
+    margin:5px;
+    width: 80px;
+}

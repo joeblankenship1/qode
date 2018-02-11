@@ -1,6 +1,80 @@
-<div class="row">
-  <span>Resultados</span>
-</div>
-<div class="row">
-
+<div class="container modal-content chart-popup">
+  <div class="row panel-heading modal-header">
+    <span class='btn-close glyphicon glyphicon-remove' (click)='onClose()'></span>
+    <h5 class="modal-title">Resultados - {{resultName}}</h5>
+  </div>
+  <div class="panel-body">
+    <div class="row input-group">
+      <span class="input-group-addon">Visualización  </span>
+      <div class="col-md-7">
+        <button class="btn btn-primary"
+        [ngClass]="view == 'chart' ? 'tabSelected' : 'tabNotSelected'" 
+        (click)="view='chart'">Gráfica</button>
+        <button class="btn btn-primary" 
+        [ngClass]="view == 'table' ? 'tabSelected' : 'tabNotSelected'" 
+        (click)="view='table'">Tabla</button>
+      </div>
+    </div>
+    <div *ngIf="result && (view=='table')" class="row" style="max-height:500px;margin:10px;overflow:auto">
+      <div class="col-md-12" style="margin-bottom: 10px">
+        <table *ngIf="result.cooc" class="table table-striped table-responsive table-condensed">
+          <thead>
+            <tr>
+              <th></th>
+              <th *ngFor="let code of result.codes" style="text-align:center">{{code.name}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cooclist of result.coocmatrix;let i = index">
+              <td  style="font-weight:bold;" [innerHTML]="result.codes[i].name"></td>
+              <td *ngFor="let oc of cooclist" style="text-align:center">{{oc}}</td>
+            </tr> 
+          </tbody>
+        </table>
+        <table *ngIf="!result.cooc" class="table table-striped table-responsive table-condensed">
+          <thead>
+            <tr>
+              <th> Documentos\Códigos</th>
+              <th *ngFor="let code of result.codes" style="text-align:center">{{code.name}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let doc of result.docs">
+              <td style="font-weight:bold;">{{doc.name}}</td>
+              <td *ngFor="let oc of doc.ocurrences" style="text-align:center">{{oc}}</td>
+            </tr>    
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div *ngIf="result && (view=='chart')" style="text-align:center">
+      <div class="row input-group">
+        <span class="input-group-addon">Tipo de gráfica</span>
+        <div class="col-md-7" style="text-align:left">
+          <button class="btn btn-primary" 
+          [ngClass]="type == 'radar' ? 'tabSelected' : 'tabNotSelected'" 
+          (click)="onChangeChartType('radar')">Radar</button>
+          <button class="btn btn-primary"
+          [ngClass]="type == 'bar' ? 'tabSelected' : 'tabNotSelected'" 
+          (click)="onChangeChartType('bar')">Barras</button>
+        </div>
+      </div>
+      <div *ngIf="result.cooc || type==='radar'" class="chart" style="display: block;position:relative; max-width:85%;overflow:auto; text-align:center">
+        <canvas baseChart
+                    [datasets]="dataValues"
+                    [labels]="labels"
+                    [chartType]="type"
+                    [colors]="colors"
+                    [options]="type=='bar'?optionsBar:optionsRadar"></canvas>
+      </div>
+      <div *ngIf="!result.cooc && type==='bar'" class="chart" style="display: block;position:relative; max-width:85%;overflow:auto; text-align:center">
+          <canvas baseChart
+                      [datasets]="barDocsDataValues"
+                      [labels]="barDocsLabels"
+                      [chartType]="'bar'"
+                      [colors]="barDocsColors"
+                      [options]="optionsBar"></canvas>
+      </div>
+    </div>
+  </div>
 </div>

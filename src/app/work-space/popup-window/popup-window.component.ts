@@ -28,6 +28,7 @@ export class PopupWindowComponent implements OnInit {
   ngOnInit() {
     this.workspaceService.getPopup().subscribe( o => {
       this.isOpened = o;
+      this.service.destroyComponent();
       if (o) {
         this.service.setRootViewContainerRef(this.viewContainerRef);
         const name = this.workspaceService.getPopupName();
@@ -42,8 +43,8 @@ export class PopupWindowComponent implements OnInit {
             this.service.loadComplexQueryEditor();
             break;
           }
-          case 'CodeMatrix': {
-            this.service.loadCodeMatrix();
+          case 'ChartPopup': {
+            this.service.loadChartPopup();
             break;
           }
           default: {

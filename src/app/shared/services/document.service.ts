@@ -29,7 +29,7 @@ export class DocumentService {
 
   constructor(private http: AuthHttp, private quoteService: QuoteService,
     private spinnerService: SpinnerService) {
-    this.headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
+    this.headers = new Headers({'Cache-Control': 'no-cache' });
     this.options = new RequestOptions({ headers: this.headers });
   }
 
@@ -202,7 +202,16 @@ export class DocumentService {
   // document.getQuotes().find( e => e.getId() === q.getId()) !== undefined ));
   // }
 
-  getCodesDocumentsMatrix() {
-    return this.http.get(environment.apiUrl + `doc-code-matrix?project_id=${this.projectId}`, this.options);
+  getCodesDocumentsMatrix(cooc: boolean) {
+    return this.http.get(environment.apiUrl + `doc-code-matrix?project_id=${this.projectId}` + (cooc ? `&cooc=${cooc}` : ``),
+     this.options).map(
+      (data: Response) => {
+        const extracted = data.json();
+        return extracted;
+      }).catch((err: Response) => {
+        const details = err.json();
+        console.log(details);
+        return Observable.throw(JSON.stringify(details));
+      });
   }
 }

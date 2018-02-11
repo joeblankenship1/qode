@@ -35,9 +35,8 @@ export class HeaderComponent implements OnInit {
   constructor(private authsvc: AuthService, private router: Router, private modal: Modal,
     private workspaceService: WorkSpaceService, private projectService: ProjectService,
     private documentService: DocumentService, private notificationsService: NotificationsService,
-    private popupLoaderService: PopupLoaderService,
-    private userService: UserService, private spinnerService: SpinnerService
-  ) {
+    private popupLoaderService: PopupLoaderService, private userService: UserService,
+    private spinnerService: SpinnerService) {
     this.appname = 'fingQDA';
   }
 
@@ -158,9 +157,13 @@ export class HeaderComponent implements OnInit {
       .subscribe(() => this.spinnerService.setSpinner('document', false));
   }
 
-  onCodeMatrix() {
-    this.documentService.getCodesDocumentsMatrix().subscribe(
-      resp => this.workspaceService.setMatrixResult(resp),
+  onCodeMatrix(cooc: boolean) {
+    this.documentService.getCodesDocumentsMatrix(cooc).subscribe(
+      resp => {
+        resp['cooc'] = cooc;
+        this.workspaceService.setMatrixResult(resp);
+        this.workspaceService.setPopup(true, 'ChartPopup');
+      },
       error => this.notificationsService.error('Error', error) );
   }
 }

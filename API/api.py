@@ -5,6 +5,7 @@ from flask_cors import CORS
 from flask import jsonify, request, make_response
 from authentication import MyTokenAuth, AuthError, requires_auth, get_token_auth_header, get_email
 from settings import DOMAIN
+from procedures import codes_matrix
 
 from flask import Blueprint, Response, current_app, request
 from bson import json_util
@@ -174,32 +175,11 @@ def docCodeMatrix():
     token = get_token_auth_header()
     mail = get_email(token)
     proj_id = request.args.get('project_id')
+    cooc = request.args.get('cooc')
     check_permissions(proj_id, mail, False)
-    codes = {}
-    docs = {}
-    i = 0
-    db = current_app.data.driver.db['code']
-    cursor = db.find({'key.project': ObjectId(proj_id)})
-    if cursor:
-        for code in cursor:
-            codes[str(code['_id'])] = {'position':i, 'name':code['key']['name']}
-            i+=1
-    if len(codes) == 0:
-        error_message = 'No existen códigos en el proyecto'
-        abort(make_response(jsonify(message=error_message), 449))
-    db = current_app.data.driver.db['document']
-    cursor = db.find({'key.project': ObjectId(proj_id)})
-    if cursor:
-        for doc in cursor:
-            ocurrences = [0]*len(codes)
-            for quote in doc['quotes']:
-                quote_cursor = current_app.data.driver.db['quote'].find_one(({'_id':quote}))
-                if quote_cursor:
-                    for q_code in quote_cursor['codes']:
-                        pos = codes[q_code]['position']
-                        ocurrences[pos] += 1
-            docs[str(doc['_id'])] = {'name':doc['key']['name'], 'ocurrences': ocurrences}
-    if len(docs) == 0:
-        error_message = 'No existen documentos en el proyecto'
-        abort(make_response(jsonify(message=error_message), 449))
-    return jsonify({"codes":codes , "docs":docs})
+    result = codes_matrix(proj_id,cooc)
+    if ('message' in result):
+        abort(make_response(jsonify(message=result['message']), 449))
+    return jsonify(result)
+
+
