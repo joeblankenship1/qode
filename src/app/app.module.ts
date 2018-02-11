@@ -139,7 +139,7 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
     Ng2CompleterModule,
     ColorPickerModule,
     FusionChartsModule,
-    AngularDraggableModule
+    AngularDraggableModule,
     NgxPermissionsModule.forRoot(),
     SpinnerComponentModule
   ],
