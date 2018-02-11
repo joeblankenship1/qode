@@ -16,8 +16,7 @@ app-root {
 }
 
 html {
-    overflow: scroll;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .btn-close {
