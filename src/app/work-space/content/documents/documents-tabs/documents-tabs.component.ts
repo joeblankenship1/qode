@@ -3,6 +3,8 @@ import { Document } from '../../../../shared/models/document.model';
 import { DocumentService } from '../../../../shared/services/document.service';
 import { WorkSpaceService } from '../../../../shared/services/work-space.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { UserService } from '../../../../shared/services/user.service';
+import { SpinnerService } from '../../../../shared/services/spinner.service';
 
 @Component({
   selector: 'app-documents-tabs',
@@ -14,14 +16,17 @@ export class DocumentsTabsComponent implements OnInit {
   @Output() selected = new EventEmitter<void>();
   sele: Document = null;
 
-  constructor(private documentService: DocumentService, private workspaceService: WorkSpaceService) { }
+  constructor(private documentService: DocumentService,
+    private workspaceService: WorkSpaceService,
+    private userService: UserService,
+  private spinnerService: SpinnerService) { }
 
   ngOnInit() {
     this.workspaceService.getSelectedDocument()
-    .subscribe(
-    selectedDocument => {
-      this.sele = selectedDocument;
-    });
+      .subscribe(
+      selectedDocument => {
+        this.sele = selectedDocument;
+      });
   }
 
   onSelectDocument() {
@@ -30,7 +35,11 @@ export class DocumentsTabsComponent implements OnInit {
 
   onCloseDocument() {
     this.doc.setOpened(false);
-    this.documentService.updateDocument(this.doc, { 'opened': false })
-      .subscribe();
+    if (this.userService.getRole() !== 'Lector') {
+      this.documentService.updateDocument(this.doc, { 'opened': false })
+        .subscribe();
+    } else {
+      this.documentService.updateOpened(this.doc, false);
+    }
   }
 }

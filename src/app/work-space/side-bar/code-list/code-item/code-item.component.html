@@ -1,21 +1,7 @@
-<li [attr.title]="code.memo"
-  (contextmenu)="onContextMenu($event)"
-  [ngClass]="getItemClass()"
-  (dblclick)="onOpenCode()">
-  <span 
-    (click)="onDeactivateCode()"
-    *ngIf="code.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer"
-    >
-  </span>
-  <span 
-    *ngIf="!code.isActivated()" class="list-marker"
-    (click)="onActivateCode()"
-    >
-    &#9679;
-  </span>
-  {{code.name}}
-  <span [ngStyle]="{'color': code.getColor() }">
-    &#9679;
-  </span>
+<li (contextmenu)="onContextMenu($event)" [ngClass]="getItemClass()" (dblclick)="onOpenCode()">
+    <span *ngIf='!permissions.includes("activate_code")' class="list-marker"> &#9679;</span>
+    <span *ngIf="permissions.includes('activate_code') && code.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer" (click)="onDeactivateCode()"></span>
+    <span *ngIf="permissions.includes('activate_code') && !code.isActivated()" class="list-marker" (click)="onActivateCode()">&#9679;</span> {{code.name}}
+    <span [ngStyle]="{'color': code.getColor() }">&#9679;</span>
 </li>
 <app-options [optionGroups]="menuOptions"></app-options>

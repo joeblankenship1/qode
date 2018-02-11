@@ -11,6 +11,7 @@ import { AuthHttp } from 'angular2-jwt';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DatePipe } from '@angular/common';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   selector: 'app-project-info',
@@ -24,8 +25,10 @@ export class ProjectInfoComponent implements OnInit {
   @Input() project: Project;
   @ViewChild('descInfo') descInfoRef: ElementRef;
   editmode;
+  permissions: Array<string>;
 
-  constructor(private http: AuthHttp, private authService: AuthService, private projectService: ProjectService, private modal: Modal,
+  constructor(private http: AuthHttp, private authService: AuthService, 
+    private projectService: ProjectService, private modal: Modal, private userService: UserService,
     private notificationsService: NotificationsService, private router: Router ) {
    }
 
@@ -43,6 +46,13 @@ export class ProjectInfoComponent implements OnInit {
         this.project = project;
       },
       error => console.error(error)
+    );
+
+    this.userService.getRolePermissions().subscribe(
+      permissions => {
+        this.permissions = permissions;
+      },
+      error => { console.error(error); }
     );
   }
 

@@ -6,7 +6,6 @@ import { Line } from './line.model';
 import { LineDefinition } from '../helpers/line-definition';
 import { QuoteDisplay } from './quote-display';
 
-
 export class DocumentContent {
   private document: Document;
   private pages: Page[];

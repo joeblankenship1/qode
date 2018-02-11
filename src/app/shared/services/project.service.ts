@@ -45,6 +45,27 @@ export class ProjectService {
       });
   }
 
+  loadSelectedProject(projId): Observable<Project> {
+    const headers = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
+    const options = new RequestOptions({ headers: headers });
+    return this.http.get(this.url + `project?where={"_id": "${projId}"}`, options)
+      .map((data: Response) => {
+        const extracted = data.json();
+        const proj = new Project(extracted._items[0]);
+        if (proj) {
+          this.setSelectedProject(proj);
+          return proj;
+        } else {
+          console.log('Error al cargar el proyecto');
+          return Observable.throw(null);
+        }
+      }).catch((err: Response) => {
+        const details = err.json();
+        console.log(details);
+        return Observable.throw(details);
+      });
+  }
+
   setArrayProyects(projectArray: Project[]) {
     this.myProjects = projectArray;
     this.myProjects$.next(this.myProjects);

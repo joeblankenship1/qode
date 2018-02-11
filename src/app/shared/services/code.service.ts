@@ -8,6 +8,7 @@ import { ProjectService } from './project.service';
 import { AuthHttp } from 'angular2-jwt';
 import { environment } from '../../../environments/environment';
 import { WorkSpaceService } from './work-space.service';
+import { SpinnerService } from './spinner.service';
 
 
 @Injectable()
@@ -23,12 +24,13 @@ export class CodeService {
   private activatedCodes: Code[] = [];
  // private activatedCodes$ = new BehaviorSubject<Code[]>([]);
 
-  constructor(private http: AuthHttp, private projectService: ProjectService) {
+  constructor(private http: AuthHttp, private projectService: ProjectService, private spinnerService: SpinnerService) {
     this.headers = new Headers({'Cache-Control': 'no-cache'});
     this.options = new RequestOptions({ headers: this.headers });
    }
 
   loadCodes(projectId): Observable<Code[]> {
+    this.spinnerService.setSpinner('code_list', true);
     return this.http.get(environment.apiUrl + `code?where={"key.project":"${projectId}"}`, this.options)
       .map((data: Response) => {
         const extracted = data.json();
@@ -41,6 +43,7 @@ export class CodeService {
           }
         }
         this.setCodes(codeArray);
+        this.spinnerService.setSpinner('code_list', false);
         return codeArray;
       }).catch((err: Response) => {
         const details = err.json();

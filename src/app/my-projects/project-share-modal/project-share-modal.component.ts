@@ -7,6 +7,7 @@ import { Project } from '../../shared/models/project.model';
 import { ProjectService } from '../../shared/services/project.service';
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 import { Router } from '@angular/router';
+import { UserService } from '../../shared/services/user.service';
 
 
 export class ProjectModalData extends BSModalContext {
@@ -30,8 +31,11 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
   active = true;
   profile = null;
 
-  constructor(public dialog: DialogRef<ProjectModalData>, private projectService: ProjectService,
-    private notificationsService: NotificationsService, private router: Router) {
+  constructor(public dialog: DialogRef<ProjectModalData>,
+    private projectService: ProjectService,
+    private notificationsService: NotificationsService,
+    private userService: UserService,
+    private router: Router) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.project = dialog.context.project;
@@ -84,13 +88,18 @@ export class ProjectShareModalComponent implements OnInit, CloseGuard, ModalComp
         if (!isOwner && isCol === undefined) {
           this.projectService.removeProject(this.project);
           this.projectService.setSelectedProject(null);
-          console.log(this.router.url.includes('workspace'));
           if (this.router.url.includes('workspace')) {
             this.router.navigate(['myprojects']);
+            this.notificationsService.info('Info', 'Ya no eres colaborador del proyecto.');
           }
+        } else {
+          // if my role changes
+          if (isCol) {
+            this.userService.loadRole(isCol.role);
+          }
+          this.notificationsService.success('Exito', 'Se actualizaron los colaboradores del proyecto');
         }
         this.dialog.close();
-        this.notificationsService.success('Exito', 'Se actualizaron los colaboradores del proyecto');
       },
       error => {
         this.dialog.close(error);
