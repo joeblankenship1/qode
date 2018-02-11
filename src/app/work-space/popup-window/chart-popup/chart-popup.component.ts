@@ -10,8 +10,7 @@ import { BaseChartDirective } from 'ng2-charts/ng2-charts';
 export class ChartPopupComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
   result = {docs: [], codes: [], cooc: false, coocmatrix: [[]] };
-  width = 600;
-  height = 400;
+  resultName = '';
   public labels: string[] = [];
   public dataValues: any = [
     {data: [], label: ''}
@@ -49,9 +48,11 @@ export class ChartPopupComponent implements OnInit {
           this.result = matrixResult;
           this.labels = this.result.codes.map( c => c.name);
           if (matrixResult.cooc) {
+            this.resultName = 'Co-ocurrencias de códigos en documentos';
             this.dataValues = this.result.coocmatrix.map( (arr, i) => ({data: arr, label: this.result.codes[i].name}));
             this.colors = this.generateCodesColor();
           }else {
+            this.resultName = 'Ocurrencias de códigos por documento';
             this.dataValues = this.result.docs.map( d => ({data: d.ocurrences, label: d.name}));
             this.barDocsLabels = this.result.docs.map( d => (d.name));
             this.barDocsDataValues = this.result.codes.map( (c, i) => {

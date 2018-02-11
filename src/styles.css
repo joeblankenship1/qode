@@ -20,21 +20,6 @@ html {
     overflow-x: hidden;
 }
 
-::-webkit-scrollbar {
-    width: 0px;
-    /* remove scrollbar space */
-    height: 0px;
-    background: transparent;
-    /* optional: just make scrollbar invisible */
-}
-
-
-/* optional: show position indicator in red */
-
-::-webkit-scrollbar-thumb {
-    background: #FF0000;
-}
-
 .btn-close {
     position: absolute !important;
     right: 0;
@@ -58,7 +43,7 @@ html {
     padding-left: 0px !important;
     padding-right: 0px !important;
 }
-    
+
 .sk-folding-cube {
     margin: 20px auto;
     width: 40px;
