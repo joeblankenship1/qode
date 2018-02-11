@@ -14,12 +14,9 @@ import { FileExtraction } from '../shared/helpers/file-extraction';
 import { DocumentService } from '../shared/services/document.service';
 import { Document } from '../shared/models/document.model';
 import { NotificationsService } from 'angular2-notifications';
-<<<<<<< HEAD
 import { PopupLoaderService } from '../shared/services/popup-loader.service';
-=======
 import { SpinnerService } from '../shared/services/spinner.service';
 import { UserService } from '../shared/services/user.service';
->>>>>>> 52e3d33d7ebb6dee707239f17319b14260f389d5
 
 @Component({
   selector: 'app-header',
@@ -38,12 +35,8 @@ export class HeaderComponent implements OnInit {
   constructor(private authsvc: AuthService, private router: Router, private modal: Modal,
     private workspaceService: WorkSpaceService, private projectService: ProjectService,
     private documentService: DocumentService, private notificationsService: NotificationsService,
-<<<<<<< HEAD
-    private popupLoaderService: PopupLoaderService) {
-=======
-    private userService: UserService, private spinnerService: SpinnerService
-  ) {
->>>>>>> 52e3d33d7ebb6dee707239f17319b14260f389d5
+    private popupLoaderService: PopupLoaderService, private userService: UserService,
+    private spinnerService: SpinnerService) {
     this.appname = 'fingQDA';
   }
 

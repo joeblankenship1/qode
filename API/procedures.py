@@ -17,7 +17,7 @@ def codes_matrix(proj_id,cooc):
             i+=1
     if len(codes) == 0:
         error_message = 'No existen códigos en el proyecto'
-        return {message: error_message}
+        return {'message': error_message}
     db = current_app.data.driver.db['document']
     cursor = db.find({'key.project': ObjectId(proj_id)})
     if cursor:

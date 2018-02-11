@@ -211,7 +211,7 @@ export class DocumentService {
       }).catch((err: Response) => {
         const details = err.json();
         console.log(details);
-        return Observable.throw(details);
+        return Observable.throw(JSON.stringify(details));
       });
   }
 }

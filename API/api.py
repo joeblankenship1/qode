@@ -178,8 +178,8 @@ def docCodeMatrix():
     cooc = request.args.get('cooc')
     check_permissions(proj_id, mail, False)
     result = codes_matrix(proj_id,cooc)
-    if (hasattr(result,'message')):
-        abort(make_response(jsonify(result), 449))
+    if ('message' in result):
+        abort(make_response(jsonify(message=result['message']), 449))
     return jsonify(result)
 
 
