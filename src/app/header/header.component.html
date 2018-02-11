@@ -44,7 +44,7 @@
                             <a class="header-btn" (click)="onSimpleQuery()">Búsqueda Simple.</a>
                         </li>
                         <li [ngClass]="{ 'disabled': permissions && !permissions.includes('search_activated_quotes')}">
-                            <a class="header-btn" (click)="onSimpleQuery()">Búsqueda Compleja</a>
+                            <a class="header-btn" (click)="onComplexQuery()">Búsqueda Compleja</a>
                         </li>
                     </ul>
                 </li>
