@@ -14,6 +14,8 @@ import { AuthHttp } from 'angular2-jwt';
 import { ProjectService } from '../../shared/services/project.service';
 import { Project } from '../../shared/models/project.model';
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
+import { WorkSpaceService } from '../../shared/services/work-space.service';
+import { SpinnerService } from '../../shared/services/spinner.service';
 
 @Component({
   selector: 'app-projects',
@@ -25,26 +27,37 @@ export class ProjectsComponent implements OnInit {
   @ViewChild('nameProject') nameProjectRef: ElementRef;
   @ViewChild('descProject') descProjectRef: ElementRef;
 
-  constructor( private projectService: ProjectService, private notificationsService: NotificationsService) { }
+  constructor(private projectService: ProjectService,
+    private notificationsService: NotificationsService,
+    private workspaceService: WorkSpaceService,
+    private spinnerService: SpinnerService) { }
 
   public filterQuery = '';
   public rowsOnPage = 10;
   public sortBy = 'name';
   public sortOrder = 'asc';
+  spinner = false;
 
   ngOnInit() {
+    this.workspaceService.cleanWorkSpace();
+    this.spinnerService.getSpinner('projects')
+      .subscribe(
+      state => {
+        this.spinner = state;
+      });
+    this.spinnerService.setSpinner('projects', true);
 
     this.projectService.getProjects()
       .subscribe(
       projects => {
         if (projects) {
           this.projects = projects;
-        }else {
+          this.spinnerService.setSpinner('projects', false);
+        } else {
           this.projects = [];
         }
       },
-      error => console.error(error)
-      );
+      error => console.error(error));
   }
 
   onCreateProject() {
@@ -68,7 +81,7 @@ export class ProjectsComponent implements OnInit {
               this.projectService.setSelectedProject(proj);
             },
             error => {
-              if (error.message !== null){
+              if (error.message !== null) {
                 if (error.message.includes('is not unique')) {
                   this.notificationsService.error('Error', 'El nombre del proyecto ya existe.');
                 }

@@ -3,6 +3,7 @@ import { Document } from '../../../shared/models/document.model';
 import { DocumentService } from '../../../shared/services/document.service';
 import { WorkSpaceService } from '../../../shared/services/work-space.service';
 import { TREE_ACTIONS, KEYS, IActionMapping, ITreeOptions } from 'angular-tree-component';
+import { SpinnerService } from '../../../shared/services/spinner.service';
 
 @Component({
   selector: 'app-document-list',
@@ -12,11 +13,13 @@ import { TREE_ACTIONS, KEYS, IActionMapping, ITreeOptions } from 'angular-tree-c
 
 export class DocumentListComponent implements OnInit {
   public documents: Document[] = [];
+  spinner = false;
 
   public noSelection = true;
   public selectAllClass = '';
 
-  constructor(private documentService: DocumentService) { }
+  constructor(private documentService: DocumentService,
+  private spinnerService: SpinnerService) { }
 
   ngOnInit() {
     this.documentService.getDocuments()
@@ -27,6 +30,12 @@ export class DocumentListComponent implements OnInit {
       error => console.error(error)
       );
 
+    this.spinnerService.getSpinner('document_list')
+      .subscribe(
+      state => {
+        this.spinner = state;
+      });
+    this.spinnerService.setSpinner('document_list', true);
   }
 
   onSelectAll() {

@@ -17,7 +17,7 @@ export class MenuOption {
     this.enabled = true;
   }
 
-  public desable() {
+  public disable() {
     this.enabled = false;
   }
 

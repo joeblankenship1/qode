@@ -1,11 +1,26 @@
-<div class="col-sm-9" id="main">
-  <div class="col">
-    <app-documents-tabs *ngFor="let doc of this.openedDocuments" 
-    [doc]="doc" 
-    (selected)="onDocumentSelected(doc)"
-    ></app-documents-tabs>
-  </div>
-  <div>
-    <app-document-content [actualDocument]="this.selectedDocument"></app-document-content>
-  </div>
+<div class="col-sm-9" id="main" style="position: relative;">
+    <div class="col">
+        <app-documents-tabs *ngFor="let doc of this.openedDocuments" [doc]="doc" (selected)="onDocumentSelected(doc)"></app-documents-tabs>
+    </div>
+    <div>
+        <app-document-content [actualDocument]="this.selectedDocument"></app-document-content>
+    </div>
+    <spinner-component [spinnerShow]="spinnerDocuments">
+        <h2> Cargando documentos.. </h2>
+        <div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+        </div>
+    </spinner-component>
+    <spinner-component [spinnerShow]="spinnerCoding">
+        <h2> Codificando.. </h2>
+        <div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+        </div>
+    </spinner-component>
 </div>

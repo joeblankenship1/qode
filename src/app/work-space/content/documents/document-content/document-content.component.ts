@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnChanges, Output, EventEmitter, HostListener } from '@angular/core';
 import { Document } from '../../../../shared/models/document.model';
 import { ContextMenuService, ContextMenuComponent } from 'ngx-contextmenu';
 import { ContentComponent } from '../../content.component';
@@ -17,7 +17,8 @@ import { WindowSelection } from '../../../../shared/helpers/window-selection';
 import { CodeService } from '../../../../shared/services/code.service';
 import { DocumentService } from '../../../../shared/services/document.service';
 import { NotificationsService } from 'angular2-notifications';
-
+import { UserService } from '../../../../shared/services/user.service';
+import { SpinnerService } from '../../../../shared/services/spinner.service';
 
 @Component({
   selector: 'app-document-content',
@@ -38,15 +39,21 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   menuOptions: MenuOption[][] = [];
   options = new OptionsComponent();
   selectedRange;
+  permissions: Array<string>;
+  spinner = false;
 
   public paint = false;
+  showLoader: boolean;
 
   constructor(private workSpaceService: WorkSpaceService, private modal: Modal,
     private contextMenuService: ContextMenuService,
     private codeService: CodeService,
     private documentService: DocumentService,
     private notificationsService: NotificationsService,
-    private quoteService: QuoteService, private windowSelection: WindowSelection) { }
+    private quoteService: QuoteService,
+    private userService: UserService,
+    private spinnerService: SpinnerService,
+    private windowSelection: WindowSelection) { }
 
   ngOnInit() {
     this.workSpaceService.getSelectedDocumentContent().subscribe(
@@ -54,12 +61,12 @@ export class DocumentContentComponent implements OnInit, OnChanges {
         this.actualDocumentContent = content;
         if (content) {
           this.aux.splice(0);
-          content.getPages().forEach( p => {
-          p.getLines().map( l => {
-            this.aux.push(l);
+          content.getPages().forEach(p => {
+            p.getLines().map(l => {
+              this.aux.push(l);
+            });
           });
-        });
-      }
+        }
         // this.quoteService.getQuoteList().subscribe(
         //   quotes => {
         //     this.allQuotes = quotes;
@@ -70,11 +77,29 @@ export class DocumentContentComponent implements OnInit, OnChanges {
       error => console.log(error)
     );
     this.createMenuOptions();
+
+    this.userService.getRolePermissions().subscribe(
+      permissions => {
+        this.permissions = permissions;
+      },
+      error => { console.error(error); }
+    );
+
+    this.spinnerService.getSpinner('document')
+    .subscribe(
+    state => {
+      this.spinner = state;
+    });
   }
 
   ngOnChanges() {
     this.updatePagesAndQuotes();
   }
+
+  // private onScroll(e) {
+  //   console.log(e.srcElement.scrollTop);
+  //   // document.getElementById('99').scrollIntoView()
+  // }
 
   private createNewQuote(quote: Quote) {
     this.quoteService.addQuote(quote).subscribe(
@@ -85,15 +110,18 @@ export class DocumentContentComponent implements OnInit, OnChanges {
           this.workSpaceService.updateDocumentContent();
           window.getSelection().removeAllRanges();
           window.getSelection().addRange(this.selectedRange);
+          this.spinnerService.setSpinner('coding', false);
         },
           error => {
             this.notificationsService.error('Error al guardar', error);
+            this.spinnerService.setSpinner('coding', false);
             console.error(error);
           }
         );
       },
       error => {
         this.notificationsService.error('Error al guardar', error);
+        this.spinnerService.setSpinner('coding', false);
         console.error(error);
       }
     );
@@ -102,8 +130,8 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   updatePagesAndQuotes() {
     if (this.actualDocumentContent) {
       this.aux.splice(0);
-      this.actualDocumentContent.getPages().forEach( p => {
-        p.getLines().map( l => {
+      this.actualDocumentContent.getPages().forEach(p => {
+        p.getLines().map(l => {
           this.aux.push(l);
         });
       });
@@ -168,10 +196,21 @@ export class DocumentContentComponent implements OnInit, OnChanges {
 
   private defineMenuOptions(newSelection) {
     this.menuOptions.map(group => {
-      group.map(op => newSelection ? op.enable() : op.desable());
+      group.map(op => newSelection ? op.enable() : op.disable());
     });
+    if (this.permissions) {
+      if (this.permissions.includes('coding')) {
+        this.menuOptions[0][0].enable();
+      } else {
+        this.menuOptions[0][0].disable();
+      }
+      if (this.permissions.includes('coding_with_activated_codes')) {
+        this.menuOptions[0][1].enable();
+      } else {
+        this.menuOptions[0][1].disable();
+      }
+    }
   }
-
 
   private onOpenQuoteModal(item: Quote) {
     if (item) {
@@ -199,13 +238,12 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   private onCodeWithActivatedCodes(quote: Quote) {
     const codes = [];
     this.codeService.getActivatedCodes().map(c => {
+      this.spinnerService.setSpinner('coding', true);
       codes.push(c);
     });
-      quote.setCodes(codes);
-      if (codes && codes.length > 0) {
-        this.createNewQuote(quote);
-      }
+    quote.setCodes(codes);
+    if (codes && codes.length > 0) {
+      this.createNewQuote(quote);
+    }
   }
-
-
 }

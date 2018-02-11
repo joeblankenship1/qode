@@ -9,14 +9,21 @@
 <div *ngIf='project' class="col-md-4" id='info-project'>
     <h2 style="text-align:center; color: #2d3e4f">{{project.name}} </h2>
 
-    <div *ngIf='!editmode'>
+    <div *ngIf='!editmode && permissions.includes("edit_project_description")'>
         <div (dblclick)='editmode = true' id='project-desc'> {{project.description}}</div>
         <button class="btn btn-default btn-block" (click)="editmode = true">
             <i class="fa fa-pencil" aria-hidden="true"></i> Editar descripción
         </button>
     </div>
 
-    <div *ngIf='editmode'>
+    <div *ngIf='!permissions.includes("edit_project_description")'>
+        <div id='project-desc'> {{project.description}}</div>
+        <button class="btn btn-default btn-block" [disabled]='!permissions.includes("edit_project_description")'>
+                <i class="fa fa-pencil" aria-hidden="true"></i> Editar descripción
+            </button>
+    </div>
+
+    <div *ngIf='editmode && permissions.includes("edit_project_description")'>
         <textarea type="text" rows="4" #descInfo [(ngModel)]="project.description" name='description' class="form-control" placeholder="Ingresa la descripción"></textarea>
         <button class="btn btn-success btn-block" (click)="onUpdateDescription()">
             <i class="fa fa-save" aria-hidden="true"></i> Guardar descripción
@@ -37,7 +44,7 @@
             - {{col.email}} <small>( {{col.role}} ) </small>
         </li>
     </ul>
-    <button class="btn btn-info btn-block" (click)="onShareProject()" title="Compartir">
+    <button [disabled]='!permissions.includes("share_project")' class="btn btn-info btn-block" (click)="onShareProject()" title="Compartir">
         <i class="fa fa-share-alt" aria-hidden="true"></i> Compartir proyecto
     </button>
     <button class="btn btn-success btn-block" (click)="onAccessProject($event)">

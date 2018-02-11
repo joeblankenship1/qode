@@ -43,6 +43,7 @@ import { OptionsComponent } from './shared/helpers/options/options.component';
 import { WindowSelection } from './shared/helpers/window-selection';
 import { QuoteService } from './shared/services/quote.service';
 import { WorkSpaceService } from './shared/services/work-space.service';
+import { SpinnerService } from './shared/services/spinner.service';
 
 import {DataTableModule} from 'angular2-datatable';
 import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
@@ -62,6 +63,7 @@ import { QuotesRetrievalService } from './shared/services/quotes-retrieval.servi
 import { RetrievedQuotesComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quotes-list.component';
 import { RetrievedQuoteItemComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quote-item/retrieved-quote-item.component';
 import { BottomBarComponent } from './work-space/bottom-bar/bottom-bar.component';
+import { NgxPermissionsModule } from 'ngx-permissions';
 import { ResetPasswordComponent } from './home/reset-password/reset-password.component';
 import { EqualValidatorDirective } from './shared/directives/equal-validator.directive';
 import { ChartPopupComponent } from './work-space/popup-window/chart-popup/chart-popup.component';
@@ -69,6 +71,7 @@ import { PopupWindowComponent } from './work-space/popup-window/popup-window.com
 import { SimpleQueryEditorComponent } from './work-space/popup-window/simple-query-editor/simple-query-editor.component';
 import { ComplexQueryEditorComponent } from './work-space/popup-window/complex-query-editor/complex-query-editor.component';
 import { PopupLoaderService } from './shared/services/popup-loader.service';
+import { SpinnerComponentModule } from 'ng2-component-spinner';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -137,6 +140,8 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
     ColorPickerModule,
     FusionChartsModule,
     AngularDraggableModule
+    NgxPermissionsModule.forRoot(),
+    SpinnerComponentModule
   ],
   providers: [DocumentService, CodeService,
     AuthGuard,
@@ -154,6 +159,7 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
     WindowSelection,
     WorkSpaceService,
     WorkSpaceResolver,
+    SpinnerService,
     [DatePipe]
   ],
   bootstrap: [AppComponent],

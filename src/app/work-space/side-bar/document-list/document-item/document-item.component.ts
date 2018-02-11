@@ -9,6 +9,7 @@ import { overlayConfigFactory } from 'angular2-modal';
 import { BSModalContext, Modal } from 'angular2-modal/plugins/bootstrap';
 import { MenuOption } from '../../../../shared/models/menu-option.model';
 import { ContextMenuService } from 'ngx-contextmenu';
+import { UserService } from '../../../../shared/services/user.service';
 
 @Component({
   selector: 'app-document-item',
@@ -20,15 +21,25 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
   @Input() document: Document;
   menuOptions: MenuOption[][] = [];
   options = new OptionsComponent();
+  permissions: Array<string>;
 
   constructor(private workspaceService: WorkSpaceService,
-    private documentService: DocumentService, private contextMenuService: ContextMenuService,
+    private documentService: DocumentService,
+    private contextMenuService: ContextMenuService,
+    private userService: UserService,
     private quotesRetrievalService: QuotesRetrievalService, private modal: Modal) { }
 
 
   selected: Document;
 
   ngOnInit() {
+    this.userService.getRolePermissions().subscribe(
+      permissions => {
+        this.permissions = permissions;
+      },
+      error => { console.error(error); }
+    );
+
     this.createMenuOptions();
     this.workspaceService.getSelectedDocument()
       .subscribe(
@@ -40,42 +51,65 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
 
   onOpenDocument() {
     this.document.setOpened(true);
-    this.documentService.updateDocument(this.document, { 'opened': true })
+    if (this.userService.getRole() !== 'Lector') {
+      this.documentService.updateDocument(this.document, { 'opened': true })
       .subscribe(doc => { this.workspaceService.selectDocument(doc); });
+    } else {
+      this.documentService.updateOpened(this.document, true);
+    }
   }
 
   private createMenuOptions() {
-    this.menuOptions = [[
-      new MenuOption('Activar', (item) => { this.onActivateDocument(); }),
-      new MenuOption('Desactivar', (item) => { this.onDeactivateDocument(); })
-    ],
-    [new MenuOption('Editar', (item) => { this.onEditDocument(); }),
-     new MenuOption('Eliminar', (item) => { this.onDeleteDocument(); })]];
-    this.defineMenuOptions();
-  }
+  this.menuOptions = [[
+    new MenuOption('Activar', (item) => { this.onActivateDocument(); }),
+    new MenuOption('Desactivar', (item) => { this.onDeactivateDocument(); })
+  ],
+  [new MenuOption('Editar', (item) => { this.onEditDocument(); }),
+  new MenuOption('Eliminar', (item) => { this.onDeleteDocument(); })]];
+  this.defineMenuOptions();
+}
 
   // Open context menu, the selected text will be passed as a parameter.
   // If there's no slected text, several options won't be enabled.
   public onContextMenu($event: MouseEvent, item: any): void {
-    this.defineMenuOptions();
-    this.contextMenuService.show.next({
-      contextMenu: this.options.optionsMenu,
-      event: $event,
-      item: this.document
-    });
-    $event.preventDefault();
-    $event.stopPropagation();
-  }
+  this.defineMenuOptions();
+  this.contextMenuService.show.next({
+    contextMenu: this.options.optionsMenu,
+    event: $event,
+    item: this.document
+  });
+  $event.preventDefault();
+  $event.stopPropagation();
+}
 
   private defineMenuOptions() {
-    if (this.document.isActivated()) {
-      this.menuOptions[0][0].setVisible(false);
-      this.menuOptions[0][1].setVisible(true);
+  if (this.document.isActivated()) {
+    this.menuOptions[0][0].setVisible(false);
+    this.menuOptions[0][1].setVisible(true);
+  } else {
+    this.menuOptions[0][0].setVisible(true);
+    this.menuOptions[0][1].setVisible(false);
+  }
+  if (this.permissions) {
+    if (this.permissions.includes('activate_document')) {
+      this.menuOptions[0][0].enable();
+      this.menuOptions[0][1].enable();
     } else {
-      this.menuOptions[0][0].setVisible(true);
-      this.menuOptions[0][1].setVisible(false);
+      this.menuOptions[0][0].disable();
+      this.menuOptions[0][1].disable();
+    }
+    if (this.permissions.includes('edite_document')) {
+      this.menuOptions[1][0].enable();
+    } else {
+      this.menuOptions[1][0].disable();
+    }
+    if (this.permissions.includes('delete_document')) {
+      this.menuOptions[1][1].enable();
+    } else {
+      this.menuOptions[1][1].disable();
     }
   }
+}
 
   public onActivateDocument() {
     this.document.activate();
@@ -90,39 +124,39 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
   }
 
   public getItemClass() {
-    return this.document.isActivated() ? 'list-item-selected' : 'list-item';
-  }
+  return this.document.isActivated() ? 'list-item-selected' : 'list-item';
+}
 
-  onDeleteDocument() {
-    const dialogRef = this.modal.confirm().size('lg').isBlocking(true).showClose(true).keyboard(27)
-      .okBtn('Confirmar').okBtnClass('btn btn-info').cancelBtnClass('btn btn-danger')
-      .title('Eliminar documento').body(' ¿Seguro que desea eliminar el documento y todas las citas asociadas? ').open();
-    dialogRef
-      .then(r => {
-        r.result
-          .then(result => {
-            this.documentService.deleteDocument(this.document)
-              .subscribe(doc => {
-                this.workspaceService.closeDocument(this.document);
-              });
-          })
-          .catch(error =>
-            console.log(error)
-          );
-      });
-  }
+onDeleteDocument() {
+  const dialogRef = this.modal.confirm().size('lg').isBlocking(true).showClose(true).keyboard(27)
+    .okBtn('Confirmar').okBtnClass('btn btn-info').cancelBtnClass('btn btn-danger')
+    .title('Eliminar documento').body(' ¿Seguro que desea eliminar el documento y todas las citas asociadas? ').open();
+  dialogRef
+    .then(r => {
+      r.result
+        .then(result => {
+          this.documentService.deleteDocument(this.document)
+            .subscribe(doc => {
+              this.workspaceService.closeDocument(this.document);
+            });
+        })
+        .catch(error =>
+          console.log(error)
+        );
+    });
+}
 
-  onEditDocument() {
-    this.modal.open(DocumentModalComponent, overlayConfigFactory({ doc: this.document, mode: 'new' }, BSModalContext ))
+onEditDocument() {
+  this.modal.open(DocumentModalComponent, overlayConfigFactory({ doc: this.document, mode: 'new' }, BSModalContext))
     .then((resultPromise) => {
       resultPromise.result.then((result) => { });
     });
-  }
+}
 
 
 
-  ngOnDestroy() {
+ngOnDestroy() {
 
-  }
+}
 
 }

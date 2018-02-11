@@ -7,6 +7,7 @@ import { ProjectService } from '../../../shared/services/project.service';
 import { WorkSpaceService } from '../../../shared/services/work-space.service';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { NotificationsService } from 'angular2-notifications';
+import { SpinnerService } from '../../../shared/services/spinner.service';
 
 @Component({
   selector: 'app-code-list',
@@ -17,12 +18,17 @@ export class CodeListComponent implements OnInit {
   public codes: Code[] = [];
   public newCodeName = '';
   public projectId: string;
+  spinner = false;
 
   public noSelection = true;
   public selectAllClass = '';
 
-  constructor(private codeService: CodeService, private workspaceService: WorkSpaceService,
-              private modal: Modal, private notificationsService: NotificationsService) { }
+
+  constructor(private codeService: CodeService,
+    private workspaceService: WorkSpaceService,
+    private modal: Modal,
+    private notificationsService: NotificationsService,
+    private spinnerService: SpinnerService) { }
 
   ngOnInit() {
     this.codeService.getCodes()
@@ -32,8 +38,14 @@ export class CodeListComponent implements OnInit {
         this.projectId = this.workspaceService.getProjectId();
       }
       );
-      this.projectId = this.workspaceService.getProjectId();
-  }
+    this.projectId = this.workspaceService.getProjectId();
+
+    this.spinnerService.getSpinner('code_list')
+      .subscribe(
+      state => {
+        this.spinner = state;
+      });
+    }
 
   onAddCode() {
     if (this.newCodeName == null || this.newCodeName === '') {

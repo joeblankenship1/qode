@@ -18,13 +18,15 @@
                         [code]="cod"></app-code-item>
                     </ul>
             </div>
-            <div class="input-group">
-                <input class="col-xs-12 form-control" placeholder="Nuevo código" (keyup.enter)="onAddCode()"
-                type="text" [(ngModel)]="newCodeName" name="Nuevo código" id="newCode">
+            <div class="input-group" style="margin-top:10px;" *ngxPermissionsOnly="['create_code']">
+                <input class="col-xs-12 form-control" placeholder="Nuevo código" (keyup.enter)="onAddCode()" type="text" [(ngModel)]="newCodeName" name="Nuevo código" id="newCode">
                 <span class="input-group-btn">
                     <button (click)="onAddCode()" class="btn btn-success" type="submit">Agregar</button>
                 </span>
             </div>
         </div>
     </div>
+    <spinner-component [spinnerShow]="spinner">
+        <h5> Cargando lista de codigos.. </h5>
+    </spinner-component>
 </div>
