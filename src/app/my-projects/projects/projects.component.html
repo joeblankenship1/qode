@@ -52,7 +52,7 @@
                     </div>
                 </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default" style=" overflow-y:scroll; max-height: 80%;">
                 <table style="position:relative;" class="table table-striped" [mfData]="projects | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
                     <thead>
                         <tr>
@@ -77,7 +77,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody style=" overflow-y:scroll; max-height: 50%;">
+                    <tbody>
                         <tr app-project-item *ngFor="let proj of mf.data" [project]="proj">
                         </tr>
                     </tbody>

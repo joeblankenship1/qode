@@ -24,14 +24,30 @@ export class AppComponent {
     theClass: 'myClass'
   };
 
-  constructor(public router: Router, public auth: AuthService, private _service: NotificationsService,
-    private _hotkeysService: HotkeysService) {
+  constructor(public router: Router,
+    public auth: AuthService,
+    private _service: NotificationsService,
+    private hotkeysService: HotkeysService) {
     auth.handleAuthentication();
-    this._hotkeysService.add(new Hotkey('Cmd+f', (event: KeyboardEvent): boolean => {
+
+    this.hotkeysService.add(new Hotkey('Cmd+f', (event: KeyboardEvent): boolean => {
       console.log('Cmd + f');
       return false; // Prevent bubbling
     }));
 
+    this.hotkeysService.add(new Hotkey('cmd+left', this.ctrlLeftPressed));
+    this.hotkeysService.add(new Hotkey('control+right', this.ctrlRightPressed));
   }
 
+  ctrlLeftPressed = (event: KeyboardEvent, combo: string): boolean => {
+    this.title = 'cmd+left pressed';
+    console.log(combo);
+    return true;
+  }
+
+  ctrlRightPressed = (event: KeyboardEvent, combo: string): boolean => {
+    this.title = 'control+right pressed';
+    console.log(combo);
+    return true;
+  }
 }
