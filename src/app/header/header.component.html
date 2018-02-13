@@ -41,7 +41,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Búsqueda<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li [ngClass]="{ 'disabled': permissions && !permissions.includes('search_activated_quotes')}">
-                            <a class="header-btn" (click)="onSimpleQuery()">Búsqueda Simple.</a>
+                            <a class="header-btn" (click)="onSimpleQuery()">Búsqueda Simple</a>
                         </li>
                         <li [ngClass]="{ 'disabled': permissions && !permissions.includes('search_activated_quotes')}">
                             <a class="header-btn" (click)="onComplexQuery()">Búsqueda Compleja</a>

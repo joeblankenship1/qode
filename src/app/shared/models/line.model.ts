@@ -122,8 +122,6 @@ export class Line {
   // In order to highlight only the words of the quote, a span must be added to the
   // html code. Therefore the text is divided into 3 parts prespantext, spantext and postspantext.
   private setTextSpan(relatedQuote, isFirstLine: boolean, isLastLine: boolean) {
-
-
     if ((relatedQuote.borderTop && isFirstLine) || (relatedQuote.borderBottom && isLastLine)) {
       let quote: Quote;
       quote = relatedQuote.quote;

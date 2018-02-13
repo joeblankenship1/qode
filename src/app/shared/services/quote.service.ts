@@ -29,9 +29,52 @@ export class QuoteService {
     this.options = new RequestOptions({ headers: this.headers });
   }
 
-  setQuoteList(quoteList: Quote[]) {
-    this.quoteList = quoteList;
-    this.quoteList$.next(quoteList);
+  // Saves the new quote and returns the db _id.
+  addQuote(quote: Quote): Observable<Quote> {
+    const body = quote.getMessageBody();
+    return this.http.post(environment.apiUrl + 'quote', body, this.options)
+      .map(res => {
+        const extracted = res.json();
+        if (extracted._id) {
+          quote.setId(extracted._id);
+        }
+        if (extracted._etag) {
+          quote.setEtag(extracted._etag);
+        }
+        quote.updateQuoteCount(1);
+        this.quoteList.push(quote);
+        this.quoteList$.next(this.quoteList);
+        return quote;
+      })
+      .catch(this.handleErrorObservable);
+  }
+
+  deleteQuote(quote: Quote): Observable<any> {
+    const updheaders = new Headers({ 'If-Match': quote.getEtag() });
+    const updoptions = new RequestOptions({ headers: updheaders });
+    const index = this.quoteList.findIndex(q => {
+      return q.getId() === quote.getId();
+    });
+    return this.http.delete(environment.apiUrl + 'quote/' + quote.getId(), updoptions)
+      .map(res => {
+        quote.updateQuoteCount(-1);
+        this.quoteList.splice(index, 1);
+        this.quoteList$.next(this.quoteList);
+      })
+      .catch(this.handleErrorObservable);
+  }
+
+  getQuotesById(quotes): Quote[] {
+    const ret = [];
+    if (quotes) {
+      for (const q of quotes) {
+        const foundQuote = this.quoteList.find(el => el.getId() === q);
+        if (foundQuote) {
+          ret.push(foundQuote);
+        }
+      }
+    }
+    return ret;
   }
 
   getQuoteList() {
@@ -40,6 +83,11 @@ export class QuoteService {
 
   getQuoteRange() {
     return this.quoteList.length;
+  }
+
+  private handleErrorObservable(error: Response | any) {
+    console.error(error.message || error);
+    return Observable.throw(error.message || error);
   }
 
 
@@ -59,72 +107,6 @@ export class QuoteService {
       });
   }
 
-  getQuotesById(quotes): Quote[] {
-    const ret = [];
-    if (quotes) {
-      for (const q of quotes) {
-        const foundQuote = this.quoteList.find(el => el.getId() === q);
-        if (foundQuote) {
-          ret.push(foundQuote);
-        }
-      }
-    }
-    return ret;
-  }
-
-  // Saves the new quote and returns the db _id.
-  addQuote(quote: Quote): Observable<Quote> {
-    const body = quote.getMessageBody();
-    return this.http.post(environment.apiUrl + 'quote', body, this.options)
-      .map(res => {
-        const extracted = res.json();
-        if (extracted._id) {
-          quote.setId(extracted._id);
-        }
-        if (extracted._etag) {
-          quote.setEtag(extracted._etag);
-        }
-        this.quoteList.push(quote);
-        this.quoteList$.next(this.quoteList);
-        return quote;
-      })
-      .catch(this.handleErrorObservable);
-  }
-
-
-  updateQuote(quote: Quote): Observable<any> {
-    const updheaders = new Headers({'If-Match': quote.getEtag() });
-    const updoptions = new RequestOptions({ headers: updheaders });
-    const body = quote.getMessageBody();
-    const index = this.quoteList.findIndex(q => {
-      return q.getId() === quote.getId();
-    });
-    return this.http.patch(environment.apiUrl + 'quote/' + quote.getId(), body, updoptions)
-      .map(res => {
-        const extracted = res.json();
-        if (extracted._etag) {
-          quote.setEtag(extracted._etag);
-        }
-        this.quoteList[index] = quote;
-        this.quoteList$.next(this.quoteList);
-        return quote;
-      })
-      .catch(this.handleErrorObservable);
-  }
-
-  deleteQuote(quote: Quote): Observable<any> {
-    const updheaders = new Headers({ 'If-Match': quote.getEtag() });
-    const updoptions = new RequestOptions({ headers: updheaders });
-    const index = this.quoteList.findIndex(q => {
-      return q.getId() === quote.getId();
-    });
-    return this.http.delete(environment.apiUrl + 'quote/' + quote.getId(), updoptions)
-      .map(res => {
-        this.quoteList.splice(index, 1);
-        this.quoteList$.next(this.quoteList);
-      })
-      .catch(this.handleErrorObservable);
-  }
 
   removeCodeFromQuotes(code_id: string) {
     let found = false;
@@ -152,9 +134,39 @@ export class QuoteService {
     return found;
   }
 
-  private handleErrorObservable(error: Response | any) {
-    console.error(error.message || error);
-    return Observable.throw(error.message || error);
+  removeQuoteFromList(quote: Quote) {
+    if (this.quoteList.includes(quote)) {
+      this.quoteList.splice(this.quoteList.indexOf(quote), 0);
+      this.quoteList$.next(this.quoteList);
+    }
   }
+
+
+
+  setQuoteList(quoteList: Quote[]) {
+    this.quoteList = quoteList;
+    this.quoteList$.next(quoteList);
+  }
+
+  updateQuote(quote: Quote): Observable<any> {
+    const updheaders = new Headers({ 'If-Match': quote.getEtag() });
+    const updoptions = new RequestOptions({ headers: updheaders });
+    const body = quote.getMessageBody();
+    const index = this.quoteList.findIndex(q => {
+      return q.getId() === quote.getId();
+    });
+    return this.http.patch(environment.apiUrl + 'quote/' + quote.getId(), body, updoptions)
+      .map(res => {
+        const extracted = res.json();
+        if (extracted._etag) {
+          quote.setEtag(extracted._etag);
+        }
+        this.quoteList[index] = quote;
+        this.quoteList$.next(this.quoteList);
+        return quote;
+      })
+      .catch(this.handleErrorObservable);
+  }
+
 
 }

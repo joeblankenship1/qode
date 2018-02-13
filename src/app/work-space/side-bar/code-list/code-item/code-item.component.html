@@ -4,5 +4,6 @@
     (click)="onDeactivateCode()"></span>
   <span *ngIf="permissions.includes('activate_code') && !code.isActivated()" class="list-marker" (click)="onActivateCode()">&#9679;</span> {{code.name}}
   <span [ngStyle]="{'color': code.getColor() }">&#9679;</span>
+  <span class="counter">{{code.getQuoteCount()}}</span>
 </li>
 <app-options [optionGroups]="menuOptions"></app-options>

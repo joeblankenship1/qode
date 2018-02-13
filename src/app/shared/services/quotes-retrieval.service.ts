@@ -23,9 +23,9 @@ export class QuotesRetrievalService {
   private retrivedQuotes: Quote[] = [];
   public retrivedQuotes$ = new BehaviorSubject<Quote[]>(null);
 
-  private allQuotes: Quote[];
-  private documents: Document[];
-  private codes: Code[];
+  private allQuotes: Quote[] = [];
+  private documents: Document[] = [];
+  private codes: Code[] = [];
 
   constructor(private http: AuthHttp,
     private quoteService: QuoteService,
@@ -38,6 +38,13 @@ export class QuotesRetrievalService {
   public initQuotesRetrieval() {
     this.quoteService.getQuoteList().subscribe(quotes => {
       this.allQuotes = quotes;
+      this.refreshRetrievedQuotes();
+      this.documentService.getDocuments().subscribe(docs => {
+        this.refreshRetrievedQuotes();
+        this.codeService.getCodes().subscribe(codes => {
+          this.refreshRetrievedQuotes();
+        });
+      });
     });
   }
 
@@ -47,35 +54,35 @@ export class QuotesRetrievalService {
   }
 
   public addDocument(document: Document) {
-    if (this.retrivedQuotes.length > 0) {
-      if (!this.documents.includes(document)) {
-        this.documents.push(document);
-      }
-      this.doSimpleQuery( this.documents, this.codes);
+
+    if (!this.documents.includes(document)) {
+      this.documents.push(document);
     }
+    this.doSimpleQuery(this.documents, this.codes);
+
   }
 
   public removeDocument(document: Document) {
-    if (this.retrivedQuotes.length > 0) {
-      this.documents.splice(this.documents.indexOf(document), 0);
-      this.doSimpleQuery( this.documents, this.codes);
-    }
+
+    this.documents.splice(this.documents.indexOf(document), 0);
+    this.doSimpleQuery(this.documents, this.codes);
+
   }
 
   public addCode(code: Code) {
-    if (this.retrivedQuotes.length > 0) {
-      if (!this.codes.includes(code)) {
-        this.codes.push(code);
-      }
-      this.doSimpleQuery( this.documents, this.codes);
+
+    if (!this.codes.includes(code)) {
+      this.codes.push(code);
     }
+    this.doSimpleQuery(this.documents, this.codes);
+
   }
 
   public removeCode(code: Code) {
-    if (this.retrivedQuotes.length > 0) {
-      this.codes.splice(this.codes.indexOf(code), 0);
-      this.doSimpleQuery( this.documents, this.codes);
-    }
+
+    this.codes.splice(this.codes.indexOf(code), 0);
+    this.doSimpleQuery(this.documents, this.codes);
+
   }
 
   public getRetrievedQuotes() {
@@ -88,7 +95,9 @@ export class QuotesRetrievalService {
   }
 
   public refreshRetrievedQuotes() {
-    this.doSimpleQuery(this.documents, this.codes);
+    if (this.documents && this.codes) {
+      this.doSimpleQuery(this.documents, this.codes);
+    }
   }
 
   public doSimpleQuery(documents: Document[], codes: Code[]) {
@@ -102,8 +111,8 @@ export class QuotesRetrievalService {
 
   private getQuotesFromDocuments(documents: Document[], quotes: Quote[]) {
     const res = [];
-    documents.map( document => {
-      quotes.map( quote => {
+    documents.map(document => {
+      quotes.map(quote => {
         if (document.hasQuote(quote)) {
           if (!res.includes(quote)) {
             res.push(quote);
@@ -116,8 +125,8 @@ export class QuotesRetrievalService {
 
   private getQuotesFromCodes(codes: Code[], quotes: Quote[]) {
     const res = [];
-    codes.map( code => {
-      quotes.map( quote => {
+    codes.map(code => {
+      quotes.map(quote => {
         if (quote.hasCode(code)) {
           if (!res.includes(quote)) {
             res.push(quote);

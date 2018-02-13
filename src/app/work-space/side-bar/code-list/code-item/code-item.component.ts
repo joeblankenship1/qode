@@ -43,29 +43,15 @@ export class CodeItemComponent implements OnInit {
     this.createMenuOptions();
   }
 
-  public onOpenCode() {
-    this.modal.open(CodeModalComponent, overlayConfigFactory({ code: this.code, mode: 'new' }, BSModalContext))
-      .then((resultPromise) => {
-        resultPromise.result.then((result) => {
-          if (result === -1) {
-            if (this.quoteService.removeCodeFromQuotes(this.code.getId())) {
-              this.workspaceService.updateDocumentContent();
-            }
-          }
-        });
-      });
-  }
 
   private createMenuOptions() {
-    this.menuOptions = [[
-      new MenuOption('Activar', (item) => { this.onActivateCode(); }),
-      new MenuOption('Desactivar', (item) => { this.onDeactivateCode(); })
-    ]];
+    this.menuOptions = [
+      [new MenuOption('Activar', (item) => { this.onActivateCode(); }),
+      new MenuOption('Desactivar', (item) => { this.onDeactivateCode(); })],
+      [new MenuOption('Editar', (item) => { this.onOpenCode(); })]];
     this.defineMenuOptions();
   }
 
-  // Open context menu, the selected text will be passed as a parameter.
-  // If there's no slected text, several options won't be enabled.
   public onContextMenu($event: MouseEvent, item: any): void {
     this.defineMenuOptions();
     this.contextMenuService.show.next({
@@ -94,6 +80,19 @@ export class CodeItemComponent implements OnInit {
         this.menuOptions[0][1].disable();
       }
     }
+  }
+
+  public onOpenCode() {
+    this.modal.open(CodeModalComponent, overlayConfigFactory({ code: this.code, mode: 'new' }, BSModalContext))
+      .then((resultPromise) => {
+        resultPromise.result.then((result) => {
+          if (result === -1) {
+            if (this.quoteService.removeCodeFromQuotes(this.code.getId())) {
+              this.workspaceService.updateDocumentContent();
+            }
+          }
+        });
+      });
   }
 
   public getItemClass() {

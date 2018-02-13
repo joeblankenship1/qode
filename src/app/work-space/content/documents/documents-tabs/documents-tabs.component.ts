@@ -38,8 +38,7 @@ export class DocumentsTabsComponent implements OnInit {
     if (this.userService.getRole() !== 'Lector') {
       this.documentService.updateDocument(this.doc, { 'opened': false })
         .subscribe();
-    } else {
-      this.documentService.updateOpened(this.doc, false);
     }
+    this.documentService.updateOpened(this.doc, false);
   }
 }

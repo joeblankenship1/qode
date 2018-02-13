@@ -16,7 +16,7 @@
     height: calc(100vh - 52px - 25px);
     width: 100%;
     margin-top: 25px;
-    overflow-y: scroll;
+   /* overflow-y: scroll;*/
 }
 
 .bottom-bar-heading {
@@ -34,14 +34,14 @@
 
 .bottombar-actions {
     position: absolute;
+    right: 0;
     bottom: 0;
-    margin-left: 155px;
     cursor: pointer;
 }
 
 .bottombar-close {
-    position: absolute;
-    right: 0;
+    /*position: absolute;
+    right: 0;*/
     padding: 2px;
     color: #9d9f9e;
 }

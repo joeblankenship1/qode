@@ -39,8 +39,7 @@ html {
 .container-fluid {
     margin-right: auto;
     margin-left: auto;
-    padding-left: 0px !important;
-    padding-right: 0px !important;
+    
 }
 
 .sk-folding-cube {
@@ -147,4 +146,16 @@ html {
         transform: perspective(140px) rotateY(180deg);
         opacity: 0;
     }
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+ 
+
+ 
+*::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
 }
