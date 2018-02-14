@@ -1,8 +1,30 @@
 .panel-heading {
     background-color: #979B9C;
     color: #203F30;
+    height: 35px;
 }
 
 .code-list {
     list-style-type: none;
+}
+
+.actions {
+    cursor: pointer;
+}
+
+.action-selected {
+    color: red;
+}
+
+.form-control {
+    height: 30px;
+}
+
+.form-control:focus {
+    border-color: #aeafb1;
+}
+
+.btn {
+    height: 30px;
+    padding-top: 3px !important;
 }

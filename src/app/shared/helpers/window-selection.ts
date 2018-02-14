@@ -25,7 +25,9 @@ export class WindowSelection {
     const endNode = range.endContainer;
 
     // Special case for a range that is contained within a single node
-    if (node === endNode) {
+    if (node === endNode ||
+       (range.commonAncestorContainer.localName !== 'tbody'
+       &&  endNode.data.substring(0, 1) === '\n')) {
       return [this.getAppLineFromText(range.commonAncestorContainer.parentElement, filterTag)];
     }
 
@@ -73,7 +75,6 @@ export class WindowSelection {
     const result = [];
     const firstPage = Math.trunc(list[0].id / AppSettings.PAGE_SIZE);
     const lastPage = Math.trunc(list[list.length - 1].id / AppSettings.PAGE_SIZE);
-
     for ( let i = firstPage; i < lastPage + 1; i++) {
       result.push({
         page: i,

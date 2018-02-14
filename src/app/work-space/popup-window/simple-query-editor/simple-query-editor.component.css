@@ -1,8 +1,11 @@
 
-.container {
+.popup-container {
   width: 400px;
+  float: right;
+  margin-right: 0;
   padding-right: 0px;
   padding-left: 0px;
+  background-color: white;
 }
 
 .divider {

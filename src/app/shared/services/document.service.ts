@@ -25,7 +25,6 @@ export class DocumentService {
   private documentList$ = new BehaviorSubject<Document[]>(null);
 
   private activatedDocuments: Document[] = [];
-  private activatedDocuments$ = new BehaviorSubject<Document[]>(null);
 
   constructor(private http: AuthHttp, private quoteService: QuoteService,
     private spinnerService: SpinnerService) {
@@ -99,12 +98,15 @@ export class DocumentService {
     const body = { 'quotes': document.getQuotes().map(q => q.getId()) };
     this.headers = new Headers({'Cache-Control': 'no-cache', 'If-Match': document.getEtag() });
     this.options = new RequestOptions({ headers: this.headers });
+    const index = this.documentList.indexOf(document, 0);
     return this.http.patch(environment.apiUrl + 'document/' + document.getId(), body, this.options)
       .map(res => {
         const extracted = res.json();
         if (extracted._etag) {
           document.setEtag(extracted._etag);
         }
+        this.documentList[index] = document;
+        this.documentList$.next(this.documentList);
       })
       .catch(this.handleErrorObservable);
   }
@@ -164,6 +166,10 @@ export class DocumentService {
     return this.http.delete(environment.apiUrl + 'document/' + doc.getId(), options)
       .map((data: Response) => {
         const indxOf = this.documentList.findIndex(x => x.getId() === doc.getId());
+        doc.getQuotes().map( q => {
+          q.updateQuoteCount(-1);
+          this.quoteService.removeQuoteFromList(q);
+        });
         this.documentList.splice(indxOf, 1);
         this.setDocuments(this.documentList);
         return 'OK';
@@ -175,20 +181,17 @@ export class DocumentService {
 
   setActivatedDocuments(documents: Document[]) {
     this.activatedDocuments = documents;
-    //this.activatedDocuments$.next(documents);
   }
 
   setActivatedDocument(document: Document) {
     if (this.activatedDocuments.indexOf(document) === -1) {
       this.activatedDocuments.push(document);
-      //this.activatedDocuments$.next(this.activatedDocuments);
     }
   }
 
   removeActivatedDocument(document: Document) {
     if (this.activatedDocuments.indexOf(document) > -1) {
       this.activatedDocuments.splice(this.activatedDocuments.indexOf(document), 1);
-      //this.activatedDocuments$.next(this.activatedDocuments);
     }
   }
 
@@ -196,11 +199,6 @@ export class DocumentService {
     return this.activatedDocuments;
   }
 
-  // private createQuotes(document: Document) {
-  //   // document.setQuotes(this.quoteService.quoteList.filter( q => quotes.find( e => e === q.getId()) !== undefined ));
-  //   document.setQuotes(this.quoteService.quoteList.filter( q =>
-  // document.getQuotes().find( e => e.getId() === q.getId()) !== undefined ));
-  // }
 
   getCodesDocumentsMatrix(cooc: boolean) {
     return this.http.get(environment.apiUrl + `doc-code-matrix?project_id=${this.projectId}` + (cooc ? `&cooc=${cooc}` : ``),

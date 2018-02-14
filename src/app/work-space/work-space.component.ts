@@ -13,9 +13,14 @@ import { WindowSelection } from '../shared/helpers/window-selection';
 })
 export class WorkSpaceComponent implements OnInit {
 
-  constructor() { }
+  showPopup = false;
+
+  constructor(private workspaceservice: WorkSpaceService) { }
 
   ngOnInit() {
+    this.workspaceservice.getPopup().subscribe( op => {
+      this.showPopup = op;
+    });
   }
 
 }
