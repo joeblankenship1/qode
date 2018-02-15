@@ -35,13 +35,23 @@ export class QuotesRetrievalService {
     this.options = new RequestOptions({ headers: this.headers });
   }
 
-  public initQuotesRetrieval() {
+  initQuotesRetrieval() {
     this.quoteService.getQuoteList().subscribe(quotes => {
       this.allQuotes = quotes;
       this.refreshRetrievedQuotes();
       this.documentService.getDocuments().subscribe(docs => {
+        this.documents.map( d => {
+          if (!docs.includes(d)) {
+            this.documents.splice(this.documents.indexOf(d), 1);
+          }
+        });
         this.refreshRetrievedQuotes();
         this.codeService.getCodes().subscribe(codes => {
+          this.codes.map( c => {
+            if (!codes.includes(c)) {
+              this.codes.splice(this.codes.indexOf(c), 1);
+            }
+          });
           this.refreshRetrievedQuotes();
         });
       });
@@ -53,7 +63,7 @@ export class QuotesRetrievalService {
     this.retrivedQuotes$.next(quotes);
   }
 
-  public addDocument(document: Document) {
+  addDocument(document: Document) {
 
     if (!this.documents.includes(document)) {
       this.documents.push(document);
@@ -62,14 +72,14 @@ export class QuotesRetrievalService {
 
   }
 
-  public removeDocument(document: Document) {
+  removeDocument(document: Document) {
 
     this.documents.splice(this.documents.indexOf(document), 0);
     this.doSimpleQuery(this.documents, this.codes);
 
   }
 
-  public addCode(code: Code) {
+  addCode(code: Code) {
 
     if (!this.codes.includes(code)) {
       this.codes.push(code);
@@ -78,29 +88,29 @@ export class QuotesRetrievalService {
 
   }
 
-  public removeCode(code: Code) {
+  removeCode(code: Code) {
 
     this.codes.splice(this.codes.indexOf(code), 0);
     this.doSimpleQuery(this.documents, this.codes);
 
   }
 
-  public getRetrievedQuotes() {
+  getRetrievedQuotes() {
     return this.retrivedQuotes$.asObservable();
   }
 
-  public cleanRetrievedQuotes() {
+  cleanRetrievedQuotes() {
     this.retrivedQuotes.splice(0);
     this.retrivedQuotes$.next(this.retrivedQuotes);
   }
 
-  public refreshRetrievedQuotes() {
-    if (this.documents && this.codes) {
+  refreshRetrievedQuotes() {
+    if (this.retrivedQuotes.length > 0) {
       this.doSimpleQuery(this.documents, this.codes);
     }
   }
 
-  public doSimpleQuery(documents: Document[], codes: Code[]) {
+  doSimpleQuery(documents: Document[], codes: Code[]) {
     let result: Quote[] = [];
     this.documents = documents;
     this.codes = codes;
