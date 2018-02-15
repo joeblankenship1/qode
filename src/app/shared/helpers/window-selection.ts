@@ -4,6 +4,8 @@ import { AppSettings } from '../../app.settings';
 @Injectable()
 export class WindowSelection {
 
+  endOffset = undefined;
+
   constructor() { }
 
   nextNode(node) {
@@ -49,7 +51,7 @@ export class WindowSelection {
     return rangeNodes;
   }
 
-  getSelectedNodes(selection, lineTag) {
+  getSelectedNodes(selection, lineTag): any {
     if (selection) {
       if (!selection.isCollapsed) {
         let rawList = this.getRangeSelectedNodes(selection.getRangeAt(0), lineTag)
@@ -57,10 +59,14 @@ export class WindowSelection {
         rawList = rawList.filter((v, i) => {
           return rawList.indexOf(v) === i;
         });
+        if (rawList[rawList.length - 1 ].innerText === '\n') {
+          rawList = this.cleanList(rawList);
+          this.endOffset = rawList[rawList.length - 1 ].innerText.length;
+        }
         return this.createDocumentDisplay(rawList);
       }
     }
-    return [];
+    return {};
   }
 
   getAppLineFromText(element, filterTag) {
@@ -69,6 +75,18 @@ export class WindowSelection {
     } else {
       return this.getAppLineFromText(element.parentElement, filterTag);
     }
+  }
+
+  cleanList(list) {
+    let cleaning = true;
+    while (cleaning) {
+      if (list[list.length - 1 ].innerText !== '\n') {
+        cleaning = false;
+      } else {
+        list.splice(list.length - 1, 1);
+      }
+    }
+    return list;
   }
 
   createDocumentDisplay(list: any[]) {
@@ -82,7 +100,7 @@ export class WindowSelection {
         endLine: i === lastPage ? parseInt(list[list.length - 1].id, 0) : ( i + 1 ) * AppSettings.PAGE_SIZE - 1
       });
     }
-   return result;
+    return { docDisplay: result, endOffset: this.endOffset };
 
   }
 
