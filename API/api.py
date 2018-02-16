@@ -14,7 +14,7 @@ from flask import abort
 from datetime import datetime
 
 APP = Eve(auth=MyTokenAuth)
-# APP = Eve()
+#APP = Eve()
 
 @APP.errorhandler(AuthError)
 def handle_auth_error(ex):

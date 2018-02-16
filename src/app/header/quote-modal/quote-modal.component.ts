@@ -28,6 +28,8 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
   private quote: Quote;
   private document: Document;
   protected chosenCode: string;
+  protected removedCodes: Code[] = [];
+  protected newCodes: Code [] = [];
   protected selectedCodes: Code[];
   protected codes: Code[];
   protected dataService: CompleterData;
@@ -74,6 +76,10 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
     if (index === -1) {
       this.selectedCodes.push(code);
       this.chosenCode = '';
+      if ( this.codes.indexOf(code) > -1) {
+        this.removedCodes.splice(this.removedCodes.indexOf(code), 0);
+        this.newCodes.push(code);
+      }
     }
   }
 
@@ -89,7 +95,7 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
         resp => {
           this.quote = resp;
           this.document.addQuote(this.quote);
-          this.documentService.updateDocumentQuotes(this.document).subscribe(result => {} ,
+          this.documentService.updateDocumentQuotes(this.document).subscribe(result => { } ,
             error => {
               this.notificationsService.error('Error al guardar', error);
               console.error(error); }
@@ -103,6 +109,12 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
     }else {
       this.quoteService.updateQuote(this.quote).subscribe(
         resp => {
+          this.removedCodes.map(code => {
+            code.decreaseQuoteCount(1);
+          });
+          this.newCodes.map( code => {
+            code.increaseQuoteCount(1);
+          });
           this.dialog.close(resp);
         },
         error => {
@@ -133,6 +145,10 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
     const index = this.selectedCodes.indexOf(code);
     if (index !== -1) {
       this.selectedCodes.splice(index, 1);
+      if ( this.codes.indexOf(code) > -1) {
+        this.removedCodes.push(code);
+        this.newCodes.splice(this.newCodes.indexOf(code), 0);
+      }
     }
   }
 

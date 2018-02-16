@@ -24,7 +24,7 @@ export class AuthService {
     redirectUri: environment.frontUrl,
     scope: 'openid profile'
   });
-  
+
   auth0Social = new auth0.WebAuth({
     clientID: environment.clientID,
     domain: environment.domainSocial,

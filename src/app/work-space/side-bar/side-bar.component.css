@@ -1,11 +1,10 @@
             @media screen and (min-width: 1200px) {
                 .sidenav {
                     padding: 2px;
-                    padding-top: 20px;
-                    background-color: #333534;
-                    height: -moz-calc(100vh - 52px);
-                    height: -webkit-calc(100vh - 52px);
-                    height: calc(100vh - 52px);
+                    /*background-color: #333534;*/
+                    height: -moz-calc(100vh - 52px - 21px);
+                    height: -webkit-calc(100vh - 52px - 21px);
+                    height: calc(100vh - 52px - 21px);
                     width: 20%;
                 }
             }
@@ -13,15 +12,18 @@
             @media screen and (min-width: 992px) {
                 .sidenav {
                     padding: 2px;
-                    padding-top: 20px;
-                    background-color: #333534;
-                    height: -moz-calc(100vh - 52px);
-                    height: -webkit-calc(100vh - 52px);
-                    height: calc(100vh - 52px);
+                    /*background-color: #333534;*/
+                    height: -moz-calc(100vh - 52px - 21px);
+                    height: -webkit-calc(100vh - 52px - 21px);
+                    height: calc(100vh - 52px - 21px);
                     width: 20%;
                 }
             }
             
             .btn {
                 border-radius: 0px;
+            }
+
+            .panel-group {
+                height: 100%;
             }

@@ -97,6 +97,12 @@ export class Quote {
     return this.codes.indexOf(code) > -1;
   }
 
+  public updateQuoteCount(type: number) {
+    this.codes.map( code => {
+      type === 1 ? code.increaseQuoteCount(1) : code.decreaseQuoteCount(1);
+    });
+  }
+
   public getMessageBody() {
     return {'text': this.text, 'position': this.position, 'color': this.color,
             'documentDisplay': this.documentDisplay, 'project': this.projectId,

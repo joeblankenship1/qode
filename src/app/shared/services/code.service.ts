@@ -19,12 +19,14 @@ export class CodeService {
 
   public codes: Code[] = [];
   private codes$ = new BehaviorSubject<Code[]>([]);
+
   private project: Project;
 
   private activatedCodes: Code[] = [];
  // private activatedCodes$ = new BehaviorSubject<Code[]>([]);
 
-  constructor(private http: AuthHttp, private projectService: ProjectService, private spinnerService: SpinnerService) {
+  constructor(private http: AuthHttp, private projectService: ProjectService,
+    private spinnerService: SpinnerService) {
     this.headers = new Headers({'Cache-Control': 'no-cache'});
     this.options = new RequestOptions({ headers: this.headers });
    }
@@ -66,6 +68,7 @@ export class CodeService {
     for (const c of codes){
       const foundCode = this.codes.find( code => code.getId() === c);
       if (foundCode) {
+        foundCode.increaseQuoteCount(1);
         ret.push(foundCode);
       }
     }

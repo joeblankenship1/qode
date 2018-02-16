@@ -122,4 +122,8 @@ export class Document {
     return this.quotes.indexOf(quote) > -1;
   }
 
+  public getQuoteCount() {
+    return this.quotes.length;
+  }
+
 }

@@ -183,14 +183,16 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   // the text that has been selected. Also create temporary quote with the selected text.
   private getSelectedText() {
     const selection = window.getSelection();
-    const docDisplay = this.windowSelection.getSelectedNodes(selection, 'tr');
-    if (docDisplay.length === 0) {
+    const selectedNodes = this.windowSelection.getSelectedNodes(selection, 'tr');
+    if (selectedNodes.docDisplay.length === 0) {
       return undefined;
     }
     this.selectedRange = selection.getRangeAt(0);
-    if (this.selectedRange && (this.selectedRange.startOffset !== this.selectedRange.endOffset)) {
-      return new Quote(selection.toString(), selection.baseOffset,
-        selection.extentOffset, docDisplay, this.workSpaceService.getProjectId());
+    if (this.selectedRange) {
+      const endOffset = this.selectedRange.endOffset === 0 ?
+      selectedNodes.endOffset : this.selectedRange.endOffset;
+      return new Quote(selection.toString(), this.selectedRange.startOffset,
+      endOffset, selectedNodes.docDisplay, this.workSpaceService.getProjectId());
     }
   }
 
@@ -227,7 +229,9 @@ export class DocumentContentComponent implements OnInit, OnChanges {
                 item = result;
                 this.workSpaceService.updateDocumentContent();
                 window.getSelection().removeAllRanges();
-                window.getSelection().addRange(this.selectedRange);
+                if (this.selectedRange) {
+                  window.getSelection().addRange(this.selectedRange);
+                }
               }
             }
           });

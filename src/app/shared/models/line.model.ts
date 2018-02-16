@@ -40,16 +40,26 @@ export class Line {
     return this.relatedQuotes.find(q => {
       const len = q.quote.getCodes().length === 0 ? 1 : q.quote.getCodes().length;
       return ((q.column <= column) && ((q.column + len) > column));
-      //return q.column === column;
     });
   }
 
   public getLineType() {
     let styleClass = 'text-area white-line';
     if (this.id % AppSettings.PAGE_SIZE === 0) {
+      this.relatedQuotes.map ( q => {
+        if (q.quote.getDocumentDisplay()[0].startLine !== this.id) {
+          q.borderTop = false;
+        }
+      });
       styleClass += 'text-area top-line';
     } else if (this.id % AppSettings.PAGE_SIZE === AppSettings.PAGE_SIZE - 1) {
       styleClass += 'text-area bottom-line';
+      this.relatedQuotes.map ( q => {
+        const aux = q.quote.getDocumentDisplay().length;
+        if (q.quote.getDocumentDisplay()[aux - 1].endLine !== this.id) {
+          q.borderBottom = false;
+        }
+      });
     }
     return styleClass;
   }
@@ -92,13 +102,12 @@ export class Line {
 
   // sets the default line color to the line
   public setTextColor(column: number, type: boolean, isFirstPage: boolean,
-     isLastPage: boolean) {
+    isLastPage: boolean) {
     const relatedQuote = this.getRelatedQuote(column);
     let color = '';
     if (relatedQuote && type) {
-      // const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      color = AppSettings.DEFAULT_LINE_COLOR; // code ? code.getColor() : 'transparent';
-      this.setTextSpan(relatedQuote, isFirstPage, isLastPage );
+      color = AppSettings.DEFAULT_LINE_COLOR;
+      this.setTextSpan(relatedQuote, isFirstPage, isLastPage);
     } else {
       this.preSpanText = '';
       this.spanText = this.text;
@@ -122,8 +131,6 @@ export class Line {
   // In order to highlight only the words of the quote, a span must be added to the
   // html code. Therefore the text is divided into 3 parts prespantext, spantext and postspantext.
   private setTextSpan(relatedQuote, isFirstLine: boolean, isLastLine: boolean) {
-
-
     if ((relatedQuote.borderTop && isFirstLine) || (relatedQuote.borderBottom && isLastLine)) {
       let quote: Quote;
       quote = relatedQuote.quote;
@@ -145,11 +152,10 @@ export class Line {
         const end = quote.getPosition().end;
         this.preSpanText = this.text.substring(0, start);
         this.spanText = this.text.substring(start, end);
-        this.postSpanText = this.text.substr(end, this.text.length - this.preSpanText.length)
+        this.postSpanText = this.text.substr(end, this.text.length - this.preSpanText.length);
       }
 
     }
   }
 
 }
-
