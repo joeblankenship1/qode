@@ -34,7 +34,7 @@ def codes_matrix(proj_id,cooc):
                 tot_ocurrences.append(ocurrences)
     if len(docs) == 0:
         error_message = 'No existen documentos en el proyecto'
-        return {message: error_message}
+        return {'message': error_message}
     if (cooc):
         np_occ = np.array(tot_ocurrences)
         cooc_matrix = np.dot(np_occ.transpose(),np_occ)
