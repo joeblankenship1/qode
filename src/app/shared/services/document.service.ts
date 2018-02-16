@@ -170,6 +170,7 @@ export class DocumentService {
           q.updateQuoteCount(-1);
           this.quoteService.removeQuoteFromList(q);
         });
+        this.activatedDocuments.splice(indxOf, 1);
         this.documentList.splice(indxOf, 1);
         this.setDocuments(this.documentList);
         return 'OK';
