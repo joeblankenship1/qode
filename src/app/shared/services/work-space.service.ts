@@ -40,6 +40,13 @@ export class WorkSpaceService {
   private showBottomBar = false;
   private showBottomBar$ = new BehaviorSubject<boolean>(null);
 
+  private showPopup = false;
+  private showPopup$ = new BehaviorSubject<boolean>(null);
+  private popupName = '';
+
+  private matrixResult = {};
+  private matrixResult$ = new BehaviorSubject<any>(null);
+
   constructor(private documentService: DocumentService,
     private quoteService: QuoteService,
     private codeService: CodeService,
@@ -213,6 +220,29 @@ export class WorkSpaceService {
     return this.showBottomBar$.asObservable();
   }
 
+  setPopup(visible: boolean, name?: string) {
+    this.showPopup = visible;
+    this.popupName = name;
+    this.showPopup$.next(visible);
+  }
+
+  getPopup() {
+    return this.showPopup$.asObservable();
+  }
+
+  getPopupName() {
+    return this.popupName;
+  }
+
+  setMatrixResult(result) {
+    this.matrixResult = result;
+    this.matrixResult$.next(result);
+  }
+
+  getMatrixResult() {
+    return this.matrixResult$.asObservable();
+  }
+
   cleanWorkSpace() {
     this.codeService.setCodes([]);
     this.documentService.setDocuments([]);
@@ -228,5 +258,6 @@ export class WorkSpaceService {
     this.quotesSelectedDocument.splice(0);
     this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
     this.showBottomBar = false;
+    this.showBottomBar$.next(false);
   }
 }

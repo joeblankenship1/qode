@@ -5,6 +5,7 @@ from flask_cors import CORS
 from flask import jsonify, request, make_response
 from authentication import MyTokenAuth, AuthError, requires_auth, get_token_auth_header, get_email
 from settings import DOMAIN
+from procedures import codes_matrix
 
 from flask import Blueprint, Response, current_app, request
 from bson import json_util
@@ -25,7 +26,7 @@ def handle_auth_error(ex):
 def get_project_id_from_req(resource, request):
     j = request.args.get('where').encode('utf-8')
     d = json_util.loads(j)
-    if resource == 'quote' or resource == 'code':
+    if resource == 'quote':
         return d.get('project') 
     else:
         return d.get('key.project')
@@ -169,5 +170,16 @@ def deleteDocument(item):
             current_app.data.driver.db['quote'].remove(({'_id':quote}))
     current_app.data.driver.db['document'].remove(({'_id':item['_id']}))
 
+@APP.route("/doc-code-matrix")
+def docCodeMatrix():
+    token = get_token_auth_header()
+    mail = get_email(token)
+    proj_id = request.args.get('project_id')
+    cooc = request.args.get('cooc')
+    check_permissions(proj_id, mail, False)
+    result = codes_matrix(proj_id,cooc)
+    if ('message' in result):
+        abort(make_response(jsonify(message=result['message']), 449))
+    return jsonify(result)
 
 

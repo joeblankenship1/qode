@@ -16,3 +16,7 @@
 .header-btn {
     cursor: pointer;
 }
+
+.disabled {
+    pointer-events: none;
+}

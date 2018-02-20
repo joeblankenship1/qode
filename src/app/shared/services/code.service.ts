@@ -19,13 +19,15 @@ export class CodeService {
 
   public codes: Code[] = [];
   private codes$ = new BehaviorSubject<Code[]>([]);
+
   private project: Project;
 
   private activatedCodes: Code[] = [];
  // private activatedCodes$ = new BehaviorSubject<Code[]>([]);
 
-  constructor(private http: AuthHttp, private projectService: ProjectService, private spinnerService: SpinnerService) {
-    this.headers = new Headers({ 'Content-Type': 'application/json' , 'Cache-Control': 'no-cache'});
+  constructor(private http: AuthHttp, private projectService: ProjectService,
+    private spinnerService: SpinnerService) {
+    this.headers = new Headers({'Cache-Control': 'no-cache'});
     this.options = new RequestOptions({ headers: this.headers });
    }
 
@@ -66,6 +68,7 @@ export class CodeService {
     for (const c of codes){
       const foundCode = this.codes.find( code => code.getId() === c);
       if (foundCode) {
+        foundCode.increaseQuoteCount(1);
         ret.push(foundCode);
       }
     }
@@ -92,7 +95,7 @@ export class CodeService {
   }
 
   updateCode(code: Code): Observable<any> {
-    const updheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': code.getEtag()});
+    const updheaders = new Headers({'If-Match': code.getEtag()});
     const updoptions = new RequestOptions({ headers: updheaders });
     const index = this.codes.indexOf(code, 0);
     if (index === -1) {
@@ -111,7 +114,7 @@ export class CodeService {
   }
 
   deleteCode(code: Code): Observable<any> {
-    const delheaders = new Headers({ 'Content-Type': 'application/json', 'If-Match': code.getEtag()});
+    const delheaders = new Headers({'If-Match': code.getEtag()});
     const deloptions = new RequestOptions({ headers: delheaders });
     const index = this.codes.indexOf(code, 0);
     if (index === -1) {

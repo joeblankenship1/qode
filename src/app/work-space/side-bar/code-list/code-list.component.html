@@ -1,20 +1,24 @@
 <span defaultOverlayTarget></span>
-<div class="panel panel-default" style="max-height:50; position:relative">
+<div class="panel panel-default" style="max-height:50%; height: 50%; position: relative;">
     <div class="panel-heading" role="tab" id="headingOne">
-        <h4 class="panel-title">
-            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCodeList" aria-expanded="true" aria-controls="collapseOne">
-                    Códigos
-            </a>
+        <h4 class="panel-title pull-left">
+            Códigos
         </h4>
+        <div class="actions pull-right">
+            <span class="glyphicon glyphicon-list-alt" [title]="noSelection ? 'Activar Todos' : 'Desactivar Todos'"
+            (click)="onSelectAll()" [(ngClass)]="selectAllClass"></span>
+        </div>
     </div>
     <div id="collapseCodeList" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
         <div class="panel-body">
-            <div style="overflow:auto; max-height:200px">
-                <ul class='code-list'>
-                    <app-code-item *ngFor="let cod of codes" [code]="cod"></app-code-item>
-                </ul>
+            <div style="overflow:auto; max-height:215px">
+                    <ul class='code-list'>
+                        <app-code-item
+                        *ngFor="let cod of codes"
+                        [code]="cod"></app-code-item>
+                    </ul>
             </div>
-            <div class="input-group" style="margin-top:10px;" *ngxPermissionsOnly="['create_code']">
+            <div class="input-group" *ngxPermissionsOnly="['create_code']">
                 <input class="col-xs-12 form-control" placeholder="Nuevo código" (keyup.enter)="onAddCode()" type="text" [(ngModel)]="newCodeName" name="Nuevo código" id="newCode">
                 <span class="input-group-btn">
                     <button (click)="onAddCode()" class="btn btn-success" type="submit">Agregar</button>

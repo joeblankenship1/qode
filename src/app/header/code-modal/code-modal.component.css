@@ -1,6 +1,11 @@
 .colorInput {
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
-    border-top-right-radius: 4px !important;
-    border-bottom-right-radius: 4px !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+}
+
+.container-fluid {
+  padding-left: 0;
+  padding-right: 0;
 }

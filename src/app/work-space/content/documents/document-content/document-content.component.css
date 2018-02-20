@@ -1,8 +1,8 @@
 .content-container {
   background-color: white;
   overflow-y: scroll;
-  height: -moz-calc(94.8vh - 52px);
-  height: -webkit-calc(94.8vh - 52px);
+  height: -moz-calc(94.8vh - 52px );
+  height: -webkit-calc(94.8vh - 52px );
   height: calc(94.8vh - 52px);
   border: #2d3e4f solid 2px;
 }

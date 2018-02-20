@@ -18,6 +18,7 @@ import { CodeService } from '../../../../shared/services/code.service';
 import { DocumentService } from '../../../../shared/services/document.service';
 import { NotificationsService } from 'angular2-notifications';
 import { UserService } from '../../../../shared/services/user.service';
+import { SpinnerService } from '../../../../shared/services/spinner.service';
 
 @Component({
   selector: 'app-document-content',
@@ -39,6 +40,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   options = new OptionsComponent();
   selectedRange;
   permissions: Array<string>;
+  spinner = false;
 
   public paint = false;
   showLoader: boolean;
@@ -50,6 +52,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     private notificationsService: NotificationsService,
     private quoteService: QuoteService,
     private userService: UserService,
+    private spinnerService: SpinnerService,
     private windowSelection: WindowSelection) { }
 
   ngOnInit() {
@@ -81,6 +84,12 @@ export class DocumentContentComponent implements OnInit, OnChanges {
       },
       error => { console.error(error); }
     );
+
+    this.spinnerService.getSpinner('document')
+    .subscribe(
+    state => {
+      this.spinner = state;
+    });
   }
 
   ngOnChanges() {
@@ -101,15 +110,18 @@ export class DocumentContentComponent implements OnInit, OnChanges {
           this.workSpaceService.updateDocumentContent();
           window.getSelection().removeAllRanges();
           window.getSelection().addRange(this.selectedRange);
+          this.spinnerService.setSpinner('coding', false);
         },
           error => {
             this.notificationsService.error('Error al guardar', error);
+            this.spinnerService.setSpinner('coding', false);
             console.error(error);
           }
         );
       },
       error => {
         this.notificationsService.error('Error al guardar', error);
+        this.spinnerService.setSpinner('coding', false);
         console.error(error);
       }
     );
@@ -171,14 +183,16 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   // the text that has been selected. Also create temporary quote with the selected text.
   private getSelectedText() {
     const selection = window.getSelection();
-    const docDisplay = this.windowSelection.getSelectedNodes(selection, 'tr');
-    if (docDisplay.length === 0) {
+    const selectedNodes = this.windowSelection.getSelectedNodes(selection, 'tr');
+    if (selectedNodes.docDisplay.length === 0) {
       return undefined;
     }
     this.selectedRange = selection.getRangeAt(0);
-    if (this.selectedRange && (this.selectedRange.startOffset !== this.selectedRange.endOffset)) {
-      return new Quote(selection.toString(), selection.baseOffset,
-        selection.extentOffset, docDisplay, this.workSpaceService.getProjectId());
+    if (this.selectedRange) {
+      const endOffset = this.selectedRange.endOffset === 0 ?
+      selectedNodes.endOffset : this.selectedRange.endOffset;
+      return new Quote(selection.toString(), this.selectedRange.startOffset,
+      endOffset, selectedNodes.docDisplay, this.workSpaceService.getProjectId());
     }
   }
 
@@ -215,7 +229,9 @@ export class DocumentContentComponent implements OnInit, OnChanges {
                 item = result;
                 this.workSpaceService.updateDocumentContent();
                 window.getSelection().removeAllRanges();
-                window.getSelection().addRange(this.selectedRange);
+                if (this.selectedRange) {
+                  window.getSelection().addRange(this.selectedRange);
+                }
               }
             }
           });
@@ -226,6 +242,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   private onCodeWithActivatedCodes(quote: Quote) {
     const codes = [];
     this.codeService.getActivatedCodes().map(c => {
+      this.spinnerService.setSpinner('coding', true);
       codes.push(c);
     });
     quote.setCodes(codes);
@@ -233,12 +250,4 @@ export class DocumentContentComponent implements OnInit, OnChanges {
       this.createNewQuote(quote);
     }
   }
-
-  showsLoader() {
-    this.showLoader = true;
-  }
-  hideLoader() {
-    this.showLoader = true;
-  }
-
 }
