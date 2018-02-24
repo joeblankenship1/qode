@@ -1,6 +1,3 @@
-<div class="drag-block container" [zIndex]="10000" 
-  style="position:absolute;"
-  [ngStyle]="{'width': width, 'right': right, 'top': top}" [handle]="myHandle"
-  ngDraggable>
-  <ng-template #dynamic></ng-template>
+<div class="drag-block container" [zIndex]="10000" style="position:absolute;" [ngStyle]="{'width': width, 'right': right, 'top': top}" [handle]="myHandle" [preventDefaultEvent]='false' ngDraggable>
+    <ng-template #dynamic></ng-template>
 </div>

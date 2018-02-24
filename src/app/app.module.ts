@@ -70,6 +70,7 @@ import { ComplexQueryEditorComponent } from './work-space/popup-window/complex-q
 import { PopupLoaderService } from './shared/services/popup-loader.service';
 import { SpinnerComponentModule } from 'ng2-component-spinner';
 import {HotkeyModule} from 'angular2-hotkeys';
+import { SearchInOpenDocsComponent } from './work-space/popup-window/search-in-open-docs/search-in-open-docs.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -117,7 +118,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ChartPopupComponent,
     PopupWindowComponent,
     SimpleQueryEditorComponent,
-    ComplexQueryEditorComponent
+    ComplexQueryEditorComponent,
+    SearchInOpenDocsComponent
   ],
   imports: [
     BrowserModule,
@@ -166,7 +168,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DocumentModalComponent,
     SimpleQueryEditorComponent,
     ComplexQueryEditorComponent,
-    ChartPopupComponent
+    ChartPopupComponent,
+    SearchInOpenDocsComponent
   ]
 })
 export class AppModule { }

@@ -166,8 +166,4 @@ export class HeaderComponent implements OnInit {
       },
       error => this.notificationsService.error('Error', error) );
   }
-
-  searchInDoc() {
-    // this.documentService.searchInDocuments();
-  }
 }

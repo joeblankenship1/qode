@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from './shared/services/auth.service';
 import { NotificationsService } from 'angular2-notifications';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+import { WorkSpaceService } from './shared/services/work-space.service';
 
 @Component({
   selector: 'app-root',
@@ -27,27 +28,16 @@ export class AppComponent {
   constructor(public router: Router,
     public auth: AuthService,
     private _service: NotificationsService,
-    private hotkeysService: HotkeysService) {
+    private hotkeysService: HotkeysService,
+    private workspaceService: WorkSpaceService) {
     auth.handleAuthentication();
-
-    this.hotkeysService.add(new Hotkey('Cmd+f', (event: KeyboardEvent): boolean => {
-      console.log('Cmd + f');
-      return false; // Prevent bubbling
-    }));
-
-    this.hotkeysService.add(new Hotkey('cmd+left', this.ctrlLeftPressed));
-    this.hotkeysService.add(new Hotkey('control+right', this.ctrlRightPressed));
+    this.hotkeysService.add(new Hotkey(['command+f', 'ctrl+f'], this.ctrlLeftPressed));
   }
 
   ctrlLeftPressed = (event: KeyboardEvent, combo: string): boolean => {
     this.title = 'cmd+left pressed';
+    this.workspaceService.setPopup(true, 'SearchInOpenDocs');
     console.log(combo);
-    return true;
-  }
-
-  ctrlRightPressed = (event: KeyboardEvent, combo: string): boolean => {
-    this.title = 'control+right pressed';
-    console.log(combo);
-    return true;
+    return false;
   }
 }
