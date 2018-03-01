@@ -103,6 +103,10 @@ export class ProjectService {
     return this.selectedProject;
   }
 
+  getSelectedProjectCodeSystem() {
+    return this.selectedProject.getCodeSystem();
+  }
+
   setSelectedProject(proj) {
     this.selectedProject = proj;
     this.selectedProject$.next(this.selectedProject);
@@ -113,6 +117,15 @@ export class ProjectService {
     proj.setModified(_modified);
     proj.setModifiedBy(_modified_by);
     this.setArrayProyects(this.myProjects);
+  }
+
+  updateCodeSystem(codeSystem) {
+    this.selectedProject.setCodeSystem(codeSystem);
+    this.updateProject(this.selectedProject).subscribe(
+      proj => {
+        this.setSelectedProject(proj);
+      }
+    );
   }
 
   createProject(proj: Project): Observable<any> {

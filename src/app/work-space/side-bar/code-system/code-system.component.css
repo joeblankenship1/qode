@@ -1,0 +1,83 @@
+/***** Panel *****/
+
+.panel-heading {
+  background-color: #979B9C;
+  color: #203F30;
+  height: 35px;
+}
+
+.actions {
+  cursor: pointer;
+}
+
+.action-selected {
+  color: red;
+}
+
+.form-control {
+  height: 30px;
+}
+
+.form-control:focus {
+  border-color: #aeafb1;
+}
+
+.btn {
+  height: 30px;
+  padding-top: 3px !important;
+}
+
+.new-code-input {
+  padding-top: 2px;
+  padding-bottom: 12px;
+  position: fixed;
+  left: 10px;
+  bottom: 20px;
+  width: 18.5%;
+}
+
+/**** Tree ****/
+
+tree-node-wrapper, tree-node-children {
+  width: 100%
+}
+
+.node-content-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.node-content-wrapper {
+  flex-grow: 1;
+  position: relative;
+}
+
+
+.node-marker {
+  font-size: 10px;
+  padding-right: 3px
+}
+
+.code-color {
+  padding-left: 4px;
+}
+
+.counter {
+  font-size: 12.5px;
+  position: absolute;
+  right: 21px;
+}
+
+.list-item-selected {
+  color:red;
+  cursor: pointer;
+}
+
+.list-item:hover {
+  background-color: #dcdcdc42;
+}
+
+.list-item-selected:hover {
+  background-color: #dcdcdc42;
+}

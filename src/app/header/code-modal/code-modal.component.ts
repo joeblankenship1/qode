@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { NotificationsService } from 'angular2-notifications';
 import { WorkSpaceService } from '../../shared/services/work-space.service';
 import { UserService } from '../../shared/services/user.service';
+import { CodeSystemService } from '../../shared/services/code-system.service';
 
 export class CodeModalData extends BSModalContext {
   public code: Code;
@@ -28,7 +29,8 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
   permissions: Array<string>;
 
   constructor(public dialog: DialogRef<CodeModalData>, private codeService: CodeService, private workspaceService: WorkSpaceService,
-              private modal: Modal, private notificationsService: NotificationsService, private userService: UserService) {
+              private modal: Modal, private notificationsService: NotificationsService, private userService: UserService,
+            private codeSystemService: CodeSystemService) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.code = dialog.context.code;
@@ -62,6 +64,7 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
     }
     oper.subscribe(
       resp => {
+        this.codeSystemService.addNodeCodeSystem(this.code);
         this.dialog.close();
       },
       error => {

@@ -9,6 +9,7 @@ import { Quote } from '../models/quote.model';
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 import { QuotesRetrievalService } from '../services/quotes-retrieval.service';
 import { ProjectService } from '../services/project.service';
+import { CodeSystemService } from '../services/code-system.service';
 
 
 @Injectable()
@@ -21,13 +22,15 @@ export class WorkSpaceResolver implements Resolve<any> {
     private projectService: ProjectService,
     private router: Router,
     private notificationsService: NotificationsService,
-    private quotesRetrievalService: QuotesRetrievalService
+    private quotesRetrievalService: QuotesRetrievalService,
+    private codeSystemService: CodeSystemService
   ) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
     const projectId = route.params.id;
     return this.codeService.loadCodes(projectId).map(
       codes => {
+        this.codeSystemService.loadCodeSystem();
         this.quotesService.loadQuotes(projectId).subscribe(
           quotes => {
             this.quotesRetrievalService.initQuotesRetrieval();

@@ -1,0 +1,38 @@
+<tree-root id="tree" [focused]="true" [nodes]="nodes" [options]="options" 
+          [(state)]="state">
+    <ng-template #treeNodeWrapperTemplate let-node let-index="index" let-templates="templates">
+      <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
+        <tree-node-expander [node]="node"></tree-node-expander>
+        <div class="node-content-wrapper"
+          [class.node-content-wrapper-active]="node.isActive"
+          [class.node-content-wrapper-focused]="node.isFocused"
+          (click)="node.mouseAction('click', $event)"
+          (dblclick)="node.mouseAction('dblClick', $event)"
+          (contextmenu)="node.mouseAction('contextMenu', $event)"
+          (treeDrop)="node.onDrop($event)"
+          [treeAllowDrop]="node.allowDrop"
+          [treeDrag]="node"
+          [treeDragEnabled]="node.allowDrag()">
+
+          <tree-node-drop-slot
+                        *ngIf="index === 0"
+                        [dropIndex]="node.index"
+                        [node]="node.parent">
+          </tree-node-drop-slot>
+  
+          <tree-node-content [node]="node" [index]="index" [class]="getNodeItemClass(node.data)" >
+                  {{node.data.name}}
+          </tree-node-content>
+          <span *ngIf="!node.isRoot" class="code-color" [style.color]="getNodeColor(node.data)">&#9679;</span>
+          <span *ngIf="node.isRoot" class="counter">{{getChildrenQuoteCount(node.data)}}</span>
+          <span *ngIf="!node.isRoot" class="counter">{{getNodeQuoteCount(node.data)}}</span>
+
+         
+
+          <tree-node-drop-slot [dropIndex]="node.index + 1" [node]="node.parent">
+          </tree-node-drop-slot>
+
+        </div>
+      </div>
+    </ng-template>
+  </tree-root>
