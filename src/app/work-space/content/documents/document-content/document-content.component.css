@@ -23,8 +23,11 @@
     padding-top: 5px;
     padding-left: 5%;
     padding-right: 1%;*/
-  width: 23cm;
+  /*width: 23cm;
   margin-left: 10%;
+  margin-top: 2%;*/
+  width: 88%;
+  margin-left: 2%;
   margin-top: 2%;
 }
 
@@ -92,4 +95,9 @@ s {
  ::-moz-selection {
   background: #d9cfcf;
   /* Gecko Browsers */
+}
+
+code-name-container {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
