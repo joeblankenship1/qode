@@ -95,7 +95,7 @@ export class Line {
     let title = '';
     if (relatedQuote) {
       const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      title = code ? code.getName() : relatedQuote.quote.getMemo();
+      title = code ? code.getName() + '\n\n' + relatedQuote.quote.getMemo() : relatedQuote.quote.getMemo();
     }
     return title;
   }
@@ -126,6 +126,15 @@ export class Line {
 
   public isPainted() {
     return this.background_color !== 'transparent';
+  }
+
+  public isMiddle(quote: Quote) {
+    const start = quote.getDocumentDisplay()[0].startLine;
+    const end = quote.getDocumentDisplay()[quote.getDocumentDisplay().length - 1].endLine;
+    const middle = (end - start) / 2;
+
+    return this.id === start + Math.trunc(middle);
+
   }
 
   // In order to highlight only the words of the quote, a span must be added to the

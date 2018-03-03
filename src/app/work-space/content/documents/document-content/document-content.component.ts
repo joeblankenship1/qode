@@ -250,4 +250,24 @@ export class DocumentContentComponent implements OnInit, OnChanges {
       this.createNewQuote(quote);
     }
   }
+
+  onMouseOverBracket(relatedQuote, column: number ) {
+    if (this.actualDocumentContent) {
+      this.actualDocumentContent.setLinesColor(relatedQuote, column, true);
+      const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
+      document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = 'underline';
+    }
+  }
+
+  onMouseOutBracket(relatedQuote, column: number ) {
+    if (this.actualDocumentContent) {
+      this.actualDocumentContent.setLinesColor(relatedQuote, column, false);
+      const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
+      document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = '';
+    }
+  }
+
+  getNameDivId(quote, code) {
+    return quote.getId() + '-' + code.getName();
+  }
 }

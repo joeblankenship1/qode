@@ -11,6 +11,7 @@ export class DocumentContent {
   private pages: Page[];
   private quotesDisplay: QuoteDisplay[] = [];
 
+
   constructor(document: Document) {
     this.document = document;
     this.createPages();
@@ -165,7 +166,7 @@ export class DocumentContent {
     return column;
   }
 
-  // Given a quote it looks for the pages it iterates on the pages which are
+  // Given a quote it looks for the pages it iterates on the pages
   // where the quote is defined. Then each page calls the same function which
   // iterates on the lines.
   public setLinesColor(relatedQuote, column: number, type: boolean) {
