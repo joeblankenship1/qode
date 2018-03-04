@@ -7,7 +7,7 @@ import { HttpModule, Http, RequestOptions } from '@angular/http';
 import { routes } from './app.routes';
 import { Routes, RouterModule } from '@angular/router';
 import { Ng2CompleterModule } from 'ng2-completer';
-import {ColorPickerModule} from 'angular4-color-picker';
+import { ColorPickerModule } from 'angular4-color-picker';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { SideBarComponent } from './work-space/side-bar/side-bar.component';
@@ -45,7 +45,7 @@ import { QuoteService } from './shared/services/quote.service';
 import { WorkSpaceService } from './shared/services/work-space.service';
 import { SpinnerService } from './shared/services/spinner.service';
 
-import {DataTableModule} from 'angular2-datatable';
+import { DataTableModule } from 'angular2-datatable';
 import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
 import { DataFilterPipe } from './my-projects/projects/data-filter.pipe';
 import { ProjectShareModalComponent } from './my-projects/project-share-modal/project-share-modal.component';
@@ -69,7 +69,7 @@ import { SimpleQueryEditorComponent } from './work-space/popup-window/simple-que
 import { ComplexQueryEditorComponent } from './work-space/popup-window/complex-query-editor/complex-query-editor.component';
 import { PopupLoaderService } from './shared/services/popup-loader.service';
 import { SpinnerComponentModule } from 'ng2-component-spinner';
-import {HotkeyModule} from 'angular2-hotkeys';
+import { HotkeyModule } from 'angular2-hotkeys';
 import { SearchInOpenDocsComponent } from './work-space/popup-window/search-in-open-docs/search-in-open-docs.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -142,7 +142,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SpinnerComponentModule,
     HotkeyModule.forRoot()
   ],
-  providers: [DocumentService, CodeService,
+  providers: 
+  [DocumentService, CodeService,
     AuthGuard,
     AuthService,
     {
@@ -159,7 +160,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     WorkSpaceService,
     WorkSpaceResolver,
     SpinnerService,
-    [DatePipe]
+    [DatePipe],
+    { provide: Window, useValue: window }
   ],
   bootstrap: [AppComponent],
   entryComponents: [CodeModalComponent,
