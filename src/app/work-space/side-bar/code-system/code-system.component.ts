@@ -68,27 +68,28 @@ export class CodeSystemComponent implements OnInit {
 
   createMenuOptions() {
     this.menuOptions = [
+      [new MenuOption('Editar', (item) => { this.onOpenCode(item); })],
       [new MenuOption('Activar', (item) => { this.onActivateCode(item); }),
       new MenuOption('Desactivar', (item) => { this.onDeactivateCode(item); })],
-      [new MenuOption('Editar', (item) => { this.onOpenCode(item); })]];
+      [new MenuOption('Eliminar', (item) => { this.onDeleteCode(item); })]];
   }
 
   defineMenuOptions(code) {
     if (code) {
       if (code.isActivated()) {
-        this.menuOptions[0][0].setVisible(false);
-        this.menuOptions[0][1].setVisible(true);
+        this.menuOptions[1][0].setVisible(false);
+        this.menuOptions[1][1].setVisible(true);
       } else {
-        this.menuOptions[0][0].setVisible(true);
-        this.menuOptions[0][1].setVisible(false);
+        this.menuOptions[1][0].setVisible(true);
+        this.menuOptions[1][1].setVisible(false);
       }
       if (this.permissions) {
         if (this.permissions.includes('activate_code')) {
-          this.menuOptions[0][0].enable();
-          this.menuOptions[0][1].enable();
+          this.menuOptions[1][0].enable();
+          this.menuOptions[1][1].enable();
         } else {
-          this.menuOptions[0][0].disable();
-          this.menuOptions[0][1].disable();
+          this.menuOptions[1][0].disable();
+          this.menuOptions[1][1].disable();
         }
       }
     }
@@ -168,6 +169,12 @@ export class CodeSystemComponent implements OnInit {
     });
     this.noSelection = !this.noSelection;
     this.noSelection ? this.selectAllClass = '' : this.selectAllClass = 'action-selected';
+  }
+
+  onDeleteCode(code) {
+    this.codeService.deleteCode(code).subscribe( resp => {
+      this.codeSystemService.removeNodeCodeSystem(code.getId());
+    });
   }
 
 }

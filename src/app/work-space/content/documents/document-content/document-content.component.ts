@@ -184,7 +184,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   private getSelectedText() {
     const selection = window.getSelection();
     const selectedNodes = this.windowSelection.getSelectedNodes(selection, 'tr');
-    if (selectedNodes.docDisplay.length === 0) {
+    if (!selectedNodes.docDisplay || selectedNodes.docDisplay.length === 0) {
       return undefined;
     }
     this.selectedRange = selection.getRangeAt(0);
@@ -252,7 +252,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   }
 
   onMouseOverBracket(relatedQuote, column: number ) {
-    if (this.actualDocumentContent) {
+    if (this.actualDocumentContent && relatedQuote) {
       this.actualDocumentContent.setLinesColor(relatedQuote, column, true);
       const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
       document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = 'underline';
@@ -260,7 +260,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   }
 
   onMouseOutBracket(relatedQuote, column: number ) {
-    if (this.actualDocumentContent) {
+    if (this.actualDocumentContent  && relatedQuote) {
       this.actualDocumentContent.setLinesColor(relatedQuote, column, false);
       const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
       document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = '';

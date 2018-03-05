@@ -68,7 +68,6 @@ export class CodeService {
     for (const c of codes){
       const foundCode = this.codes.find( code => code.getId() === c);
       if (foundCode) {
-        foundCode.increaseQuoteCount(1);
         ret.push(foundCode);
       }
     }

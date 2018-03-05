@@ -97,8 +97,12 @@ export class QuoteService {
     return this.http.get(environment.apiUrl + `quote?where={"project": "${projectId}"}`, this.options).map(
       (data: Response) => {
         const extracted = data.json();
-        const quotes = extracted._items.map(q => new Quote(q.text, q.position.start, q.position.end, q.documentDisplay,
-          this.projectId, q._id, q.memo, q.color, q._etag, this.codeService.getCodesById(q.codes)));
+        const quotes = extracted._items.map(q => {
+          const qn = new Quote(q.text, q.position.start, q.position.end, q.documentDisplay,
+            this.projectId, q._id, q.memo, q.color, q._etag, this.codeService.getCodesById(q.codes));
+            qn.initQuoteCount();
+            return qn;
+        });
         this.setQuoteList(quotes);
         return quotes;
       }).catch((err: Response) => {
