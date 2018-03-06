@@ -53,18 +53,11 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
       this.notificationsService.error('Error', 'Nombre vacío, debe ingresar un nombre de código');
       return;
     }
-    let oper: Observable<any>;
-    this.code.setName(this.name);
-    this.code.setMemo(this.memo);
-    this.code.setColor(this.color === '#fff' || this.color === 'rgb(255,255,255)'  ? 'rgb(0,0,0)' : this.color);
-    if (this.code.getId() === '0') {
-      oper = this.codeService.addCode(this.code);
-    }else {
-      oper  = this.codeService.updateCode(this.code);
-    }
-    oper.subscribe(
+    const isNew = this.code.getId() === '0';
+    this.defineOperation().subscribe(
       resp => {
-        if (this.code.getId() === '0') { this.codeSystemService.addNodeCodeSystem(this.code); }
+        isNew ? this.codeSystemService.addNodeCodeSystem(this.code)
+              : this.codeSystemService.loadCodeSystem();
         this.dialog.close();
       },
       error => {
@@ -95,6 +88,19 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
 
   beforeClose(): boolean {
     return false;
+  }
+
+  private defineOperation(): Observable<any> {
+    this.code.setName(this.name);
+    this.code.setMemo(this.memo);
+    this.code.setColor(this.color === '#fff' || this.color === 'rgb(255,255,255)'  ? 'rgb(0,0,0)' : this.color);
+    let oper: Observable<any>;
+    if ( this.code.getId() === '0' ) {
+      oper = this.codeService.addCode(this.code);
+    }else {
+      oper  = this.codeService.updateCode(this.code);
+    }
+    return oper;
   }
 
 }

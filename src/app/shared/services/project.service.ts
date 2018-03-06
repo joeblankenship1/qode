@@ -107,6 +107,10 @@ export class ProjectService {
     return this.selectedProject.getCodeSystem();
   }
 
+  setSelectedProjectCodeSystem(codeSystem) {
+    this.selectedProject.setCodeSystem(codeSystem);
+  }
+
   setSelectedProject(proj) {
     this.selectedProject = proj;
     this.selectedProject$.next(this.selectedProject);

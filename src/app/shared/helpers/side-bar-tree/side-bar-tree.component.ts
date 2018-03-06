@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { TreeComponent, ITreeState, IActionMapping, TREE_ACTIONS, KEYS } from 'angular-tree-component';
+import { TreeComponent, ITreeState, IActionMapping, TREE_ACTIONS, KEYS, TreeModel, TreeNode } from 'angular-tree-component';
 import { MenuOption } from '../../models/menu-option.model';
 import { OptionsComponent } from '../options/options.component';
 import { CodeSystemService } from '../../services/code-system.service';
@@ -21,6 +21,7 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
 
   @Output() ctlclick = new EventEmitter<any>();
   @Output() contextmenu = new EventEmitter<any>();
+  @Output() dropelem = new EventEmitter<any>();
 
 
   state: ITreeState;
@@ -44,7 +45,14 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
       },
       click: (tree, node, $event) => {
         this.onClick(tree, node, $event);
-      }
+      },
+      drop: (tree: TreeModel, node: TreeNode, $event: any, {from, to}) => {
+        TREE_ACTIONS.MOVE_NODE(tree, node, $event, {from, to} );
+        this.onDrop(tree, $event);
+        // use from to get the dragged node.
+        // use to.parent and to.index to get the drop location
+        // use TREE_ACTIONS.MOVE_NODE to invoke the original action
+      },
     },
     keys: {
       [KEYS.ENTER]: (tree, node, $event) => {
@@ -61,7 +69,7 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
   };
 
   options = {
-    nodeHeight: 23,
+    nodeHeight: 20,
     actionMapping: this.actionMapping,
     allowDrag: (node) => {
       return true;
@@ -88,16 +96,15 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.nodes[0].children = this.inputNodes;
     const firstRoot = this.tree.treeModel.roots[0];
-    firstRoot.expand();
+    firstRoot.expandAll();
   }
-
 
 
   update(nodes) {
     this.nodes[0].children = nodes;
     this.tree.treeModel.update();
     const firstRoot = this.tree.treeModel.roots[0];
-    firstRoot.expand();
+    firstRoot.expandAll();
   }
 
   /*********************** Custom TreeNode functions ***********************/
@@ -132,6 +139,10 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
   }
 
 
+  setTreeState(tree) {
+    localStorage.setItem('code-system', JSON.stringify(tree.nodes[0].children));
+  }
+
   /*********************** Custom mouse/key events ***********************/
 
   onClick(tree, node, $event) {
@@ -142,6 +153,10 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
     } else { TREE_ACTIONS.TOGGLE_SELECTED(tree, node, $event); }
   }
 
+  onDrop(tree, $event) {
+    this.setTreeState(tree);
+    this.dropelem.emit($event);
+  }
 
 
 }

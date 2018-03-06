@@ -16,20 +16,16 @@ export class CodeSystemService {
   private codeService: CodeService,
   private workspaceService: WorkSpaceService) { }
 
-  addNodeCodeSystem(code: Code, parent?) {
+  addNodeCodeSystem(code: Code) {
     const node = {
       name: code.getName(),
       id: code.getId(),
       data: code,
       children: []
     };
-    if (parent) {
-
-    } else {
-      this.codeSystem.push(node);
-      this.codeSystem$.next(this.codeSystem);
-      this.projectService.updateCodeSystem(this.translateCodeSystem(this.codeSystem));
-    }
+    this.codeSystem.push(node);
+    this.codeSystem$.next(this.codeSystem);
+    this.updateCodeSystem(this.codeSystem);
   }
 
   createTreeNodes(cs) {
@@ -39,8 +35,8 @@ export class CodeSystemService {
         ids.push(n.code_id);
       });
       const codes: Code[] = this.codeService.getCodesById(ids);
-      return codes.map(c => {
-        const children = this.createTreeNodes(cs.children);
+      return codes.map( (c, i) => {
+        const children = this.createTreeNodes(cs[i].children);
         return {
           name: c.getName(),
           id: c.getId(),
@@ -64,12 +60,17 @@ export class CodeSystemService {
     const deleted = this.removeNode(code_id, this.codeSystem);
     if (deleted) {
       this.codeSystem$.next(this.codeSystem);
+      this.updateCodeSystem(this.codeSystem);
     }
   }
 
   setCodeSystem(codeSystem) {
     this.codeSystem = codeSystem;
     this.codeSystem$.next(codeSystem);
+  }
+
+  updateCodeSystem(codeSystem) {
+    this.projectService.updateCodeSystem(this.translateCodeSystem(codeSystem));
   }
 
   private translateCodeSystem(codeSystem) {

@@ -16,6 +16,7 @@ import { BSModalContext, Modal } from 'angular2-modal/plugins/bootstrap';
 import { SpinnerService } from '../../../shared/services/spinner.service';
 import { NotificationsService } from 'angular2-notifications';
 import { SideBarTreeComponent } from '../../../shared/helpers/side-bar-tree/side-bar-tree.component';
+import { ProjectService } from '../../../shared/services/project.service';
 
 @Component({
   selector: 'app-code-system',
@@ -189,6 +190,17 @@ export class CodeSystemComponent implements OnInit {
             console.log(error)
           );
       });
+  }
+
+  onDrop($event) {
+    this.onChangeCodeSystem();
+  }
+
+  onChangeCodeSystem() {
+    const codeSystem = JSON.parse(localStorage.getItem('code-system'));
+    if (codeSystem) {
+      this.codeSystemService.updateCodeSystem(codeSystem);
+    }
   }
 
 }
