@@ -64,7 +64,7 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
     }
     oper.subscribe(
       resp => {
-        this.codeSystemService.addNodeCodeSystem(this.code);
+        if (this.code.getId() === '0') { this.codeSystemService.addNodeCodeSystem(this.code); }
         this.dialog.close();
       },
       error => {

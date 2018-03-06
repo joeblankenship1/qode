@@ -30,7 +30,6 @@ export class WorkSpaceResolver implements Resolve<any> {
     const projectId = route.params.id;
     return this.codeService.loadCodes(projectId).map(
       codes => {
-        this.codeSystemService.loadCodeSystem();
         this.quotesService.loadQuotes(projectId).subscribe(
           quotes => {
             this.quotesRetrievalService.initQuotesRetrieval();
@@ -39,6 +38,7 @@ export class WorkSpaceResolver implements Resolve<any> {
                 this.projectService.loadSelectedProject(projectId).subscribe(
                   proj => {
                     this.workspaceService.initWorkSpace(projectId);
+                    this.codeSystemService.loadCodeSystem();
                   }, error => {
                     this.router.navigate(['myprojects']);
                     this.notificationsService.error('Error', 'No tienes permisos para acceder a ese proyecto');

@@ -8,11 +8,11 @@ import { MenuOption } from '../../../shared/models/menu-option.model';
 import { OptionsComponent } from '../../../shared/helpers/options/options.component';
 import { ContextMenuService } from 'ngx-contextmenu';
 import { UserService } from '../../../shared/services/user.service';
-import { Modal, overlayConfigFactory } from 'angular2-modal';
 import { QuoteService } from '../../../shared/services/quote.service';
 import { QuotesRetrievalService } from '../../../shared/services/quotes-retrieval.service';
 import { CodeModalComponent } from '../../../header/code-modal/code-modal.component';
-import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { overlayConfigFactory } from 'angular2-modal';
+import { BSModalContext, Modal } from 'angular2-modal/plugins/bootstrap';
 import { SpinnerService } from '../../../shared/services/spinner.service';
 import { NotificationsService } from 'angular2-notifications';
 import { SideBarTreeComponent } from '../../../shared/helpers/side-bar-tree/side-bar-tree.component';
@@ -52,8 +52,10 @@ export class CodeSystemComponent implements OnInit {
     this.codeService.getCodes().subscribe(codes => {
       this.codes = codes;
       this.codeSystemService.getCodeSystem().subscribe(cs => {
-        this.nodes = cs;
-        this.sideBarTree.update();
+        if (cs) {
+          this.nodes = cs;
+          this.sideBarTree.update(this.nodes);
+        }
       });
     });
     this.spinnerService.getSpinner('code_list')
@@ -172,9 +174,21 @@ export class CodeSystemComponent implements OnInit {
   }
 
   onDeleteCode(code) {
-    this.codeService.deleteCode(code).subscribe( resp => {
-      this.codeSystemService.removeNodeCodeSystem(code.getId());
-    });
+    const dialogRef = this.modal.confirm().size('lg').isBlocking(true).showClose(true).keyboard(27)
+      .okBtn('Confirmar').okBtnClass('btn btn-info').cancelBtnClass('btn btn-danger')
+      .title('Eliminar código').body(' ¿Seguro que desea eliminar el código y todos sus subcódigos? ').open();
+    dialogRef
+      .then(r => {
+        r.result
+          .then(result => {
+            this.codeService.deleteCode(code).subscribe( resp => {
+              this.codeSystemService.removeNodeCodeSystem(code.getId());
+            });
+          })
+          .catch(error =>
+            console.log(error)
+          );
+      });
   }
 
 }

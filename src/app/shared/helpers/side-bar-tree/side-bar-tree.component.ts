@@ -37,7 +37,7 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
     mouse: {
       contextMenu: (tree, node, $event) => {
         $event.preventDefault();
-        this.contextmenu.emit({tree: tree, data: node.data.data, event: $event});
+        this.contextmenu.emit({ tree: tree, data: node.data.data, event: $event });
       },
       dblClick: (tree, node, $event) => {
         TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
@@ -77,7 +77,7 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
   };
 
 
-  constructor () {
+  constructor() {
   }
 
   ngOnInit() {
@@ -93,8 +93,11 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
 
 
 
-  update() {
+  update(nodes) {
+    this.nodes[0].children = nodes;
     this.tree.treeModel.update();
+    const firstRoot = this.tree.treeModel.roots[0];
+    firstRoot.expand();
   }
 
   /*********************** Custom TreeNode functions ***********************/
@@ -109,14 +112,17 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
 
   getChildrenQuoteCount(node) {
     let count = 0;
-    node.children.map(n => {
-      if (n.children.length === 0) {
-        count += this.getNodeQuoteCount(n);
-      } else {
-        count += this.getNodeQuoteCount(n) + this.getChildrenQuoteCount(n);
-      }
-    });
+    if (node.children) {
+      node.children.map(n => {
+        if (n.children.length === 0) {
+          count += this.getNodeQuoteCount(n);
+        } else {
+          count += this.getNodeQuoteCount(n) + this.getChildrenQuoteCount(n);
+        }
+      });
+    }
     return count;
+
   }
 
   getNodeItemClass(node) {
@@ -132,7 +138,7 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
     if ($event.shiftKey) {
       TREE_ACTIONS.TOGGLE_SELECTED_MULTI(tree, node, $event);
     } else if ($event.ctrlKey) {
-      this.ctlclick.emit({tree: tree, data: node.data.data, event: $event});
+      this.ctlclick.emit({ tree: tree, data: node.data.data, event: $event });
     } else { TREE_ACTIONS.TOGGLE_SELECTED(tree, node, $event); }
   }
 
