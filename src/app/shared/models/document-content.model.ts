@@ -169,6 +169,7 @@ export class DocumentContent {
   // where the quote is defined. Then each page calls the same function which
   // iterates on the lines.
   public setLinesColor(relatedQuote, column: number, type: boolean) {
+    console.log(relatedQuote);
     if (relatedQuote) {
       window.getSelection().removeAllRanges();
       let quote: Quote;
