@@ -1,5 +1,6 @@
 <div class="drag-block container"
   style="position:absolute;"
+  [zIndex]="1000"
   [ngStyle]="{'width': width, 'right': right, 'top': top}" [handle]="myHandle"
   ngDraggable>
   <ng-template #dynamic></ng-template>

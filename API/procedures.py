@@ -38,5 +38,6 @@ def codes_matrix(proj_id,cooc):
     if (cooc):
         np_occ = np.array(tot_ocurrences)
         cooc_matrix = np.dot(np_occ.transpose(),np_occ)
+        np.fill_diagonal(cooc_matrix,0)
         return {"codes":code_labels , "coocmatrix":cooc_matrix.tolist()}
     return {"codes":code_labels , "docs":docs}

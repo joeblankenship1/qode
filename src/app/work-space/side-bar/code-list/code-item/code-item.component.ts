@@ -11,6 +11,7 @@ import { ContextMenuService } from 'ngx-contextmenu';
 import { CodeService } from '../../../../shared/services/code.service';
 import { QuotesRetrievalService } from '../../../../shared/services/quotes-retrieval.service';
 import { UserService } from '../../../../shared/services/user.service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-code-item',
@@ -29,7 +30,7 @@ export class CodeItemComponent implements OnInit {
     private workspaceService: WorkSpaceService,
     private contextMenuService: ContextMenuService,
     private codeService: CodeService,
-    private userService: UserService,
+    private userService: UserService, private notificationsService: NotificationsService,
     private quoteRetrievalService: QuotesRetrievalService) {
   }
 
@@ -37,10 +38,10 @@ export class CodeItemComponent implements OnInit {
     this.userService.getRolePermissions().subscribe(
       permissions => {
         this.permissions = permissions;
+        this.createMenuOptions();
       },
       error => { console.error(error); }
     );
-    this.createMenuOptions();
   }
 
 
@@ -48,7 +49,8 @@ export class CodeItemComponent implements OnInit {
     this.menuOptions = [
       [new MenuOption('Activar', (item) => { this.onActivateCode(); }),
       new MenuOption('Desactivar', (item) => { this.onDeactivateCode(); })],
-      [new MenuOption('Editar', (item) => { this.onOpenCode(); })]];
+      [new MenuOption('Editar', (item) => { this.onOpenCode(); })],
+      [new MenuOption('Eliminar', (item) => { this.onDeleteCode(); })]];
     this.defineMenuOptions();
   }
 
@@ -79,6 +81,16 @@ export class CodeItemComponent implements OnInit {
         this.menuOptions[0][0].disable();
         this.menuOptions[0][1].disable();
       }
+      // if (this.permissions.includes('edit_code')) {
+      //   this.menuOptions[1][0].enable();
+      // } else {
+      //   this.menuOptions[1][0].disable();
+      // }
+      if (this.permissions.includes('delete_code')) {
+        this.menuOptions[2][0].enable();
+      } else {
+        this.menuOptions[2][0].disable();
+      }
     }
   }
 
@@ -93,6 +105,19 @@ export class CodeItemComponent implements OnInit {
           }
         });
       });
+  }
+
+  onDeleteCode() {
+    this.codeService.deleteCode(this.code).subscribe(
+      resp => {
+        this.workspaceService.removeQuotesInDocumentContent(this.code);
+        if (this.quoteService.removeCodeFromQuotes(this.code.getId())) {
+          this.workspaceService.updateDocumentContent();
+        }
+      },
+      error => {
+        this.notificationsService.error('Error', error);
+        console.error(error); });
   }
 
   public getItemClass() {

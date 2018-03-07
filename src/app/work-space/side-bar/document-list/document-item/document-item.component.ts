@@ -10,6 +10,7 @@ import { BSModalContext, Modal } from 'angular2-modal/plugins/bootstrap';
 import { MenuOption } from '../../../../shared/models/menu-option.model';
 import { ContextMenuService } from 'ngx-contextmenu';
 import { UserService } from '../../../../shared/services/user.service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-document-item',
@@ -26,7 +27,7 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
   constructor(private workspaceService: WorkSpaceService,
     private documentService: DocumentService,
     private contextMenuService: ContextMenuService,
-    private userService: UserService,
+    private userService: UserService, private notificationService: NotificationsService,
     private quotesRetrievalService: QuotesRetrievalService, private modal: Modal) { }
 
 
@@ -145,8 +146,10 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
                 this.workspaceService.closeDocument(this.document);
               });
           })
-          .catch(error =>
-            console.log(error)
+          .catch(error => {
+            this.notificationService.error('Error', error);
+            console.log(error);
+          }
           );
       });
   }

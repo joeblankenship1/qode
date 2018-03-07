@@ -1,5 +1,6 @@
 import { Code } from './code.model';
 import { Memo } from './memo.model';
+import { Document } from './document.model';
 export class Quote {
 
   private _id: string;
@@ -11,6 +12,7 @@ export class Quote {
   private memo: string;
   private projectId: string;
   private color: string;
+  private document: Document;
 
   constructor(text: string, start: number, end: number, documentDisplay, projectId: string,
     id?: string, memo?: string, color?: string, etag?: string, codes?: Code[]) {
@@ -55,6 +57,14 @@ export class Quote {
 
   public getColor() {
     return this.color;
+  }
+
+  public getDocument() {
+    return this.document;
+  }
+
+  public setDocument(doc: Document) {
+    this.document = doc;
   }
 
   public addCode(code: Code) {

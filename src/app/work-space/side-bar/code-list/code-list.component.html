@@ -9,9 +9,9 @@
             (click)="onSelectAll()" [(ngClass)]="selectAllClass"></span>
         </div>
     </div>
-    <div id="collapseCodeList" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-        <div class="panel-body">
-            <div style="overflow:auto; max-height:215px">
+    <div id="collapseCodeList" class="panel-collapse collapse in code-panel-collapse" role="tabpanel" aria-labelledby="headingOne">
+        <div class="panel-body" style="height:100%; padding-bottom:0px">
+            <div class="code-panel"style="overflow:auto">
                     <ul class='code-list'>
                         <app-code-item
                         *ngFor="let cod of codes"
@@ -27,6 +27,6 @@
         </div>
     </div>
     <spinner-component [spinnerShow]="spinner">
-        <h5> Cargando lista de codigos.. </h5>
+        <h5> Cargando lista de códigos.. </h5>
     </spinner-component>
 </div>

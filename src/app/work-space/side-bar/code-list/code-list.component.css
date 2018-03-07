@@ -28,3 +28,31 @@
     height: 30px;
     padding-top: 3px !important;
 }
+
+@media screen and (min-width: 1200px) {
+    .code-panel {
+        height: -moz-calc(100% - 30px);
+        height: -webkit-calc(100% - 30px);
+        height: calc(100% - 30px);
+    }
+
+    .code-panel-collapse {
+        height: -moz-calc(100% - 35px);
+        height: -webkit-calc(100% - 35px);
+        height: calc(100% - 35px);
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .code-panel {
+        height: -moz-calc(100% - 30px);
+        height: -webkit-calc(100% - 30px);
+        height: calc(100% - 30px);
+    }
+
+    .code-panel-collapse {
+        height: -moz-calc(100% - 35px);
+        height: -webkit-calc(100% - 35px);
+        height: calc(100% - 35px);
+    }
+}

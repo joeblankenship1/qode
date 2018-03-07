@@ -4,6 +4,22 @@
 }
 
 .panel-heading {
-  padding-top: 5px;
-  padding-bottom: 0;
+  /* padding-top: 5px;
+  padding-bottom: 0; */
+  height:10px; 
+  padding:0px;
+}
+
+.watch-icon {
+  color: white;
+  font-size: 8px;
+  /* top: 4px; */
+  position: absolute;
+  padding-left: 4px;
+  cursor: pointer;
+}
+
+.watch-disabled {
+  color:gray;
+  cursor: not-allowed;
 }

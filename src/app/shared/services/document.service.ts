@@ -43,7 +43,8 @@ export class DocumentService {
         let document: Document;
         if (extracted._items) {
           for (const element of extracted._items) {
-            document = new Document(element, projectId, this.quoteService.getQuotesById(element.quotes));
+            document = new Document(element, projectId);
+            document.setQuotes(this.quoteService.getQuotesById(element.quotes, document));
             // if (element.quotes) {
             //   this.createQuotes(document,element.quotes);
             // }

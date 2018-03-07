@@ -17,6 +17,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { PopupLoaderService } from '../shared/services/popup-loader.service';
 import { SpinnerService } from '../shared/services/spinner.service';
 import { UserService } from '../shared/services/user.service';
+import { ImportCodesModalComponent } from './import-codes-modal/import-codes-modal.component';
 
 @Component({
   selector: 'app-header',
@@ -119,6 +120,15 @@ export class HeaderComponent implements OnInit {
   onNewCode() {
     const newCode = new Code({ 'name': '', 'project': this.workspaceService.getProjectId() });
     this.modal.open(CodeModalComponent, overlayConfigFactory({ code: newCode, mode: 'new' }, BSModalContext))
+      .then((resultPromise) => {
+        resultPromise.result.then((result) => { });
+      });
+  }
+
+  // Import codes from other project
+  onImportCodes() {
+    // const newCode = new Code({ 'name': '', 'project': this.workspaceService.getProjectId() });
+    this.modal.open(ImportCodesModalComponent, overlayConfigFactory({ mode: 'new' }, BSModalContext))
       .then((resultPromise) => {
         resultPromise.result.then((result) => { });
       });

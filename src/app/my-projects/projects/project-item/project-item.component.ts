@@ -27,6 +27,7 @@ import { UserService } from '../../../shared/services/user.service';
 })
 export class ProjectItemComponent implements OnInit {
   @Input() project: Project;
+  @Input() toImportCodes: boolean;
   public myNick = '';
   public myNick$ = new BehaviorSubject<string>('');
 

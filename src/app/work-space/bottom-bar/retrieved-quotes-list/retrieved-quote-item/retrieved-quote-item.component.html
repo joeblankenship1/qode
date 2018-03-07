@@ -1,4 +1,8 @@
 <div class="panel-heading" role="tab" id="headingOne">
+    <span class="watch-icon inline-x fa fa-binoculars" 
+    [ngClass]="{ 'watch-disabled': !retrievedQuote.getDocument().isOpened() }" 
+    [attr.title]="retrievedQuote.getDocument().name + (retrievedQuote.getDocument().isOpened()?'':'- El documento no está abierto')"
+    (click)="onWatchQuote()" ></span>
 </div>
 <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
   {{retrievedQuote.getText()}}
