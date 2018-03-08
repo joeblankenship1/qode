@@ -84,8 +84,9 @@ export class Page {
       const position = quote.getPosition();
       const quoteLines = this.lines.filter(l => {
         return l.id >= display.startLine && l.id <= display.endLine;
-      }).map(li => {
-        li.setTextColor(column, type, isFirstPage, isLastPage);
+      });
+      quoteLines.forEach((li , i) => {
+        li.setTextColor(column, type, i === 0 && isFirstPage, quoteLines.length - 1 - i === 0 && isLastPage );
       });
     }
   }

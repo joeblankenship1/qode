@@ -184,6 +184,10 @@ export class CodeSystemComponent implements OnInit {
           .then(result => {
             this.codeService.deleteCode(code).subscribe( resp => {
               this.codeSystemService.removeNodeCodeSystem(code.getId());
+              this.workspaceService.removeQuotesInDocumentContent(code);
+              if (this.quoteService.removeCodeFromQuotes(code.getId())) {
+                this.workspaceService.updateDocumentContent();
+              }
             });
           })
           .catch(error =>

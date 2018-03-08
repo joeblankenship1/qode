@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { CodeService } from './code.service';
 import { Code } from '../models/code.model';
 import { WorkSpaceService } from './work-space.service';
+import { QuoteService } from './quote.service';
 
 @Injectable()
 export class CodeSystemService {
@@ -14,7 +15,8 @@ export class CodeSystemService {
 
   constructor(private projectService: ProjectService,
   private codeService: CodeService,
-  private workspaceService: WorkSpaceService) { }
+  private workspaceService: WorkSpaceService,
+  private quoteService: QuoteService) { }
 
   addNodeCodeSystem(code: Code) {
     const node = {
@@ -104,6 +106,9 @@ export class CodeSystemService {
       this.removeCodesFromNodes( node.children );
       this.codeService.deleteCode( node.data ).subscribe( resp => {
         this.workspaceService.removeQuotesInDocumentContent(node.data);
+        if (this.quoteService.removeCodeFromQuotes(node.data.getId())) {
+          this.workspaceService.updateDocumentContent();
+        }
       });
     } );
   }

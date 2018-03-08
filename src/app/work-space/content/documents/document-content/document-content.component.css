@@ -97,7 +97,7 @@ s {
   /* Gecko Browsers */
 }
 
-code-name-container {
+.code-name-container {
   overflow: hidden;
   text-overflow: ellipsis;
 }

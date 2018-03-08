@@ -11,6 +11,7 @@ import { Document } from '../../shared/models/document.model';
 import { DocumentService } from '../../shared/services/document.service';
 import { NotificationsService } from 'angular2-notifications';
 import { UserService } from '../../shared/services/user.service';
+import { CodeSystemService } from '../../shared/services/code-system.service';
 
 export class QuoteModalData extends BSModalContext {
   public quote: Quote;
@@ -40,7 +41,8 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
               private codeService: CodeService, private completerService: CompleterService,
               private documentService: DocumentService , private userService: UserService,
               private modal: Modal,
-              private notificationsService: NotificationsService) {
+              private notificationsService: NotificationsService,
+              private codesytemService: CodeSystemService) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.quote = dialog.context.quote;
@@ -170,6 +172,7 @@ export class QuoteModalComponent implements OnInit, CloseGuard, ModalComponent<Q
         resp => {
           code = resp;
           this.selectedCodes.push(code);
+          this.codesytemService.addNodeCodeSystem(code);
           this.chosenCode = '';
         },
         error => {

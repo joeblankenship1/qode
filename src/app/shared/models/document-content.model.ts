@@ -131,9 +131,11 @@ export class DocumentContent {
   private zip(a, b) {
     const c = [];
     a.map((e, i) => {
-      if (b.pages[i] && e.page === b.pages[i].page) {
-        c.push([e, { page: b.pages[i], column: b.column }]);
-      }
+      b.pages.map((f, j) => {
+        if (e.page === f.page) {
+          c.push([e, { page: f, column: b.column }]);
+        }
+      });
     });
     return c;
   }

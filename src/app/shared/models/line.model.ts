@@ -101,13 +101,13 @@ export class Line {
   }
 
   // sets the default line color to the line
-  public setTextColor(column: number, type: boolean, isFirstPage: boolean,
-    isLastPage: boolean) {
+  public setTextColor(column: number, type: boolean, isFirstLine: boolean,
+    isLastLine: boolean) {
     const relatedQuote = this.getRelatedQuote(column);
     let color = '';
     if (relatedQuote && type) {
       color = AppSettings.DEFAULT_LINE_COLOR;
-      this.setTextSpan(relatedQuote, isFirstPage, isLastPage);
+      this.setTextSpan(relatedQuote, isFirstLine, isLastLine);
     } else {
       this.preSpanText = '';
       this.spanText = this.text;
@@ -144,6 +144,7 @@ export class Line {
       let quote: Quote;
       quote = relatedQuote.quote;
 
+
       if (relatedQuote.borderTop && !relatedQuote.borderBottom) {
         const start = quote.getPosition().start;
         this.preSpanText = this.text.substring(0, start);
@@ -153,7 +154,7 @@ export class Line {
       if (relatedQuote.borderBottom && !relatedQuote.borderTop) {
         const end = quote.getPosition().end;
         this.spanText = this.text.substring(0, end);
-        this.postSpanText = this.text.substr(end, this.text.length - this.preSpanText.length);
+        this.postSpanText = this.text.substr(end, this.text.length - this.spanText.length);
       }
 
       if (relatedQuote.borderTop && relatedQuote.borderBottom) {
