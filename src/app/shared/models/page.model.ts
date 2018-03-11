@@ -86,7 +86,7 @@ export class Page {
         return l.id >= display.startLine && l.id <= display.endLine;
       });
       quoteLines.forEach((li , i) => {
-        li.setTextColor(column, type, i === 0 && isFirstPage, quoteLines.length - 1 - i === 0 && isLastPage );
+        li.setTextColorQuote(column, type, i === 0 && isFirstPage, quoteLines.length - 1 - i === 0 && isLastPage );
       });
     }
   }

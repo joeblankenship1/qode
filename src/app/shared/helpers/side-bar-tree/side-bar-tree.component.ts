@@ -101,10 +101,12 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
 
 
   update(nodes) {
-    this.nodes[0].children = nodes;
-    this.tree.treeModel.update();
-    const firstRoot = this.tree.treeModel.roots[0];
-    firstRoot.expandAll();
+    if (nodes) {
+      this.nodes[0].children = nodes;
+      this.tree.treeModel.update();
+      const firstRoot = this.tree.treeModel.roots[0];
+      firstRoot.expandAll();
+    }
   }
 
   /*********************** Custom TreeNode functions ***********************/
