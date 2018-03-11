@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, OnChanges, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnChanges, Output, EventEmitter, HostListener, ElementRef, Renderer2 } from '@angular/core';
 import { Document } from '../../../../shared/models/document.model';
 import { ContextMenuService, ContextMenuComponent } from 'ngx-contextmenu';
 import { ContentComponent } from '../../content.component';
@@ -53,7 +53,9 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     private quoteService: QuoteService,
     private userService: UserService,
     private spinnerService: SpinnerService,
-    private windowSelection: WindowSelection) { }
+    private windowSelection: WindowSelection,
+    private el: ElementRef,
+    private renderer: Renderer2) { }
 
   ngOnInit() {
     this.workSpaceService.getSelectedDocumentContent().subscribe(
@@ -66,6 +68,11 @@ export class DocumentContentComponent implements OnInit, OnChanges {
               this.aux.push(l);
             });
           });
+          console.log(this.actualDocumentContent.getScrollTop());
+          const a = this.actualDocumentContent.getScrollTop();
+          // this.el.nativeElement.scrollTop = a;
+          // this.renderer.setAttribute(this.el.nativeElement, 'scrollTop', String(a) );
+          // this.renderer.setProperty(this.el.nativeElement, 'scrollTop', String(a) );
         }
         // this.quoteService.getQuoteList().subscribe(
         //   quotes => {
@@ -96,10 +103,9 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.updatePagesAndQuotes();
   }
 
-  // private onScroll(e) {
-  //   console.log(e.srcElement.scrollTop);
-  //   // document.getElementById('99').scrollIntoView()
-  // }
+  private onScroll(e) {
+    this.actualDocumentContent.saveScrollTop(e.srcElement.scrollTop);
+  }
 
   private createNewQuote(quote: Quote) {
     this.quoteService.addQuote(quote).subscribe(

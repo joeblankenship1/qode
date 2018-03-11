@@ -1,5 +1,4 @@
-<!-- <div class="content-container" (scroll)="onScroll($event)"> -->
-<div class="content-container">
+<div class="content-container" (scroll)="onScroll($event)">
     <table class="page-container">
         <tr *ngFor="let line of aux; let l = index" [id]="l">
             <td *ngFor="let quote of colRangeArray; let i = index" [ngClass]="line?.getBracketType(colRange-i-1)" [ngStyle]="{ 'color': line?.getBracketColor(colRange-i-1) }" (click)="onOpenQuoteModal(line?.getRelatedQuote(colRange-i-1)?.quote)" [attr.title]="line?.getBracketTitle(colRange-i-1)"

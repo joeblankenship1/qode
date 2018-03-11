@@ -10,6 +10,7 @@ export class DocumentContent {
   private document: Document;
   private pages: Page[];
   private quotesDisplay: QuoteDisplay[] = [];
+  private scrollTop = 0;
 
   constructor(document: Document) {
     this.document = document;
@@ -17,6 +18,7 @@ export class DocumentContent {
     if (document.getQuotes().length > 0) {
       this.updateDocumentQuotesDisplay();
     }
+    this.scrollTop = 0;
   }
 
   public updateDocumentQuotesDisplay() {
@@ -35,6 +37,14 @@ export class DocumentContent {
 
   public getQuotesDisplay() {
     return this.quotesDisplay;
+  }
+
+  public getScrollTop() {
+    return this.scrollTop;
+  }
+
+  public saveScrollTop(scroll) {
+    this.scrollTop = scroll;
   }
 
   // public addQuote(quote: Quote) {
@@ -169,7 +179,6 @@ export class DocumentContent {
   // where the quote is defined. Then each page calls the same function which
   // iterates on the lines.
   public setLinesColor(relatedQuote, column: number, type: boolean) {
-    console.log(relatedQuote);
     if (relatedQuote) {
       window.getSelection().removeAllRanges();
       let quote: Quote;

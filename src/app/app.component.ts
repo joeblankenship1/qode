@@ -37,7 +37,6 @@ export class AppComponent {
   ctrlLeftPressed = (event: KeyboardEvent, combo: string): boolean => {
     this.title = 'cmd+left pressed';
     this.workspaceService.setPopup(true, 'SearchInOpenDocs');
-    console.log(combo);
     return false;
   }
 }
