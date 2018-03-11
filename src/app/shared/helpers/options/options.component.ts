@@ -18,7 +18,7 @@ export class OptionsComponent implements OnInit {
 
   ngOnInit() {
     this.defaultOptions = this.getDefaultOptions();
-    this.optionGroups.push(this.defaultOptions);
+    // this.optionGroups.push(this.defaultOptions);
   }
 
   private getDefaultOptions() {

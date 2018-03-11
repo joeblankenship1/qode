@@ -1,0 +1,45 @@
+/**** Tree ****/
+
+tree-node-wrapper, tree-node-children {
+  width: 100%
+}
+
+.node-content-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.node-content-wrapper {
+  flex-grow: 1;
+  position: relative;
+}
+
+
+.node-marker {
+  font-size: 10px;
+  padding-right: 3px
+}
+
+.code-color {
+  padding-left: 4px;
+}
+
+.counter {
+  font-size: 12.5px;
+  position: absolute;
+  right: 21px;
+}
+
+.list-item-selected {
+  color:red;
+  cursor: pointer;
+}
+
+.list-item:hover {
+  background-color: #dcdcdc42;
+}
+
+.list-item-selected:hover {
+  background-color: #dcdcdc42;
+}

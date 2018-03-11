@@ -58,6 +58,7 @@ import { ChartsModule } from 'ng2-charts';
 import { ProjectInfoComponent } from './my-projects/projects/project-info/project-info.component';
 import { QuotesRetrievalService } from './shared/services/quotes-retrieval.service';
 import { RetrievedQuotesComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quotes-list.component';
+// tslint:disable-next-line:max-line-length
 import { RetrievedQuoteItemComponent } from './work-space/bottom-bar/retrieved-quotes-list/retrieved-quote-item/retrieved-quote-item.component';
 import { BottomBarComponent } from './work-space/bottom-bar/bottom-bar.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -71,6 +72,9 @@ import { PopupLoaderService } from './shared/services/popup-loader.service';
 import { SpinnerComponentModule } from 'ng2-component-spinner';
 import { HotkeyModule } from 'angular2-hotkeys';
 import { SearchInOpenDocsComponent } from './work-space/popup-window/search-in-open-docs/search-in-open-docs.component';
+import { CodeSystemComponent } from './work-space/side-bar/code-system/code-system.component';
+import { SideBarTreeComponent } from './shared/helpers/side-bar-tree/side-bar-tree.component';
+import { CodeSystemService } from './shared/services/code-system.service';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -119,7 +123,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     PopupWindowComponent,
     SimpleQueryEditorComponent,
     ComplexQueryEditorComponent,
-    SearchInOpenDocsComponent
+    SearchInOpenDocsComponent,
+    CodeSystemComponent,
+    SideBarTreeComponent
   ],
   imports: [
     BrowserModule,
@@ -133,17 +139,17 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ContextMenuModule,
     BrowserAnimationsModule,
     SimpleNotificationsModule.forRoot(),
-    TreeModule,
     Ng2CompleterModule,
     ColorPickerModule,
     AngularDraggableModule,
     ChartsModule,
     NgxPermissionsModule.forRoot(),
     SpinnerComponentModule,
-    HotkeyModule.forRoot()
+    HotkeyModule.forRoot(),
+    TreeModule
   ],
-  providers: 
-  [DocumentService, CodeService,
+  providers: [DocumentService, CodeService,
+    CodeSystemService,
     AuthGuard,
     AuthService,
     {

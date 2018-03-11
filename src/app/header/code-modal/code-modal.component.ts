@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { NotificationsService } from 'angular2-notifications';
 import { WorkSpaceService } from '../../shared/services/work-space.service';
 import { UserService } from '../../shared/services/user.service';
+import { CodeSystemService } from '../../shared/services/code-system.service';
 
 export class CodeModalData extends BSModalContext {
   public code: Code;
@@ -28,7 +29,8 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
   permissions: Array<string>;
 
   constructor(public dialog: DialogRef<CodeModalData>, private codeService: CodeService, private workspaceService: WorkSpaceService,
-              private modal: Modal, private notificationsService: NotificationsService, private userService: UserService) {
+              private modal: Modal, private notificationsService: NotificationsService, private userService: UserService,
+            private codeSystemService: CodeSystemService) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.code = dialog.context.code;
@@ -51,17 +53,11 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
       this.notificationsService.error('Error', 'Nombre vacío, debe ingresar un nombre de código');
       return;
     }
-    let oper: Observable<any>;
-    this.code.setName(this.name);
-    this.code.setMemo(this.memo);
-    this.code.setColor(this.color === '#fff' || this.color === 'rgb(255,255,255)'  ? 'rgb(0,0,0)' : this.color);
-    if (this.code.getId() === '0') {
-      oper = this.codeService.addCode(this.code);
-    }else {
-      oper  = this.codeService.updateCode(this.code);
-    }
-    oper.subscribe(
+    const isNew = this.code.getId() === '0';
+    this.defineOperation().subscribe(
       resp => {
+        isNew ? this.codeSystemService.addNodeCodeSystem(this.code)
+              : this.codeSystemService.loadCodeSystem();
         this.dialog.close();
       },
       error => {
@@ -75,6 +71,7 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
       resp => {
         this.dialog.close(-1);
         this.workspaceService.removeQuotesInDocumentContent(this.code);
+        this.codeSystemService.removeNodeCodeSystem(this.code.getId());
       },
       error => {
         this.notificationsService.error('Error', error);
@@ -91,6 +88,19 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
 
   beforeClose(): boolean {
     return false;
+  }
+
+  private defineOperation(): Observable<any> {
+    this.code.setName(this.name);
+    this.code.setMemo(this.memo);
+    this.code.setColor(this.color === '#fff' || this.color === 'rgb(255,255,255)'  ? 'rgb(0,0,0)' : this.color);
+    let oper: Observable<any>;
+    if ( this.code.getId() === '0' ) {
+      oper = this.codeService.addCode(this.code);
+    }else {
+      oper  = this.codeService.updateCode(this.code);
+    }
+    return oper;
   }
 
 }

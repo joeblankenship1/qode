@@ -9,6 +9,7 @@ import { Quote } from '../models/quote.model';
 import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
 import { QuotesRetrievalService } from '../services/quotes-retrieval.service';
 import { ProjectService } from '../services/project.service';
+import { CodeSystemService } from '../services/code-system.service';
 
 
 @Injectable()
@@ -21,7 +22,8 @@ export class WorkSpaceResolver implements Resolve<any> {
     private projectService: ProjectService,
     private router: Router,
     private notificationsService: NotificationsService,
-    private quotesRetrievalService: QuotesRetrievalService
+    private quotesRetrievalService: QuotesRetrievalService,
+    private codeSystemService: CodeSystemService
   ) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
@@ -36,6 +38,7 @@ export class WorkSpaceResolver implements Resolve<any> {
                 this.projectService.loadSelectedProject(projectId).subscribe(
                   proj => {
                     this.workspaceService.initWorkSpace(projectId);
+                    this.codeSystemService.loadCodeSystem();
                   }, error => {
                     this.router.navigate(['myprojects']);
                     this.notificationsService.error('Error', 'No tienes permisos para acceder a ese proyecto');

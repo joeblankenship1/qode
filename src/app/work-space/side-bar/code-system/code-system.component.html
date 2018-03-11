@@ -1,0 +1,33 @@
+<span defaultOverlayTarget></span>
+<div class="panel panel-default" style="max-height:50%; height: 50%; position: relative;">
+    <div class="panel-heading" role="tab" id="headingOne">
+        <h3 class="panel-title pull-left">
+            Sistema de Códigos
+        </h3>
+        <div class="actions pull-right">
+            <span class="glyphicon glyphicon-list-alt" [title]="noSelection ? 'Activar Todos' : 'Desactivar Todos'"
+            (click)="onSelectAll()" [(ngClass)]="selectAllClass"></span>
+        </div>
+    </div>
+    <div class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+        <div class="panel-body" style="height: 240px;">
+          <app-side-bar-tree
+          [usesColor] = "true"
+          [treeTitle] = "'Códigos'"
+          [inputNodes] = "nodes"
+          (ctlclick)= "onCtlClick($event)"
+          (contextmenu)= "onContextMenu($event)"
+          (dropelem) = "onDrop($event)"          
+          > <app-options [optionGroups]="menuOptions"></app-options></app-side-bar-tree>
+            <div class="input-group new-code-input" *ngxPermissionsOnly="['create_code']">
+                <input class="col-xs-12 form-control" placeholder="Nuevo código" (keyup.enter)="onAddCode()" type="text" [(ngModel)]="newCodeName" name="Nuevo código" id="newCode">
+                <span class="input-group-btn">
+                    <button (click)="onAddCode()" class="btn btn-success" type="submit">Agregar</button>
+                </span>
+            </div>
+        </div>
+      </div>
+      <spinner-component [spinnerShow]="spinner">
+        <h5> Cargando sistema de codigos.. </h5>
+      </spinner-component>
+</div>

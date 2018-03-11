@@ -95,25 +95,45 @@ export class Line {
     let title = '';
     if (relatedQuote) {
       const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      title = code ? code.getName() : relatedQuote.quote.getMemo();
+      title = code ? code.getName() + '\n\n' + relatedQuote.quote.getMemo() : relatedQuote.quote.getMemo();
     }
     return title;
   }
 
   // sets the default line color to the line
-  public setTextColor(column: number, type: boolean, isFirstPage: boolean,
-    isLastPage: boolean) {
+  public setTextColorQuote(column: number, type: boolean, isFirstLine: boolean,
+    isLastLine: boolean) {
     const relatedQuote = this.getRelatedQuote(column);
-    let color = '';
+    // let color = '';
     if (relatedQuote && type) {
-      color = AppSettings.DEFAULT_LINE_COLOR;
-      this.setTextSpan(relatedQuote, isFirstPage, isLastPage);
+      // color = AppSettings.DEFAULT_LINE_COLOR;
+      const startPosition = isFirstLine ? relatedQuote.quote.getPosition().start : 0;
+      const endPosition = isLastLine ? relatedQuote.quote.getPosition().end : this.text.length;
+      this.setTextColor(startPosition, endPosition, isFirstLine, isLastLine, type);
     } else {
       this.preSpanText = '';
       this.spanText = this.text;
       this.postSpanText = '';
+      this.background_color =  '';
     }
-    this.background_color = color;
+    /*if (relatedQuote && type) {
+      color = AppSettings.DEFAULT_LINE_COLOR;
+      this.setTextSpan(relatedQuote.quote.getPosition().start, relatedQuote.quote.getPosition().end,
+      relatedQuote.borderTop, relatedQuote.borderBottom, isFirstLine, isLastLine);
+    } else {
+      this.preSpanText = '';
+      this.spanText = this.text;
+      this.postSpanText = '';
+    }*/
+    // this.background_color = color;
+  }
+
+  setTextColor(startPosition: number, endPosition: number,
+    isFirstLine: boolean, isLastLine: boolean, type: boolean) {
+
+      this.setTextSpan( startPosition, endPosition, isFirstLine, isLastLine);
+      this.background_color = type ? AppSettings.DEFAULT_LINE_COLOR : '';
+
   }
 
   public getTextColor(column: number) {
@@ -128,34 +148,41 @@ export class Line {
     return this.background_color !== 'transparent';
   }
 
+  public isMiddle(quote: Quote) {
+    const start = quote.getDocumentDisplay()[0].startLine;
+    const end = quote.getDocumentDisplay()[quote.getDocumentDisplay().length - 1].endLine;
+    const middle = (end - start) / 2;
+
+    return this.id === start + Math.trunc(middle);
+
+  }
+
   // In order to highlight only the words of the quote, a span must be added to the
   // html code. Therefore the text is divided into 3 parts prespantext, spantext and postspantext.
-  private setTextSpan(relatedQuote, isFirstLine: boolean, isLastLine: boolean) {
-    if ((relatedQuote.borderTop && isFirstLine) || (relatedQuote.borderBottom && isLastLine)) {
-      let quote: Quote;
-      quote = relatedQuote.quote;
-
-      if (relatedQuote.borderTop && !relatedQuote.borderBottom) {
-        const start = quote.getPosition().start;
-        this.preSpanText = this.text.substring(0, start);
-        this.spanText = this.text.substr(start, this.text.length - this.preSpanText.length);
+  private setTextSpan(startPostion: number, endPosition: number,
+    isFirstLine: boolean, isLastLine: boolean) {
+      this.preSpanText = this.text.substring(0, startPostion);
+      this.spanText = this.text.substring(startPostion, endPosition);
+      this.postSpanText = this.text.substr(endPosition, this.text.length - this.spanText.length);
+    /*if ((borderTop && isFirstLine) || (borderBottom && isLastLine)) {
+      if (borderTop && !borderBottom) {
+        this.preSpanText = this.text.substring(0, startPostion);
+        this.spanText = this.text.substr(startPostion, this.text.length - this.preSpanText.length);
       }
 
-      if (relatedQuote.borderBottom && !relatedQuote.borderTop) {
-        const end = quote.getPosition().end;
-        this.spanText = this.text.substring(0, end);
-        this.postSpanText = this.text.substr(end, this.text.length - this.preSpanText.length);
+      if (borderBottom && !borderTop) {
+        this.spanText = this.text.substring(0, endPosition);
+        this.postSpanText = this.text.substr(endPosition, this.text.length - this.spanText.length);
       }
 
-      if (relatedQuote.borderTop && relatedQuote.borderBottom) {
-        const start = quote.getPosition().start;
-        const end = quote.getPosition().end;
-        this.preSpanText = this.text.substring(0, start);
-        this.spanText = this.text.substring(start, end);
-        this.postSpanText = this.text.substr(end, this.text.length - this.preSpanText.length);
+      if (borderTop && borderBottom) {
+        this.preSpanText = this.text.substring(0, startPostion);
+        this.spanText = this.text.substring(startPostion, endPosition);
+        this.postSpanText = this.text.substr(endPosition, this.text.length - this.preSpanText.length);
       }
 
-    }
+    }*/
   }
+
 
 }
