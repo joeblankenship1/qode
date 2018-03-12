@@ -20,7 +20,7 @@ export class CodeService {
   public codes: Code[] = [];
   private codes$ = new BehaviorSubject<Code[]>([]);
 
-  private project: Project;
+  private projectId: string;
 
   private activatedCodes: Code[] = [];
  // private activatedCodes$ = new BehaviorSubject<Code[]>([]);
@@ -32,6 +32,7 @@ export class CodeService {
    }
 
   loadCodes(projectId): Observable<Code[]> {
+    this.projectId = projectId;
     this.spinnerService.setSpinner('code_list', true);
     return this.http.get(environment.apiUrl + `code?where={"key.project":"${projectId}"}`, this.options)
       .map((data: Response) => {
@@ -148,4 +149,24 @@ export class CodeService {
     return this.activatedCodes;
   }
 
+  importCodes(projId: string) {
+    return this.http.get(environment.apiUrl + `import-codes?to=${this.projectId}&from=${projId}`,
+     this.options).map(
+      (data: Response) => {
+        const extracted = data.json();
+        const codeArray: Code[] = [];
+        let code;
+        if (extracted.codes) {
+          for (const element of JSON.parse(extracted.codes)) {
+            code = new Code(element);
+            this.codes.push(code);
+          }
+          this.codes$.next(this.codes);
+        }
+      }).catch((err: Response) => {
+        const details = err.json();
+        console.log(details);
+        return Observable.throw(JSON.stringify(details));
+      });
+  }
 }
