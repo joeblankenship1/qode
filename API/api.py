@@ -5,7 +5,7 @@ from flask_cors import CORS
 from flask import jsonify, request, make_response
 from authentication import MyTokenAuth, AuthError, requires_auth, get_token_auth_header, get_email
 from settings import DOMAIN
-from procedures import codes_matrix
+from procedures import codes_matrix, import_codes
 
 from flask import Blueprint, Response, current_app, request
 from bson import json_util
@@ -180,6 +180,17 @@ def docCodeMatrix():
     result = codes_matrix(proj_id,cooc)
     if ('message' in result):
         abort(make_response(jsonify(message=result['message']), 449))
+    return jsonify(result)
+
+@APP.route("/import-codes")
+def importCodes():
+    token = get_token_auth_header()
+    mail = get_email(token)
+    to_proj_id = request.args.get('to')
+    from_proj_id = request.args.get('from')
+    check_permissions(to_proj_id, mail, True)
+    check_permissions(from_proj_id, mail, False)
+    result = import_codes(from_proj_id,to_proj_id,mail)
     return jsonify(result)
 
 

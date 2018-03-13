@@ -75,6 +75,7 @@ import { SearchInOpenDocsComponent } from './work-space/popup-window/search-in-o
 import { CodeSystemComponent } from './work-space/side-bar/code-system/code-system.component';
 import { SideBarTreeComponent } from './shared/helpers/side-bar-tree/side-bar-tree.component';
 import { CodeSystemService } from './shared/services/code-system.service';
+import { ImportCodesModalComponent } from './header/import-codes-modal/import-codes-modal.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -125,7 +126,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ComplexQueryEditorComponent,
     SearchInOpenDocsComponent,
     CodeSystemComponent,
-    SideBarTreeComponent
+    SideBarTreeComponent,
+    ImportCodesModalComponent
   ],
   imports: [
     BrowserModule,
@@ -177,7 +179,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SimpleQueryEditorComponent,
     ComplexQueryEditorComponent,
     ChartPopupComponent,
-    SearchInOpenDocsComponent
+    SearchInOpenDocsComponent,
+    ImportCodesModalComponent
   ]
 })
 export class AppModule { }

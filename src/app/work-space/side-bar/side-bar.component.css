@@ -2,10 +2,10 @@
                 .sidenav {
                     padding: 2px;
                     /*background-color: #333534;*/
-                    height: -moz-calc(100vh - 52px - 21px);
-                    height: -webkit-calc(100vh - 52px - 21px);
-                    height: calc(100vh - 52px - 21px);
-                    width: 25%;
+                    height: -moz-calc(100vh - 52px - 27px);
+                    height: -webkit-calc(100vh - 52px - 27px);
+                    height: calc(100vh - 52px - 27px);
+                    width: 20%;
                 }
             }
             
@@ -13,17 +13,17 @@
                 .sidenav {
                     padding: 2px;
                     /*background-color: #333534;*/
-                    height: -moz-calc(100vh - 52px - 21px);
-                    height: -webkit-calc(100vh - 52px - 21px);
-                    height: calc(100vh - 52px - 21px);
-                    width: 23%;
+                    height: -moz-calc(100vh - 52px - 27px);
+                    height: -webkit-calc(100vh - 52px - 27px);
+                    height: calc(100vh - 52px - 27px);
+                    width: 20%;
                 }
             }
             
             .btn {
                 border-radius: 0px;
             }
-
+            
             .panel-group {
                 height: 100%;
             }
