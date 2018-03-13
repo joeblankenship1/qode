@@ -14,7 +14,7 @@ export class RetrievedQuoteItemComponent implements OnInit {
   @Input() isSelected: boolean;
   @Output() selected = new EventEmitter<void>();
 
-  shown: false;
+  shown = true;
 
   constructor() { }
 

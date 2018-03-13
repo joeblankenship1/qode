@@ -1,4 +1,4 @@
-<div class="panel-heading"  id="headingOne">
+<div class="panel-heading" style="position: relative" id="headingOne">
     <span *ngIf="!shown" role="tab" data-toggle="collapse"  class="expand-icon inline-x glyphicon-plus"
     [attr.data-target]="'#collapse' + retrievedQuote.getId()" (click)="shown=true"></span>
     <span *ngIf="shown" role="tab" data-toggle="collapse"  class="expand-icon inline-x glyphicon-minus"
@@ -13,7 +13,7 @@
         [ngStyle]="{'color': code.getColor()}" style="line-height:8px; height:12px; position: absolute; cursor: default">&#9679;</span>
     </div>
 </div>
-<div [attr.id]="'collapse' + retrievedQuote.getId()" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne"
+<div [attr.id]="'collapse' + retrievedQuote.getId()" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne"
 [ngClass]="{'watched-quote': isSelected}" (dblclick)="onWatchQuote()">
   {{retrievedQuote.getText()}}
 </div>
