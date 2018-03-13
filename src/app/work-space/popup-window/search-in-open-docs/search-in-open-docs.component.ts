@@ -15,11 +15,13 @@ export class SearchInOpenDocsComponent implements OnInit {
 
   documentContent;
   searchActive = false;
+  total = 0;
   docIndex = 0;
   strOcurrence = new Array();
   ocurrenceIndex = 0;
   selectedDoc;
-  q_ant;
+  lines_prev;
+  lines = new Array();
 
   constructor(private workspaceService: WorkSpaceService,
     private documentService: DocumentService,
@@ -35,6 +37,7 @@ export class SearchInOpenDocsComponent implements OnInit {
 
     this.workspaceService.getSelectedDocument().subscribe(doc => {
       this.selectedDoc = doc;
+      //
     });
   }
 
@@ -101,71 +104,62 @@ export class SearchInOpenDocsComponent implements OnInit {
       this.ocurrenceIndex = 0;
       this.searchActive = true;
       console.log(this.strOcurrence);
+      this.total = 0;
+      this.strOcurrence.forEach(d =>
+        this.total += d.ocurrenceIndexes.length
+      );
       this.showQuote(str);
     }
   }
 
   showQuote(str) {
+    // unhighlight previous search
+    if (this.lines_prev) {
+      this.lines_prev.forEach(o => {
+        o.line.setTextColor(o.startLineOffset, o.finishLineOffset, o.isFirstLine, o.isLastLine, 0);
+      });
+    }
+
     const doc = this.documentContent[this.docIndex];
-    let startLine, startLineOffset;
-    [startLine, startLineOffset] = this.getStartPosition(doc, this.strOcurrence[this.docIndex].ocurrenceIndexes[this.ocurrenceIndex]);
+    let startLine, startLineOffset, startPage;
+    [startPage, startLine, startLineOffset] =
+      this.getStartPosition(doc, this.strOcurrence[this.docIndex].ocurrenceIndexes[this.ocurrenceIndex]);
     const element = document.getElementById(startLine.toString());
     element.scrollIntoView();
-
-    const startPage = this.getPageWithLine(doc, startLine);
-    const indxLineAux = this.getIndxLine(doc, startPage, startLine);
 
     let p = startPage;
     let l = startLine;
     let lindx = l % 40;
 
     let strTailLenght = str.length;
-    let i = 0;
-    let firstrow = true;
-    let finishLine;
-    let finishLineOffset = strTailLenght;
-
-    const pagesAux = [];
-    while (strTailLenght > 0 && i < 100) {
+    while (strTailLenght > 0) {
       l = doc.pages[p].lines[lindx];
-      if (firstrow) {
-        finishLineOffset = startLineOffset + strTailLenght;
-        strTailLenght = strTailLenght - (l.text.length - startLineOffset);
-        firstrow = false;
-      } else {
-        finishLineOffset = strTailLenght;
-        strTailLenght = strTailLenght - l.text.length;
+      const finishLineOffset = strTailLenght < (l.text.length - startLineOffset) ? strTailLenght + startLineOffset : l.text.length;
+      const isFirstLine = true; //startLine && startPage;
+      const isLastLine = strTailLenght < (l.text.length - startLineOffset);
+      l.setTextColor(startLineOffset, finishLineOffset, isFirstLine, isLastLine, 1);
+      this.lines.push({
+        line: l, startLineOffset: startLineOffset, finishLineOffset: finishLineOffset,
+        isFirstLine: isFirstLine, isLastLine: isLastLine
+      });
+      strTailLenght = strTailLenght - (l.text.length - startLineOffset);
+      if (l.text.length !== 0) {
+        strTailLenght = strTailLenght - 1;
       }
-      if (strTailLenght > 0) {
-        if (39 === lindx) {
-          pagesAux.push({ page: p, startLine: startLine, endLine: lindx });
-          p++;
-          startLine = 0;
-          lindx = 0;
-        } else {
-          lindx++;
-        }
-        i++;
+      startLineOffset = 0;
+
+      if (lindx === 39) {
+        p++;
+        lindx = 0;
+      } else {
+        lindx++;
       }
     }
-
-    // finishLineOffset = strTailLenght;
-    finishLine = lindx;
-
-    pagesAux.push({ page: p, startLine: startLine * 40 * p, endLine: lindx * 40 * p});
-    const q = new Quote(str, startLineOffset, finishLineOffset, pagesAux, this.workspaceService.getProjectId());
-    console.log(q);
-
-    // if (this.q_ant) {
-    //   doc.setLinesColor({ quote: this.q_ant, column: 1, borderTop: true, borderBottom: true }, 0, false);
-    // }
-    // this.q_ant = q;
-
-    doc.setLinesColor({ quote: q, column: 1, borderTop: true, borderBottom: true }, 1, true);
+    this.lines_prev = this.lines;
   }
 
   showNext(str) {
-    if (this.ocurrenceIndex >= this.strOcurrence[this.docIndex].ocurrenceIndexes.length - 1) {
+    if (this.ocurrenceIndex = this.strOcurrence[this.docIndex].ocurrenceIndexes.length - 1) {
       this.getNextDocIndex();
       this.ocurrenceIndex = 0;
     } else {
@@ -184,17 +178,32 @@ export class SearchInOpenDocsComponent implements OnInit {
     this.workspaceService.selectDocument(this.strOcurrence[this.docIndex].doc);
   }
 
-  getPageWithLine(doc, line) {
-    for (let i = 0; i < doc.pages.length; i++) {
-      if (doc.pages[i].lines.find(l => l.id === line)) {
-        return i;
-      }
+  showPrevious(str) {
+    if (this.ocurrenceIndex === 0) {
+      this.getPreviousDocIndex();
+      this.ocurrenceIndex = this.strOcurrence[this.docIndex].ocurrenceIndexes.length - 1;
+    } else {
+      this.ocurrenceIndex--;
     }
-    return -1;
+    this.showQuote(str);
   }
 
-  getIndxLine(doc, page, line) {
-    return (doc.pages[page].lines.find(l => l.id === line));
+  getPreviousDocIndex() {
+    if (this.docIndex === 0) {
+      this.docIndex = this.strOcurrence.length - 1;
+    } else {
+      this.docIndex--;
+    }
+    while (this.strOcurrence[this.docIndex].ocurrenceIndexes.length === 0) {
+      if (this.docIndex === 0) {
+        this.docIndex = this.strOcurrence.length - 1;
+      } else {
+        this.docIndex--;
+      }
+    }
+    if (this.strOcurrence[this.docIndex].doc.name !== this.documentContent.name) {
+      this.workspaceService.selectDocument(this.strOcurrence[this.docIndex].doc);
+    }
   }
 
   getStartPosition(doc, indexOf) {
@@ -206,15 +215,15 @@ export class SearchInOpenDocsComponent implements OnInit {
       const lines = pages[i].lines;
       for (let j = 0; j < lines.length; j++) {
         if (indexOf >= offset && indexOf <= offset + lines[j].text.length) {
-          // console.log(lineId + ' ' + lines[j].text + ' ' + offset);
-          return [lineId, indexOf - offset];
+          // console.log(lineId + ' -' + lines[j].text + '- ' + offset + lines[j].text.length);
+          return [i, lineId, indexOf - offset];
         }
-        // console.log(lineId + ' ' + lines[j].text + ' ' + offset);
         offset += lines[j].text.length + 1; // El uno es por el salto de linea
+        // console.log(lineId + ' -' + lines[j].text + '- ' + offset);
         lineId = (lineId + 1);
       }
     }
-    return [-1, -1];
+    return [-1, -1, -1];
   }
 
 }
