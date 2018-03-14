@@ -4,6 +4,42 @@
 }
 
 .panel-heading {
-  padding-top: 5px;
-  padding-bottom: 0;
+  /* padding-top: 5px;
+  padding-bottom: 0; */
+  height:12px; 
+  padding:0px;
+}
+
+.watch-icon {
+  color: white;
+  font-size: 10px;
+  /* top: 4px; */
+  position: absolute;
+  padding-left: 4px;
+  cursor: pointer;
+}
+
+.expand-icon {
+  color: white;
+  font-size: 10px;
+  /* top: 4px; */
+  position: absolute;
+  padding-left: 4px;
+  right: 20px;
+  cursor: pointer;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+.watch-disabled {
+  color:gray;
+  cursor: not-allowed;
+}
+
+.watched-quote {
+  background-color: rgb(217,207,207) !important;
 }

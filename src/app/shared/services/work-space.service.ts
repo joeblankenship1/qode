@@ -13,6 +13,7 @@ import { indexDebugNode } from '@angular/core/src/debug/debug_node';
 import { UserService } from './user.service';
 import { CodeService } from './code.service';
 import { SpinnerService } from './spinner.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class WorkSpaceService {
@@ -47,6 +48,8 @@ export class WorkSpaceService {
   private matrixResult = {};
   private matrixResult$ = new BehaviorSubject<any>(null);
 
+  private docSubscription: Subscription = null;
+
   constructor(private documentService: DocumentService,
     private quoteService: QuoteService,
     private codeService: CodeService,
@@ -57,17 +60,25 @@ export class WorkSpaceService {
     this.projectId = projectId;
     this.userService.loadRole(projectId);
     this.selectedDocumentId = null;
-    this.documentService.getDocuments().subscribe(
+    this.docSubscription = this.documentService.getDocuments().subscribe(
       documents => {
         documents.forEach(d => {
-          if (d.isOpened() && !this.openedDocuments.includes(d)) {
-            this.openedDocuments.push(d);
-          } else if (!d.isOpened() && this.openedDocuments.includes(d)) {
-            const i = this.openedDocuments.indexOf(d);
-            this.openedDocuments.splice(i, 1);
-          }
-          if (this.documentContents.find(dc => d.getId() === dc.getDocumentId()) === undefined) {
-            this.documentContents.push(new DocumentContent(d));
+          if (d.isOpened()) {
+            if (!this.openedDocuments.includes(d)) {
+              this.openedDocuments.push(d);
+            }
+            if (this.documentContents.find(dc => d.getId() === dc.getDocumentId()) === undefined){
+              this.documentContents.push(new DocumentContent(d));
+            }
+          } else {
+            if (this.openedDocuments.includes(d)) {
+              const i = this.openedDocuments.indexOf(d);
+              this.openedDocuments.splice(i, 1);
+            }
+            const index = this.documentContents.findIndex(dc => d.getId() === dc.getDocumentId());
+            if (index !== -1) {
+              this.documentContents.splice(index, 1);
+            }
           }
         });
         this.setOpenedDocuments(this.openedDocuments);
@@ -188,6 +199,13 @@ export class WorkSpaceService {
         this.quotesSelectedDocument.splice(i, 1);
         this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
       }
+      // else {
+      //   const index = q.getCodes().indexOf(code);
+      //   if (index !== -1) {
+      //     this.quotesSelectedDocument.splice(index, 1);
+      //     this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
+      //   }
+      // }
     });
 
     this.documentContents.forEach(doc => {
@@ -196,8 +214,16 @@ export class WorkSpaceService {
         if (q.getQuote().getCodes().length === 1 && q.getQuote().getCodes()[0] === code && q.getQuote().getMemo() === '') {
           doc.removeQuote(q.getQuote());
         }
+        // else {
+        //   const index = q.getQuote().getCodes().indexOf(code);
+        //   if (index !== -1) {
+        //     this.quotesSelectedDocument.splice(index, 1);
+        //     this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
+        //   }
+        // }
       });
     });
+    // this.updateDocumentContent();
   }
 
   updateDocumentContent() {
@@ -244,6 +270,9 @@ export class WorkSpaceService {
   }
 
   cleanWorkSpace() {
+    if (this.docSubscription !== null && !this.docSubscription.closed) {
+      this.docSubscription.unsubscribe();
+    }
     this.codeService.setCodes([]);
     this.documentService.setDocuments([]);
     this.userService.removeRoles();

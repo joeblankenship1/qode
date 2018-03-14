@@ -153,6 +153,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.menuOptions = [[
       new MenuOption('Codificar', (item) => {
         if (item) {
+          item.setDocument(this.actualDocument);
           this.onOpenQuoteModal(item);
         }
       }),
@@ -246,6 +247,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
       codes.push(c);
     });
     quote.setCodes(codes);
+    quote.setDocument(this.actualDocument);
     if (codes && codes.length > 0) {
       this.createNewQuote(quote);
     }

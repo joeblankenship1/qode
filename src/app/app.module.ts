@@ -69,6 +69,7 @@ import { SimpleQueryEditorComponent } from './work-space/popup-window/simple-que
 import { ComplexQueryEditorComponent } from './work-space/popup-window/complex-query-editor/complex-query-editor.component';
 import { PopupLoaderService } from './shared/services/popup-loader.service';
 import { SpinnerComponentModule } from 'ng2-component-spinner';
+import { ImportCodesModalComponent } from './header/import-codes-modal/import-codes-modal.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -116,7 +117,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ChartPopupComponent,
     PopupWindowComponent,
     SimpleQueryEditorComponent,
-    ComplexQueryEditorComponent
+    ComplexQueryEditorComponent,
+    ImportCodesModalComponent
   ],
   imports: [
     BrowserModule,
@@ -164,7 +166,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DocumentModalComponent,
     SimpleQueryEditorComponent,
     ComplexQueryEditorComponent,
-    ChartPopupComponent
+    ChartPopupComponent,
+    ImportCodesModalComponent
   ]
 })
 export class AppModule { }
