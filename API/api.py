@@ -5,7 +5,7 @@ from flask_cors import CORS
 from flask import jsonify, request, make_response
 from authentication import MyTokenAuth, AuthError, requires_auth, get_token_auth_header, get_email
 from settings import DOMAIN
-from procedures import codes_matrix, import_codes2
+from procedures import codes_matrix, import_codes, delete_node_code_system
 
 from flask import Blueprint, Response, current_app, request
 from bson import json_util
@@ -27,7 +27,7 @@ def get_project_id_from_req(resource, request):
     j = request.args.get('where').encode('utf-8')
     d = json_util.loads(j)
     if resource == 'quote':
-        return d.get('project') 
+        return d.get('project')
     else:
         return d.get('key.project')
 
@@ -64,7 +64,7 @@ def check_permissions(proj_id, mail, read_write):
             error_message = 'You do not have the privileges to do this'
             abort(make_response(jsonify(message=error_message), 403))
 
-# Return only the projects whose owner is the mail obtained from the access token in session or the mail is from a collaborator for that project 
+# Return only the projects whose owner is the mail obtained from the access token in session or the mail is from a collaborator for that project
 def pre_GET_project(request, lookup):
     token = get_token_auth_header()
     mail = get_email(token)
@@ -78,16 +78,16 @@ def pre_GET_resources(resource, request, lookup):
             mail = get_email(token)
             proj_id = get_project_id_from_req(resource, request)
             check_permissions(proj_id, mail, False)
-                     
-# Before every insert  
+
+# Before every insert
 def before_insert(resource, documents):
     token = get_token_auth_header()
     mail = get_email(token)
     for document in documents:
-        # If resource is project  
+        # If resource is project
         if resource == 'project':
-            # checks that the combination name owner is unique   
-            name = document['key']['name'] 
+            # checks that the combination name owner is unique
+            name = document['key']['name']
             db = current_app.data.driver.db['project']
             exists = db.find_one({
                 "$and": [
@@ -99,7 +99,7 @@ def before_insert(resource, documents):
             if exists:
                 error_message = 'The name is not unique for this user'
                 abort(make_response(jsonify(message=error_message), 422))
-            # Assign the mail of the owner to the project 
+            # Assign the mail of the owner to the project
             else:
                 document['key']['owner'] = mail
         # If resource is not project, update the attrs
@@ -126,7 +126,7 @@ def before_update(resource, documents, item):
         check_permissions(proj_id, mail, True)
         update_project_attrs(resource, item, mail)
 
-# Update the project atributes 
+# Update the project atributes
 def before_delete_item(resource, item):
     token = get_token_auth_header()
     mail = get_email(token)
@@ -160,7 +160,20 @@ def before_delete_item(resource, item):
                 borrar = quote['memo'] == '' and len(quote['codes']) == 1 and quote['codes'][0] == item['_id']
                 if borrar:
                     current_app.data.driver.db['quote'].remove(({'_id':quote['_id']}))
-                
+            cursor.close()
+        #delete nodes code system
+        db = current_app.data.driver.db['project']
+        cursor = db.find({'_id': ObjectId(proj_id)}, snapshot=True)
+        for project in cursor:
+          if 'code_system' in project:
+            ok = delete_node_code_system(project['code_system'], item['_id'])
+            project['_created_by'] = mail
+            project['_modified_by'] = mail
+            project['_created'] = datetime.utcnow()
+            project['_modified'] = datetime.utcnow()
+            db.save(project)
+
+
 
 def deleteDocument(item):
     db = current_app.data.driver.db['document']
@@ -190,7 +203,7 @@ def importCodes():
     from_proj_id = request.args.get('from')
     check_permissions(to_proj_id, mail, True)
     check_permissions(from_proj_id, mail, False)
-    result = import_codes2(from_proj_id,to_proj_id,mail)
+    result = import_codes(from_proj_id,to_proj_id,mail)
     return jsonify(result)
 
 

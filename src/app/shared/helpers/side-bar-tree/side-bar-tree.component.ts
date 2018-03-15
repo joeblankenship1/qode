@@ -89,8 +89,10 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.nodes[0].name = this.treeTitle;
-    this.nodes[0].children = this.inputNodes;
+    if (this.nodes) {
+      this.nodes[0].name = this.treeTitle;
+      this.nodes[0].children = this.inputNodes;
+    }
   }
 
   ngAfterViewInit() {

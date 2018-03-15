@@ -22,14 +22,14 @@ export class CodeSystemService {
   spinner = false;
 
   constructor(private projectService: ProjectService,
-  private http: AuthHttp,
-  private codeService: CodeService,
-  private workspaceService: WorkSpaceService,
-  private quoteService: QuoteService,
-  private spinnerService: SpinnerService) {
-    this.headers = new Headers({'Cache-Control': 'no-cache'});
+    private http: AuthHttp,
+    private codeService: CodeService,
+    private workspaceService: WorkSpaceService,
+    private quoteService: QuoteService,
+    private spinnerService: SpinnerService) {
+    this.headers = new Headers({ 'Cache-Control': 'no-cache' });
     this.options = new RequestOptions({ headers: this.headers });
-   }
+  }
 
   addNodeCodeSystem(code: Code) {
     const node = {
@@ -46,13 +46,12 @@ export class CodeSystemService {
   createTreeNodes(cs) {
     if (cs) {
       const ids = [];
-      console.log(cs);
       cs.map(n => {
         ids.push(n.code_id);
       });
       const codes: Code[] = this.codeService.getCodesById(ids);
-      return codes.map( (c, i) => {
-        const children = this.createTreeNodes(cs[i].children);
+      return codes.map((c, i) => {
+        const children = cs[i] ? this.createTreeNodes(cs[i].children) : [];
         return {
           name: c.getName(),
           id: c.getId(),
@@ -63,6 +62,11 @@ export class CodeSystemService {
     } else { return []; }
   }
 
+  cleanCodeSystem() {
+    this.codeSystem = [];
+    this.codeSystem$.next([]);
+  }
+
   getCodeSystem() {
     return this.codeSystem$.asObservable();
   }
@@ -70,16 +74,19 @@ export class CodeSystemService {
   importCodes(projId: string) {
     const projectId = this.projectService.getSelectedProjectItem()._id;
     return this.http.get(environment.apiUrl + `import-codes?to=${projectId}&from=${projId}`,
-     this.options).map(
-      (data: Response) => {
-        const extracted = data.json();
-        const newCodeSystem = this.createTreeNodes(extracted.code_system);
-        console.log(newCodeSystem);
-      }).catch((err: Response) => {
-        const details = err.json();
-        console.log(err);
-        return Observable.throw(JSON.stringify(err));
-      });
+      this.options).map(
+        (data: Response) => {
+          const extracted = data.json();
+          this.codeService.loadCodes(projectId).subscribe(c => {
+            const newCodeSystem = this.createTreeNodes(JSON.parse(extracted.code_system));
+            this.setCodeSystem(newCodeSystem);
+            this.spinnerService.setSpinner('code_system', false);
+          });
+        }).catch((err: Response) => {
+          const details = err.json();
+          console.log(err);
+          return Observable.throw(JSON.stringify(err));
+        });
   }
 
   loadCodeSystem() {
@@ -119,31 +126,28 @@ export class CodeSystemService {
   private removeNode(id, nodes) {
     let deleted = false;
     let i = nodes.length;
-    while ( !deleted && i > 0) {
+    while (!deleted && i > 0) {
       if (nodes[i - 1].id === id) {
-        this.removeCodesFromNodes(nodes[ i - 1 ].children);
+        this.removeCodesFromNodes(nodes[i - 1].children);
         nodes.splice(i - 1, 1);
         return true;
       } else {
         const children = nodes[i - 1].children;
         deleted = this.removeNode(id, children);
       }
-      i --;
+      i--;
     }
     return deleted;
   }
 
   private removeCodesFromNodes(nodes) {
-    nodes.map( node => {
-      this.removeCodesFromNodes( node.children );
-      // this.codeService.deleteCode( node.data ).subscribe( resp => {
-        this.workspaceService.removeQuotesInDocumentContent(node.data);
-        if (this.quoteService.removeCodeFromQuotes(node.data.getId())) {
-          this.workspaceService.updateDocumentContent();
-          this.spinnerService.setSpinner('document', false);
-        }
-     // });
-    } );
+    nodes.map(node => {
+      this.removeCodesFromNodes(node.children);
+      this.workspaceService.removeQuotesInDocumentContent(node.data);
+      if (this.quoteService.removeCodeFromQuotes(node.data.getId())) {
+        this.workspaceService.updateDocumentContent();
+      }
+    });
   }
 
 
