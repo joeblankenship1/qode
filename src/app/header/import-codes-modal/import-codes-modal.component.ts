@@ -7,6 +7,7 @@ import { Project } from '../../shared/models/project.model';
 import { SpinnerService } from '../../shared/services/spinner.service';
 import { WorkSpaceService } from '../../shared/services/work-space.service';
 import { NotificationsService } from 'angular2-notifications';
+import { CodeSystemService } from '../../shared/services/code-system.service';
 
 export class ImportCodeModalData extends BSModalContext {
   // public code: Code;
@@ -23,11 +24,12 @@ export class ImportCodesModalComponent implements OnInit, CloseGuard, ModalCompo
   private spinner = false;
   public sortBy = 'name';
   public sortOrder = 'asc';
-  public projId = '';
+  public project: Project;
   public actualProject = '';
   // permissions: Array<string>;
 
   constructor(public dialog: DialogRef<ImportCodeModalData>, private codeService: CodeService,
+              private codesystemService: CodeSystemService,
               private workspaceService: WorkSpaceService, private modal: Modal,
               private notificationsService: NotificationsService,
               private projectService: ProjectService, private spinnerService: SpinnerService) { }
@@ -60,7 +62,8 @@ export class ImportCodesModalComponent implements OnInit, CloseGuard, ModalCompo
   }
 
   private onImport() {
-    this.codeService.importCodes(this.projId).subscribe(
+    this.spinnerService.setSpinner('code_system', true);
+    this.codesystemService.importCodes(this.project._id).subscribe(
       resp => {
         this.notificationsService.success('Éxito', 'Los códigos se importaron correctamente');
         this.dialog.close();
@@ -68,8 +71,8 @@ export class ImportCodesModalComponent implements OnInit, CloseGuard, ModalCompo
       error => this.notificationsService.error('Error', error) );
   }
 
-  public onSelectProject(projId) {
-    this.projId = projId;
+  public onSelectProject(project: Project) {
+    this.project = project;
   }
 
   public onClose() {
