@@ -176,13 +176,13 @@ def delete_node_code_system(nodes,nodeId):
 def delete_children(nodes):
   db = current_app.data.driver.db['code']
   for node in nodes:
-    cursor = db.find({'_id': node['code_id']}, snapshot=True)
+    cursor = db.find({'_id': ObjectId(node['code_id'])}, snapshot=True)
     if cursor:
       for code in cursor:
         if len(node['children']):
           delete_children(node['children'])
         delete_quotes_of_code(code)
-        db.delete(code)
+        current_app.data.driver.db['code'].remove({'_id':code['_id']})
 
 def delete_quotes_of_code(code):
   db = current_app.data.driver.db['quote']
