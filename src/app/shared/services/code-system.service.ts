@@ -5,6 +5,7 @@ import { CodeService } from './code.service';
 import { Code } from '../models/code.model';
 import { WorkSpaceService } from './work-space.service';
 import { QuoteService } from './quote.service';
+import { SpinnerService } from './spinner.service';
 
 @Injectable()
 export class CodeSystemService {
@@ -12,11 +13,13 @@ export class CodeSystemService {
 
   private codeSystem: any[];
   private codeSystem$ = new BehaviorSubject<any[]>(null);
+  spinner = false;
 
   constructor(private projectService: ProjectService,
   private codeService: CodeService,
   private workspaceService: WorkSpaceService,
-  private quoteService: QuoteService) { }
+  private quoteService: QuoteService,
+  private spinnerService: SpinnerService) { }
 
   addNodeCodeSystem(code: Code) {
     const node = {
@@ -56,13 +59,15 @@ export class CodeSystemService {
   loadCodeSystem() {
     const cs = this.createTreeNodes(this.projectService.getSelectedProjectCodeSystem());
     this.setCodeSystem(cs);
+    this.spinnerService.setSpinner('code_system', false);
   }
 
   removeNodeCodeSystem(code_id) {
     const deleted = this.removeNode(code_id, this.codeSystem);
     if (deleted) {
       this.codeSystem$.next(this.codeSystem);
-      this.updateCodeSystem(this.codeSystem);
+      // this.updateCodeSystem(this.codeSystem);
+      this.spinnerService.setSpinner('code_system', false);
     }
   }
 
@@ -104,12 +109,13 @@ export class CodeSystemService {
   private removeCodesFromNodes(nodes) {
     nodes.map( node => {
       this.removeCodesFromNodes( node.children );
-      this.codeService.deleteCode( node.data ).subscribe( resp => {
+      // this.codeService.deleteCode( node.data ).subscribe( resp => {
         this.workspaceService.removeQuotesInDocumentContent(node.data);
         if (this.quoteService.removeCodeFromQuotes(node.data.getId())) {
           this.workspaceService.updateDocumentContent();
+          this.spinnerService.setSpinner('document', false);
         }
-      });
+     // });
     } );
   }
 

@@ -14,6 +14,8 @@ export class SpinnerService {
   private spinnerProjects$ = new BehaviorSubject<boolean>(false);
   private spinnerCodeList = false;
   private spinnerCodeList$ = new BehaviorSubject<boolean>(false);
+  private spinnerCodeSystem = false;
+  private spinnerCodeSystem$ = new BehaviorSubject<boolean>(false);
 
   constructor() { }
 
@@ -29,6 +31,8 @@ export class SpinnerService {
         return this.spinnerProjects$.asObservable();
       case 'code_list':
         return this.spinnerCodeList$.asObservable();
+      case 'code_system':
+        return this.spinnerCodeSystem$.asObservable();
     }
   }
 
@@ -53,6 +57,10 @@ export class SpinnerService {
       case 'code_list':
         this.spinnerCodeList = state;
         this.spinnerCodeList$.next(this.spinnerCodeList);
+        break;
+      case 'code_system':
+        this.spinnerCodeList = state;
+        this.spinnerCodeSystem$.next(this.spinnerCodeList);
         break;
     }
   }

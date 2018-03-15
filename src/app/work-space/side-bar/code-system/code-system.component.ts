@@ -50,6 +50,7 @@ export class CodeSystemComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.spinnerService.setSpinner('code_system', true);
     this.codeService.getCodes().subscribe(codes => {
       this.codes = codes;
       this.codeSystemService.getCodeSystem().subscribe(cs => {
@@ -59,7 +60,7 @@ export class CodeSystemComponent implements OnInit {
         }
       });
     });
-    this.spinnerService.getSpinner('code_list')
+    this.spinnerService.getSpinner('code_system')
       .subscribe(
         state => {
           this.spinner = state;
@@ -182,13 +183,19 @@ export class CodeSystemComponent implements OnInit {
       .then(r => {
         r.result
           .then(result => {
+            this.spinnerService.setSpinner('code_system', true);
+            this.spinnerService.setSpinner('document', true);
             this.codeService.deleteCode(code).subscribe( resp => {
               this.codeSystemService.removeNodeCodeSystem(code.getId());
               this.workspaceService.removeQuotesInDocumentContent(code);
               if (this.quoteService.removeCodeFromQuotes(code.getId())) {
                 this.workspaceService.updateDocumentContent();
               }
-            });
+            },
+          error => {
+            this.spinnerService.setSpinner('code_system', false);
+            this.spinnerService.setSpinner('document', false);
+          });
           })
           .catch(error =>
             console.log(error)
