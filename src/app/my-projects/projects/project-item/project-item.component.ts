@@ -27,6 +27,7 @@ import { UserService } from '../../../shared/services/user.service';
 })
 export class ProjectItemComponent implements OnInit {
   @Input() project: Project;
+  @Input() toImportCodes: boolean;
   public myNick = '';
   public myNick$ = new BehaviorSubject<string>('');
 
@@ -76,8 +77,10 @@ export class ProjectItemComponent implements OnInit {
   }
 
   onSelectedProject() {
-    this.projectService.setSelectedProject(this.project);
-    this.userService.loadRole(this.project._id);
+    if (!this.toImportCodes) {
+      this.projectService.setSelectedProject(this.project);
+      this.userService.loadRole(this.project._id);
+    }
   }
 
   onAccessProject() {

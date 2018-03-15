@@ -19,3 +19,19 @@
 h5 {
     text-align: center;
 }
+
+@media screen and (min-width: 1200px) {
+    .doc-panel-collapse {
+        height: -moz-calc(100% - 35px);
+        height: -webkit-calc(100% - 35px);
+        height: calc(100% - 35px);
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .doc-panel-collapse {
+        height: -moz-calc(100% - 35px);
+        height: -webkit-calc(100% - 35px);
+        height: calc(100% - 35px);
+    }
+}

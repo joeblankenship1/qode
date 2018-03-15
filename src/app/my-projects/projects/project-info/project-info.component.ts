@@ -62,7 +62,7 @@ export class ProjectInfoComponent implements OnInit {
     this.projectService.updateProject(this.project)
       .subscribe(
       resp => {
-        this.notificationsService.success('Exito', 'Se actualizo la descripcion del proyecto ' + this.project.name);
+        this.notificationsService.success('Éxito', 'Se actualizo la descripcion del proyecto ' + this.project.name);
         this.project._etag = resp._etag;
         this.project._modified = resp._modified;
         this.project._modified_by = resp._modified_by;

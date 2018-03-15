@@ -12,6 +12,8 @@ export class SpinnerService {
   private spinnerDocumentList$ = new BehaviorSubject<boolean>(false);
   private spinnerProjects = false;
   private spinnerProjects$ = new BehaviorSubject<boolean>(false);
+  private spinnerProjectsImportCodes = false;
+  private spinnerProjectsImportCodes$ = new BehaviorSubject<boolean>(false);
   private spinnerCodeList = false;
   private spinnerCodeList$ = new BehaviorSubject<boolean>(false);
   private spinnerCodeSystem = false;
@@ -23,12 +25,14 @@ export class SpinnerService {
     switch (spinner) {
       case 'document':
         return this.spinnerDocument$.asObservable();
-        case 'coding':
+      case 'coding':
         return this.spinnerCoding$.asObservable();
       case 'document_list':
         return this.spinnerDocumentList$.asObservable();
       case 'projects':
         return this.spinnerProjects$.asObservable();
+      case 'projects_import_codes':
+        return this.spinnerProjectsImportCodes$.asObservable();
       case 'code_list':
         return this.spinnerCodeList$.asObservable();
       case 'code_system':
@@ -42,7 +46,7 @@ export class SpinnerService {
         this.spinnerDocument = state;
         this.spinnerDocument$.next(this.spinnerDocument);
         break;
-        case 'coding':
+      case 'coding':
         this.spinnerCoding = state;
         this.spinnerCoding$.next(this.spinnerCoding);
         break;
@@ -53,6 +57,10 @@ export class SpinnerService {
       case 'projects':
         this.spinnerProjects = state;
         this.spinnerProjects$.next(this.spinnerProjects);
+        break;
+      case 'projects_import_codes':
+        this.spinnerProjectsImportCodes = state;
+        this.spinnerProjectsImportCodes$.next(this.spinnerProjectsImportCodes);
         break;
       case 'code_list':
         this.spinnerCodeList = state;

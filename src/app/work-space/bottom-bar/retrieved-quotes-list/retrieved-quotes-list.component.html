@@ -1,5 +1,6 @@
 <div style="max-height:35%; overflow:auto;">
     <ul class='retrieved-quotes-list'>
-        <app-retrieved-quote-item *ngFor="let quote of retrievedQuotes" [retrievedQuote]="quote"></app-retrieved-quote-item>
+        <app-retrieved-quote-item *ngFor="let quote of retrievedQuotes" [retrievedQuote]="quote"
+        (selected)="onWatchQuote(quote)" [isSelected]="quote===watchedQuote"></app-retrieved-quote-item>
     </ul>
 </div>

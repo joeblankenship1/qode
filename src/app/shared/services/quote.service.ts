@@ -64,12 +64,13 @@ export class QuoteService {
       .catch(this.handleErrorObservable);
   }
 
-  getQuotesById(quotes): Quote[] {
+  getQuotesById(quotes, document: Document): Quote[] {
     const ret = [];
     if (quotes) {
       for (const q of quotes) {
         const foundQuote = this.quoteList.find(el => el.getId() === q);
         if (foundQuote) {
+          foundQuote.setDocument(document);
           ret.push(foundQuote);
         }
       }

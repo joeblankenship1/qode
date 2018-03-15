@@ -73,6 +73,7 @@ import { SpinnerComponentModule } from 'ng2-component-spinner';
 import { CodeSystemComponent } from './work-space/side-bar/code-system/code-system.component';
 import { CodeSystemService } from './shared/services/code-system.service';
 import { SideBarTreeComponent } from './shared/helpers/side-bar-tree/side-bar-tree.component';
+import { ImportCodesModalComponent } from './header/import-codes-modal/import-codes-modal.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -122,7 +123,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SimpleQueryEditorComponent,
     ComplexQueryEditorComponent,
     CodeSystemComponent,
-    SideBarTreeComponent
+    SideBarTreeComponent,
+    ImportCodesModalComponent
   ],
   imports: [
     BrowserModule,
@@ -171,7 +173,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DocumentModalComponent,
     SimpleQueryEditorComponent,
     ComplexQueryEditorComponent,
-    ChartPopupComponent
+    ChartPopupComponent,
+    ImportCodesModalComponent
   ]
 })
 export class AppModule { }

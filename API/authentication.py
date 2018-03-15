@@ -132,8 +132,6 @@ def requires_auth(f):
                                 "description":
                                     "Unable to parse authentication"
                                     " token."}, 400)
-            # print("PAYLOAD!!!!!!")
-            # print(payload)
             _app_ctx_stack.top.current_user = payload
             return f(*args, **kwargs)
         raise AuthError({"code": "invalid_header",

@@ -1,7 +1,7 @@
 <!-- <div class="content-container" (scroll)="onScroll($event)"> -->
 <div class="content-container">
     <table class="page-container">
-        <tr *ngFor="let line of aux; let l = index" [id]="l">
+        <tr *ngFor="let line of aux; let l = index" [id]="l" [ngClass]="'linea' + l">
             <td style="width: 100px">
               <div *ngFor="let q of line?.getRelatedQuotes(); let n = index">
                 <div *ngIf="line?.isMiddle(q.quote)">
