@@ -67,11 +67,6 @@ export class DocumentContentComponent implements OnInit, OnChanges {
             });
           });
         }
-        // this.quoteService.getQuoteList().subscribe(
-        //   quotes => {
-        //     this.allQuotes = quotes;
-        //   }
-        // );
         this.updatePagesAndQuotes();
       },
       error => console.log(error)

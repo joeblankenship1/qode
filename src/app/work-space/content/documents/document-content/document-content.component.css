@@ -58,6 +58,9 @@
   font-size: 15.5px;
 }
 
+table {
+  user-select: text;
+}
 
 /* Quotes */
 
@@ -100,4 +103,8 @@ s {
 .code-name-container {
   overflow: hidden;
   text-overflow: ellipsis;
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */
 }
