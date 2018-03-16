@@ -100,8 +100,8 @@ export class CodeSystemService {
     const deleted = this.removeNode(code_id, this.codeSystem);
     if (deleted) {
       this.codeSystem$.next(this.codeSystem);
-      this.codeService.loadCodes(this.projectService.getSelectedProjectItem()._id)
-      .subscribe().unsubscribe();
+      const a = this.codeService.loadCodes(this.projectService.getSelectedProjectItem()._id)
+      .subscribe( d => { a.unsubscribe(); });
       this.spinnerService.setSpinner('code_system', false);
     }
   }
