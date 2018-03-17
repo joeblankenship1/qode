@@ -1,34 +1,42 @@
 .list-item {
-  cursor: pointer;
+    cursor: pointer;
+}
+
+.doc-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 85%;
+    display: inline-block;
 }
 
 .list-item-selected {
-  color:red;
-  cursor: pointer;
+    color: red;
+    cursor: pointer;
 }
 
 .list-item:hover {
-  background-color: #dcdcdc42;
+    background-color: #dcdcdc42;
 }
 
 .list-item-selected:hover {
-  background-color: #dcdcdc42;
+    background-color: #dcdcdc42;
 }
 
 .list-pointer {
-  color: red;
-  padding-right: 3px;
-  font-size: 11px;
+    color: red;
+    padding-right: 3px;
+    font-size: 11px;
 }
 
 .list-marker {
-  font-size: 10px;
-  padding-right: 3px
+    font-size: 10px;
+    padding-right: 3px;
+    vertical-align: super;
 }
 
 .counter {
-  float: right;
-  font-size: 12.5px;
-  margin-right: 5px;
+    float: right;
+    font-size: 12.5px;
+    margin-right: 5px;
 }
-

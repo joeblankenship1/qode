@@ -56,7 +56,7 @@ export class PopupWindowComponent implements OnInit {
             this.service.loadSearchInOpenDocs();
             this.top = '5%';
             this.right = '10%';
-            this.width = '32%';
+            this.width = '40%';
             break;
           }
           default: {

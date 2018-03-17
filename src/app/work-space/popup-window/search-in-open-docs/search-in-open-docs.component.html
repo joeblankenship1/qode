@@ -7,11 +7,12 @@
         <div class="panel-body">
             <div class="col-sm-12">
                 <form #f="ngForm" (ngSubmit)="onFormSubmit(f.value)" novalidate class="form-inline" style="display:inline">
-                    <div class=" field input-group form-group">
+                    <div class="col-sm-8 field input-group form-group">
                         <span class="input-group-addon"> <i class="fa fa-search" aria-hidden="true"></i> </span>
-                        <input autofocus type="text" class="form-control" [(ngModel)]="searchtext" (ngModelChange)="valuechange($event)" name="searchtext"> {{ this.total }}
+                        <input autofocus type="text" class="form-control" [(ngModel)]="searchtext" (ngModelChange)="valuechange($event)" name="searchtext" #inputsearch>
                     </div>
                 </form>
+                {{this.position}}/{{this.total}}
                 <div class="buttons" style="float:right">
                     <button (click)="showPrevious(f.value)" class="btn btn-success"><i class="fa fa-arrow-up" aria-hidden="true"></i> </button>
                     <button (click)="showNext(f.value)" class="btn btn-success"><i class="fa fa-arrow-down" aria-hidden="true"></i> </button>

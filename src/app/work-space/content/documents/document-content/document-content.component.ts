@@ -41,6 +41,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   selectedRange;
   permissions: Array<string>;
   spinner = false;
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   public paint = false;
   showLoader: boolean;
@@ -53,9 +54,8 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     private quoteService: QuoteService,
     private userService: UserService,
     private spinnerService: SpinnerService,
-    private windowSelection: WindowSelection,
-    private el: ElementRef,
-    private renderer: Renderer2) { }
+    private windowSelection: WindowSelection
+  ) { }
 
   ngOnInit() {
     this.workSpaceService.getSelectedDocumentContent().subscribe(
@@ -68,11 +68,10 @@ export class DocumentContentComponent implements OnInit, OnChanges {
               this.aux.push(l);
             });
           });
-          console.log(this.actualDocumentContent.getScrollTop());
           const a = this.actualDocumentContent.getScrollTop();
-          // this.el.nativeElement.scrollTop = a;
-          // this.renderer.setAttribute(this.el.nativeElement, 'scrollTop', String(a) );
-          // this.renderer.setProperty(this.el.nativeElement, 'scrollTop', String(a) );
+          setTimeout(function () {
+            document.querySelector('.content-container').scrollTop = a;
+          }, 10);
         }
         // this.quoteService.getQuoteList().subscribe(
         //   quotes => {
@@ -93,10 +92,10 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     );
 
     this.spinnerService.getSpinner('document')
-    .subscribe(
-    state => {
-      this.spinner = state;
-    });
+      .subscribe(
+        state => {
+          this.spinner = state;
+        });
   }
 
   ngOnChanges() {
@@ -197,9 +196,9 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.selectedRange = selection.getRangeAt(0);
     if (this.selectedRange) {
       const endOffset = this.selectedRange.endOffset === 0 ?
-      selectedNodes.endOffset : this.selectedRange.endOffset;
+        selectedNodes.endOffset : this.selectedRange.endOffset;
       return new Quote(selection.toString(), this.selectedRange.startOffset,
-      endOffset, selectedNodes.docDisplay, this.workSpaceService.getProjectId());
+        endOffset, selectedNodes.docDisplay, this.workSpaceService.getProjectId());
     }
   }
 
@@ -259,7 +258,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     }
   }
 
-  onMouseOverBracket(relatedQuote, column: number ) {
+  onMouseOverBracket(relatedQuote, column: number) {
     if (this.actualDocumentContent && relatedQuote) {
       this.actualDocumentContent.setLinesColor(relatedQuote, column, true);
       const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
@@ -267,8 +266,8 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     }
   }
 
-  onMouseOutBracket(relatedQuote, column: number ) {
-    if (this.actualDocumentContent  && relatedQuote) {
+  onMouseOutBracket(relatedQuote, column: number) {
+    if (this.actualDocumentContent && relatedQuote) {
       this.actualDocumentContent.setLinesColor(relatedQuote, column, false);
       const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
       document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = '';

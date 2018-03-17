@@ -35,16 +35,6 @@ DOMAIN = {
                     }
                 }
             },
-            'code_system': {
-                'type': 'list',
-                'schema': {
-                    'type': 'dict',
-                    'schema': {
-                        'code_id': {'type': 'string'},
-                        'children': {'type': 'list'}
-                    }
-                }
-            },
             '_created_by': {
                 'type': 'string'
             },
