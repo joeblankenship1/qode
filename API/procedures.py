@@ -179,10 +179,11 @@ def delete_children(nodes):
     cursor = db.find({'_id': ObjectId(node['code_id'])}, snapshot=True)
     if cursor:
       for code in cursor:
-        if len(node['children']):
+        if len(node['children']) > 0:
           delete_children(node['children'])
         delete_quotes_of_code(code)
         current_app.data.driver.db['code'].remove({'_id':code['_id']})
+      cursor.close()
 
 def delete_quotes_of_code(code):
   db = current_app.data.driver.db['quote']
@@ -192,4 +193,13 @@ def delete_quotes_of_code(code):
           borrar = quote['memo'] == '' and len(quote['codes']) == 1 and quote['codes'][0] == code['_id']
           if borrar:
               current_app.data.driver.db['quote'].remove(({'_id':quote['_id']}))
+          else:
+              i = 0
+              deleted = False
+              while deleted == False and i < len(quote['codes']):
+                  if quote['codes'][i] == code['_id']:
+                      del quote['codes'][i]
+                      deleted = True
+                  i += 1
+              db.save(quote)
       cursor.close()

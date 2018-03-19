@@ -152,15 +152,6 @@ def before_delete_item(resource, item):
     if resource == 'document':
         deleteDocument(item)
     if resource == 'code':
-        # iterate in all the quotes of the project
-        db = current_app.data.driver.db['quote']
-        cursor = db.find({'project': ObjectId(item['key']['project'])})
-        if cursor:
-            for quote in cursor:
-                borrar = quote['memo'] == '' and len(quote['codes']) == 1 and quote['codes'][0] == item['_id']
-                if borrar:
-                    current_app.data.driver.db['quote'].remove(({'_id':quote['_id']}))
-            cursor.close()
         #delete nodes code system
         db = current_app.data.driver.db['project']
         cursor = db.find({'_id': ObjectId(proj_id)}, snapshot=True)
@@ -172,6 +163,16 @@ def before_delete_item(resource, item):
             project['_created'] = datetime.utcnow()
             project['_modified'] = datetime.utcnow()
             db.save(project)
+        # iterate in all the quotes of the project
+        db = current_app.data.driver.db['quote']
+        cursor = db.find({'project': ObjectId(item['key']['project'])})
+        if cursor:
+            for quote in cursor:
+                borrar = quote['memo'] == '' and len(quote['codes']) == 1 and quote['codes'][0] == item['_id']
+                if borrar:
+                    current_app.data.driver.db['quote'].remove(({'_id':quote['_id']}))
+            cursor.close()
+       
 
 
 
