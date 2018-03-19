@@ -2,7 +2,7 @@
 
 .title {
     padding-top: 50px;
-    padding-bottom: 25px;
+    padding-bottom: 15px;
     text-align: center;
     letter-spacing: 2px;
 }
@@ -18,11 +18,11 @@
 }
 
 .pen-title span .fa {
-    color: #74bd7d;
+    color: #18bc9c;
 }
 
 .pen-title span a {
-    color: #74bd7d;
+    color: #18bc9c;
     font-weight: 600;
     text-decoration: none;
 }
@@ -35,7 +35,7 @@
     background: #ffffff;
     max-width: 320px;
     width: 100%;
-    border-top: 5px solid #74bd7d;
+    border-top: 5px solid #18bc9c;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
 }
@@ -45,7 +45,7 @@
     position: absolute;
     top: -0;
     right: -0;
-    background: #74bd7d;
+    background: #18bc9c;
     width: 30px;
     height: 30px;
     margin: -5px 0 0;
@@ -90,7 +90,7 @@
 
 .form-module h2 {
     margin: 0 0 20px;
-    color: #74bd7d;
+    color: #18bc9c;
     font-size: 18px;
     font-weight: 400;
     line-height: 1;
@@ -110,13 +110,12 @@
 }
 
 .form-module input:focus {
-    border: 1px solid #74bd7d;
+    border: 1px solid #18bc9c;
     color: #333333;
 }
 
 .form-module .btn-login {
     cursor: pointer;
-    background: #74bd7d;
     width: 100%;
     border: 0;
     padding: 10px 15px;
@@ -126,7 +125,7 @@
 }
 
 .form-module .btn-login:hover {
-    background: #6CAD73;
+    background: #1d957d;
 }
 
 .form-module .cta {
@@ -229,4 +228,12 @@ body {
 .login-error {
     color: #E02626;
     margin-bottom: 10px;
+}
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 22%;
+    min-width: 200px;
 }

@@ -27,6 +27,7 @@
     color: red;
     padding-right: 3px;
     font-size: 11px;
+    vertical-align: super;
 }
 
 .list-marker {
