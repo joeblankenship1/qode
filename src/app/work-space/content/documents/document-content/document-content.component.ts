@@ -73,11 +73,6 @@ export class DocumentContentComponent implements OnInit, OnChanges {
             document.querySelector('.content-container').scrollTop = a;
           }, 10);
         }
-        // this.quoteService.getQuoteList().subscribe(
-        //   quotes => {
-        //     this.allQuotes = quotes;
-        //   }
-        // );
         this.updatePagesAndQuotes();
       },
       error => console.log(error)
@@ -262,7 +257,9 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     if (this.actualDocumentContent && relatedQuote) {
       this.actualDocumentContent.setLinesColor(relatedQuote, column, true);
       const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = 'underline';
+      if (code) {
+        document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = 'underline';
+      }
     }
   }
 
@@ -270,7 +267,9 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     if (this.actualDocumentContent && relatedQuote) {
       this.actualDocumentContent.setLinesColor(relatedQuote, column, false);
       const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = '';
+      if (code) {
+        document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = '';
+      }
     }
   }
 

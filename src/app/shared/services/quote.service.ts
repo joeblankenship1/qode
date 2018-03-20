@@ -114,30 +114,31 @@ export class QuoteService {
 
 
   removeCodeFromQuotes(code_id: string) {
+    this.quoteList.map( ( q, i) => {
+      q.removeCode(code_id);
+      if (q.getCodes().length === 0 && q.getMemo() === '') {
+        this.quoteList.splice(i, 1);
+      }
+    });
+    this.quoteList$.next(this.quoteList);
+  }
+
+  /*removeCodeFromQuotes(code_id: string) {
     let found = false;
     this.quoteList.every((q, i) => {
       const index = q.removeCode(code_id);
       if (index !== -1) {
         found = true;
-        if (!(q.getCodes().length === 0 && q.getMemo() === '')) {
-          this.updateQuote(q).subscribe(
-            resp => { },
-            error => {
-              console.error(error);
-            }
-          );
-        } else {
-          const idx = this.quoteList.findIndex(quote => {
-            return quote.getId() === q.getId();
-          });
-          this.quoteList.splice(idx, 1);
-          this.quoteList$.next(this.quoteList);
-        }
+        const idx = this.quoteList.findIndex(quote => {
+        return quote.getId() === q.getId();
+        });
+        this.quoteList.splice(idx, 1);
+        this.quoteList$.next(this.quoteList);
       }
       return true;
     });
     return found;
-  }
+  }*/
 
   removeQuoteFromList(quote: Quote) {
     if (this.quoteList.includes(quote)) {

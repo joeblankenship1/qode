@@ -111,9 +111,8 @@ export class CodeItemComponent implements OnInit {
     this.codeService.deleteCode(this.code).subscribe(
       resp => {
         this.workspaceService.removeQuotesInDocumentContent(this.code);
-        if (this.quoteService.removeCodeFromQuotes(this.code.getId())) {
-          this.workspaceService.updateDocumentContent();
-        }
+        this.quoteService.removeCodeFromQuotes(this.code.getId());
+        this.workspaceService.updateDocumentContent();
       },
       error => {
         this.notificationsService.error('Error', error);

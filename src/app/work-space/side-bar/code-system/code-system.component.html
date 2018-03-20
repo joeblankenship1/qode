@@ -17,7 +17,7 @@
           [inputNodes] = "nodes"
           (ctlclick)= "onCtlClick($event)"
           (contextmenu)= "onContextMenu($event)"
-          (dropelem) = "onDrop($event)"          
+          (dropelem) = "onDrop($event)"
           > <app-options [optionGroups]="menuOptions"></app-options></app-side-bar-tree>
             <div class="input-group new-code-input" *ngxPermissionsOnly="['create_code']">
                 <input class="col-xs-12 form-control" placeholder="Nuevo código" (keyup.enter)="onAddCode()" type="text" [(ngModel)]="newCodeName" name="Nuevo código" id="newCode">

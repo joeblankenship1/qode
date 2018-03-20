@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { ITreeOptions, TreeNode, TreeModel, TreeComponent, TREE_ACTIONS, KEYS, ITreeState, IActionMapping } from 'angular-tree-component';
 import { CodeService } from '../../../shared/services/code.service';
 import { WorkSpaceService } from '../../../shared/services/work-space.service';
@@ -17,13 +17,14 @@ import { SpinnerService } from '../../../shared/services/spinner.service';
 import { NotificationsService } from 'angular2-notifications';
 import { SideBarTreeComponent } from '../../../shared/helpers/side-bar-tree/side-bar-tree.component';
 import { ProjectService } from '../../../shared/services/project.service';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-code-system',
   templateUrl: './code-system.component.html',
   styleUrls: ['./code-system.component.css']
 })
-export class CodeSystemComponent implements OnInit {
+export class CodeSystemComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(SideBarTreeComponent)
   sideBarTree: SideBarTreeComponent;
@@ -36,7 +37,9 @@ export class CodeSystemComponent implements OnInit {
   contextMenuOptions = new OptionsComponent();
   newCodeName = '';
   projectId: string;
-  nodes: any;
+  nodes: any = [];
+  sub1: ISubscription;
+  sub2: ISubscription;
 
   constructor(private codeSystemService: CodeSystemService,
     private modal: Modal, private quoteService: QuoteService,
@@ -50,21 +53,32 @@ export class CodeSystemComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.codeService.getCodes().subscribe(codes => {
+    this.spinnerService.setSpinner('code_system', true);
+    this.sub1 = this.codeService.getCodes().subscribe(codes => {
       this.codes = codes;
-      this.codeSystemService.getCodeSystem().subscribe(cs => {
-        if (cs) {
-          this.nodes = cs;
-          this.sideBarTree.update(this.nodes);
-        }
-      });
     });
-    this.spinnerService.getSpinner('code_list')
+    this.spinnerService.getSpinner('code_system')
       .subscribe(
         state => {
           this.spinner = state;
         });
     this.createMenuOptions();
+  }
+
+  ngAfterViewInit() {
+    this.sub2 = this.codeSystemService.getCodeSystem().subscribe(cs => {
+      if (cs) {
+        this.nodes = cs;
+        this.sideBarTree.update(this.nodes);
+      }
+    });
+  }
+
+
+  ngOnDestroy() {
+    this.sub1.unsubscribe();
+    this.sub2.unsubscribe();
+    this.codeSystemService.cleanCodeSystem();
   }
 
   /*********************** Context Menu Definition ***********************/
@@ -182,13 +196,16 @@ export class CodeSystemComponent implements OnInit {
       .then(r => {
         r.result
           .then(result => {
+            this.spinnerService.setSpinner('code_system', true);
+            this.spinnerService.setSpinner('document', true);
             this.codeService.deleteCode(code).subscribe( resp => {
-              this.codeSystemService.removeNodeCodeSystem(code.getId());
-              this.workspaceService.removeQuotesInDocumentContent(code);
-              if (this.quoteService.removeCodeFromQuotes(code.getId())) {
-                this.workspaceService.updateDocumentContent();
-              }
-            });
+              this.codeSystemService.removeNodeCodeSystem(code);
+              this.spinnerService.setSpinner('document', false);
+            },
+          error => {
+            this.spinnerService.setSpinner('code_system', false);
+            this.spinnerService.setSpinner('document', false);
+          });
           })
           .catch(error =>
             console.log(error)

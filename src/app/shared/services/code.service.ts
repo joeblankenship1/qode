@@ -119,7 +119,7 @@ export class CodeService {
     const index = this.codes.indexOf(code, 0);
     if (index === -1) {
       this.codes$.next(this.codes);
-      return;
+      return Observable.empty<Response>();
     }
     return this.http.delete(environment.apiUrl + 'code/' + code.getId(), deloptions)
       .map((data: Response) => {
@@ -141,6 +141,14 @@ export class CodeService {
   removeActivatedCode(code: Code) {
     if (this.activatedCodes.indexOf(code) > -1) {
       this.activatedCodes.splice(this.activatedCodes.indexOf(code), 1);
+    }
+  }
+
+  removeCodeFromList(code: Code) {
+    const i = this.codes.indexOf(code);
+    if (i > -1) {
+      this.codes.splice(i, 1);
+      this.codes$.next(this.codes);
     }
   }
 
