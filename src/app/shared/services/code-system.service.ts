@@ -80,6 +80,7 @@ export class CodeSystemService {
           this.codeService.loadCodes(projectId).subscribe(c => {
             const newCodeSystem = this.createTreeNodes(JSON.parse(extracted.code_system));
             this.setCodeSystem(newCodeSystem);
+            this.codeService.setActivatedCodes([]);
             this.spinnerService.setSpinner('code_system', false);
           });
         }).catch((err: Response) => {

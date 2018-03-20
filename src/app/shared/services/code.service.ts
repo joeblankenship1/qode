@@ -119,7 +119,7 @@ export class CodeService {
     const index = this.codes.indexOf(code, 0);
     if (index === -1) {
       this.codes$.next(this.codes);
-      return;
+      return Observable.empty<Response>();
     }
     return this.http.delete(environment.apiUrl + 'code/' + code.getId(), deloptions)
       .map((data: Response) => {

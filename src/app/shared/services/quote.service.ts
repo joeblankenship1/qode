@@ -119,20 +119,11 @@ export class QuoteService {
       const index = q.removeCode(code_id);
       if (index !== -1) {
         found = true;
-        if (!(q.getCodes().length === 0 && q.getMemo() === '')) {
-          this.updateQuote(q).subscribe(
-            resp => { },
-            error => {
-              console.error(error);
-            }
-          );
-        } else {
-          const idx = this.quoteList.findIndex(quote => {
-            return quote.getId() === q.getId();
-          });
-          this.quoteList.splice(idx, 1);
-          this.quoteList$.next(this.quoteList);
-        }
+        const idx = this.quoteList.findIndex(quote => {
+        return quote.getId() === q.getId();
+        });
+        this.quoteList.splice(idx, 1);
+        this.quoteList$.next(this.quoteList);
       }
       return true;
     });
