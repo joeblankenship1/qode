@@ -101,7 +101,8 @@ export class CodeSystemService {
     if (deleted) {
       this.codeSystem$.next(this.codeSystem);
       const a = this.codeService.loadCodes(this.projectService.getSelectedProjectItem()._id)
-      .subscribe( d => { a.unsubscribe(); });
+      .subscribe( d => {
+        a.unsubscribe(); });
       this.spinnerService.setSpinner('code_system', false);
     }
   }
@@ -130,6 +131,7 @@ export class CodeSystemService {
     while (!deleted && i > 0) {
       if (nodes[i - 1].id === id) {
         this.removeCodesFromNodes(nodes[i - 1].children);
+        this.codeService.removeActivatedCode(nodes[i - 1].data);
         nodes.splice(i - 1, 1);
         return true;
       } else {
@@ -144,6 +146,7 @@ export class CodeSystemService {
   private removeCodesFromNodes(nodes) {
     nodes.map(node => {
       this.removeCodesFromNodes(node.children);
+      this.codeService.removeActivatedCode(node.data);
       this.workspaceService.removeQuotesInDocumentContent(node.data);
       if (this.quoteService.removeCodeFromQuotes(node.data.getId())) {
         this.workspaceService.updateDocumentContent();
