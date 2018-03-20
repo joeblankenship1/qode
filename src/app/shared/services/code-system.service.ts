@@ -97,13 +97,15 @@ export class CodeSystemService {
   }
 
 
-  removeNodeCodeSystem(code_id) {
-    const deleted = this.removeNode(code_id, this.codeSystem);
+  removeNodeCodeSystem(code: Code) {
+    const deleted = this.removeNode(code.getId(), this.codeSystem);
     if (deleted) {
+      this.codeService.removeCodeFromList(code);
+      this.codeService.removeActivatedCode(code);
+      this.quoteService.removeCodeFromQuotes(code.getId());
+      this.workspaceService.removeQuotesInDocumentContent(code);
+      this.workspaceService.updateDocumentContent();
       this.codeSystem$.next(this.codeSystem);
-      const a = this.codeService.loadCodes(this.projectService.getSelectedProjectItem()._id)
-      .subscribe( d => {
-        a.unsubscribe(); });
       this.spinnerService.setSpinner('code_system', false);
     }
   }
@@ -132,7 +134,6 @@ export class CodeSystemService {
     while (!deleted && i > 0) {
       if (nodes[i - 1].id === id) {
         this.removeCodesFromNodes(nodes[i - 1].children);
-        this.codeService.removeActivatedCode(nodes[i - 1].data);
         nodes.splice(i - 1, 1);
         return true;
       } else {
@@ -147,11 +148,10 @@ export class CodeSystemService {
   private removeCodesFromNodes(nodes) {
     nodes.map(node => {
       this.removeCodesFromNodes(node.children);
+      this.codeService.removeCodeFromList(node.data);
       this.codeService.removeActivatedCode(node.data);
+      this.quoteService.removeCodeFromQuotes(node.data.getId());
       this.workspaceService.removeQuotesInDocumentContent(node.data);
-      if (this.quoteService.removeCodeFromQuotes(node.data.getId())) {
-        this.workspaceService.updateDocumentContent();
-      }
     });
   }
 

@@ -144,6 +144,14 @@ export class CodeService {
     }
   }
 
+  removeCodeFromList(code: Code) {
+    const i = this.codes.indexOf(code);
+    if (i > -1) {
+      this.codes.splice(i, 1);
+      this.codes$.next(this.codes);
+    }
+  }
+
   getActivatedCodes() {
     return this.activatedCodes;
   }

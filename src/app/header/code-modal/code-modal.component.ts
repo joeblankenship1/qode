@@ -9,6 +9,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { WorkSpaceService } from '../../shared/services/work-space.service';
 import { UserService } from '../../shared/services/user.service';
 import { CodeSystemService } from '../../shared/services/code-system.service';
+import { QuoteService } from '../../shared/services/quote.service';
 
 export class CodeModalData extends BSModalContext {
   public code: Code;
@@ -30,7 +31,7 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
 
   constructor(public dialog: DialogRef<CodeModalData>, private codeService: CodeService, private workspaceService: WorkSpaceService,
               private modal: Modal, private notificationsService: NotificationsService, private userService: UserService,
-            private codeSystemService: CodeSystemService) {
+            private codeSystemService: CodeSystemService, private quoteService: QuoteService) {
     dialog.setCloseGuard(this);
     this.context = dialog.context;
     this.code = dialog.context.code;
@@ -70,8 +71,7 @@ export class CodeModalComponent implements OnInit, CloseGuard, ModalComponent<Co
     this.codeService.deleteCode(this.code).subscribe(
       resp => {
         this.dialog.close(-1);
-        this.workspaceService.removeQuotesInDocumentContent(this.code);
-        this.codeSystemService.removeNodeCodeSystem(this.code.getId());
+        this.codeSystemService.removeNodeCodeSystem(this.code);
       },
       error => {
         this.notificationsService.error('Error', error);

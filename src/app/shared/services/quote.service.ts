@@ -114,6 +114,13 @@ export class QuoteService {
 
 
   removeCodeFromQuotes(code_id: string) {
+    this.quoteList.map( ( q, i) => {
+      q.removeCode(code_id);
+    });
+    this.quoteList$.next(this.quoteList);
+  }
+
+  /*removeCodeFromQuotes(code_id: string) {
     let found = false;
     this.quoteList.every((q, i) => {
       const index = q.removeCode(code_id);
@@ -128,7 +135,7 @@ export class QuoteService {
       return true;
     });
     return found;
-  }
+  }*/
 
   removeQuoteFromList(quote: Quote) {
     if (this.quoteList.includes(quote)) {

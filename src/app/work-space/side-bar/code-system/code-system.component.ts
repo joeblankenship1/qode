@@ -199,11 +199,7 @@ export class CodeSystemComponent implements OnInit, OnDestroy, AfterViewInit {
             this.spinnerService.setSpinner('code_system', true);
             this.spinnerService.setSpinner('document', true);
             this.codeService.deleteCode(code).subscribe( resp => {
-              this.codeSystemService.removeNodeCodeSystem(code.getId());
-              this.workspaceService.removeQuotesInDocumentContent(code);
-              if (this.quoteService.removeCodeFromQuotes(code.getId())) {
-                this.workspaceService.updateDocumentContent();
-              }
+              this.codeSystemService.removeNodeCodeSystem(code);
               this.spinnerService.setSpinner('document', false);
             },
           error => {
