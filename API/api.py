@@ -5,7 +5,7 @@ from flask_cors import CORS
 from flask import jsonify, request, make_response
 from authentication import MyTokenAuth, AuthError, requires_auth, get_token_auth_header, get_email
 from settings import DOMAIN
-from procedures import codes_matrix, import_codes, delete_node_code_system
+from procedures import codes_matrix, import_codes, delete_node_code_system, delete_quotes_of_code
 
 from flask import Blueprint, Response, current_app, request
 from bson import json_util
@@ -164,14 +164,7 @@ def before_delete_item(resource, item):
             project['_modified'] = datetime.utcnow()
             db.save(project)
         # iterate in all the quotes of the project
-        db = current_app.data.driver.db['quote']
-        cursor = db.find({'project': ObjectId(item['key']['project'])})
-        if cursor:
-            for quote in cursor:
-                borrar = quote['memo'] == '' and len(quote['codes']) == 1 and quote['codes'][0] == item['_id']
-                if borrar:
-                    current_app.data.driver.db['quote'].remove(({'_id':quote['_id']}))
-            cursor.close()
+        delete_quotes_of_code(item)
        
 
 
