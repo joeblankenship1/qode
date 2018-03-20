@@ -116,6 +116,9 @@ export class QuoteService {
   removeCodeFromQuotes(code_id: string) {
     this.quoteList.map( ( q, i) => {
       q.removeCode(code_id);
+      if (q.getCodes().length === 0 && q.getMemo() === '') {
+        this.quoteList.splice(i, 1);
+      }
     });
     this.quoteList$.next(this.quoteList);
   }
