@@ -1,6 +1,6 @@
 DOMAIN = {
     'project': {
-        'extra_response_fields': ['key','_modified_by','_modified' ],
+        'extra_response_fields': ['key', '_modified_by', '_modified'],
         'schema': {
             'key': {
                 'type': 'dict',
@@ -11,17 +11,27 @@ DOMAIN = {
                 'required': True,
                 'unique': True
             },
-            'description':{
+            'description': {
                 'type': 'string',
                 'maxlength': 300
             },
             'collaborators': {
                 'type': 'list',
                 'schema': {
-                    'type':'dict',
+                    'type': 'dict',
                     'schema': {
-                        'email': {'type':'string'},
-                        'role': {'type':'string'},
+                        'email': {'type': 'string'},
+                        'role': {'type': 'string'},
+                    }
+                }
+            },
+            'code_system': {
+                'type': 'list',
+                'schema': {
+                    'type': 'dict',
+                    'schema': {
+                        'code_id': {'type': 'string'},
+                        'children': {'type': 'list'}
                     }
                 }
             },
@@ -51,34 +61,34 @@ DOMAIN = {
             'key': {
                 'type': 'dict',
                 'schema': {
-                    'name': {'type':'string'},
+                    'name': {'type': 'string'},
                     'project': {
                         'type': 'objectid',
                         'data_relation': {
-                        'resource': 'project'
+                            'resource': 'project'
                         }
                     }
                 },
                 'required': True,
                 'unique': True
             },
-            'path':{
+            'path': {
                 'type': 'string'
             },
-            'atributes':{
+            'atributes': {
                 'type': 'dict',
                 'allow_unknown': True,
-                'default':{}
+                'default': {}
             },
             'opened': {
-              'type': 'boolean',
-              'default': True
+                'type': 'boolean',
+                'default': True
             },
-            'text':{
+            'text': {
                 'type': 'string',
                 'required': True
             },
-            'memo':{
+            'memo': {
                 'type': 'string'
             },
             'quotes': {
@@ -108,21 +118,21 @@ DOMAIN = {
             'key': {
                 'type': 'dict',
                 'schema': {
-                    'name': {'type':'string'},
+                    'name': {'type': 'string'},
                     'project': {
                         'type': 'objectid',
                         'data_relation': {
-                        'resource': 'project'
+                            'resource': 'project'
                         }
                     }
                 },
                 'required': True,
                 'unique': True
             },
-            'color':{
+            'color': {
                 'type': 'string'
             },
-            'memo':{
+            'memo': {
                 'type': 'string'
             },
             '_created_by': {
@@ -138,18 +148,18 @@ DOMAIN = {
     },
     'quote': {
         'schema': {
-            'text':{
+            'text': {
                 'type': 'string',
                 'required': True
             },
-            'memo':{
+            'memo': {
                 'type': 'string'
             },
-            'position':{
+            'position': {
                 'type': 'dict',
                 'schema': {
-                    'start': {'type':'integer'},
-                    'end': {'type':'integer'}
+                    'start': {'type': 'integer'},
+                    'end': {'type': 'integer'}
                 },
                 'required': True
             },
@@ -197,5 +207,5 @@ DOMAIN = {
     }
 }
 
-RESOURCE_METHODS = ['GET','POST','DELETE']
-ITEM_METHODS = ['GET','PATCH','DELETE','PUT']
+RESOURCE_METHODS = ['GET', 'POST', 'DELETE']
+ITEM_METHODS = ['GET', 'PATCH', 'DELETE', 'PUT']

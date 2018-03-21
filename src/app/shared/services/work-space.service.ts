@@ -195,35 +195,20 @@ export class WorkSpaceService {
   removeQuotesInDocumentContent(code) {
     const quotes = this.quotesSelectedDocument;
     quotes.forEach((q, i) => {
-      if (q.getCodes().length === 1 && q.getCodes()[0] === code && q.getMemo() === '') {
+      if (q.getCodes().length === 0 && q.getMemo() === '') {
         this.quotesSelectedDocument.splice(i, 1);
         this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
       }
-      // else {
-      //   const index = q.getCodes().indexOf(code);
-      //   if (index !== -1) {
-      //     this.quotesSelectedDocument.splice(index, 1);
-      //     this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
-      //   }
-      // }
     });
 
     this.documentContents.forEach(doc => {
       const qAux = doc.getQuotesDisplay();
       qAux.forEach(q => {
-        if (q.getQuote().getCodes().length === 1 && q.getQuote().getCodes()[0] === code && q.getQuote().getMemo() === '') {
+        if (q.getQuote().getCodes().length === 0 && q.getQuote().getMemo() === '') {
           doc.removeQuote(q.getQuote());
         }
-        // else {
-        //   const index = q.getQuote().getCodes().indexOf(code);
-        //   if (index !== -1) {
-        //     this.quotesSelectedDocument.splice(index, 1);
-        //     this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
-        //   }
-        // }
       });
     });
-    // this.updateDocumentContent();
   }
 
   updateDocumentContent() {

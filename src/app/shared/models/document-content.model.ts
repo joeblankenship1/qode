@@ -11,6 +11,7 @@ export class DocumentContent {
   private pages: Page[];
   private quotesDisplay: QuoteDisplay[] = [];
 
+
   constructor(document: Document) {
     this.document = document;
     this.createPages();
@@ -130,9 +131,11 @@ export class DocumentContent {
   private zip(a, b) {
     const c = [];
     a.map((e, i) => {
-      if (b.pages[i] && e.page === b.pages[i].page) {
-        c.push([e, { page: b.pages[i], column: b.column }]);
-      }
+      b.pages.map((f, j) => {
+        if (e.page === f.page) {
+          c.push([e, { page: f, column: b.column }]);
+        }
+      });
     });
     return c;
   }
@@ -165,7 +168,7 @@ export class DocumentContent {
     return column;
   }
 
-  // Given a quote it looks for the pages it iterates on the pages which are
+  // Given a quote it looks for the pages it iterates on the pages
   // where the quote is defined. Then each page calls the same function which
   // iterates on the lines.
   public setLinesColor(relatedQuote, column: number, type: boolean) {

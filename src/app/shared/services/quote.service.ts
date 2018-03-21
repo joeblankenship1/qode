@@ -98,8 +98,12 @@ export class QuoteService {
     return this.http.get(environment.apiUrl + `quote?where={"project": "${projectId}"}`, this.options).map(
       (data: Response) => {
         const extracted = data.json();
-        const quotes = extracted._items.map(q => new Quote(q.text, q.position.start, q.position.end, q.documentDisplay,
-          this.projectId, q._id, q.memo, q.color, q._etag, this.codeService.getCodesById(q.codes)));
+        const quotes = extracted._items.map(q => {
+          const qn = new Quote(q.text, q.position.start, q.position.end, q.documentDisplay,
+            this.projectId, q._id, q.memo, q.color, q._etag, this.codeService.getCodesById(q.codes));
+            qn.initQuoteCount();
+            return qn;
+        });
         this.setQuoteList(quotes);
         return quotes;
       }).catch((err: Response) => {
@@ -110,30 +114,33 @@ export class QuoteService {
 
 
   removeCodeFromQuotes(code_id: string) {
+    const copy = Object.assign([], this.quoteList);
+
+    copy.forEach( ( q, i) => {
+      q.removeCode(code_id);
+      if (q.getCodes().length === 0 && q.getMemo() === '') {
+        this.quoteList.splice(this.quoteList.indexOf(q), 1);
+      }
+    });
+    this.quoteList$.next(this.quoteList);
+  }
+
+  /*removeCodeFromQuotes(code_id: string) {
     let found = false;
     this.quoteList.every((q, i) => {
       const index = q.removeCode(code_id);
       if (index !== -1) {
         found = true;
-        if (!(q.getCodes().length === 0 && q.getMemo() === '')) {
-          this.updateQuote(q).subscribe(
-            resp => { },
-            error => {
-              console.error(error);
-            }
-          );
-        } else {
-          const idx = this.quoteList.findIndex(quote => {
-            return quote.getId() === q.getId();
-          });
-          this.quoteList.splice(idx, 1);
-          this.quoteList$.next(this.quoteList);
-        }
+        const idx = this.quoteList.findIndex(quote => {
+        return quote.getId() === q.getId();
+        });
+        this.quoteList.splice(idx, 1);
+        this.quoteList$.next(this.quoteList);
       }
       return true;
     });
     return found;
-  }
+  }*/
 
   removeQuoteFromList(quote: Quote) {
     if (this.quoteList.includes(quote)) {

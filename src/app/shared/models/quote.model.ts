@@ -107,6 +107,10 @@ export class Quote {
     return this.codes.indexOf(code) > -1;
   }
 
+  public initQuoteCount() {
+    this.codes.map( code => code.increaseQuoteCount(1));
+  }
+
   public updateQuoteCount(type: number) {
     this.codes.map( code => {
       type === 1 ? code.increaseQuoteCount(1) : code.decreaseQuoteCount(1);

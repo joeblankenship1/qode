@@ -23,8 +23,11 @@
     padding-top: 5px;
     padding-left: 5%;
     padding-right: 1%;*/
-  width: 23cm;
+  /*width: 23cm;
   margin-left: 10%;
+  margin-top: 2%;*/
+  width: 96%;
+  margin-left: 2%;
   margin-top: 2%;
 }
 
@@ -55,6 +58,9 @@
   font-size: 15.5px;
 }
 
+table {
+  user-select: text;
+}
 
 /* Quotes */
 
@@ -92,4 +98,13 @@ s {
  ::-moz-selection {
   background: #d9cfcf;
   /* Gecko Browsers */
+}
+
+.code-name-container {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */
 }
