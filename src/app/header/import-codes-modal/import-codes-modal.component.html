@@ -20,7 +20,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr app-project-item *ngFor="let proj of mf.data" [project]="proj" [toImportCodes]="true" (click)="onSelectProject(proj._id)" [ngClass]="actualProject===proj._id ? 'actual-proj' : (proj._id===projId?'selected-proj' : '')">
+                    <tr app-project-item *ngFor="let proj of mf.data" [project]="proj" [toImportCodes]="true" (click)="onSelectProject(proj._id)" [ngClass]="actualProject===proj._id ? 'actual-proj' : (proj._id===this.project?'selected-proj' : '')">
                     </tr>
                 </tbody>
                 <spinner-component [spinnerShow]="spinner">

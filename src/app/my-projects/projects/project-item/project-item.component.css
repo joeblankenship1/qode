@@ -11,3 +11,7 @@
     color: white;
     cursor: pointer;
 }
+
+.btn {
+    padding: 5px 10px !important;
+}

@@ -8,6 +8,7 @@ import { SpinnerService } from '../../shared/services/spinner.service';
 import { WorkSpaceService } from '../../shared/services/work-space.service';
 import { NotificationsService } from 'angular2-notifications';
 import { CodeSystemService } from '../../shared/services/code-system.service';
+import { UserService } from '../../shared/services/user.service';
 
 export class ImportCodeModalData extends BSModalContext {
   // public code: Code;
@@ -26,12 +27,13 @@ export class ImportCodesModalComponent implements OnInit, CloseGuard, ModalCompo
   public sortOrder = 'asc';
   public project: Project;
   public actualProject = '';
-  // permissions: Array<string>;
+  permissions: Array<string>;
 
   constructor(public dialog: DialogRef<ImportCodeModalData>, private codeService: CodeService,
               private codesystemService: CodeSystemService,
               private workspaceService: WorkSpaceService, private modal: Modal,
               private notificationsService: NotificationsService,
+              private userService: UserService,
               private projectService: ProjectService, private spinnerService: SpinnerService) { }
 
   ngOnInit() {
@@ -41,12 +43,12 @@ export class ImportCodesModalComponent implements OnInit, CloseGuard, ModalCompo
       this.spinner = state;
     });
     this.spinnerService.setSpinner('projects', true);
-    // this.userService.getRolePermissions().subscribe(
-    //   permissions => {
-    //     this.permissions = permissions;
-    //   },
-    //   error => { console.error(error); }
-    // );
+    this.userService.getRolePermissions().subscribe(
+      permissions => {
+        this.permissions = permissions;
+      },
+      error => { console.error(error); }
+    );
     this.actualProject = this.workspaceService.getProjectId();
     this.projectService.getProjects()
     .subscribe(

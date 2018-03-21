@@ -90,6 +90,7 @@ export class SearchInOpenDocsComponent implements OnInit {
     } else {
       this.str = this.str.replace(/\s\s+/g, ' ');
       this.total = 0;
+      this.position = 0;
       // Count the ocurrence of string in each document content
       this.strOcurrence = new Array();
       this.documentContent.forEach((docContent, indxDoc) => {
