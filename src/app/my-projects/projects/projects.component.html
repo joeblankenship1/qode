@@ -1,17 +1,18 @@
 <div class="col-md-8">
     <br>
     <div class="row">
+        <h5>Crea un nuevo proyecto indicando su nombre y haciendo click en el botón Crear.</h5>
         <div class="col-md-4">
-            <input #nameProject type="text" class="form-control" placeholder="Ingresa el nombre del nuevo proyecto">
+            <input #nameProject type="text" class="form-control" placeholder="Nombre">
         </div>
         <div class="col-md-6">
-            <input #descProject type="text" class="form-control" placeholder="Ingresa la descripción">
+            <input #descProject type="text" class="form-control" placeholder="Descripción">
         </div>
 
         <span class="col-md-2 input-group-btn" style="margin-left:0%; padding-left:0px;">
             <button class="btn btn-success" type="button" (click)="onCreateProject()" style="height: 40px;"> 
                 <i class="fa fa-plus" aria-hidden="true"></i> 
-                Crear Proyecto
+                Crear
             </button>
         </span>
         <hr>

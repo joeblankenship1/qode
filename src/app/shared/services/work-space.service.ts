@@ -50,6 +50,8 @@ export class WorkSpaceService {
 
   private docSubscription: Subscription = null;
 
+  private searchActive = false;
+
   constructor(private documentService: DocumentService,
     private quoteService: QuoteService,
     private codeService: CodeService,
@@ -67,7 +69,7 @@ export class WorkSpaceService {
             if (!this.openedDocuments.includes(d)) {
               this.openedDocuments.push(d);
             }
-            if (this.documentContents.find(dc => d.getId() === dc.getDocumentId()) === undefined){
+            if (this.documentContents.find(dc => d.getId() === dc.getDocumentId()) === undefined) {
               this.documentContents.push(new DocumentContent(d));
             }
           } else {
@@ -115,7 +117,8 @@ export class WorkSpaceService {
   }
 
   // Select a document to show on content
-  selectDocument(doc: Document) {
+  selectDocument(doc: Document, searchActive?) {
+    this.searchActive = searchActive;
     if (doc) {
       const docContent = this.documentContents.find(dc => doc.getId() === dc.getDocumentId());
       this.setSelectedDocument(doc);
@@ -126,6 +129,10 @@ export class WorkSpaceService {
       this.setSelectedDocumentContent(undefined);
       this.setSelectedDocumentQuotes([]);
     }
+  }
+
+  isSearchActive() {
+    return (this.searchActive ? true : false) ;
   }
 
   // Return the actual shown document
@@ -142,7 +149,7 @@ export class WorkSpaceService {
 
   // Return content of selected document
   getSelectedDocumentContent() {
-    return this.selectedDocumentContent$.asObservable();
+    return (this.selectedDocumentContent$.asObservable());
   }
 
   setSelectedDocumentContent(selectedDocumentContent: DocumentContent) {

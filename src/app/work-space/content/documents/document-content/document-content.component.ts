@@ -58,8 +58,10 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
+    const that = this;
     this.workSpaceService.getSelectedDocumentContent().subscribe(
       content => {
+        console.log(content);
         this.actualDocumentContent = content;
         if (content) {
           this.aux.splice(0);
@@ -68,10 +70,14 @@ export class DocumentContentComponent implements OnInit, OnChanges {
               this.aux.push(l);
             });
           });
-          const a = this.actualDocumentContent.getScrollTop();
-          setTimeout(function () {
-            document.querySelector('.content-container').scrollTop = a;
-          }, 10);
+          console.log(that.workSpaceService.isSearchActive());
+          if (!that.workSpaceService.isSearchActive()) {
+            const a = this.actualDocumentContent.getScrollTop();
+            setTimeout(function () {
+              document.querySelector('.content-container').scrollTop = a;
+              console.log('Scroll top:' + a);
+            }, 1);
+          }
         }
         this.updatePagesAndQuotes();
       },

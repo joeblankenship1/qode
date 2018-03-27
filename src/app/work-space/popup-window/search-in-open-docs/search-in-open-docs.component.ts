@@ -38,10 +38,19 @@ export class SearchInOpenDocsComponent implements OnInit {
     this.inputEl.nativeElement.focus();
     this.workspaceService.getDocumentContents().subscribe(docs => {
       this.documentContent = docs;
+      if (this.searchActive && this.strOcurrence[this.docIndex].doc.name  === this.selectedDoc.name) {
+        this.searchActive = false;
+        this.unhighlight();
+        this.buscarTexto();
+      }
     });
 
     this.workspaceService.getSelectedDocument().subscribe(doc => {
       this.selectedDoc = doc;
+      if (this.searchActive && this.strOcurrence[this.docIndex].doc.name  === doc.name) {
+        this.ocurrenceIndex = 0;
+        this.showQuote();
+      }
     });
   }
 
@@ -99,7 +108,7 @@ export class SearchInOpenDocsComponent implements OnInit {
       });
       //  Case of empty result
       if (this.strOcurrence.findIndex(d => d.doc.opened && d.ocurrenceIndexes.length > 0) === -1) {
-        this.notificationsService.info('Error', 'No hay resultados para la búsqueda');
+        this.notificationsService.info('Info', 'No hay resultados para la búsqueda');
         return;
       }
       this.searchActive = true;
@@ -117,6 +126,7 @@ export class SearchInOpenDocsComponent implements OnInit {
 
   showQuote() {
     this.unhighlight();
+    this.lines = new Array();
     const doc = this.documentContent[this.docIndex];
     let startLine, startLineOffset, startPage;
     [startPage, startLine, startLineOffset] =
@@ -124,6 +134,7 @@ export class SearchInOpenDocsComponent implements OnInit {
 
     const sc = document.querySelector('tr.linea' + startLine);
     if (sc) { sc.scrollIntoView(); }
+    // console.log('Scroll to line:' + startLine);
 
     let p = startPage;
     let l = startLine;
@@ -157,12 +168,14 @@ export class SearchInOpenDocsComponent implements OnInit {
   }
 
   showNext() {
-    this.position = (this.position === this.total) ? 1 : this.position + 1;
-    if (this.ocurrenceIndex === this.strOcurrence[this.docIndex].ocurrenceIndexes.length - 1) {
-      this.getNextDocIndex();
-      this.ocurrenceIndex = 0;
-    } else { this.ocurrenceIndex++; }
-    this.showQuote();
+    if (this.total !== 0) {
+      this.position = (this.position === this.total) ? 1 : this.position + 1;
+      if (this.ocurrenceIndex === this.strOcurrence[this.docIndex].ocurrenceIndexes.length - 1) {
+        this.getNextDocIndex();
+        this.ocurrenceIndex = 0;
+      } else { this.ocurrenceIndex++; }
+      this.showQuote();
+    }
   }
 
   getNextDocIndex() {
@@ -171,17 +184,19 @@ export class SearchInOpenDocsComponent implements OnInit {
       this.docIndex = (this.docIndex === this.strOcurrence.length - 1) ? 0 : this.docIndex + 1;
     }
     if (this.strOcurrence[this.docIndex].doc.getId() !== this.selectedDoc.getId()) {
-      this.workspaceService.selectDocument(this.strOcurrence[this.docIndex].doc);
+      this.workspaceService.selectDocument(this.strOcurrence[this.docIndex].doc, true);
     }
   }
 
   showPrevious() {
-    this.position = (this.position === 1) ? this.total : this.position - 1;
-    if (this.ocurrenceIndex === 0) {
-      this.getPreviousDocIndex();
-      this.ocurrenceIndex = this.strOcurrence[this.docIndex].ocurrenceIndexes.length - 1;
-    } else { this.ocurrenceIndex--; }
-    this.showQuote();
+    if (this.total !== 0) {
+      this.position = (this.position === 1) ? this.total : this.position - 1;
+      if (this.ocurrenceIndex === 0) {
+        this.getPreviousDocIndex();
+        this.ocurrenceIndex = this.strOcurrence[this.docIndex].ocurrenceIndexes.length - 1;
+      } else { this.ocurrenceIndex--; }
+      this.showQuote();
+    }
   }
 
   getPreviousDocIndex() {
@@ -190,7 +205,7 @@ export class SearchInOpenDocsComponent implements OnInit {
       this.docIndex = (this.docIndex === 0) ? this.strOcurrence.length - 1 : this.docIndex - 1;
     }
     if (this.strOcurrence[this.docIndex].doc.getId() !== this.selectedDoc.getId()) {
-      this.workspaceService.selectDocument(this.strOcurrence[this.docIndex].doc);
+      this.workspaceService.selectDocument(this.strOcurrence[this.docIndex].doc, true);
     }
   }
 

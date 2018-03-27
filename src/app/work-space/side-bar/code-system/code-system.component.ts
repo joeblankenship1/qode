@@ -107,7 +107,6 @@ export class CodeSystemComponent implements OnInit, OnDestroy, AfterViewInit {
         this.menuOptions[1][1].setVisible(false);
       }
       if (this.permissions) {
-        console.log(this.menuOptions);
         if (this.permissions.includes('activate_code')) {
           this.menuOptions[1][0].enable();
           this.menuOptions[1][1].enable();

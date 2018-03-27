@@ -193,6 +193,11 @@ def delete_quotes_of_code(code):
           borrar = quote['memo'] == '' and len(quote['codes']) == 1 and quote['codes'][0] == code['_id']
           if borrar:
               current_app.data.driver.db['quote'].remove(({'_id':quote['_id']}))
+              doc_cursor = current_app.data.driver.db['document'].find({'quotes': quote['_id'] })
+              for doc in doc_cursor:
+                 doc['quotes'].remove(quote['_id'])
+                 current_app.data.driver.db['document'].save(doc)
+                 doc_cursor.close()
           else:
               i = 0
               deleted = False
