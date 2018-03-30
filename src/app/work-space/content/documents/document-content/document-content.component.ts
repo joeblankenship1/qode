@@ -19,6 +19,7 @@ import { DocumentService } from '../../../../shared/services/document.service';
 import { NotificationsService } from 'angular2-notifications';
 import { UserService } from '../../../../shared/services/user.service';
 import { SpinnerService } from '../../../../shared/services/spinner.service';
+import { AppSettings } from '../../../../app.settings';
 
 @Component({
   selector: 'app-document-content',
@@ -41,6 +42,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   selectedRange;
   permissions: Array<string>;
   spinner = false;
+  maxCodeNames = AppSettings.MAX_CODES_QUOTE;
 
   public paint = false;
   showLoader: boolean;
@@ -81,10 +83,10 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     );
 
     this.spinnerService.getSpinner('document')
-    .subscribe(
-    state => {
-      this.spinner = state;
-    });
+      .subscribe(
+        state => {
+          this.spinner = state;
+        });
   }
 
   ngOnChanges() {
@@ -186,9 +188,9 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.selectedRange = selection.getRangeAt(0);
     if (this.selectedRange) {
       const endOffset = this.selectedRange.endOffset === 0 ?
-      selectedNodes.endOffset : this.selectedRange.endOffset;
+        selectedNodes.endOffset : this.selectedRange.endOffset;
       return new Quote(selection.toString(), this.selectedRange.startOffset,
-      endOffset, selectedNodes.docDisplay, this.workSpaceService.getProjectId());
+        endOffset, selectedNodes.docDisplay, this.workSpaceService.getProjectId());
     }
   }
 
@@ -248,27 +250,41 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     }
   }
 
-  onMouseOverBracket(relatedQuote, column: number ) {
+  onMouseOverBracket(relatedQuote, column: number) {
     if (this.actualDocumentContent && relatedQuote) {
       this.actualDocumentContent.setLinesColor(relatedQuote, column, true);
-      const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      if (code) {
-        document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = 'underline';
+      if (relatedQuote.quote.getCodes().length < + this.maxCodeNames) {
+        const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
+        if (code) {
+          document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = 'underline';
+        }
+      } else {
+        document.getElementById(relatedQuote.quote.getId()).style.textDecoration = 'underline';
       }
     }
   }
 
-  onMouseOutBracket(relatedQuote, column: number ) {
-    if (this.actualDocumentContent  && relatedQuote) {
+  onMouseOutBracket(relatedQuote, column: number) {
+    if (this.actualDocumentContent && relatedQuote) {
       this.actualDocumentContent.setLinesColor(relatedQuote, column, false);
-      const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      if (code) {
-        document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = '';
+      if (relatedQuote.quote.getCodes().length < + this.maxCodeNames) {
+        const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
+        if (code) {
+          document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = '';
+        }
+      } else {
+        document.getElementById(relatedQuote.quote.getId()).style.textDecoration = '';
       }
     }
   }
 
   getNameDivId(quote, code) {
     return quote.getId() + '-' + code.getName();
+  }
+
+  getQuoteCodeNames(quote) {
+    return quote.getCodes().map(c => {
+      return c.getName();
+    }).join('\n');
   }
 }
