@@ -1,4 +1,4 @@
-<li (contextmenu)="onContextMenu($event)" [ngClass]="getItemClass()" style="cursor: pointer" (dblclick)="onOpenDocument()">
+<li (contextmenu)="onContextMenu($event)" [ngClass]="getItemClass()" style="cursor: pointer" (dblclick)="onOpenDocument()" (click)="onClickListLine($event)">
     <div [attr.title]="document.memo">
         <span *ngIf="permissions.includes('activate_document') && document.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer" (click)="onDeactivateDocument()">
     </span>

@@ -43,19 +43,19 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
     );
     this.workspaceService.getSelectedDocument()
       .subscribe(
-      selectedDocument => {
-        this.selected = selectedDocument;
-      });
+        selectedDocument => {
+          this.selected = selectedDocument;
+        });
   }
 
 
   private createMenuOptions() {
     this.menuOptions = [
-    [new MenuOption('Abrir', (item) => { this.onOpenDocument(); }),
-     new MenuOption('Editar', (item) => { this.onEditDocument(); })],
-    [new MenuOption('Activar', (item) => { this.onActivateDocument(); }),
-     new MenuOption('Desactivar', (item) => { this.onDeactivateDocument(); })],
-    [new MenuOption('Eliminar', (item) => { this.onDeleteDocument(); })]];
+      [new MenuOption('Abrir', (item) => { this.onOpenDocument(); }),
+      new MenuOption('Editar', (item) => { this.onEditDocument(); })],
+      [new MenuOption('Activar', (item) => { this.onActivateDocument(); }),
+      new MenuOption('Desactivar', (item) => { this.onDeactivateDocument(); })],
+      [new MenuOption('Eliminar', (item) => { this.onDeleteDocument(); })]];
     this.defineMenuOptions();
   }
 
@@ -127,6 +127,16 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
     this.document.deactivate();
     this.documentService.removeActivatedDocument(this.document);
     this.quotesRetrievalService.removeDocument(this.document);
+  }
+
+  public onClickListLine($event) {
+    if ($event.ctrlKey || $event.metaKey) {
+      if (this.document.isActivated()) {
+        this.onDeactivateDocument();
+      } else {
+        this.onActivateDocument();
+      }
+    }
   }
 
   public getItemClass() {
