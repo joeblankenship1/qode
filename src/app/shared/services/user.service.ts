@@ -16,7 +16,7 @@ export class UserService {
   ) { }
 
   lector_permissions = ['search_activated_quotes', 'activate_document', 'activate_code'];
-  escritor_permissions = ['importar_docs', 'create_code', 'save_code', 'delete_code', 
+  escritor_permissions = ['importar_docs', 'create_code', 'save_code', 'delete_code',
     'share_project', 'edit_project_description', 'import_codes',
     , 'activate_code', 'search_activated_quotes', 'code_menu', 'activate_document',
     'edit_document', 'delete_document', 'save_quote', 'delete_quote', 'coding', 'coding_with_activated_codes', 'edit_tree'];

@@ -86,7 +86,7 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
         this.menuOptions[1][0].disable();
         this.menuOptions[1][1].disable();
       }
-      if (this.permissions.includes('edite_document')) {
+      if (this.permissions.includes('edit_document')) {
         this.menuOptions[0][1].enable();
       } else {
         this.menuOptions[0][1].disable();
@@ -147,7 +147,6 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
               });
           })
           .catch(error => {
-            this.notificationService.error('Error', error);
             console.log(error);
           }
           );

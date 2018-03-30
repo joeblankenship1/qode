@@ -22,9 +22,9 @@ export class FileExtraction {
       case 'vnd.openxmlformats-officedocument.wordprocessingml.document': {
         return this.extractTextDocx(content);
       }
-      case 'txt': {
-        return this.extractTextDocx(content);
-      }
+      // case 'txt': {
+      //   return this.extractTextDocx(content);
+      // }
       default: {
         return Promise.reject(new Error('Invalid Type'));
       }
@@ -32,7 +32,14 @@ export class FileExtraction {
   }
 
   private extractTextPlain(content): Promise<any> {
-    return new Promise(resolve => resolve(content));
+    const cont = content.split('\r\n');
+    content = [];
+    for (let i = 0; i < cont.length; i++) {
+      if (!(cont[i].length === 0 && (i + 1 < cont.length) && cont[i + 1].length === 0 )) {
+          content.push(cont[i].trim());
+      }
+    }
+    return new Promise(resolve => resolve( content.join('\r') ));
   }
 
   private extractTextRtf(content): Promise<any> {

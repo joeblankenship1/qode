@@ -8,8 +8,8 @@
             <span class="glyphicon glyphicon-list-alt" [title]="noSelection ? 'Activar Todos' : 'Desactivar Todos'" (click)="onSelectAll()" [(ngClass)]="selectAllClass"></span>
         </div>
     </div>
-    <div class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-        <div class="panel-body" style="height: 240px;">
+    <div class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" style="height: 90%;">
+        <div class="panel-body" style="height: 85%;">
             <app-side-bar-tree [usesColor]="true" [treeTitle]="'Códigos'" [inputNodes]="nodes" [permissions]="permissions" (ctlclick)="onCtlClick($event)" (contextmenu)="onContextMenu($event)" (dropelem)="onDrop($event)">
                 <app-options [optionGroups]="menuOptions"></app-options>
             </app-side-bar-tree>

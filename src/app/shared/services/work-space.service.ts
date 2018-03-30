@@ -132,7 +132,7 @@ export class WorkSpaceService {
   }
 
   isSearchActive() {
-    return (this.searchActive ? true : false) ;
+    return (this.searchActive ? true : false);
   }
 
   // Return the actual shown document
@@ -219,14 +219,18 @@ export class WorkSpaceService {
   }
 
   updateDocumentContent() {
-    this.selectedDocumentContent.updateDocumentQuotesDisplay();
-    this.selectedDocumentContent$.next(this.selectedDocumentContent);
+    if (this.selectedDocumentContent) {
+      this.selectedDocumentContent.updateDocumentQuotesDisplay();
+      this.selectedDocumentContent$.next(this.selectedDocumentContent);
+    }
   }
 
   removeQuoteDocumentContent() {
-    this.selectedDocumentContent.createPages();
-    this.selectedDocumentContent.updateDocumentQuotesDisplay();
-    this.selectedDocumentContent$.next(this.selectedDocumentContent);
+    if (this.selectedDocumentContent) {
+      this.selectedDocumentContent.createPages();
+      this.selectedDocumentContent.updateDocumentQuotesDisplay();
+      this.selectedDocumentContent$.next(this.selectedDocumentContent);
+    }
   }
 
   setBottomBar(visible: boolean) {

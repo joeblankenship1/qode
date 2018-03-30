@@ -1,87 +1,84 @@
 /***** Panel *****/
 
 .panel-heading {
-  background-color: #979B9C;
-  color: #203F30;
-  height: 35px;
+    background-color: #979B9C;
+    color: #203F30;
+    height: 35px;
 }
 
 .actions {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .action-selected {
-  color: red;
+    color: red;
 }
 
 .form-control {
-  height: 30px;
+    height: 30px;
 }
 
 .form-control:focus {
-  border-color: #aeafb1;
+    border-color: #aeafb1;
 }
 
 .btn {
-  height: 30px;
-  padding-top: 3px !important;
+    height: 30px;
+    padding-top: 3px !important;
 }
 
 .new-code-input {
-  padding-top: 2px;
-  padding-bottom: 12px;
-  position: fixed;
-  left: 10px;
-  bottom: 20px;
-  width: 23.8%;
+    margin-top: 10px;
+    z-index: 0;
 }
 
 h5 {
-  text-align: center;
+    text-align: center;
 }
+
 
 /**** Tree ****/
 
-tree-node-wrapper, tree-node-children {
-  width: 100%
+tree-node-wrapper,
+tree-node-children {
+    width: 100%
 }
 
 .node-content-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
 }
 
 .node-content-wrapper {
-  flex-grow: 1;
-  position: relative;
+    flex-grow: 1;
+    position: relative;
 }
-
 
 .node-marker {
-  font-size: 10px;
-  padding-right: 3px
+    font-size: 10px;
+    padding-right: 3px
 }
 
 .code-color {
-  padding-left: 4px;
+    padding-left: 4px;
 }
 
 .counter {
-  font-size: 12.5px;
-  position: absolute;
-  right: 21px;
+    font-size: 12.5px;
+    position: absolute;
+    right: 21px;
 }
 
 .list-item-selected {
-  color:red;
-  cursor: pointer;
+    color: red;
+    cursor: pointer;
 }
 
 .list-item:hover {
-  background-color: #dcdcdc42;
+    background-color: #dcdcdc42;
 }
 
 .list-item-selected:hover {
-  background-color: #dcdcdc42;
+    background-color: #dcdcdc42;
 }

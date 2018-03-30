@@ -25,6 +25,7 @@ export class SearchInOpenDocsComponent implements OnInit {
   lines_prev;
   lines = new Array();
   str = '';
+  noResult = false;
   @ViewChild('inputsearch') inputEl: ElementRef;
 
 
@@ -38,16 +39,17 @@ export class SearchInOpenDocsComponent implements OnInit {
     this.inputEl.nativeElement.focus();
     this.workspaceService.getDocumentContents().subscribe(docs => {
       this.documentContent = docs;
-      if (this.searchActive && this.strOcurrence[this.docIndex].doc.name  === this.selectedDoc.name) {
+      if (this.searchActive) {
         this.searchActive = false;
+        this.str = '';
+        this.noResult = false;
         this.unhighlight();
-        this.buscarTexto();
       }
     });
 
     this.workspaceService.getSelectedDocument().subscribe(doc => {
       this.selectedDoc = doc;
-      if (this.searchActive && this.strOcurrence[this.docIndex].doc.name  === doc.name) {
+      if (this.searchActive && this.strOcurrence[this.docIndex].doc.name === doc.name) {
         this.ocurrenceIndex = 0;
         this.showQuote();
       }
@@ -57,6 +59,7 @@ export class SearchInOpenDocsComponent implements OnInit {
   valuechange(e) {
     this.searchActive = false;
     this.str = '';
+    this.noResult = false;
   }
 
   onFormSubmit(f) {
@@ -66,6 +69,7 @@ export class SearchInOpenDocsComponent implements OnInit {
   }
 
   onClose() {
+    this.noResult = false;
     this.unhighlight();
     this.searchActive = false;
     this.workspaceService.setPopup(false);
@@ -83,10 +87,14 @@ export class SearchInOpenDocsComponent implements OnInit {
       searchStr = searchStr.toLowerCase();
     }
     while ((index = text.indexOf(searchStr, startIndex)) > -1) {
-      const aux = original.substring(0, index + 2).match(/\s\s+/g);
-      if (aux) {
-        indices.push(index + aux.length);
-      } else { indices.push(index); }
+      const aux = original.substring(0, index ).match(/\r/g);
+      const aux2 = original.substring(0, index ).match(/\n/g);
+      const aux3 = original.substring(0, index ).match(/\t/g);
+      let auxTotal = 0;
+      if (aux) { auxTotal += aux.length; }
+      if (aux2) { auxTotal += aux2.length; }
+      if (aux3) { auxTotal += aux3.length; }
+      indices.push(index + auxTotal);
       startIndex = index + searchStrLen;
     }
     return indices;
@@ -108,7 +116,8 @@ export class SearchInOpenDocsComponent implements OnInit {
       });
       //  Case of empty result
       if (this.strOcurrence.findIndex(d => d.doc.opened && d.ocurrenceIndexes.length > 0) === -1) {
-        this.notificationsService.info('Info', 'No hay resultados para la búsqueda');
+        // this.notificationsService.info('Info', 'No hay resultados para la búsqueda');
+        this.noResult = true;
         return;
       }
       this.searchActive = true;
@@ -134,7 +143,6 @@ export class SearchInOpenDocsComponent implements OnInit {
 
     const sc = document.querySelector('tr.linea' + startLine);
     if (sc) { sc.scrollIntoView(); }
-    // console.log('Scroll to line:' + startLine);
 
     let p = startPage;
     let l = startLine;
@@ -229,6 +237,7 @@ export class SearchInOpenDocsComponent implements OnInit {
           return [i, lineId, indexOf - offset];
         }
         offset += lines[j].text.length + 1; // One for end of line
+        // if (lines[j].text.length === 0 ) { offset += 1; }
         lineId = (lineId + 1);
       }
     }

@@ -1,5 +1,5 @@
 <div class="col-sm-9" id="main" style="position: relative;">
-    <div class="col">
+    <div class="col" style="min-height: 46px;">
         <app-documents-tabs *ngFor="let doc of this.openedDocuments" [doc]="doc" (selected)="onDocumentSelected(doc)"></app-documents-tabs>
     </div>
     <div>
