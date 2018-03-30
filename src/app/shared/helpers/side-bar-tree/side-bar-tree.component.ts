@@ -154,7 +154,7 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
     console.log($event);
     if ($event.shiftKey) {
       TREE_ACTIONS.TOGGLE_SELECTED_MULTI(tree, node, $event);
-    } else if ($event.ctrlKey) {
+    } else if ($event.ctrlKey || $event.metaKey) {
       this.ctlclick.emit({ tree: tree, data: node.data.data, event: $event });
     } else { TREE_ACTIONS.TOGGLE_SELECTED(tree, node, $event); }
   }
