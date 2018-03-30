@@ -284,5 +284,6 @@ export class WorkSpaceService {
     this.quotesSelectedDocument$.next(this.quotesSelectedDocument);
     this.showBottomBar = false;
     this.showBottomBar$.next(false);
+    this.setPopup(false);
   }
 }

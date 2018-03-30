@@ -151,6 +151,7 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
   /*********************** Custom mouse/key events ***********************/
 
   onClick(tree, node, $event) {
+    console.log($event);
     if ($event.shiftKey) {
       TREE_ACTIONS.TOGGLE_SELECTED_MULTI(tree, node, $event);
     } else if ($event.ctrlKey) {
