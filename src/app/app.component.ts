@@ -31,7 +31,7 @@ export class AppComponent {
     private hotkeysService: HotkeysService,
     private workspaceService: WorkSpaceService) {
     auth.handleAuthentication();
-    this.hotkeysService.add(new Hotkey(['command+f', 'ctrl+f'], this.ctrlLeftPressed));
+    // this.hotkeysService.add(new Hotkey(['command+f', 'ctrl+f'], this.ctrlLeftPressed));
   }
 
   ctrlLeftPressed = (event: KeyboardEvent, combo: string): boolean => {
