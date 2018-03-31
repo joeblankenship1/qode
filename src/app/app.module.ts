@@ -12,11 +12,9 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { SideBarComponent } from './work-space/side-bar/side-bar.component';
 import { DocumentListComponent } from './work-space/side-bar/document-list/document-list.component';
-import { CodeListComponent } from './work-space/side-bar/code-list/code-list.component';
 import { ContentComponent } from './work-space/content/content.component';
 import { FooterComponent } from './footer/footer.component';
 import { DocumentsComponent } from './work-space/content/documents/documents.component';
-import { CodeItemComponent } from './work-space/side-bar/code-list/code-item/code-item.component';
 import { DocumentItemComponent } from './work-space/side-bar/document-list/document-item/document-item.component';
 import { DocumentModalComponent } from './header/document-modal/document-modal.component';
 import { QuoteModalComponent } from './header/quote-modal/quote-modal.component';
@@ -92,11 +90,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HeaderComponent,
     SideBarComponent,
     DocumentListComponent,
-    CodeListComponent,
     ContentComponent,
     FooterComponent,
     DocumentsComponent,
-    CodeItemComponent,
     DocumentItemComponent,
     DocumentModalComponent,
     QuoteModalComponent,
