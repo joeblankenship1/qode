@@ -17,3 +17,7 @@ h5 {
     box-shadow: none;
     border-radius: inherit;
 }
+
+.btn {
+    padding: 5px 10px !important;
+}

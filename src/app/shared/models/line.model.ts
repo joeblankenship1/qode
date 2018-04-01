@@ -104,9 +104,7 @@ export class Line {
   public setTextColorQuote(column: number, type: boolean, isFirstLine: boolean,
     isLastLine: boolean) {
     const relatedQuote = this.getRelatedQuote(column);
-    // let color = '';
     if (relatedQuote && type) {
-      // color = AppSettings.DEFAULT_LINE_COLOR;
       const startPosition = isFirstLine ? relatedQuote.quote.getPosition().start : 0;
       const endPosition = isLastLine ? relatedQuote.quote.getPosition().end : this.text.length;
       this.setTextColor(startPosition, endPosition, isFirstLine, isLastLine, type);
@@ -116,16 +114,6 @@ export class Line {
       this.postSpanText = '';
       this.background_color =  '';
     }
-    /*if (relatedQuote && type) {
-      color = AppSettings.DEFAULT_LINE_COLOR;
-      this.setTextSpan(relatedQuote.quote.getPosition().start, relatedQuote.quote.getPosition().end,
-      relatedQuote.borderTop, relatedQuote.borderBottom, isFirstLine, isLastLine);
-    } else {
-      this.preSpanText = '';
-      this.spanText = this.text;
-      this.postSpanText = '';
-    }*/
-    // this.background_color = color;
   }
 
   setTextColor(startPosition: number, endPosition: number,
@@ -164,25 +152,10 @@ export class Line {
       this.preSpanText = this.text.substring(0, startPostion);
       this.spanText = this.text.substring(startPostion, endPosition);
       this.postSpanText = this.text.substr(endPosition, this.text.length - this.spanText.length);
-    /*if ((borderTop && isFirstLine) || (borderBottom && isLastLine)) {
-      if (borderTop && !borderBottom) {
-        this.preSpanText = this.text.substring(0, startPostion);
-        this.spanText = this.text.substr(startPostion, this.text.length - this.preSpanText.length);
-      }
-
-      if (borderBottom && !borderTop) {
-        this.spanText = this.text.substring(0, endPosition);
-        this.postSpanText = this.text.substr(endPosition, this.text.length - this.spanText.length);
-      }
-
-      if (borderTop && borderBottom) {
-        this.preSpanText = this.text.substring(0, startPostion);
-        this.spanText = this.text.substring(startPostion, endPosition);
-        this.postSpanText = this.text.substr(endPosition, this.text.length - this.preSpanText.length);
-      }
-
-    }*/
   }
 
-
+  public getColRange() {
+    return this.relatedQuotes.map( q => q.column + (q.quote.getCodes().length === 0 ? 1 : q.quote.getCodes().length))
+    .reduce((a, b) => (a > b) ? a : b, 0);
+  }
 }

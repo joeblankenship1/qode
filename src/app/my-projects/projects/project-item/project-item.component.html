@@ -2,7 +2,7 @@
 <td> {{project.owner}}</td>
 <td> {{ project._modified | date:'dd/MM/yyyy - HH:mm:ss' }} hs </td>
 <td>
-    <button class="btn btn-danger" *ngIf="!toImportCodes && (project.owner.split('@')[0] == myNick)" (click)="onDeleteProject()">
+    <button class="btn btn-danger btn-delete" *ngIf="!toImportCodes && (project.owner.split('@')[0] == myNick)" (click)="onDeleteProject()">
         <i class="fa fa-trash-o" aria-hidden="true"></i>
     </button>
 </td>

@@ -1,15 +1,15 @@
-<li (contextmenu)="onContextMenu($event)" [ngClass]="getItemClass()" style="cursor: pointer" (dblclick)="onOpenDocument()">
-  <div [attr.title]="document.memo">
-    <span *ngIf="permissions.includes('activate_document') && document.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer"
-      (click)="onDeactivateDocument()">
+<li (contextmenu)="onContextMenu($event)" [ngClass]="getItemClass()" style="cursor: pointer" (dblclick)="onOpenDocument()" (click)="onClickListLine($event)">
+    <div [attr.title]="document.memo">
+        <span *ngIf="permissions.includes('activate_document') && document.isActivated()" class="glyphicon glyphicon-arrow-right list-pointer" (click)="onDeactivateDocument()">
     </span>
-    <span *ngIf="permissions.includes('activate_document') && !document.isActivated()" class="list-marker" (click)="onActivateDocument()">
+        <span *ngIf="permissions.includes('activate_document') && !document.isActivated()" class="list-marker" (click)="onActivateDocument()">
       &#9679;
     </span>
-    <span *ngIf="!permissions.includes('activate_document')" class="list-marker">
+        <span *ngIf="!permissions.includes('activate_document')" class="list-marker">
       &#9679;
-    </span> {{document.name}}
-    <span class="counter">{{document.getQuoteCount()}}</span>
-  </div>
+    </span>
+        <div class="doc-name" [attr.title]=(document.name)>{{document.name}}</div>
+        <span class="counter">{{document.getQuoteCount()}}</span>
+    </div>
 </li>
 <app-options [optionGroups]="menuOptions"></app-options>

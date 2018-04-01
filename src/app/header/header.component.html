@@ -6,7 +6,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" routerLink='/myprojects'>FingQDA</a>
+            <a class="navbar-left" style='padding: 10px 0px;' routerLink='/myprojects'>
+                <img class="img-responsive" style="height: 40px;float:left" src="assets/images/logo.png">
+            </a>
+            <a class="navbar-brand" routerLink='/myprojects'>
+                Qode
+            </a>
+
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav" *ngIf="router.url.includes('workspace')">
@@ -19,7 +25,7 @@
                     </ul>
                 </li>
             </ul>
-            <ul class="nav navbar-nav" *ngIf="router.url.includes('workspace')">
+            <ul class="nav navbar-nav " *ngIf="router.url.includes('workspace')">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentos<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -46,9 +52,9 @@
                         <li [ngClass]="{ 'disabled': permissions && !permissions.includes('search_activated_quotes')}">
                             <a class="header-btn" (click)="onSimpleQuery()">Búsqueda Simple</a>
                         </li>
-                        <li [ngClass]="{ 'disabled': permissions && !permissions.includes('search_activated_quotes')}">
+                        <!-- <li [ngClass]="{ 'disabled': permissions && !permissions.includes('search_activated_quotes')}">
                             <a class="header-btn" (click)="onComplexQuery()">Búsqueda Compleja</a>
-                        </li>
+                        </li> -->
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -58,7 +64,6 @@
                         <li><a class="header-btn" (click)="onCodeMatrix(true)">Matriz de co-ocurrencia de códigos</a></li>
                     </ul>
                 </li>
-                <li><a href="#" data-toggle="modal" data-target="#exampleModal">Visualización</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a routerLink='/myprojects' *ngIf="this.authsvc.isAuthenticated() && router.url.includes('workspace')"> Mis Proyectos </a></li>

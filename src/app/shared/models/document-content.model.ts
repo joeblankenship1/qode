@@ -10,6 +10,7 @@ export class DocumentContent {
   private document: Document;
   private pages: Page[];
   private quotesDisplay: QuoteDisplay[] = [];
+  private scrollTop = 0;
 
 
   constructor(document: Document) {
@@ -18,6 +19,7 @@ export class DocumentContent {
     if (document.getQuotes().length > 0) {
       this.updateDocumentQuotesDisplay();
     }
+    this.scrollTop = 0;
   }
 
   public updateDocumentQuotesDisplay() {
@@ -36,6 +38,14 @@ export class DocumentContent {
 
   public getQuotesDisplay() {
     return this.quotesDisplay;
+  }
+
+  public getScrollTop() {
+    return this.scrollTop;
+  }
+
+  public saveScrollTop(scroll) {
+    this.scrollTop = scroll;
   }
 
   // public addQuote(quote: Quote) {

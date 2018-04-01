@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, ViewChild, OnChanges, Output, EventEmitter, HostListener } from '@angular/core';
+import {
+  Component, OnInit, Input, ViewChild, Output, EventEmitter, HostListener,
+  ElementRef
+} from '@angular/core';
 import { Document } from '../../../../shared/models/document.model';
 import { ContextMenuService, ContextMenuComponent } from 'ngx-contextmenu';
 import { ContentComponent } from '../../content.component';
@@ -27,7 +30,7 @@ import { AppSettings } from '../../../../app.settings';
   templateUrl: './document-content.component.html',
   styleUrls: ['./document-content.component.css']
 })
-export class DocumentContentComponent implements OnInit, OnChanges {
+export class DocumentContentComponent implements OnInit {
 
   @Input() actualDocument: Document;
   @Output() selectedQuote = new EventEmitter<Quote>();
@@ -43,6 +46,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   permissions: Array<string>;
   spinner = false;
   maxCodeNames = AppSettings.MAX_CODES_QUOTE;
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   public paint = false;
   showLoader: boolean;
@@ -55,20 +59,13 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     private quoteService: QuoteService,
     private userService: UserService,
     private spinnerService: SpinnerService,
-    private windowSelection: WindowSelection) { }
+    private windowSelection: WindowSelection
+  ) { }
 
   ngOnInit() {
     this.workSpaceService.getSelectedDocumentContent().subscribe(
       content => {
         this.actualDocumentContent = content;
-        if (content) {
-          this.aux.splice(0);
-          content.getPages().forEach(p => {
-            p.getLines().map(l => {
-              this.aux.push(l);
-            });
-          });
-        }
         this.updatePagesAndQuotes();
       },
       error => console.log(error)
@@ -89,25 +86,33 @@ export class DocumentContentComponent implements OnInit, OnChanges {
         });
   }
 
-  ngOnChanges() {
-    this.updatePagesAndQuotes();
-  }
-
-  // private onScroll(e) {
-  //   console.log(e.srcElement.scrollTop);
-  //   // document.getElementById('99').scrollIntoView()
+  // ngAfterViewInit() {
+  //   if (this.actualDocumentContent && !this.workSpaceService.isSearchActive()) {
+  //     const a = this.actualDocumentContent.getScrollTop();
+  //     document.querySelector('.content-container').scrollTop = a;
+  //   }
   // }
+
+  // ngOnChanges() {
+  //   this.updatePagesAndQuotes();
+  // }
+
+  private onScroll(e) {
+    if (this.actualDocumentContent) {
+      this.actualDocumentContent.saveScrollTop(e.srcElement.scrollTop);
+    }
+  }
 
   private createNewQuote(quote: Quote) {
     this.quoteService.addQuote(quote).subscribe(
       resp => {
         quote = resp;
-        this.actualDocument.addQuote(quote);
+        // this.actualDocument.addQuote(quote);
         this.documentService.updateDocumentQuotes(this.actualDocument).subscribe(result => {
-          this.workSpaceService.updateDocumentContent();
-          window.getSelection().removeAllRanges();
-          window.getSelection().addRange(this.selectedRange);
-          this.spinnerService.setSpinner('coding', false);
+          // this.workSpaceService.updateDocumentContent();
+          // window.getSelection().removeAllRanges();
+          // window.getSelection().addRange(this.selectedRange);
+          // this.spinnerService.setSpinner('coding', false);
         },
           error => {
             this.notificationsService.error('Error al guardar', error);
@@ -122,6 +127,11 @@ export class DocumentContentComponent implements OnInit, OnChanges {
         console.error(error);
       }
     );
+    this.actualDocument.addQuote(quote);
+    this.workSpaceService.updateDocumentContent();
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(this.selectedRange);
+    this.spinnerService.setSpinner('coding', false);
   }
 
   updatePagesAndQuotes() {
@@ -132,19 +142,26 @@ export class DocumentContentComponent implements OnInit, OnChanges {
           this.aux.push(l);
         });
       });
-      // sets the total number of opened quotes's associated codes
-      this.colRange = this.actualDocumentContent.getQuotesDisplay().map(
-        qd => qd.getQuote().getCodes().length === 0 ? 1 : qd.getQuote().getCodes().length)
-        .reduce((a, b) => a + b, 0);
+      // sets the max number of columns needed
+      this.colRange = 0;
+      this.aux.forEach(l => {
+        const range = l.getColRange();
+        if (range > this.colRange) {
+          this.colRange = range;
+        }
+      });
       // creates a dummy array for html columns management
       this.colRangeArray = new Array<any>(this.colRange);
+      if (!this.workSpaceService.isSearchActive()) {
+        const a = this.actualDocumentContent.getScrollTop();
+        document.querySelector('.content-container').scrollTop = a;
+      }
     } else {
       this.aux = [];
       this.colRange = 0;
       this.colRangeArray = [];
     }
   }
-
 
   private createMenuOptions() {
     this.menuOptions = [[
@@ -156,9 +173,11 @@ export class DocumentContentComponent implements OnInit, OnChanges {
       }),
       new MenuOption('Codificar con codigos activados', (item) => {
         this.onCodeWithActivatedCodes(item);
-      })
+      }),
+      new MenuOption('Copiar', (item) => {document.execCommand('copy'); })
     ]];
   }
+
 
   // Open context menu, the selected text will be passed as a parameter.
   // If there's no slected text, several options won't be enabled.

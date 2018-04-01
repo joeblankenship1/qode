@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit {
     private documentService: DocumentService, private notificationsService: NotificationsService,
     private popupLoaderService: PopupLoaderService, private userService: UserService,
     private spinnerService: SpinnerService) {
-    this.appname = 'fingQDA';
+    this.appname = 'Qode';
   }
 
   ngOnInit() {
@@ -74,7 +74,8 @@ export class HeaderComponent implements OnInit {
   uploadFiles(event): Promise<any> {
     const promises_array: Array<any> = [];
     this.spinnerService.setSpinner('document', true);
-    const files = event.srcElement.files;
+    const srcElement = event.target || event.srcElement;
+    const files = srcElement.files;
     for (let index = 0; index < files.length; index++) {
       const that = this;
       promises_array.push(new Promise((resolve, reject) => {
@@ -174,6 +175,6 @@ export class HeaderComponent implements OnInit {
         this.workspaceService.setMatrixResult(resp);
         this.workspaceService.setPopup(true, 'ChartPopup');
       },
-      error => this.notificationsService.error('Error', error) );
+      error => this.notificationsService.error('Error', JSON.parse(error).message) );
   }
 }

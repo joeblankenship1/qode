@@ -8,7 +8,7 @@
             <div *ngIf="q.quote.getCodes().length <= maxCodeNames">
               <div *ngFor="let c of q.quote.getCodes()" [style.color]="c.getColor()" class="code-name-container" [id]="getNameDivId(q.quote,c)">
                 {{c.getName().substring(0,8)}}
-                <span *ngIf="c.getName().length >= 10">...</span>
+                <span *ngIf="c.getName().length >= 9">...</span>
               </div>
             </div>
             <div *ngIf="q.quote.getCodes().length > maxCodeNames">

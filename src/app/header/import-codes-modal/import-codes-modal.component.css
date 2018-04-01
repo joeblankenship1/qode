@@ -11,3 +11,20 @@
     padding-left: 0;
     padding-right: 0;
 }
+
+.sk-folding-cube {
+    top: 30px;
+    margin: 10px auto;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    -webkit-transform: rotateZ(45deg);
+    transform: rotateZ(45deg);
+}
+
+.h5-spinner {
+    text-align: center;
+    vertical-align: middle;
+    top: 40px;
+    position: relative;
+}

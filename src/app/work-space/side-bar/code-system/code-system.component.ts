@@ -63,6 +63,12 @@ export class CodeSystemComponent implements OnInit, OnDestroy, AfterViewInit {
           this.spinner = state;
         });
     this.createMenuOptions();
+    this.userService.getRolePermissions().subscribe(
+      permissions => {
+        this.permissions = permissions;
+      },
+      error => { console.error(error); }
+    );
   }
 
   ngAfterViewInit() {
@@ -107,6 +113,11 @@ export class CodeSystemComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           this.menuOptions[1][0].disable();
           this.menuOptions[1][1].disable();
+        }
+        if (this.permissions.includes('delete_code')) {
+          this.menuOptions[2][0].enable();
+        } else {
+          this.menuOptions[2][0].disable();
         }
       }
     }

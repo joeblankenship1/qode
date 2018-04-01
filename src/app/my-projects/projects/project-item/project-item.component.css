@@ -2,12 +2,16 @@
     display: inline-grid;
 }
 
-.btn {
-    padding: 5px 10px !important;
+.btn-delete {
+    padding: 2px 7px !important;
 }
 
 .lbl-hover {
     background-color: #2c3e50;
     color: white;
     cursor: pointer;
+}
+
+.btn {
+    padding: 5px 10px;
 }

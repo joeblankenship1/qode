@@ -195,6 +195,7 @@ def importCodes():
     mail = get_email(token)
     to_proj_id = request.args.get('to')
     from_proj_id = request.args.get('from')
+    print(from_proj_id)
     check_permissions(to_proj_id, mail, True)
     check_permissions(from_proj_id, mail, False)
     result = import_codes(from_proj_id,to_proj_id,mail)
