@@ -64,14 +64,6 @@ export class DocumentContentComponent implements OnInit, OnChanges, AfterViewIni
     this.workSpaceService.getSelectedDocumentContent().subscribe(
       content => {
         this.actualDocumentContent = content;
-        if (content) {
-          this.aux.splice(0);
-          content.getPages().forEach(p => {
-            p.getLines().map(l => {
-              this.aux.push(l);
-            });
-          });
-        }
         this.updatePagesAndQuotes();
       },
       error => console.log(error)
@@ -158,6 +150,10 @@ export class DocumentContentComponent implements OnInit, OnChanges, AfterViewIni
       });
       // creates a dummy array for html columns management
       this.colRangeArray = new Array<any>(this.colRange);
+      if (!this.workSpaceService.isSearchActive()) {
+        const a = this.actualDocumentContent.getScrollTop();
+        document.querySelector('.content-container').scrollTop = a;
+      }
     } else {
       this.aux = [];
       this.colRange = 0;
