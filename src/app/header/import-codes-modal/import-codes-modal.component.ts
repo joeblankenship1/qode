@@ -25,7 +25,7 @@ export class ImportCodesModalComponent implements OnInit, CloseGuard, ModalCompo
   private spinner = false;
   public sortBy = 'name';
   public sortOrder = 'asc';
-  public project: Project;
+  public project= '';
   public actualProject = '';
   permissions: Array<string>;
 
@@ -65,15 +65,17 @@ export class ImportCodesModalComponent implements OnInit, CloseGuard, ModalCompo
 
   private onImport() {
     this.spinnerService.setSpinner('code_system', true);
-    this.codesystemService.importCodes(this.project._id).subscribe(
+    this.codesystemService.importCodes(this.project).subscribe(
       resp => {
         this.notificationsService.success('Éxito', 'Los códigos se importaron correctamente');
         this.dialog.close();
       },
-      error => this.notificationsService.error('Error', error) );
+      error => {
+        this.notificationsService.error('Error', error);
+        this.spinnerService.setSpinner('code_system', false); } );
   }
 
-  public onSelectProject(project: Project) {
+  public onSelectProject(project) {
     this.project = project;
   }
 
