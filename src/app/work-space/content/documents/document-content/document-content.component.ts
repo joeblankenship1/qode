@@ -29,7 +29,7 @@ import { SpinnerService } from '../../../../shared/services/spinner.service';
   templateUrl: './document-content.component.html',
   styleUrls: ['./document-content.component.css']
 })
-export class DocumentContentComponent implements OnInit, OnChanges, AfterViewInit {
+export class DocumentContentComponent implements OnInit {
 
   @Input() actualDocument: Document;
   @Output() selectedQuote = new EventEmitter<Quote>();
@@ -84,16 +84,16 @@ export class DocumentContentComponent implements OnInit, OnChanges, AfterViewIni
         });
   }
 
-  ngAfterViewInit() {
-    if (this.actualDocumentContent && !this.workSpaceService.isSearchActive()) {
-      const a = this.actualDocumentContent.getScrollTop();
-      document.querySelector('.content-container').scrollTop = a;
-    }
-  }
+  // ngAfterViewInit() {
+  //   if (this.actualDocumentContent && !this.workSpaceService.isSearchActive()) {
+  //     const a = this.actualDocumentContent.getScrollTop();
+  //     document.querySelector('.content-container').scrollTop = a;
+  //   }
+  // }
 
-  ngOnChanges() {
-    this.updatePagesAndQuotes();
-  }
+  // ngOnChanges() {
+  //   this.updatePagesAndQuotes();
+  // }
 
   private onScroll(e) {
     if (this.actualDocumentContent) {
