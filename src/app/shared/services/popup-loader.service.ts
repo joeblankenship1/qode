@@ -6,6 +6,7 @@ import { SimpleQueryEditorComponent } from '../../work-space/popup-window/simple
 import { ViewContainerRef } from '@angular/core';
 import { ComplexQueryEditorComponent } from '../../work-space/popup-window/complex-query-editor/complex-query-editor.component';
 import { ChartPopupComponent } from '../../work-space/popup-window/chart-popup/chart-popup.component';
+import { SearchInOpenDocsComponent } from '../../work-space/popup-window/search-in-open-docs/search-in-open-docs.component';
 
 @Injectable()
 export class PopupLoaderService {
@@ -42,6 +43,13 @@ export class PopupLoaderService {
     const component = factory
       .create(this.rootViewContainer.parentInjector);
     this.rootViewContainer.insert(component.hostView);
+  }
+
+  loadSearchInOpenDocs() {
+    const factory = this.factoryResolver
+                        .resolveComponentFactory(SearchInOpenDocsComponent);
+    this.rootViewContainer.clear();
+    this.component = this.rootViewContainer.createComponent(factory);
   }
 
   destroyComponent() {

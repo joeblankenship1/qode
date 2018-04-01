@@ -33,7 +33,7 @@ export class ProjectsComponent implements OnInit {
     private spinnerService: SpinnerService) { }
 
   public filterQuery = '';
-  public rowsOnPage = 10;
+  public rowsOnPage = 5;
   public sortBy = 'name';
   public sortOrder = 'asc';
   spinner = false;

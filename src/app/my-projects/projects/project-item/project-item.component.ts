@@ -33,8 +33,8 @@ export class ProjectItemComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private router: Router, private notificationsService: NotificationsService,
     private modal: Modal, private workspaceService: WorkSpaceService, private authService: AuthService, private userService: UserService,
-     private datePipe: DatePipe,
-    ) { }
+    private datePipe: DatePipe,
+  ) { }
 
   ngOnInit() {
 
@@ -58,17 +58,17 @@ export class ProjectItemComponent implements OnInit {
             const projToDelete = this.projectService.getProject(id);
             this.projectService.deleteProject(projToDelete)
               .subscribe(
-              resp => {
-                this.notificationsService.success('Exito', 'El proyecto se elimino correctamente');
-                this.projectService.removeProject(projToDelete);
-                const selectedProjItem = this.projectService.getSelectedProjectItem();
-                if (selectedProjItem._id === id) {
-                  this.projectService.setSelectedProject(null);
-                }
-              },
-              error => {
-                this.notificationsService.error('Error', 'Error en el borrado del proyecto');
-              });
+                resp => {
+                  this.notificationsService.success('Exito', 'El proyecto se elimino correctamente');
+                  this.projectService.removeProject(projToDelete);
+                  const selectedProjItem = this.projectService.getSelectedProjectItem();
+                  if (selectedProjItem._id === id) {
+                    this.projectService.setSelectedProject(null);
+                  }
+                },
+                error => {
+                  this.notificationsService.error('Error', 'Error en el borrado del proyecto');
+                });
           })
           .catch(error =>
             console.log(error)
@@ -84,6 +84,8 @@ export class ProjectItemComponent implements OnInit {
   }
 
   onAccessProject() {
-    this.router.navigate(['workspace', this.project._id]);
+    if (!this.toImportCodes) {
+      this.router.navigate(['workspace', this.project._id]);
+    }
   }
 }

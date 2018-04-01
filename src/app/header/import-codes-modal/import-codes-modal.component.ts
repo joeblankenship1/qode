@@ -8,6 +8,7 @@ import { SpinnerService } from '../../shared/services/spinner.service';
 import { WorkSpaceService } from '../../shared/services/work-space.service';
 import { NotificationsService } from 'angular2-notifications';
 import { CodeSystemService } from '../../shared/services/code-system.service';
+import { UserService } from '../../shared/services/user.service';
 
 export class ImportCodeModalData extends BSModalContext {
   // public code: Code;
@@ -24,14 +25,15 @@ export class ImportCodesModalComponent implements OnInit, CloseGuard, ModalCompo
   private spinner = false;
   public sortBy = 'name';
   public sortOrder = 'asc';
-  public project: Project;
+  public project= '';
   public actualProject = '';
-  // permissions: Array<string>;
+  permissions: Array<string>;
 
   constructor(public dialog: DialogRef<ImportCodeModalData>, private codeService: CodeService,
               private codesystemService: CodeSystemService,
               private workspaceService: WorkSpaceService, private modal: Modal,
               private notificationsService: NotificationsService,
+              private userService: UserService,
               private projectService: ProjectService, private spinnerService: SpinnerService) { }
 
   ngOnInit() {
@@ -41,12 +43,12 @@ export class ImportCodesModalComponent implements OnInit, CloseGuard, ModalCompo
       this.spinner = state;
     });
     this.spinnerService.setSpinner('projects', true);
-    // this.userService.getRolePermissions().subscribe(
-    //   permissions => {
-    //     this.permissions = permissions;
-    //   },
-    //   error => { console.error(error); }
-    // );
+    this.userService.getRolePermissions().subscribe(
+      permissions => {
+        this.permissions = permissions;
+      },
+      error => { console.error(error); }
+    );
     this.actualProject = this.workspaceService.getProjectId();
     this.projectService.getProjects()
     .subscribe(
@@ -63,15 +65,17 @@ export class ImportCodesModalComponent implements OnInit, CloseGuard, ModalCompo
 
   private onImport() {
     this.spinnerService.setSpinner('code_system', true);
-    this.codesystemService.importCodes(this.project._id).subscribe(
+    this.codesystemService.importCodes(this.project).subscribe(
       resp => {
         this.notificationsService.success('Éxito', 'Los códigos se importaron correctamente');
         this.dialog.close();
       },
-      error => this.notificationsService.error('Error', error) );
+      error => {
+        this.notificationsService.error('Error', error);
+        this.spinnerService.setSpinner('code_system', false); } );
   }
 
-  public onSelectProject(project: Project) {
+  public onSelectProject(project) {
     this.project = project;
   }
 

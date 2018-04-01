@@ -4,6 +4,8 @@ import { DocumentService } from './shared/services/document.service';
 import { Router } from '@angular/router';
 import { AuthService } from './shared/services/auth.service';
 import { NotificationsService } from 'angular2-notifications';
+import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+import { WorkSpaceService } from './shared/services/work-space.service';
 
 @Component({
   selector: 'app-root',
@@ -23,8 +25,18 @@ export class AppComponent {
     theClass: 'myClass'
   };
 
-  constructor(public router: Router, public auth: AuthService, private _service: NotificationsService ) {
+  constructor(public router: Router,
+    public auth: AuthService,
+    private _service: NotificationsService,
+    private hotkeysService: HotkeysService,
+    private workspaceService: WorkSpaceService) {
     auth.handleAuthentication();
+    // this.hotkeysService.add(new Hotkey(['command+f', 'ctrl+f'], this.ctrlLeftPressed));
   }
 
+  ctrlLeftPressed = (event: KeyboardEvent, combo: string): boolean => {
+    this.title = 'cmd+left pressed';
+    this.workspaceService.setPopup(true, 'SearchInOpenDocs');
+    return false;
+  }
 }

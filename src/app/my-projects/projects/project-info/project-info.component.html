@@ -3,7 +3,9 @@
     <h2> {{profile.name}} </h2>
     <img [src]=profile.picture alt="Smiley face" height="80" width="80" id='picture'>
     <br><br>
-    <h4>Haz click en el nombre del proyecto para ver más información </h4>
+    <h4>
+        <p> Haz click en el nombre de algún proyecto para ver más información.</p>
+    </h4>
 </div>
 
 <div *ngIf='project' class="col-md-4" id='info-project'>

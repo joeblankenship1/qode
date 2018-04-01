@@ -7,16 +7,14 @@ import { HttpModule, Http, RequestOptions } from '@angular/http';
 import { routes } from './app.routes';
 import { Routes, RouterModule } from '@angular/router';
 import { Ng2CompleterModule } from 'ng2-completer';
-import {ColorPickerModule} from 'angular4-color-picker';
+import { ColorPickerModule } from 'angular4-color-picker';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { SideBarComponent } from './work-space/side-bar/side-bar.component';
 import { DocumentListComponent } from './work-space/side-bar/document-list/document-list.component';
-import { CodeListComponent } from './work-space/side-bar/code-list/code-list.component';
 import { ContentComponent } from './work-space/content/content.component';
 import { FooterComponent } from './footer/footer.component';
 import { DocumentsComponent } from './work-space/content/documents/documents.component';
-import { CodeItemComponent } from './work-space/side-bar/code-list/code-item/code-item.component';
 import { DocumentItemComponent } from './work-space/side-bar/document-list/document-item/document-item.component';
 import { DocumentModalComponent } from './header/document-modal/document-modal.component';
 import { QuoteModalComponent } from './header/quote-modal/quote-modal.component';
@@ -45,7 +43,7 @@ import { QuoteService } from './shared/services/quote.service';
 import { WorkSpaceService } from './shared/services/work-space.service';
 import { SpinnerService } from './shared/services/spinner.service';
 
-import {DataTableModule} from 'angular2-datatable';
+import { DataTableModule } from 'angular2-datatable';
 import { WorkSpaceResolver } from './shared/resolves/work-space.resolver';
 import { DataFilterPipe } from './my-projects/projects/data-filter.pipe';
 import { ProjectShareModalComponent } from './my-projects/project-share-modal/project-share-modal.component';
@@ -70,9 +68,11 @@ import { SimpleQueryEditorComponent } from './work-space/popup-window/simple-que
 import { ComplexQueryEditorComponent } from './work-space/popup-window/complex-query-editor/complex-query-editor.component';
 import { PopupLoaderService } from './shared/services/popup-loader.service';
 import { SpinnerComponentModule } from 'ng2-component-spinner';
+import { HotkeyModule } from 'angular2-hotkeys';
+import { SearchInOpenDocsComponent } from './work-space/popup-window/search-in-open-docs/search-in-open-docs.component';
 import { CodeSystemComponent } from './work-space/side-bar/code-system/code-system.component';
-import { CodeSystemService } from './shared/services/code-system.service';
 import { SideBarTreeComponent } from './shared/helpers/side-bar-tree/side-bar-tree.component';
+import { CodeSystemService } from './shared/services/code-system.service';
 import { ImportCodesModalComponent } from './header/import-codes-modal/import-codes-modal.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -90,11 +90,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HeaderComponent,
     SideBarComponent,
     DocumentListComponent,
-    CodeListComponent,
     ContentComponent,
     FooterComponent,
     DocumentsComponent,
-    CodeItemComponent,
     DocumentItemComponent,
     DocumentModalComponent,
     QuoteModalComponent,
@@ -122,6 +120,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     PopupWindowComponent,
     SimpleQueryEditorComponent,
     ComplexQueryEditorComponent,
+    SearchInOpenDocsComponent,
     CodeSystemComponent,
     SideBarTreeComponent,
     ImportCodesModalComponent
@@ -144,6 +143,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ChartsModule,
     NgxPermissionsModule.forRoot(),
     SpinnerComponentModule,
+    HotkeyModule.forRoot(),
     TreeModule
   ],
   providers: [DocumentService, CodeService,
@@ -164,7 +164,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     WorkSpaceService,
     WorkSpaceResolver,
     SpinnerService,
-    [DatePipe]
+    [DatePipe],
+    { provide: Window, useValue: window }
   ],
   bootstrap: [AppComponent],
   entryComponents: [CodeModalComponent,
@@ -174,6 +175,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SimpleQueryEditorComponent,
     ComplexQueryEditorComponent,
     ChartPopupComponent,
+    SearchInOpenDocsComponent,
     ImportCodesModalComponent
   ]
 })

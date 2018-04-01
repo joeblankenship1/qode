@@ -43,19 +43,19 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
     );
     this.workspaceService.getSelectedDocument()
       .subscribe(
-      selectedDocument => {
-        this.selected = selectedDocument;
-      });
+        selectedDocument => {
+          this.selected = selectedDocument;
+        });
   }
 
 
   private createMenuOptions() {
     this.menuOptions = [
-    [new MenuOption('Abrir', (item) => { this.onOpenDocument(); }),
-     new MenuOption('Editar', (item) => { this.onEditDocument(); })],
-    [new MenuOption('Activar', (item) => { this.onActivateDocument(); }),
-     new MenuOption('Desactivar', (item) => { this.onDeactivateDocument(); })],
-    [new MenuOption('Eliminar', (item) => { this.onDeleteDocument(); })]];
+      [new MenuOption('Abrir', (item) => { this.onOpenDocument(); }),
+      new MenuOption('Editar', (item) => { this.onEditDocument(); })],
+      [new MenuOption('Activar', (item) => { this.onActivateDocument(); }),
+      new MenuOption('Desactivar', (item) => { this.onDeactivateDocument(); })],
+      [new MenuOption('Eliminar', (item) => { this.onDeleteDocument(); })]];
     this.defineMenuOptions();
   }
 
@@ -86,7 +86,7 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
         this.menuOptions[1][0].disable();
         this.menuOptions[1][1].disable();
       }
-      if (this.permissions.includes('edite_document')) {
+      if (this.permissions.includes('edit_document')) {
         this.menuOptions[0][1].enable();
       } else {
         this.menuOptions[0][1].disable();
@@ -129,6 +129,16 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
     this.quotesRetrievalService.removeDocument(this.document);
   }
 
+  public onClickListLine($event) {
+    if ($event.ctrlKey || $event.metaKey) {
+      if (this.document.isActivated()) {
+        this.onDeactivateDocument();
+      } else {
+        this.onActivateDocument();
+      }
+    }
+  }
+
   public getItemClass() {
     return this.document.isActivated() ? 'list-item-selected' : 'list-item';
   }
@@ -147,7 +157,6 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
               });
           })
           .catch(error => {
-            this.notificationService.error('Error', error);
             console.log(error);
           }
           );

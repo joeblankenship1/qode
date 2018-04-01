@@ -18,6 +18,7 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
   @Input() usesColor: boolean;
   @Input() treeTitle: string;
   @Input() inputNodes: any;
+  @Input() permissions: any;
 
   @Output() ctlclick = new EventEmitter<any>();
   @Output() contextmenu = new EventEmitter<any>();
@@ -72,10 +73,10 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
     nodeHeight: 20,
     actionMapping: this.actionMapping,
     allowDrag: (node) => {
-      return true;
+      return this.permissions.includes('edit_tree');
     },
     allowDrop: (node) => {
-      return true;
+      return this.permissions.includes('edit_tree');
     },
     useVirtualScroll: true,
     animateExpand: true,
@@ -150,9 +151,10 @@ export class SideBarTreeComponent implements OnInit, AfterViewInit {
   /*********************** Custom mouse/key events ***********************/
 
   onClick(tree, node, $event) {
+    console.log($event);
     if ($event.shiftKey) {
       TREE_ACTIONS.TOGGLE_SELECTED_MULTI(tree, node, $event);
-    } else if ($event.ctrlKey) {
+    } else if ($event.ctrlKey || $event.metaKey) {
       this.ctlclick.emit({ tree: tree, data: node.data.data, event: $event });
     } else { TREE_ACTIONS.TOGGLE_SELECTED(tree, node, $event); }
   }
