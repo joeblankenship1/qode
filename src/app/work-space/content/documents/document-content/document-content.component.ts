@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, ViewChild, OnChanges, Output, EventEmitter, HostListener, AfterViewInit,
+  Component, OnInit, Input, ViewChild, Output, EventEmitter, HostListener,
   ElementRef
 } from '@angular/core';
 import { Document } from '../../../../shared/models/document.model';
