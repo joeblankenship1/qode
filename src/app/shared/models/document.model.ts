@@ -43,6 +43,14 @@ export class Document {
     return this._etag;
   }
 
+  getName() {
+    return this.name;
+  }
+
+  getMemo() {
+    return this.memo;
+  }
+
   setEtag(etag: string) {
     this._etag = etag;
   }

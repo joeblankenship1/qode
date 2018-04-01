@@ -46,7 +46,7 @@ export class Line {
   public getLineType() {
     let styleClass = 'text-area white-line';
     if (this.id % AppSettings.PAGE_SIZE === 0) {
-      this.relatedQuotes.map ( q => {
+      this.relatedQuotes.map(q => {
         if (q.quote.getDocumentDisplay()[0].startLine !== this.id) {
           q.borderTop = false;
         }
@@ -54,7 +54,7 @@ export class Line {
       styleClass += 'text-area top-line';
     } else if (this.id % AppSettings.PAGE_SIZE === AppSettings.PAGE_SIZE - 1) {
       styleClass += 'text-area bottom-line';
-      this.relatedQuotes.map ( q => {
+      this.relatedQuotes.map(q => {
         const aux = q.quote.getDocumentDisplay().length;
         if (q.quote.getDocumentDisplay()[aux - 1].endLine !== this.id) {
           q.borderBottom = false;
@@ -95,7 +95,12 @@ export class Line {
     let title = '';
     if (relatedQuote) {
       const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      title = code ? code.getName() + '\n\n' + relatedQuote.quote.getMemo() : relatedQuote.quote.getMemo();
+      if (code) {
+        title = relatedQuote.quote.getMemo().length > 0
+          ? code.getName() + '\n\n' + relatedQuote.quote.getMemo() : code.getName();
+      } else {
+        title = relatedQuote.quote.getMemo();
+      }
     }
     return title;
   }
@@ -112,15 +117,15 @@ export class Line {
       this.preSpanText = '';
       this.spanText = this.text;
       this.postSpanText = '';
-      this.background_color =  '';
+      this.background_color = '';
     }
   }
 
   setTextColor(startPosition: number, endPosition: number,
     isFirstLine: boolean, isLastLine: boolean, type: boolean) {
 
-      this.setTextSpan( startPosition, endPosition, isFirstLine, isLastLine);
-      this.background_color = type ? AppSettings.DEFAULT_LINE_COLOR : '';
+    this.setTextSpan(startPosition, endPosition, isFirstLine, isLastLine);
+    this.background_color = type ? AppSettings.DEFAULT_LINE_COLOR : '';
 
   }
 
@@ -149,13 +154,13 @@ export class Line {
   // html code. Therefore the text is divided into 3 parts prespantext, spantext and postspantext.
   private setTextSpan(startPostion: number, endPosition: number,
     isFirstLine: boolean, isLastLine: boolean) {
-      this.preSpanText = this.text.substring(0, startPostion);
-      this.spanText = this.text.substring(startPostion, endPosition);
-      this.postSpanText = this.text.substr(endPosition, this.text.length - this.spanText.length);
+    this.preSpanText = this.text.substring(0, startPostion);
+    this.spanText = this.text.substring(startPostion, endPosition);
+    this.postSpanText = this.text.substr(endPosition, this.text.length - this.spanText.length);
   }
 
   public getColRange() {
-    return this.relatedQuotes.map( q => q.column + (q.quote.getCodes().length === 0 ? 1 : q.quote.getCodes().length))
-    .reduce((a, b) => (a > b) ? a : b, 0);
+    return this.relatedQuotes.map(q => q.column + (q.quote.getCodes().length === 0 ? 1 : q.quote.getCodes().length))
+      .reduce((a, b) => (a > b) ? a : b, 0);
   }
 }
