@@ -272,7 +272,7 @@ export class DocumentContentComponent implements OnInit {
   onMouseOverBracket(relatedQuote, column: number) {
     if (this.actualDocumentContent && relatedQuote) {
       this.actualDocumentContent.setLinesColor(relatedQuote, column, true);
-      if (relatedQuote.quote.getCodes().length < + this.maxCodeNames) {
+      if (relatedQuote.quote.getCodes().length <= this.maxCodeNames) {
         const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
         if (code) {
           document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = 'underline';
@@ -286,7 +286,7 @@ export class DocumentContentComponent implements OnInit {
   onMouseOutBracket(relatedQuote, column: number) {
     if (this.actualDocumentContent && relatedQuote) {
       this.actualDocumentContent.setLinesColor(relatedQuote, column, false);
-      if (relatedQuote.quote.getCodes().length < + this.maxCodeNames) {
+      if (relatedQuote.quote.getCodes().length <= this.maxCodeNames) {
         const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
         if (code) {
           document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = '';
