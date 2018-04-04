@@ -46,7 +46,6 @@ export class DocumentContentComponent implements OnInit {
   permissions: Array<string>;
   spinner = false;
   maxCodeNames = AppSettings.MAX_CODES_QUOTE;
-  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   public paint = false;
   showLoader: boolean;

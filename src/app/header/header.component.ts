@@ -18,6 +18,8 @@ import { PopupLoaderService } from '../shared/services/popup-loader.service';
 import { SpinnerService } from '../shared/services/spinner.service';
 import { UserService } from '../shared/services/user.service';
 import { ImportCodesModalComponent } from './import-codes-modal/import-codes-modal.component';
+import { LineDefinition } from '../shared/helpers/line-definition';
+import { AppSettings } from '../app.settings';
 
 @Component({
   selector: 'app-header',
@@ -160,6 +162,12 @@ export class HeaderComponent implements OnInit {
 
   private newFile(name, text) {
     this.spinnerService.setSpinner('document', true);
+    const lines = LineDefinition.createLines(text);
+    if (lines.length > AppSettings.DOC_MAX_LINES) {
+      this.spinnerService.setSpinner('document', false);
+      this.notificationsService.error('Error', 'El documento es demasiado grande, intente separándolo.');
+      return;
+    }
     this.documentService.addDocument(new Document({
       name: name,
       text: text,

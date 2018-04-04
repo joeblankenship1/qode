@@ -4,4 +4,5 @@ export class AppSettings {
   public static MAX_COLMNS = 10;
   public static DEFAULT_LINE_COLOR = '#d9cfcf';
   public static MAX_CODES_QUOTE = 3;
+  public static DOC_MAX_LINES = 5000;
 }
