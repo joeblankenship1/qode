@@ -1,3 +1,5 @@
+from config import CONFIG
+
 DOMAIN = {
     'project': {
         'extra_response_fields': ['key', '_modified_by', '_modified'],
@@ -209,3 +211,6 @@ DOMAIN = {
 
 RESOURCE_METHODS = ['GET', 'POST', 'DELETE']
 ITEM_METHODS = ['GET', 'PATCH', 'DELETE', 'PUT']
+
+if CONFIG['MONGO_URI'] != '':
+    MONGO_URI = CONFIG['MONGO_URI']

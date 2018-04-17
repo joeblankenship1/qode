@@ -14,16 +14,15 @@ from jose import jwt
 from eve import Eve
 from eve.auth import TokenAuth
 from flask_cors import CORS
+from config import CONFIG
 
 import http.client
 
-# ENV_FILE = find_dotenv()
-# if ENV_FILE:
-#     load_dotenv(ENV_FILE)
-AUTH0_DOMAIN = 'nurruty.auth0.com' #env.get("AUTH0_DOMAIN")
-API_AUDIENCE = 'http://localhost:5000/' #env.get("API_ID")
-ALGORITHMS = ["RS256"]
-RULE_CLAIM = 'https://myapp.example.com/email'
+
+AUTH0_DOMAIN = CONFIG['AUTH0_DOMAIN']
+API_AUDIENCE = CONFIG['API_AUDIENCE']
+ALGORITHMS = CONFIG['ALGORITHMS']
+RULE_CLAIM = CONFIG['RULE_CLAIM']
 
 # def get_email(tok):
 #     conn = http.client.HTTPSConnection('nurruty.auth0.com')

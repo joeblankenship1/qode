@@ -16,6 +16,17 @@ from datetime import datetime
 APP = Eve(auth=MyTokenAuth)
 #APP = Eve()
 
+CORS(APP)
+APP.config['CORS_HEADERS'] = '*'
+
+@APP.after_request
+def after_request(response):
+    header = response.headers
+    header['Access-Control-Allow-Origin'] = '*'
+    header['Access-Control-Allow-Headers'] = 'Accept, Authorization, Cache-Control, Content-Type, If-Match'
+    header['Access-Control-Allow-Methods'] = 'HEAD, GET, POST, DELETE, OPTIONS, PATCH, PUT'
+    return response
+
 @APP.errorhandler(AuthError)
 def handle_auth_error(ex):
     response = jsonify(ex.error)
@@ -201,4 +212,8 @@ def importCodes():
     result = import_codes(from_proj_id,to_proj_id,mail)
     return jsonify(result)
 
-
+APP.on_pre_GET_project += pre_GET_project
+APP.on_pre_GET += pre_GET_resources
+APP.on_insert += before_insert
+APP.on_update += before_update
+APP.on_delete_item += before_delete_item
