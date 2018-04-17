@@ -55,7 +55,7 @@
 }
 
 :host /deep/ .simple-notification-wrapper {
-    height: 20px;
+    height: 0px;
     width: 420px !important;
     top: 70px !important;
     z-index: 2000 !important;
