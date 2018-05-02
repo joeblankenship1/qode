@@ -48,7 +48,7 @@ Thumbs.db
 #/API/data/db/*
 
 #cache gevent
-/API/__pycache__
+#/API/__pycache__
 
 #vscode
 .vscode
