@@ -45,7 +45,7 @@ Thumbs.db
 .editorconfig
 
 #db
-/API/data/db/*
+#/API/data/db/*
 
 #cache gevent
 /API/__pycache__
