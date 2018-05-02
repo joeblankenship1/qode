@@ -143,6 +143,12 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
     return this.document.isActivated() ? 'list-item-selected' : 'list-item';
   }
 
+  public getDocumentTitle() {
+    return this.document.getMemo().length > 0 ?
+     this.document.getName() + '\n\n' + this.document.getMemo() :
+     this.document.getName();
+  }
+
   onDeleteDocument() {
     const dialogRef = this.modal.confirm().size('lg').isBlocking(true).showClose(true).keyboard(27)
       .okBtn('Confirmar').okBtnClass('btn btn-info').cancelBtnClass('btn btn-danger')

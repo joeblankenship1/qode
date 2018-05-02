@@ -48,11 +48,7 @@ Thumbs.db
 /API/data/db/*
 
 #cache gevent
-/API/data/__pycache__/
+/API/__pycache__
 
 #vscode
 .vscode
-API/__pycache__/api.cpython-36.pyc
-API/__pycache__/authentication.cpython-36.pyc
-API/__pycache__/settings.cpython-36.pyc
-.gitignore

@@ -8,7 +8,7 @@
         <span *ngIf="!permissions.includes('activate_document')" class="list-marker">
       &#9679;
     </span>
-        <div class="doc-name" [attr.title]=(document.name)>{{document.name}}</div>
+        <div class="doc-name" [attr.title]="getDocumentTitle()">{{document.name}}</div>
         <span class="counter">{{document.getQuoteCount()}}</span>
     </div>
 </li>

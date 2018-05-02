@@ -22,6 +22,7 @@ import { DocumentService } from '../../../../shared/services/document.service';
 import { NotificationsService } from 'angular2-notifications';
 import { UserService } from '../../../../shared/services/user.service';
 import { SpinnerService } from '../../../../shared/services/spinner.service';
+import { AppSettings } from '../../../../app.settings';
 
 @Component({
   selector: 'app-document-content',
@@ -44,7 +45,7 @@ export class DocumentContentComponent implements OnInit {
   selectedRange;
   permissions: Array<string>;
   spinner = false;
-  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+  maxCodeNames = AppSettings.MAX_CODES_QUOTE;
 
   public paint = false;
   showLoader: boolean;
@@ -270,9 +271,13 @@ export class DocumentContentComponent implements OnInit {
   onMouseOverBracket(relatedQuote, column: number) {
     if (this.actualDocumentContent && relatedQuote) {
       this.actualDocumentContent.setLinesColor(relatedQuote, column, true);
-      const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      if (code) {
-        document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = 'underline';
+      if (relatedQuote.quote.getCodes().length <= this.maxCodeNames) {
+        const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
+        if (code) {
+          document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = 'underline';
+        }
+      } else {
+        document.getElementById(relatedQuote.quote.getId()).style.textDecoration = 'underline';
       }
     }
   }
@@ -280,14 +285,24 @@ export class DocumentContentComponent implements OnInit {
   onMouseOutBracket(relatedQuote, column: number) {
     if (this.actualDocumentContent && relatedQuote) {
       this.actualDocumentContent.setLinesColor(relatedQuote, column, false);
-      const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      if (code) {
-        document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = '';
+      if (relatedQuote.quote.getCodes().length <= this.maxCodeNames) {
+        const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
+        if (code) {
+          document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = '';
+        }
+      } else {
+        document.getElementById(relatedQuote.quote.getId()).style.textDecoration = '';
       }
     }
   }
 
   getNameDivId(quote, code) {
     return quote.getId() + '-' + code.getName();
+  }
+
+  getQuoteCodeNames(quote) {
+    return quote.getCodes().map(c => {
+      return c.getName();
+    }).join('\n');
   }
 }
