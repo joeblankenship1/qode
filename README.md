@@ -56,12 +56,13 @@ First get the source code
 cd
 git clone https://github.com/nurruty/qode.git
 ```
-Then install al the dependecies needed
+Then install al the dependecies needed. Open a new terminal and init the **virtualenv** as explained before.
+Then run:
 
 First all Python requirements
 ```
 cd qode
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 Then all Anglar packages
@@ -74,8 +75,7 @@ npm install
 
 ### Start MongoDB
 
-To get Qode up and running you need first start the mongo service. We recommend direct it to API/data/db but you cant do it where ever you want. Open a new terminal and init the **virtualenv** as explained before.
-Then run:
+To get Qode up and running you need first start the mongo service. We recommend direct it to API/data/db but you cant do it where ever you want. 
 
 ```
 service mongod stop
