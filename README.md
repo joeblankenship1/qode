@@ -98,7 +98,7 @@ Open one last terminal and run:
 ng serve
 ```
 
-Finally browse to [localhost:4200]
+Finally browse to [http://localhost:4200/](http://localhost:4200/)
 
 ## Built With
 
