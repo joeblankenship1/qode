@@ -3,13 +3,14 @@ Qode is an open source project designed to do qualitative data analysis. Its wri
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
-#### Install NodeJs v8.3.0
-
 In Debian/Ubuntu or macOS
+
+#### Install NodeJs
+
 ```
 sudo apt-get update
 sudo apt-get install nodejs
