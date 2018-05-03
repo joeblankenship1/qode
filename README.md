@@ -21,55 +21,48 @@ Algo install **npm**
 sudo apt-get install npm
 ```
 
-#### If not installed already, get Python v3.5 or better create a virtualenv.
-
-Install **pip** first
+#### If not installed already, get Python v3.6. 
 
 ```
-sudo apt-get install python3-pip 
+sudo apt-get update
+sudo apt-get install python3.6
 ```
 
-Then install **virtualenv** using pip3
-
-```
-sudo pip3 install virtualenv  
-```
-
-Now create a virtual environment 
-
-```
-virtualenv -p python3 qodevenv
-```
-Then activate your **virtualenv**
-```
-source qodevenv/bin/activate
-```
+#### MongoDB
 
 Finally, install MongoDB from it official website [https://www.mongodb.com/download-center#atlas]
 
 
 ### Installing
 
-First get the source code
+Is recommended to start creating a **virtualenv**:
+```
+sudo pip3 install virtualenv  
+```
 
+Now create a virtual environment 
+```
+virtualenv --p=/usr/bin/python3.6 qodevenv
+```
+Then activate your **virtualenv**
+```
+source qodevenv/bin/activate
+```
+
+First get the source code
 ```
 cd
 git clone https://github.com/nurruty/qode.git
 ```
-Then install al the dependecies needed. Open a new terminal and init the **virtualenv** as explained before.
-Then run:
-
-First all Python requirements
+Then install al the dependecies needed.
 ```
 cd qode
 pip install -r requirements.txt
 ```
-
 Then all Anglar packages
 ```
 npm install
 ```
-
 
 ## Run
 
