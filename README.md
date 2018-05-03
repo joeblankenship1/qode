@@ -30,7 +30,7 @@ sudo apt-get install python3.6
 
 #### MongoDB
 
-Finally, install MongoDB from it official website [https://www.mongodb.com/download-center?jmp=nav#community]
+Finally, install MongoDB from it official website [https://www.mongodb.com/download-center]
 
 
 ### Installing
