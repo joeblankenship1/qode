@@ -30,7 +30,7 @@ sudo apt-get install python3.6
 
 #### MongoDB
 
-Finally, install MongoDB from it official website [https://www.mongodb.com/download-center#atlas]
+Finally, install MongoDB from it official website [https://www.mongodb.com/download-center?jmp=nav#community]
 
 
 ### Installing
@@ -59,7 +59,7 @@ Then install al the dependecies needed.
 cd qode
 pip install -r requirements.txt
 ```
-Then all Anglar packages
+Then all Angular packages
 ```
 npm install
 ```
