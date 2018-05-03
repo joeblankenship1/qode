@@ -95,7 +95,7 @@ Finally browse to [http://localhost:4200/](http://localhost:4200/)
 
 ## Built With
 
-* [AngularJS](https://angular.io/docs) - The web framework used
+* [Angular](https://angular.io/docs) - The web framework used
 * [Python-Eve](http://python-eve.org/) - REST API framework  used
 * [MongoDB](https://www.mongodb.com/) - DataBase used
 
