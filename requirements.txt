@@ -15,7 +15,6 @@ greenlet==0.4.12
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.9.6
-jose==1.0.0
 MarkupSafe==1.0
 numpy==1.14.0
 pycparser==2.18
