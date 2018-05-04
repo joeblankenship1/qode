@@ -1,28 +1,115 @@
 # Qode
+Qode is an open source project designed to do qualitative data analysis. Its written in Angular4 and works with a python based API based on Eve and Flask.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.3.1.
+## Getting Started
 
-## Development server
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### Prerequisites
 
-## Code scaffolding
+In Debian/Ubuntu or macOS
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+#### Install NodeJs
 
-## Build
+```
+sudo apt-get update
+sudo apt-get install nodejs
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Algo install **npm**
+```
+sudo apt-get install npm
+```
 
-## Running unit tests
+#### If not installed already, get Python v3.6. 
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```
+sudo apt-get update
+sudo apt-get install python3.6
+```
 
-## Running end-to-end tests
+#### MongoDB
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+Finally, install MongoDB from it official website [https://www.mongodb.com/download-center]
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### Installing
+
+Is recommended to start creating a **virtualenv**:
+```
+sudo pip3 install virtualenv  
+```
+
+Now create a virtual environment 
+```
+virtualenv --p=/usr/bin/python3.6 qodevenv
+```
+Then activate your **virtualenv**
+```
+source qodevenv/bin/activate
+```
+
+First get the source code
+```
+cd
+git clone https://github.com/nurruty/qode.git
+```
+Then install al the dependecies needed.
+```
+cd qode
+pip install -r requirements.txt
+```
+Then all Angular packages
+```
+npm install
+```
+
+## Run
+
+### Start MongoDB
+
+To get Qode up and running you need first start the mongo service. We recommend direct it to API/data/db but you cant do it where ever you want. 
+
+```
+service mongod stop
+sudo mongod --dbpath=/home/<user>/qode/API/data/db
+```
+### Start Python-Eve API
+
+Open another terminal and start a new **virtualenv**, enter the API folder and run:
+
+```
+cd API
+python server.py
+```
+
+### Start the Angular's development server
+
+Open one last terminal and run:
+
+```
+ng serve
+```
+
+Finally browse to [http://localhost:4200/](http://localhost:4200/)
+
+## Built With
+
+* [Angular](https://angular.io/docs) - The web framework used
+* [Python-Eve](http://python-eve.org/) - REST API framework  used
+* [MongoDB](https://www.mongodb.com/) - DataBase used
+
+
+## Authors
+
+* **Carina Soca** - [CariSoca](https://github.com/CariSoca)
+* **Santiago Camou** - [santicamou](https://github.com/santicamou)
+* **Nicolas Urruty** - [nurruty](https://github.com/nurruty)
+
+See also the list of [contributors](https://github.com/nurruty/qode/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the Apache License 2.0 License - see the [LICENSE.md](LICENSE.md) file for details
+
+

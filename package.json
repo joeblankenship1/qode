@@ -27,7 +27,7 @@
     "angular2-hotkeys": "^2.0.3",
     "angular2-jwt": "^0.2.3",
     "angular2-modal": "^3.0.3",
-    "angular2-notifications": "^0.9.1",
+    "angular2-notifications": "0.9.8",
     "angular2-tree-component": "^3.1.0",
     "angular4-color-picker": "^1.4.2",
     "atob": "^2.0.3",

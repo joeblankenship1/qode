@@ -22,6 +22,8 @@ import { DocumentService } from '../../../../shared/services/document.service';
 import { NotificationsService } from 'angular2-notifications';
 import { UserService } from '../../../../shared/services/user.service';
 import { SpinnerService } from '../../../../shared/services/spinner.service';
+import { AppSettings } from '../../../../app.settings';
+import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 
 @Component({
   selector: 'app-document-content',
@@ -43,8 +45,9 @@ export class DocumentContentComponent implements OnInit {
   options = new OptionsComponent();
   selectedRange;
   permissions: Array<string>;
+  hotkeys = Array<any>();
   spinner = false;
-  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+  maxCodeNames = AppSettings.MAX_CODES_QUOTE;
 
   public paint = false;
   showLoader: boolean;
@@ -57,6 +60,7 @@ export class DocumentContentComponent implements OnInit {
     private quoteService: QuoteService,
     private userService: UserService,
     private spinnerService: SpinnerService,
+    private hotkeysService: HotkeysService,
     private windowSelection: WindowSelection
   ) { }
 
@@ -73,6 +77,33 @@ export class DocumentContentComponent implements OnInit {
     this.userService.getRolePermissions().subscribe(
       permissions => {
         this.permissions = permissions;
+        this.hotkeysService.remove();
+
+        if (this.permissions.includes('coding')) {
+          const ctrl2Pressed = (event: KeyboardEvent, combo: string): boolean => {
+            const newSelection = this.getSelectedText();
+            if (newSelection) {
+              newSelection.setDocument(this.actualDocument);
+              this.onOpenQuoteModal(newSelection);
+            }
+            return false;
+          };
+          const ctrl2 = new Hotkey(['command+2', 'ctrl+2'], ctrl2Pressed);
+          this.hotkeysService.add(ctrl2);
+        }
+
+        if (this.permissions.includes('coding_with_activated_codes')) {
+          const ctrl1Pressed = (event: KeyboardEvent, combo: string): boolean => {
+            const newSelection = this.getSelectedText();
+            if (newSelection) {
+              newSelection.setDocument(this.actualDocument);
+              this.onCodeWithActivatedCodes(newSelection);
+            }
+            return false;
+          };
+          const ctrl1 = new Hotkey(['command+1', 'ctrl+1'], ctrl1Pressed);
+          this.hotkeysService.add(ctrl1);
+        }
       },
       error => { console.error(error); }
     );
@@ -172,7 +203,7 @@ export class DocumentContentComponent implements OnInit {
       new MenuOption('Codificar con codigos activados', (item) => {
         this.onCodeWithActivatedCodes(item);
       }),
-      new MenuOption('Copiar', (item) => {document.execCommand('copy'); })
+      new MenuOption('Copiar', (item) => { document.execCommand('copy'); })
     ]];
   }
 
@@ -270,9 +301,13 @@ export class DocumentContentComponent implements OnInit {
   onMouseOverBracket(relatedQuote, column: number) {
     if (this.actualDocumentContent && relatedQuote) {
       this.actualDocumentContent.setLinesColor(relatedQuote, column, true);
-      const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      if (code) {
-        document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = 'underline';
+      if (relatedQuote.quote.getCodes().length <= this.maxCodeNames) {
+        const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
+        if (code) {
+          document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = 'underline';
+        }
+      } else {
+        document.getElementById(relatedQuote.quote.getId()).style.textDecoration = 'underline';
       }
     }
   }
@@ -280,14 +315,24 @@ export class DocumentContentComponent implements OnInit {
   onMouseOutBracket(relatedQuote, column: number) {
     if (this.actualDocumentContent && relatedQuote) {
       this.actualDocumentContent.setLinesColor(relatedQuote, column, false);
-      const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
-      if (code) {
-        document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = '';
+      if (relatedQuote.quote.getCodes().length <= this.maxCodeNames) {
+        const code = relatedQuote.quote.getCodes()[column - relatedQuote.column];
+        if (code) {
+          document.getElementById(relatedQuote.quote.getId() + '-' + code.getName()).style.textDecoration = '';
+        }
+      } else {
+        document.getElementById(relatedQuote.quote.getId()).style.textDecoration = '';
       }
     }
   }
 
   getNameDivId(quote, code) {
     return quote.getId() + '-' + code.getName();
+  }
+
+  getQuoteCodeNames(quote) {
+    return quote.getCodes().map(c => {
+      return c.getName();
+    }).join('\n');
   }
 }

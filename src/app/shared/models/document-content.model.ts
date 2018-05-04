@@ -72,7 +72,7 @@ export class DocumentContent {
   }
 
   public createPages() {
-    const quotes = this.document.getQuotes();
+    // const quotes = this.document.getQuotes();
     // const pages: Page[] = [];
     this.pages = [];
     let lines: Line[];
@@ -154,7 +154,7 @@ export class DocumentContent {
     return i2 <= f1 && i1 <= f2;
   }
 
-  private findColumnOfQuote(quote: Quote) {
+  public findColumnOfQuote(quote: Quote) {
     let column = 0;
     let success = false;
     const len = quote.getCodes().length === 0 ? 1 : quote.getCodes().length;

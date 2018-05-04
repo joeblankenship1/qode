@@ -1,27 +1,38 @@
 <div class="content-container" (scroll)="onScroll($event)">
-    <table id="text-content" class="page-container">
-        <tr *ngFor="let line of aux; let l = index" [id]="l" [ngClass]="'linea' + l">
-            <td style="width: 100px">
-                <div *ngFor="let q of line?.getRelatedQuotes(); let n = index">
-                    <div *ngIf="line?.isMiddle(q.quote)">
-                        <div *ngFor="let c of q.quote.getCodes()" [style.color]="c.getColor()" class="code-name-container" [id]="getNameDivId(q.quote,c)">
-                            {{c.getName().substring(0,8)}} <span *ngIf="c.getName().length >= 9">...</span>
-                        </div>
-                    </div>
-                </div>
-            </td>
-            <td *ngFor="let quote of colRangeArray; let i = index" [ngClass]="line?.getBracketType(colRange-i-1)" [ngStyle]="{ 'color': line?.getBracketColor(colRange-i-1) }" (click)="onOpenQuoteModal(line?.getRelatedQuote(colRange-i-1)?.quote)" [attr.title]="line?.getBracketTitle(colRange-i-1)"
-                (mouseover)="onMouseOverBracket(line?.getRelatedQuote(colRange-i-1),colRange-i-1)" (mouseout)="onMouseOutBracket(line?.getRelatedQuote(colRange-i-1),colRange-i-1)">
-            </td>
-            <td (contextmenu)="onContextMenu($event)" [ngClass]="line? line.getLineType(): 'white-line'">
-                <s *ngIf="line?.isPainted()">{{line?.preSpanText}}
-            <span [ngStyle]="{'background-color': line?.getTextColor(colRange-i-1) }">{{line?.spanText}}</span>
-            {{line?.postSpanText}}
-          </s>
-                <s *ngIf="!line?.isPainted()">{{line?.text}}</s>
-                <br>
-            </td>
-        </tr>
-    </table>
-    <app-options [optionGroups]="menuOptions"></app-options>
+  <table class="page-container">
+    <tr *ngFor="let line of aux; let l = index" [id]="l" [ngClass]="'linea' + l">
+      <td style="width: 100px">
+        <div *ngFor="let q of line?.getRelatedQuotes(); let n = index">
+          <div *ngIf="line?.isMiddle(q.quote)">
+            <div *ngIf="q.quote.getCodes().length <= maxCodeNames">
+              <div *ngFor="let c of q.quote.getCodes()" [style.color]="c.getColor()" class="code-name-container" [id]="getNameDivId(q.quote,c)">
+                {{c.getName().substring(0,8)}}
+                <span *ngIf="c.getName().length >= 9">...</span>
+              </div>
+            </div>
+            <div *ngIf="q.quote.getCodes().length > maxCodeNames">
+              <div [style.color]="'rgb(0,0,0)'" class="code-name-container" [id]="q.quote.getId()"
+              [title]="getQuoteCodeNames(q.quote)"
+              >
+                +{{maxCodeNames}} códigos
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td *ngFor="let quote of colRangeArray; let i = index" [ngClass]="line?.getBracketType(colRange-i-1)" [ngStyle]="{ 'color': line?.getBracketColor(colRange-i-1) }"
+        (click)="onOpenQuoteModal(line?.getRelatedQuote(colRange-i-1)?.quote)" [attr.title]="line?.getBracketTitle(colRange-i-1)"
+        (mouseover)="onMouseOverBracket(line?.getRelatedQuote(colRange-i-1),colRange-i-1)" (mouseout)="onMouseOutBracket(line?.getRelatedQuote(colRange-i-1),colRange-i-1)">
+      </td>
+      <td (contextmenu)="onContextMenu($event)" [ngClass]="line? line.getLineType(): 'white-line'">
+        <s *ngIf="line?.isPainted()">{{line?.preSpanText}}
+          <span [ngStyle]="{'background-color': line?.getTextColor(colRange-i-1) }">{{line?.spanText}}</span>
+          {{line?.postSpanText}}
+        </s>
+        <s *ngIf="!line?.isPainted()">{{line?.text}}</s>
+        <br>
+      </td>
+    </tr>
+  </table>
+  <app-options [optionGroups]="menuOptions"></app-options>
 </div>
