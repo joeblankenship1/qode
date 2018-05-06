@@ -1,0 +1,44 @@
+<div class="container-fluid">
+  <div class="panel-heading modal-header">
+      <span class='btn-close glyphicon glyphicon-remove' (click)='onClose()'></span>
+      <h5 class="modal-title">Editar documento: {{doc.name}}</h5>
+  </div>
+  <div class="row panel-body">
+      <div class="col-xs-12" style="overflow:auto;max-height:200px">
+          <table class="table table-striped" >
+              <tbody>
+                  <tr>
+                      <td class="col-xs-3"> <span class="form-control" readonly>Descripción</span></td>
+                      <td class="col-xs-9" colspan="2"><input class="form-control" type="text" [(ngModel)]="memo"></td>
+                  </tr>
+                  <tr *ngFor="let atr of atributesList">
+                      <td class="col-xs-3"> <span class="form-control" readonly>{{atr.key}}</span></td>
+                      <td class="col-xs-8"><input class="form-control" type="text" [(ngModel)]="atr.value"></td>
+                      <td class="col-xs-1">
+                          <button class="btn btn-danger btn-delete" (click)="onRemoveAtribute(atr.key)">x</button>
+                      </td>
+                  </tr>
+                  <tr>
+                    <td class="col-xs-3">
+                      <input class="form-control" (keyup.enter)="onAddAtribute()" placeholder="Nuevo atributo" 
+                      type="text" [(ngModel)]="newKey">
+                    </td>
+                    <td class="col-xs-8">
+                        <input class="form-control" (keyup.enter)="onAddAtribute()" placeholder="Nuevo valor" 
+                        type="text" [(ngModel)]="newValue">
+                    </td>
+                    <td class="col-xs-1"><button type="button" class="btn btn-info" (click)="onAddAtribute()">Agregar</button></td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+  <div class="modal-footer text-center ">
+    <button type="button" class="btn btn-success" (click)="onSaveDocument()">
+    Guardar
+    </button>
+    <button *ngIf="doc._id !== '0'" type="button" class="btn btn-danger" (click)="onDeleteDocument()">
+    Borrar
+    </button>
+  </div>    
+</div>

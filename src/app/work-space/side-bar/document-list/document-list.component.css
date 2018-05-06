@@ -1,0 +1,38 @@
+.panel-heading {
+    background-color: #979B9C;
+    color: #203F30;
+    height: 35px;
+}
+
+.document-list {
+    list-style-type: none;
+    padding-left: 4px;
+}
+
+.actions {
+    cursor: pointer;
+}
+
+.action-selected {
+    color: red;
+}
+
+h5 {
+    text-align: center;
+}
+
+@media screen and (min-width: 1200px) {
+    .doc-panel-collapse {
+        height: -moz-calc(100% - 35px);
+        height: -webkit-calc(100% - 35px);
+        height: calc(100% - 35px);
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .doc-panel-collapse {
+        height: -moz-calc(100% - 35px);
+        height: -webkit-calc(100% - 35px);
+        height: calc(100% - 35px);
+    }
+}

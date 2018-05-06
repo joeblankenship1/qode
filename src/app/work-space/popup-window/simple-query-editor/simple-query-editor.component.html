@@ -1,0 +1,28 @@
+<div class="popup-container modal-content">
+  <div>
+    <div class="panel-heading modal-header">
+      <h5 class="modal-title">Búsqueda Simple</h5>
+      <span class='btn-close glyphicon glyphicon-remove' (click)='onClose()'></span>
+    </div>
+    <div class="panel-body">
+      <div class="col-sm-12">
+        <form #f="ngForm" (ngSubmit)="onFormSubmit(f.value)" novalidate>
+          <div class="field">
+            <input type="checkbox" id="actDocsInput" name="adocs" [(ngModel)]="activatedDocs">
+            <label for="actDocsInput">Solo Documentos Activados</label>
+            <br>
+          </div>
+          <hr class='divider'>
+          <div class="field">
+            <input type="checkbox" id="actCodesInput" name="acodes" [(ngModel)]="activatedCodes">
+            <label for="actCodesInput">Solo Códigos Activados</label>
+            <br>
+          </div>
+          <div class="buttons">
+            <button type="submit" class="btn btn-success">Buscar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

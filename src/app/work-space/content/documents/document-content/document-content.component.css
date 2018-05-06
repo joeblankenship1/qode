@@ -1,0 +1,118 @@
+.content-container {
+    background-color: white;
+    overflow-y: scroll;
+    height: -moz-calc(100vh - 52px - 20px - 46px - 8px);
+    height: -webkit-calc(100vh - 52px - 20px - 46px - 8px);
+    height: calc(100vh - 52px - 20px - 46px - 8px);
+    border: #2d3e4f solid 2px;
+}
+
+
+/* Pages */
+
+.page {
+    margin-top: 2%;
+    border-spacing: 0 10px;
+    width: 20cm;
+    /*float: right;*/
+    margin-left: 1%;
+}
+
+.page-container {
+    /*padding-bottom: 5px;
+    padding-top: 5px;
+    padding-left: 5%;
+    padding-right: 1%;*/
+    /*width: 23cm;
+  margin-left: 10%;
+  margin-top: 2%;*/
+    width: 96%;
+    margin-left: 2%;
+    margin-top: 2%;
+}
+
+
+/* Lines */
+
+.top-line {
+    box-shadow: 0px 9px 0px 0px white, 0px 0px 0px #d1d1d1, 1px 0 10px -2px #d1d1d1, 1px 0 10px -2px #d1d1d1;
+    padding-top: 15px;
+}
+
+.bottom-line {
+    box-shadow: 0px 0px 0px #d1d1d1, 0px -9px 0px 0px white, 1px 0 10px -2px #d1d1d1, 1px 0 10px -2px #d1d1d1;
+    padding-bottom: 15px;
+}
+
+.white-line {
+    box-shadow: 0px 0px 0px 0px white, 0 -9px 0px 0px white, 1px 0 10px -2px #d1d1d1, 1px 0 10px -2px #d1d1d1;
+}
+
+
+/* Text */
+
+.text-area {
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: white;
+    font-size: 15.5px;
+}
+
+table {
+    user-select: text;
+}
+
+
+/* Quotes */
+
+.quote-empty {
+    color: transparent;
+    width: 0px;
+}
+
+.quote {
+    /* font-weight: bold; */
+    cursor: pointer;
+    padding: none;
+    margin: none;
+    width: 8px;
+    border-left: 2.5px solid;
+}
+
+.borderTop-quote {
+    border-top: 2px solid;
+}
+
+.borderBottom-quote {
+    border-bottom: 2px solid;
+}
+
+s {
+    text-decoration-line: unset;
+}
+
+ ::selection {
+    background: #d9cfcf;
+    /* WebKit/Blink Browsers */
+}
+
+ ::-moz-selection {
+    background: #d9cfcf;
+    /* Gecko Browsers */
+}
+
+.code-name-container {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-user-select: none;
+    /* Chrome all / Safari all */
+    -moz-user-select: none;
+    /* Firefox all */
+    -ms-user-select: none;
+    /* IE 10+ */
+    user-select: none;
+    /* Likely future */
+    font-size: 14px;
+    font-weight: bolder;
+    height: 17px;
+}

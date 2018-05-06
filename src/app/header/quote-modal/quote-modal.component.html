@@ -1,0 +1,46 @@
+<div class="container-fluid">
+    <div class="panel-heading modal-header">
+        <span class='btn-close glyphicon glyphicon-remove' (click)='onClose()'></span>
+        <h5 class="modal-title">Editar cita</h5>
+    </div>
+    <div class="row panel-body">
+        <div class="col-xs-12">
+            <div class="form-group row" style="margin-top:10px;">
+                <label for="inputCode" class="col-xs-2 control-label">Código</label>
+                <div class="col-xs-10">
+                    <ng2-completer [(ngModel)]="chosenCode" [datasource]="dataService" (selected)="onCodeSelected($event)" [textNoResults]="'Enter para crear nuevo código'" [minSearchLength]="1" inputClass="form-control" inputID="inputCode" [placeholder]="'Buscar código o crear nuevo'"
+                        (keyup)="onKeyUp($event)" [disableInput]='!permissions.includes("delete_code")'>
+                    </ng2-completer>
+                </div>
+            </div>
+            <div class="panel panel-default" style="overflow:auto;max-height:200px">
+                <table class="table table-striped" [mfData]="selectedCodes" #mf="mfDataTable">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let c of mf.data">
+                            <td style="padding: 3px;">
+                                <button class="btn btn-danger" style="border:none;" (click)="onRemoveCode(c)" [disabled]='!permissions.includes("delete_code")'>x</button>
+                            </td>
+                            <td> {{c.name}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Memo</span>
+                <input class="col-xs-12 form-control" type="text" [(ngModel)]="memo">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer text-center ">
+        <button type="button" class="btn btn-success" (click)="onSaveQuote()" [disabled]='!permissions.includes("save_quote")'>
+            Guardar
+            </button>
+        <button *ngIf="quote._id" type="button" class="btn btn-danger" (click)="onDeleteQuote()" [disabled]='!permissions.includes("delete_quote")'>
+            Borrar
+            </button>
+    </div>
+</div>

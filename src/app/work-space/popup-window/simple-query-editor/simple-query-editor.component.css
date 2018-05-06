@@ -1,0 +1,17 @@
+
+.popup-container {
+  width: 400px;
+  float: right;
+  margin-right: 0;
+  padding-right: 0px;
+  padding-left: 0px;
+  background-color: white;
+}
+
+.divider {
+  border-top: 1.5px solid #dcd6d6;
+}
+
+.buttons {
+  margin-top: 10px;
+}

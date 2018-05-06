@@ -1,0 +1,74 @@
+<nav class="navbar navbar-default" *ngIf="(router.url !== '/') && (router.url !== '/signup') && (router.url !== '/resetpassword')">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-left" style='padding: 10px 0px;' routerLink='/myprojects'>
+                <img class="img-responsive" style="height: 40px;float:left" src="assets/images/logo.png">
+            </a>
+            <a class="navbar-brand" routerLink='/myprojects'>
+                Qode
+            </a>
+
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav" *ngIf="router.url.includes('workspace')">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Proyecto <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li [ngClass]="{ 'disabled':  permissions && !permissions.includes('share_project')}">
+                            <a (click)="onShareProject()" class="header-btn">Compartir</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav " *ngIf="router.url.includes('workspace')">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentos<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li [ngClass]="{ 'disabled':  permissions && !permissions.includes('importar_docs')}">
+                            <input type="file" #files name="files[]" multiple style="display:none;" (change)="onChange($event)" />
+                            <a class="header-btn" (click)="files.click()">Importar</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Códigos<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li [ngClass]="{ 'disabled':  permissions && !permissions.includes('create_code')}">
+                            <a class="header-btn" (click)="onNewCode()">Nuevo código</a>
+                        </li>
+                        <li [ngClass]="{ 'disabled':  permissions && !permissions.includes('import_codes')}">
+                            <a class="header-btn" (click)="onImportCodes()">Importar códigos de otro proyecto</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Búsqueda<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li [ngClass]="{ 'disabled': permissions && !permissions.includes('search_activated_quotes')}">
+                            <a class="header-btn" (click)="onSimpleQuery()">Búsqueda Simple</a>
+                        </li>
+                        <!-- <li [ngClass]="{ 'disabled': permissions && !permissions.includes('search_activated_quotes')}">
+                            <a class="header-btn" (click)="onComplexQuery()">Búsqueda Compleja</a>
+                        </li> -->
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Análisis<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="header-btn" (click)="onCodeMatrix(false)">Matriz de códigos por documento</a></li>
+                        <li><a class="header-btn" (click)="onCodeMatrix(true)">Matriz de co-ocurrencia de códigos</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a routerLink='/myprojects' *ngIf="this.authsvc.isAuthenticated() && router.url.includes('workspace')"> Mis Proyectos </a></li>
+                <li><a href="#" (click)="logout()" *ngIf="show"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

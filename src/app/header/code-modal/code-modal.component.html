@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <div class="panel-heading modal-header">
+        <span class='btn-close glyphicon glyphicon-remove' (click)='onClose()'></span>
+        <h5 class="modal-title">Editar código</h5>
+    </div>
+    <div class="row panel-body">
+        <div class="col-xs-12">
+            <div class="input-group col-md-8" style="float:left">
+                <span class="input-group-addon">Código     </span>
+                <input class="col-xs-12 form-control" type="text" [(ngModel)]="name">
+            </div>
+            <div class="input-group col-md-4">
+                <span class="input-group-addon">Color</span>
+                <input [(colorPicker)]="color" [cpOKButton]="true" [cpAlphaChannel]="'disabled'" [style.background]="color" [class]="'colorInput col-xs-12 form-control'" [cpPosition]="'bottom'" [cpCancelButton]="true" [cpCancelButtonClass]="'btn btn-danger'" [cpOKButtonClass]="'btn btn-success'"
+                    [cpPositionOffset]="'-300%'" [cpOutputFormat]="'rgba'" />
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Descripción</span>
+                <input class="col-xs-12 form-control" type="text" [(ngModel)]="memo">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer text-center ">
+        <button type="button" class="btn btn-success" (click)="onSaveCode()" [disabled]='!permissions.includes("save_code")'> Guardar  </button>
+        <button *ngIf="code._id !== '0'" type="button" class="btn btn-danger" (click)="onDeleteCode()" [disabled]='!permissions.includes("delete_code")'>  Borrar </button>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+@media screen and (min-width: 1200px) {
+    .sidenav {
+        padding: 2px;
+        /*background-color: #333534;*/
+        height: -moz-calc(100vh - 57px - 20px);
+        height: -webkit-calc(100vh - 57px - 20px);
+        height: calc(100vh - 57px - 20px);
+        width: 25%;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .sidenav {
+        padding: 2px;
+        /*background-color: #333534;*/
+        height: -moz-calc(100vh - 57px - 20px);
+        height: -webkit-calc(100vh - 57px - 20px);
+        height: calc(100vh - 57px - 20px);
+        width: 25%;
+    }
+}
+
+.btn {
+    border-radius: 0px;
+}
+
+.panel-group {
+    height: 100%;
+}

@@ -1,0 +1,41 @@
+<div class="container-fluid">
+    <div class="panel-heading modal-header">
+        <span class='btn-close glyphicon glyphicon-remove' (click)='onClose()'></span>
+        <h5 class="modal-title">Importar códigos de otro proyecto</h5>
+    </div>
+    <div class="row panel-body">
+        <div class="panel" style="overflow:auto;max-height:300px;min-height:100px">
+            <table style="position:relative" class="table table-striped" [mfData]="projects" #mf="mfDataTable" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                <thead>
+                    <tr>
+                        <th style="width: 30%">
+                            <mfDefaultSorter by="name" style="font-weight:400">Nombre</mfDefaultSorter>
+                        </th>
+                        <th style="width: 35%">
+                            <mfDefaultSorter by="owner" style="font-weight:400">Propietario</mfDefaultSorter>
+                        </th>
+                        <th style="width: 35%">
+                            <mfDefaultSorter by="_modified" style="font-weight:400">Ultima actualización</mfDefaultSorter>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr app-project-item *ngFor="let proj of mf.data" [project]="proj" [toImportCodes]="true" (click)="onSelectProject(proj._id)" [ngClass]="actualProject===proj._id ? 'actual-proj' : (proj._id===this.project?'selected-proj' : '')">
+                    </tr>
+                </tbody>
+                <spinner-component [spinnerShow]="spinner">
+                    <div class="sk-folding-cube">
+                        <div class="sk-cube1 sk-cube"></div>
+                        <div class="sk-cube2 sk-cube"></div>
+                        <div class="sk-cube4 sk-cube"></div>
+                        <div class="sk-cube3 sk-cube"></div>
+                    </div>
+                    <h5 class="h5-spinner"> Cargando lista de proyectos.. </h5>
+                </spinner-component>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer text-center ">
+        <button type="button" class="btn btn-success" (click)="onImport()"> Importar </button>
+    </div>
+</div>
